@@ -1,0 +1,19 @@
+[versions]
+
+
+[libraries]
+core-ktx = { group = "androidx.core", name = "core-ktx", version = "1.8.0" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version = "1.6.1" }
+
+# 开发基础库
+cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.4.1" }
+cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.4.1" }
+core-framework = {group = "com.tal.sc.reader", name="core-framework", version="0.0.4.11"}
+service-threadpool = {group = "com.tal.sc.reader", name="service-threadpool", version="0.0.0.13"}
+
+[plugins]
+android-application = { id = "com.android.application", version = "7.3.0" }
+android-library = { id = "com.android.library", version = "7.3.0" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.8.10" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "1.8.10" }
+
