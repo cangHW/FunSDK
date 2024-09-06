@@ -64,3 +64,5 @@ dependencies {
     implementation(libs.sp.mmkv)
 
 }
+
+apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)

@@ -1,0 +1,89 @@
+ext {
+    sdk = [
+            snapshot_url   : "",
+            release_url    : "",
+
+            group          : "io.github.cangHW",
+            gitUrl         : "https://github.com/cangHW/Android-Cloud.git",
+            siteUrl        : "https://github.com/cangHW/Android-Cloud",
+            licenseName    : "The Apache Software License, Version 2.0",
+            licenseUrl     : "http://www.apache.org/licenses/LICENSE-2.0.txt",
+            developerId    : "cangHX",
+            developerName  : "cangHX",
+            developerEmail : "cwqcanghaixiao@163.com",
+
+            // 内核基础库
+            CoreFramework  : [
+                    artifact          : "service-core_framework",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+
+            // 网络库
+            ApiHttpBase    : [
+                    artifact          : "service-apihttp_base",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+            ApiHttpInfo    : [
+                    artifact          : "service-apihttp_info",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+
+            // 线程库
+            ThreadPoolBase : [
+                    artifact          : "service-threadpool_base",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+            ThreadPoolInfo : [
+                    artifact          : "service-threadpool_info",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+
+            // 图片库
+            ImageLoaderBase: [
+                    artifact          : "service-imageloader_base",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+            ImageLoaderInfo: [
+                    artifact          : "service-imageloader_info",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+
+            // web 库
+            WebViewBase    : [
+                    artifact          : "service-webview_base",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ],
+            WebViewInfo    : [
+                    artifact          : "service-webview_info",
+                    version           : "0.0.0.1",
+                    source            : false,
+                    libraryName       : "",
+                    libraryDescription: ""
+            ]
+    ]
+}
+

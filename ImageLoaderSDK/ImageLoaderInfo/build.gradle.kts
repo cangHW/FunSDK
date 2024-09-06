@@ -56,3 +56,5 @@ dependencies {
     //lottie
     implementation("com.airbnb.android:lottie:6.0.0")
 }
+
+apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)

@@ -36,3 +36,5 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.cloud.api)
 }
+
+apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)

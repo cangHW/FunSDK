@@ -58,5 +58,6 @@ dependencies {
     implementation("net.bytebuddy:byte-buddy:1.12.7")
     //noinspection UseTomlInstead
     implementation("net.bytebuddy:byte-buddy-android:1.12.7")
-
 }
+
+apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)
