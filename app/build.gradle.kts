@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.proxy.service.funsdk"
-    compileSdk = 34
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.proxy.service.funsdk"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.min.sdk.get().toInt()
+        targetSdk = libs.versions.target.sdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -42,5 +42,11 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.cloud.api)
+
+    implementation(project(":CoreFramework"))
+//    implementation(project(":ApiHttpSDK:ApiHttpInfo"))
+    implementation(project(":ThreadPoolSDK:ThreadPoolInfo"))
+    implementation(project(":ImageLoaderSDK:ImageLoaderInfo"))
+    implementation(project(":WebViewSDK:WebViewInfo"))
 
 }
