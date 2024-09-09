@@ -30,13 +30,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
@@ -46,8 +39,10 @@ dependencies {
     kapt(libs.cloud.compiler)
 
     implementation(project(":WebViewSDK:WebViewBase"))
-    implementation(project(":CoreFramework"))
-    implementation(project(":ThreadPoolSDK:ThreadPoolInfo"))
+    implementation(libs.core.framework){
+        exclude(group = "io.github.cangHW", module = "Service-WebViewBase")
+    }
+    implementation(libs.service.threadpool)
 
 
     //view
@@ -60,4 +55,4 @@ dependencies {
     implementation("net.bytebuddy:byte-buddy-android:1.12.7")
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)

@@ -1,0 +1,6 @@
+apply from: new File(project.rootDir.absolutePath, "plugins/config/sdk.gradle").absolutePath
+apply from: new File(project.rootDir.absolutePath, "plugins/gradle/common.gradle").absolutePath
+apply from: new File(project.rootDir.absolutePath, "plugins/script/gradle/private_dependency.gradle").absolutePath
+apply from: new File(project.rootDir.absolutePath, "plugins/script/gradle/private_upload.gradle").absolutePath
+//apply from: "https://raw.githubusercontent.com/cangHW/ScriptLibrary/main/private_dependency.gradle"
+//apply from: "https://raw.githubusercontent.com/cangHW/ScriptLibrary/main/private_upload.gradle"

@@ -24,7 +24,7 @@ object CsImgLoader {
             service = CloudSystem.getService(ImageLoaderService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <com.tal.sc.reader:service-imageloader:xxx>")
+            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-ImageloaderBase:xxx>")
         }
         return service
     }

@@ -20,7 +20,7 @@ object CsWeb {
             service = CloudSystem.getService(WebService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <com.tal.sc.reader:service-web:xxx>")
+            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-WebviewBase:xxx>")
         }
         return service
     }

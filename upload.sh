@@ -1,16 +1,24 @@
 
 #准备上传的类库 module
 upArray=(
-#  ":Cloud-Base"
+  # 核心基础库
+#  ":CoreFramework"
 
-#  ":Cloud-Annotations"
+#  # 网络库
+#  ":ApiHttpSDK:ApiHttpBase"
+  ":ApiHttpSDK:ApiHttpInfo"
 
-  ":Cloud-Plugin"
+#  # 线程库
+#  ":ThreadPoolSDK:ThreadPoolBase"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
 
-#  ":Cloud-Api"
+#  # 图片库
+#  ":ImageLoaderSDK:ImageLoaderBase"
+#  ":ImageLoaderSDK:ImageLoaderInfo"
 
-#  ":Cloud-Compiler"
-
+#  # web 容器库
+#  ":WebViewSDK:WebViewBase"
+  ":WebViewSDK:WebViewInfo"
 )
 
 type_params="r"

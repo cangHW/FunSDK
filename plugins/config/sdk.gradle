@@ -1,7 +1,7 @@
 ext {
     sdk = [
-            snapshot_url   : "",
-            release_url    : "",
+            snapshot_url   : "https://s01.oss.sonatype.org/content/repositories/snapshots/",
+            release_url    : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/",
 
             group          : "io.github.cangHW",
             gitUrl         : "https://github.com/cangHW/Android-Cloud.git",
@@ -14,75 +14,75 @@ ext {
 
             // 内核基础库
             CoreFramework  : [
-                    artifact          : "service-core_framework",
-                    version           : "0.0.0.1",
-                    source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    artifact          : "Service-CoreFramework",
+                    version           : "0.0.0.2",
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
 
             // 网络库
             ApiHttpBase    : [
-                    artifact          : "service-apihttp_base",
+                    artifact          : "Service-ApihttpBase",
                     version           : "0.0.0.1",
-                    source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
             ApiHttpInfo    : [
-                    artifact          : "service-apihttp_info",
+                    artifact          : "Service-Apihttp",
                     version           : "0.0.0.1",
                     source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
 
             // 线程库
             ThreadPoolBase : [
-                    artifact          : "service-threadpool_base",
+                    artifact          : "Service-ThreadpoolBase",
                     version           : "0.0.0.1",
-                    source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
             ThreadPoolInfo : [
-                    artifact          : "service-threadpool_info",
+                    artifact          : "Service-Threadpool",
                     version           : "0.0.0.1",
                     source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
 
             // 图片库
             ImageLoaderBase: [
-                    artifact          : "service-imageloader_base",
+                    artifact          : "Service-ImageloaderBase",
                     version           : "0.0.0.1",
-                    source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
             ImageLoaderInfo: [
-                    artifact          : "service-imageloader_info",
+                    artifact          : "Service-Imageloader",
                     version           : "0.0.0.1",
                     source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
 
             // web 库
             WebViewBase    : [
-                    artifact          : "service-webview_base",
+                    artifact          : "Service-WebviewBase",
                     version           : "0.0.0.1",
-                    source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ],
             WebViewInfo    : [
-                    artifact          : "service-webview_info",
+                    artifact          : "Service-Webview",
                     version           : "0.0.0.1",
                     source            : false,
-                    libraryName       : "",
-                    libraryDescription: ""
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
             ]
     ]
 }

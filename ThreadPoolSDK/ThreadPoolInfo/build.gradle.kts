@@ -30,13 +30,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
@@ -45,10 +38,12 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
     implementation(project(":ThreadPoolSDK:ThreadPoolBase"))
-    implementation(project(":CoreFramework"))
+    implementation(libs.core.framework){
+        exclude(group = "io.github.cangHW", module = "Service-ThreadPoolBase")
+    }
 
     implementation("io.reactivex.rxjava2:rxjava:2.2.9")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)

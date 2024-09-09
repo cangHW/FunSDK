@@ -29,13 +29,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
@@ -43,10 +36,16 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.cloud.api)
 
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
     implementation(project(":CoreFramework"))
-//    implementation(project(":ApiHttpSDK:ApiHttpInfo"))
+    implementation(project(":ApiHttpSDK:ApiHttpInfo"))
     implementation(project(":ThreadPoolSDK:ThreadPoolInfo"))
     implementation(project(":ImageLoaderSDK:ImageLoaderInfo"))
     implementation(project(":WebViewSDK:WebViewInfo"))
-
 }
+
+apply(from = File(project.rootDir.absolutePath, "plugins/gradle/common.gradle").absolutePath)
+
+

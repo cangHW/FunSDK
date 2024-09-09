@@ -165,7 +165,7 @@ class WebViewImpl : WebView {
             super.onPageStarted(view, url, favicon)
             CsLogger.tag(tag)
                 .d("onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) url = $url")
-            Sc.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     loadCallback?.onPageStarted(url ?: "")
                     return ""
@@ -175,8 +175,8 @@ class WebViewImpl : WebView {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            ScLogger.tag(tag).d("onPageFinished(view: WebView?, url: String?) url = $url")
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsLogger.tag(tag).d("onPageFinished(view: WebView?, url: String?) url = $url")
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     loadCallback?.onPageFinished(url ?: "")
                     return ""
@@ -186,8 +186,8 @@ class WebViewImpl : WebView {
 
         override fun onPageCommitVisible(view: WebView?, url: String?) {
             super.onPageCommitVisible(view, url)
-            ScLogger.tag(tag).d("onPageCommitVisible(view: WebView?, url: String?) url = $url")
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsLogger.tag(tag).d("onPageCommitVisible(view: WebView?, url: String?) url = $url")
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     loadCallback?.onPageCommitVisible(url ?: "")
                     return ""
@@ -201,9 +201,9 @@ class WebViewImpl : WebView {
             error: WebResourceError
         ) {
             super.onReceivedError(view, request, error)
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) url = ${request.url}, error = ${error.errorCode}:${error.description}")
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     if (request.isForMainFrame) {
                         loadCallback?.onPageError(
@@ -229,9 +229,9 @@ class WebViewImpl : WebView {
             error: WebResourceResponse
         ) {
             super.onReceivedHttpError(view, request, error)
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onReceivedHttpError(view: WebView, request: WebResourceRequest, error: WebResourceResponse) url = ${request.url}, error = ${error.statusCode}:${error.responseHeaders}")
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     if (request.isForMainFrame) {
                         loadCallback?.onPageError(
@@ -252,9 +252,9 @@ class WebViewImpl : WebView {
         }
 
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) url = ${error.url}")
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     val sslError = SslErrorImpl(error)
                     val sslErrorHandler = SslErrorHandlerImpl(handler)
@@ -266,12 +266,12 @@ class WebViewImpl : WebView {
 
         override fun onLoadResource(view: WebView?, url: String?) {
             super.onLoadResource(view, url)
-            ScLogger.tag(tag).d("onLoadResource(view: WebView?, url: String?) url = $url")
+            CsLogger.tag(tag).d("onLoadResource(view: WebView?, url: String?) url = $url")
         }
 
         override fun onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest?) {
             super.onReceivedClientCertRequest(view, request)
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest?) host = ${request?.host}, port = ${request?.port}")
         }
 
@@ -282,7 +282,7 @@ class WebViewImpl : WebView {
             realm: String?
         ) {
             super.onReceivedHttpAuthRequest(view, handler, host, realm)
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onReceivedHttpAuthRequest(view: WebView?, handler: HttpAuthHandler?, host: String?, realm: String?) host = ${host}, realm = $realm")
         }
 
@@ -450,7 +450,7 @@ class WebViewImpl : WebView {
             message: String?,
             result: JsResult?
         ): Boolean {
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onJsBeforeUnload(view: WebView?, url: String?, message: String?, result: JsResult?) url = $url, message = $message")
             return super.onJsBeforeUnload(view, url, message, result)
         }
@@ -459,10 +459,10 @@ class WebViewImpl : WebView {
             origin: String?,
             callback: GeolocationPermissions.Callback?
         ) {
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissionsCallback?) origin = $origin")
             super.onGeolocationPermissionsShowPrompt(origin, callback)
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     if (interceptCallback != null) {
                         val permissionsCallback = GeolocationPermissionsCallbackImpl(callback)
@@ -478,8 +478,8 @@ class WebViewImpl : WebView {
 
         override fun onGeolocationPermissionsHidePrompt() {
             super.onGeolocationPermissionsHidePrompt()
-            ScLogger.tag(tag).d("onGeolocationPermissionsHidePrompt()")
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsLogger.tag(tag).d("onGeolocationPermissionsHidePrompt()")
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     if (interceptCallback != null) {
                         interceptCallback?.onGeolocationPermissionsHidePrompt()
@@ -490,9 +490,9 @@ class WebViewImpl : WebView {
         }
 
         override fun onPermissionRequest(request: PermissionRequest?) {
-            ScLogger.tag(tag).d("onPermissionRequest(request: PermissionRequest?)")
+            CsLogger.tag(tag).d("onPermissionRequest(request: PermissionRequest?)")
             super.onPermissionRequest(request)
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     if (interceptCallback != null) {
                         val permissionsCallback = PermissionRequestImpl(request)
@@ -504,9 +504,9 @@ class WebViewImpl : WebView {
         }
 
         override fun onPermissionRequestCanceled(request: PermissionRequest?) {
-            ScLogger.tag(tag).d("onPermissionRequestCanceled(request: PermissionRequest?)")
+            CsLogger.tag(tag).d("onPermissionRequestCanceled(request: PermissionRequest?)")
             super.onPermissionRequestCanceled(request)
-            ScTask.mainThread()?.call(object : ICallable<String> {
+            CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     if (interceptCallback != null) {
                         val permissionsCallback = PermissionRequestImpl(request)
@@ -518,7 +518,7 @@ class WebViewImpl : WebView {
         }
 
         override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("ConsoleMessage level : ${consoleMessage?.messageLevel()?.name}, sourceID : ${consoleMessage?.sourceId()}, line : ${consoleMessage?.lineNumber()}, message : ${consoleMessage?.message()}")
             return super.onConsoleMessage(consoleMessage)
         }
@@ -528,20 +528,20 @@ class WebViewImpl : WebView {
             filePathCallback: ValueCallback<Array<Uri>>?,
             fileChooserParams: FileChooserParams?
         ): Boolean {
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onShowFileChooser(webView: WebView?, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?)")
             return super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
         }
 
         override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
             super.onShowCustomView(view, callback)
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onShowCustomView(webView: View?, callback: CustomViewCallback?)")
         }
 
         override fun onHideCustomView() {
             super.onHideCustomView()
-            ScLogger.tag(tag)
+            CsLogger.tag(tag)
                 .d("onHideCustomView()")
         }
 

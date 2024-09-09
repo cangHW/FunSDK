@@ -24,7 +24,7 @@ object CsTask {
             service = CloudSystem.getService(ThreadPoolService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <com.tal.sc.reader:service-threadpool:xxx>")
+            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-ThreadpoolBase:xxx>")
         }
         return service
     }

@@ -37,7 +37,7 @@ object ScriptFactory {
 
         val byteBuddy = ByteBuddy()
             .subclass(Any::class.java)
-            .name("com.tal.sc.JavaScriptBridge")
+            .name("com.proxy.service.webview.JavaScriptBridge")
 
         var methodDefinition: DynamicType.Builder.MethodDefinition<Any>? = null
 

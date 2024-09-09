@@ -23,23 +23,16 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.cloud.api)
-    compileOnly(project(":CoreFramework"))
+    compileOnly(libs.core.framework)
 
     api("com.squareup.okhttp3:okhttp:4.11.0")
     api("com.squareup.retrofit2:retrofit:2.9.0")
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/gradle/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)

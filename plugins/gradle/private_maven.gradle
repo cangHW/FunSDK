@@ -1,3 +1,0 @@
-apply from: new File(project.rootDir.absolutePath, "plugins/config/sdk.gradle").absolutePath
-apply from: "https://raw.githubusercontent.com/cangHW/ScriptLibrary/main/dependency.gradle"
-apply from: "https://raw.githubusercontent.com/cangHW/ScriptLibrary/main/upload.gradle"

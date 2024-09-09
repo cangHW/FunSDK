@@ -1,10 +1,10 @@
-package com.tal.apihttp
+package com.proxy.service.apihttp.info
 
 import com.proxy.service.annotations.CloudApiService
+import com.proxy.service.apihttp.base.ApiHttpService
+import com.proxy.service.apihttp.base.init.ApiConfig
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.retrofit.RetrofitManager
-import com.tal.funservice.apihttp.ApiHttpService
-import com.tal.funservice.apihttp.init.ApiConfig
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @desc:
  */
 @CloudApiService(serviceTag = "service/api_http")
-class ApiHttpServiceImpl:ApiHttpService {
+class ApiHttpServiceImpl: ApiHttpService {
 
     private val isInit = AtomicBoolean(false)
 

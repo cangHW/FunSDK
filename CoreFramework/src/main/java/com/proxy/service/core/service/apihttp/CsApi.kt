@@ -19,7 +19,7 @@ object CsApi {
             service = CloudSystem.getService(ApiHttpService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <com.tal.sc.reader:service-apihttp:xxx>")
+            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-Apihttp:xxx>")
         }
         return service
     }

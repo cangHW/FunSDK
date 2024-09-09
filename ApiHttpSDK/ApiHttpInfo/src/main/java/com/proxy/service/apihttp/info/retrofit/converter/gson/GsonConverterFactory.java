@@ -1,5 +1,6 @@
 package com.proxy.service.apihttp.info.retrofit.converter.gson;
 
+
 import androidx.annotation.NonNull;
 
 import java.lang.annotation.Annotation;
