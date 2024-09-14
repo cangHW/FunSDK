@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import androidx.annotation.WorkerThread
 import com.proxy.service.core.framework.log.CsLogger
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -23,26 +24,22 @@ object CsBitmapUtils {
      * */
     fun toBitmap(drawable: Drawable?, config: Bitmap.Config? = null): Bitmap? {
         if (drawable == null) {
+            CsLogger.d("Drawable is null.")
             return null
         }
+
         if (drawable is BitmapDrawable) {
             return drawable.bitmap
-        } else {
-            val cf: Bitmap.Config = config
-                ?: if (drawable.alpha < 255) {
-                    Bitmap.Config.ARGB_8888
-                } else {
-                    Bitmap.Config.RGB_565
-                }
-            val bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                cf
-            )
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            return bitmap
+        }
+
+        val cf =
+            config ?: if (drawable.alpha < 255) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+
+        return Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, cf).apply {
+            Canvas(this).apply {
+                drawable.setBounds(0, 0, width, height)
+                drawable.draw(this)
+            }
         }
     }
 
@@ -52,16 +49,26 @@ object CsBitmapUtils {
      * @param format    位图格式, 默认为 png
      * @param quality   压缩率, 默认不压缩
      * */
+    @WorkerThread
     fun toBytes(
         bitmap: Bitmap?,
         format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
         quality: Int = 100
     ): ByteArray? {
         if (bitmap == null) {
+            CsLogger.d("Bitmap is null.")
             return null
         }
         val bs = ByteArrayOutputStream()
-        bitmap.compress(format, quality, bs)
+        bitmap.compress(
+            format, if (quality > 100) {
+                100
+            } else if (quality < 0) {
+                0
+            } else {
+                quality
+            }, bs
+        )
         return bs.toByteArray()
     }
 
@@ -74,6 +81,7 @@ object CsBitmapUtils {
      *
      * @return 成功与否
      * */
+    @WorkerThread
     fun saveBitmap(
         bitmap: Bitmap?,
         file: File,
@@ -81,6 +89,7 @@ object CsBitmapUtils {
         quality: Int = 100
     ): Boolean {
         if (bitmap == null) {
+            CsLogger.d("Bitmap is null.")
             return false
         }
         try {

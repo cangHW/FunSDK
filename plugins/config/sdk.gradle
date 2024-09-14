@@ -47,7 +47,7 @@ ext {
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.0.0.1",
+                    version           : "0.0.0.2",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

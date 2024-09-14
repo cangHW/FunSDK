@@ -1,6 +1,7 @@
 package com.proxy.service.threadpool.info.handler.info
 
 import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.threadpool.info.constants.Constants
 import com.proxy.service.threadpool.info.handler.manager.HandlerController
 
 /**
@@ -25,7 +26,7 @@ class HandlerInfo {
                 handlerController?.getHandler()?.post(runnable)
             }
         } catch (throwable: Throwable) {
-            CsLogger.e(throwable)
+            CsLogger.tag(Constants.TAG).e(throwable)
         }
     }
 

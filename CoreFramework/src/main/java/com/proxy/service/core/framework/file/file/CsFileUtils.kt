@@ -81,10 +81,16 @@ object CsFileUtils {
         return file.delete()
     }
 
+    /**
+     * 判断是否是文件
+     * */
     fun isFile(file: String): Boolean {
         return isFile(File(file))
     }
 
+    /**
+     * 判断是否是文件
+     * */
     fun isFile(file: File): Boolean {
         if (!file.exists()) {
             return false
@@ -92,10 +98,16 @@ object CsFileUtils {
         return file.isFile
     }
 
+    /**
+     * 判断是否是文件夹
+     * */
     fun isDir(dir: String): Boolean {
         return isDir(File(dir))
     }
 
+    /**
+     * 判断是否是文件夹
+     * */
     fun isDir(dir: File): Boolean {
         if (!dir.exists()) {
             return false

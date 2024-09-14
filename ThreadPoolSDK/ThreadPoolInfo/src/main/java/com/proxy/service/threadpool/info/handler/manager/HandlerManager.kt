@@ -3,6 +3,7 @@ package com.proxy.service.threadpool.info.handler.manager
 import android.os.Handler
 import android.os.HandlerThread
 import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.threadpool.info.constants.Constants
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -55,7 +56,7 @@ object HandlerManager {
             try {
                 handlerThread.quit()
             } catch (throwable: Throwable) {
-                CsLogger.e(throwable)
+                CsLogger.tag(Constants.TAG).e(throwable)
             }
         }
 
@@ -64,7 +65,7 @@ object HandlerManager {
             try {
                 handlerThread.quitSafely()
             } catch (throwable: Throwable) {
-                CsLogger.e(throwable)
+                CsLogger.tag(Constants.TAG).e(throwable)
             }
         }
 

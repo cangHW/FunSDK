@@ -95,7 +95,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取设备总内存, 单位：B, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取设备总内存, 单位：B, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      * */
     fun getTotalMemory(): Long {
         val memoryInfo = ActivityManager.MemoryInfo()
@@ -104,7 +104,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取设备可用内存, 单位：B, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取设备可用内存, 单位：B, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      * */
     fun getAvailMemory(): Long {
         val memoryInfo = ActivityManager.MemoryInfo()
@@ -113,7 +113,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取当前应用已用内存（不包含共享内存）, 单位：KB, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取当前应用已用内存（不包含共享内存）, 单位：KB, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      * */
     fun getAppUsePrivateMemory(): Int {
         val pids = intArrayOf(Process.myPid())
@@ -125,7 +125,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取当前应用已用内存（包含共享内存）, 单位：KB, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取当前应用已用内存（包含共享内存）, 单位：KB, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      * */
     fun getAppUseAllMemory(): Int {
         val pids = intArrayOf(Process.myPid())
@@ -137,7 +137,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取设备总内部存储, 单位：B, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取设备总内部存储, 单位：B, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      *
      * 需要权限：Manifest.permission.READ_EXTERNAL_STORAGE
      * */
@@ -150,7 +150,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取设备可用内部存储, 单位：B, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取设备可用内部存储, 单位：B, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      *
      * 需要权限：Manifest.permission.READ_EXTERNAL_STORAGE
      * */
@@ -163,7 +163,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取设备总外部存储, 单位：B, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取设备总外部存储, 单位：B, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      *
      * 需要权限：Manifest.permission.READ_EXTERNAL_STORAGE
      * */
@@ -180,7 +180,7 @@ object CsDeviceUtils {
     }
 
     /**
-     * 获取设备可用外部存储, 单位：B, 可以使用 ScStorageUnit 转换为需要的单位.
+     * 获取设备可用外部存储, 单位：B, 可以使用 [com.proxy.service.core.framework.convert.CsStorageUnit] 转换为需要的单位.
      *
      * 需要权限：Manifest.permission.READ_EXTERNAL_STORAGE
      * */

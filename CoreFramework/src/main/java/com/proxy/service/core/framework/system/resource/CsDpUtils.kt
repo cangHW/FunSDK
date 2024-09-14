@@ -30,22 +30,14 @@ object CsDpUtils {
 
     /**
      * 根据字符串找到 dimen 中对应的值并转化为 px
+     *
+     * desc: name = "size_2dp"
      * */
-    fun getDimenPxByValue(value: String): Int {
+    fun getDimenPxByValue(name: String): Int {
         val resources = CsContextManager.getApplication().resources
-        val id = resources.getIdentifier("size_${value}dp", "dimen", CsAppUtils.getPackageName())
+        val id = resources.getIdentifier(name, "dimen", CsAppUtils.getPackageName())
         return if (id == 0) {
-            try {
-                value.split("_").let {
-                    if (it.isEmpty()) {
-                        0
-                    } else {
-                        it[0].toInt()
-                    }
-                }
-            } catch (throwable: Throwable) {
-                0
-            }
+            0
         } else {
             resources.getDimension(id).toInt()
         }
