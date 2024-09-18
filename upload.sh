@@ -10,7 +10,7 @@ upArray=(
 
 #  # 线程库
 #  ":ThreadPoolSDK:ThreadPoolBase"
-  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
 
 #  # 图片库
 #  ":ImageLoaderSDK:ImageLoaderBase"
@@ -19,6 +19,7 @@ upArray=(
 #  # web 容器库
 #  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewInfo"
+  ":WebViewSDK:WebViewBridgeDS"
 )
 
 type_params="r"

@@ -4,6 +4,7 @@ import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.okhttp.OkhttpManager
 import com.proxy.service.apihttp.info.retrofit.converter.gson.GsonConverterFactory
 import com.proxy.service.apihttp.info.retrofit.converter.scalars.ScalarsConverterFactory
+import com.proxy.service.core.framework.log.CsLogger
 import retrofit2.Retrofit
 
 /**
@@ -12,6 +13,8 @@ import retrofit2.Retrofit
  * @desc:
  */
 object RetrofitManager {
+
+    private const val TAG = "${Config.LOG_TAG_START}Init"
 
     @Volatile
     private var retrofit: Retrofit? = null
@@ -49,6 +52,7 @@ object RetrofitManager {
         builder.addConverterFactory(GsonConverterFactory.create())
 
         config.getCallAdapterFactory().forEach {
+            CsLogger.tag(TAG).d("addCallAdapterFactory factory = $it")
             builder.addCallAdapterFactory(it)
         }
 

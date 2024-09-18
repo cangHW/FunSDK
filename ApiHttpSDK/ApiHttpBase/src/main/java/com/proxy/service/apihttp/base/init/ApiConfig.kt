@@ -92,7 +92,7 @@ class ApiConfig private constructor(private val builder: IBuilderGet) : IBuilder
             private const val TIMEOUT_MIN: Long = 5 * 1000
         }
 
-        private var baseUrl: String = "https://www.default.sc.tal.reader.com"
+        private var baseUrl: String = ""
 
         private var connectTimeOut: Long = 30 * 1000
         private var writeTimeOut: Long = 30 * 1000

@@ -11,7 +11,10 @@ object Config {
 
     const val LOG_TAG_START = "ApiHttp_"
 
+    @Volatile
     private var isDebug = true
+
+    @Volatile
     private var config: ApiConfig? = null
 
     fun setIsDebug(isDebug: Boolean) {

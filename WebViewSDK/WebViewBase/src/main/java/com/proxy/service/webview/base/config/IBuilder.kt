@@ -1,5 +1,6 @@
 package com.proxy.service.webview.base.config
 
+import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.webview.base.enums.CacheMode
 import com.proxy.service.webview.base.enums.MixedContentMode
 
@@ -56,7 +57,7 @@ interface IBuilder {
      * 设置是否密码自动填充。
      * 默认为 false
      * */
-    fun setSavePassword(save:Boolean): IBuilder
+    fun setSavePassword(save: Boolean): IBuilder
 
     /**
      * 是否允许使用文件系统。
@@ -73,14 +74,23 @@ interface IBuilder {
     /**
      * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问其他文件 URL。
      * 默认为 false。
+     *
+     * 建议使用 [setWebViewAssetLoader]
      * */
     fun setAllowFileAccessFromFileURLs(allow: Boolean): IBuilder
 
     /**
      * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问所有来源（包括HTTP和HTTPS）的 URL。
      * 默认为 false
+     *
+     * 建议使用 [setWebViewAssetLoader]
      * */
     fun setAllowUniversalAccessFromFileURLs(allow: Boolean): IBuilder
+
+    /**
+     * 设置 web 容器本地资源加载器
+     * */
+    fun setWebViewAssetLoader(loader: WebViewAssetLoader): IBuilder
 
     /**
      * 设置是否允许显示垂直滚动条

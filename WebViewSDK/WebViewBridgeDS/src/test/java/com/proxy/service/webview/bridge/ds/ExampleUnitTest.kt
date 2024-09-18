@@ -1,4 +1,4 @@
-package com.tal.webviewbridge.ds
+package com.proxy.service.webview.bridge.ds
 
 import org.junit.Test
 

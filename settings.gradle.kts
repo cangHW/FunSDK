@@ -16,15 +16,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
-        maven {
-            isAllowInsecureProtocol = true
-            url = uri("https://repository.git.100tal.com/repository/maven2_release.0a12cff94e/")
-            credentials {
-                        username = "book_bfe_android_ta_book_admin"
-                        password = "TD49aVsEnS"
-                    }
-        }
     }
 }
 

@@ -26,6 +26,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.core.framework.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -59,6 +60,7 @@ class WebViewImpl : WebView {
     private val tag = "${Config.LOG_TAG_START}View"
     private var loadCallback: WebLoadCallback? = null
     private var interceptCallback: WebInterceptCallback? = null
+    private var webResourceAssetLoader: WebViewAssetLoader? = null
 
     fun setConfig(config: WebConfig) {
         settings.domStorageEnabled = true
@@ -79,6 +81,8 @@ class WebViewImpl : WebView {
         settings.allowContentAccess = config.isAllowContentAccess()
         settings.allowFileAccessFromFileURLs = config.isAllowFileAccessFromFileURLs()
         settings.allowUniversalAccessFromFileURLs = config.isAllowUniversalAccessFromFileURLs()
+
+        webResourceAssetLoader = config.getWebViewAssetLoader()
 
         isVerticalScrollBarEnabled = config.isVerticalScrollBarEnabled()
         isHorizontalScrollBarEnabled = config.isHorizontalScrollBarEnabled()
@@ -140,7 +144,17 @@ class WebViewImpl : WebView {
                     it.getData()
                 )
             }
-            return response ?: super.shouldInterceptRequest(view, url)
+
+            if (response != null) {
+                return response
+            }
+
+            response = webResourceAssetLoader?.shouldInterceptRequest(Uri.parse(url))
+            if (response != null) {
+                return response
+            }
+
+            return super.shouldInterceptRequest(view, url)
         }
 
         override fun shouldInterceptRequest(
@@ -161,7 +175,17 @@ class WebViewImpl : WebView {
                     it.getData()
                 )
             }
-            return response ?: super.shouldInterceptRequest(view, request)
+
+            if (response != null) {
+                return response
+            }
+
+            response = webResourceAssetLoader?.shouldInterceptRequest(request.url)
+            if (response != null) {
+                return response
+            }
+
+            return super.shouldInterceptRequest(view, request)
         }
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {

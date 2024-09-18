@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":ThreadPoolSDK:ThreadPoolInfo"))
     implementation(project(":ImageLoaderSDK:ImageLoaderInfo"))
     implementation(project(":WebViewSDK:WebViewInfo"))
+    implementation(project(":WebViewSDK:WebViewBridgeDS"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "plugins/gradle/common.gradle").absolutePath)

@@ -1,5 +1,6 @@
 package com.proxy.service.webview.base.config
 
+import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.webview.base.enums.CacheMode
 import com.proxy.service.webview.base.enums.MixedContentMode
 
@@ -62,6 +63,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.isAllowUniversalAccessFromFileURLs()
     }
 
+    override fun getWebViewAssetLoader(): WebViewAssetLoader? {
+        return builder.getWebViewAssetLoader()
+    }
+
     override fun isVerticalScrollBarEnabled(): Boolean {
         return builder.isVerticalScrollBarEnabled()
     }
@@ -95,6 +100,7 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var isAllowContentAccess: Boolean = false
         private var isAllowFileAccessFromFileURLs: Boolean = false
         private var isAllowUniversalAccessFromFileURLs: Boolean = false
+        private var webResourceAssetLoader: WebViewAssetLoader?=null
         private var verticalScrollBarEnabled:Boolean = true
         private var horizontalScrollBarEnabled:Boolean = true
         private var horizontalFadingEdgeEnabled:Boolean = false
@@ -157,6 +163,11 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setAllowUniversalAccessFromFileURLs(allow: Boolean): IBuilder {
             this.isAllowUniversalAccessFromFileURLs = allow
+            return this
+        }
+
+        override fun setWebViewAssetLoader(loader: WebViewAssetLoader): IBuilder {
+            this.webResourceAssetLoader = loader
             return this
         }
 
@@ -229,6 +240,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun isAllowUniversalAccessFromFileURLs(): Boolean {
             return isAllowUniversalAccessFromFileURLs
+        }
+
+        override fun getWebViewAssetLoader(): WebViewAssetLoader? {
+            return webResourceAssetLoader
         }
 
         override fun isVerticalScrollBarEnabled(): Boolean {

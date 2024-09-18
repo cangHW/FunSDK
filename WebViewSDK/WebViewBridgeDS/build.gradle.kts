@@ -1,17 +1,24 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.tal.webviewbridge.ds"
-    compileSdk = 34
+    namespace = "com.proxy.service.webview.bridge.ds"
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.min.sdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        kapt {
+            arguments {
+                arg("CLOUD_MODULE_NAME", project.name)
+            }
+        }
     }
 
     buildTypes {
@@ -23,21 +30,15 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
+    implementation(libs.cloud.api)
+    kapt(libs.cloud.compiler)
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    implementation(project(":WebViewSDK:WebViewInfo"))
+    implementation(libs.core.framework)
+    implementation(libs.service.threadpool)
 }
+
+apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)

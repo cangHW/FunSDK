@@ -1,5 +1,6 @@
 package com.proxy.service.webview.base.config
 
+import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.webview.base.enums.CacheMode
 import com.proxy.service.webview.base.enums.MixedContentMode
 
@@ -74,6 +75,11 @@ interface IBuilderGet {
      * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问所有来源（包括HTTP和HTTPS）的 URL。
      * */
     fun isAllowUniversalAccessFromFileURLs(): Boolean
+
+    /**
+     * 获取 web 容器本地资源加载器
+     * */
+    fun getWebViewAssetLoader(): WebViewAssetLoader?
 
     /**
      * 是否允许显示垂直滚动条
