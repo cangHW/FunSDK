@@ -5,6 +5,8 @@ import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieListener
 import com.airbnb.lottie.LottieTask
+import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.imageloader.info.config.Config
 import com.proxy.service.imageloader.info.loader.lottie.ILottieLoadCallback
 import java.io.FileInputStream
 
@@ -35,6 +37,7 @@ class PathLottieSource(private val path: String) : BaseLottieSourceData() {
             lottieTask.addListener(successListener)
             lottieTask.addFailureListener(errorListener)
         } catch (throwable: Throwable) {
+            CsLogger.tag(Config.TAG).d(throwable)
             listener?.onError(throwable)
             removeLottieListener(lottieTask, successListener, errorListener)
         }

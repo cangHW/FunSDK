@@ -23,12 +23,6 @@ interface IBuilder {
     fun setMixedContentMode(mode: MixedContentMode): IBuilder
 
     /**
-     * 设置是否启用 WebView 的调试功能。
-     * 默认为 false
-     * */
-    fun setWebContentsDebuggingEnabled(enabled: Boolean): IBuilder
-
-    /**
      * 设置是否应该启用 JavaScript 执行。
      * 默认为 true
      * */
@@ -59,10 +53,34 @@ interface IBuilder {
     fun setUserAgent(ua: String, append: Boolean = true): IBuilder
 
     /**
+     * 设置是否密码自动填充。
+     * 默认为 false
+     * */
+    fun setSavePassword(save:Boolean): IBuilder
+
+    /**
      * 是否允许使用文件系统。
      * 默认为 false
      * */
     fun setAllowFileAccess(allow: Boolean): IBuilder
+
+    /**
+     * 是否允许 WebView 通过内容提供者(ContentProvider)访问内容URI。
+     * 默认为 false
+     * */
+    fun setAllowContentAccess(allow: Boolean): IBuilder
+
+    /**
+     * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问其他文件 URL。
+     * 默认为 false。
+     * */
+    fun setAllowFileAccessFromFileURLs(allow: Boolean): IBuilder
+
+    /**
+     * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问所有来源（包括HTTP和HTTPS）的 URL。
+     * 默认为 false
+     * */
+    fun setAllowUniversalAccessFromFileURLs(allow: Boolean): IBuilder
 
     /**
      * 设置是否允许显示垂直滚动条

@@ -21,11 +21,6 @@ interface IBuilderGet {
     fun getMixedContentMode(): MixedContentMode
 
     /**
-     * 是否启用 WebView 的调试功能。
-     * */
-    fun isWebContentsDebuggingEnabled(): Boolean
-
-    /**
      * 是否应该启用 JavaScript 执行。
      * */
     fun isJavaScriptEnabled(): Boolean
@@ -56,9 +51,29 @@ interface IBuilderGet {
     fun isUserAgentAppend(): Boolean
 
     /**
+     * 是否密码自动填充。
+     * */
+    fun isSavePassword(): Boolean
+
+    /**
      * 是否允许使用文件系统。
      * */
     fun isAllowFileAccess(): Boolean
+
+    /**
+     * 是否允许 WebView 通过内容提供者(ContentProvider)访问内容URI。
+     * */
+    fun isAllowContentAccess(): Boolean
+
+    /**
+     * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问其他文件 URL。
+     * */
+    fun isAllowFileAccessFromFileURLs(): Boolean
+
+    /**
+     * 是否允许在 file URL 上下文中运行 JavaScript 代码时访问所有来源（包括HTTP和HTTPS）的 URL。
+     * */
+    fun isAllowUniversalAccessFromFileURLs(): Boolean
 
     /**
      * 是否允许显示垂直滚动条

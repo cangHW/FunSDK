@@ -34,12 +34,25 @@ class WebImpl(private val webView: WebViewImpl, private val lifecycleOwner: Life
         lifecycleOwner?.lifecycle?.addObserver(lifecycleObserver)
     }
 
-    override fun changeParentView(viewGroup: ViewGroup?) {
+    override fun removeFromParent() {
+        CsLogger.tag(tag).d("removeFromParent")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("changeParentView")
+        webView.parent?.let {
+            if (it is ViewGroup) {
+                it.removeView(webView)
+            }
+        }
+    }
+
+    override fun changeParentView(viewGroup: ViewGroup?) {
+        CsLogger.tag(tag).d("changeParentView viewGroup = $viewGroup")
+        if (isDestroy.get()) {
+            CsLogger.tag(tag).d("当前 web 容器已销毁")
+            return
+        }
         if (viewGroup == null) {
             return
         }
@@ -52,38 +65,38 @@ class WebImpl(private val webView: WebViewImpl, private val lifecycleOwner: Life
     }
 
     override fun setBackgroundColor(color: Int) {
+        CsLogger.tag(tag).d("setBackgroundColor color = $color")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("setBackgroundColor color = $color")
         webView.setBackgroundColor(color)
     }
 
     override fun setVisibility(visibility: Int) {
+        CsLogger.tag(tag).d("setVisibility visibility = $visibility")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("setVisibility visibility = $visibility")
         webView.visibility = visibility
     }
 
     override fun setLayerType(layerType: Int, paint: Paint?) {
+        CsLogger.tag(tag).d("setLayerType layerType = $layerType, paint = $paint")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("setLayerType layerType = $layerType, paint = $paint")
         webView.setLayerType(layerType, paint)
     }
 
     override fun evaluateJavascript(script: String, resultCallback: ValueCallback<String?>?) {
+        CsLogger.tag(tag).d("evaluateJavascript script = $script")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("evaluateJavascript script = $script")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 webView.evaluateJavascript(script, ValueCallbackImpl(resultCallback))
@@ -93,138 +106,138 @@ class WebImpl(private val webView: WebViewImpl, private val lifecycleOwner: Life
     }
 
     override fun loadUrl(url: String) {
+        CsLogger.tag(tag).d("loadUrl url = $url")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("loadUrl")
         webView.loadUrl(url)
     }
 
     override fun reload() {
+        CsLogger.tag(tag).d("reload")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("reload")
         webView.reload()
     }
 
     override fun canGoBack(): Boolean {
+        CsLogger.tag(tag).d("canGoBack")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return false
         }
-        CsLogger.tag(tag).d("canGoBack")
         return webView.canGoBack()
     }
 
     override fun goBack() {
+        CsLogger.tag(tag).d("goBack")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("goBack")
         webView.goBack()
     }
 
     override fun canGoForward(): Boolean {
+        CsLogger.tag(tag).d("canGoForward")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return false
         }
-        CsLogger.tag(tag).d("canGoForward")
         return webView.canGoForward()
     }
 
     override fun goForward() {
+        CsLogger.tag(tag).d("goForward")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("goForward")
         webView.goForward()
     }
 
     override fun onPause() {
+        CsLogger.tag(tag).d("onPause")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("onPause")
         webView.onPause()
     }
 
     override fun pauseTimers() {
+        CsLogger.tag(tag).d("pauseTimers")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("pauseTimers")
         webView.pauseTimers()
     }
 
     override fun saveState(outState: Bundle) {
+        CsLogger.tag(tag).d("saveState outState = $outState")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("saveState")
         webView.saveState(outState)
     }
 
     override fun restoreState(savedInstanceState: Bundle) {
+        CsLogger.tag(tag).d("restoreState savedInstanceState = $savedInstanceState")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("restoreState")
         webView.restoreState(savedInstanceState)
     }
 
     override fun onResume() {
+        CsLogger.tag(tag).d("onResume")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("onResume")
         webView.onResume()
     }
 
     override fun resumeTimers() {
+        CsLogger.tag(tag).d("resumeTimers")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("resumeTimers")
         webView.resumeTimers()
     }
 
     override fun clearCache(includeDiskFiles: Boolean) {
+        CsLogger.tag(tag).d("clearCache includeDiskFiles = $includeDiskFiles")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("clearCache")
         webView.clearCache(includeDiskFiles)
     }
 
     override fun clearHistory() {
+        CsLogger.tag(tag).d("clearHistory")
         if (isDestroy.get()) {
             CsLogger.tag(tag).d("当前 web 容器已销毁")
             return
         }
-        CsLogger.tag(tag).d("clearHistory")
         webView.clearHistory()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun destroy() {
+        CsLogger.tag(tag).d("destroy")
         if (!isDestroy.compareAndSet(false, true)) {
             CsLogger.tag(tag).d("当前 web 容器已销毁, 不需要多次销毁")
             return
         }
-        CsLogger.tag(tag).d("destroy")
         lifecycleOwner?.lifecycle?.removeObserver(lifecycleObserver)
         try {
             webView.parent?.let {

@@ -65,7 +65,6 @@ class WebViewImpl : WebView {
         CookieManager.getInstance()
             .setAcceptThirdPartyCookies(this, config.isAcceptThirdPartyCookies())
         settings.mixedContentMode = config.getMixedContentMode().mode
-        setWebContentsDebuggingEnabled(config.isWebContentsDebuggingEnabled())
         settings.javaScriptEnabled = config.isJavaScriptEnabled()
         settings.cacheMode = config.getCacheMode().mode
         settings.useWideViewPort = config.isUseWideViewPort()
@@ -75,7 +74,11 @@ class WebViewImpl : WebView {
         } else {
             settings.userAgentString = config.getUserAgent()
         }
+        settings.savePassword = config.isSavePassword()
         settings.allowFileAccess = config.isAllowFileAccess()
+        settings.allowContentAccess = config.isAllowContentAccess()
+        settings.allowFileAccessFromFileURLs = config.isAllowFileAccessFromFileURLs()
+        settings.allowUniversalAccessFromFileURLs = config.isAllowUniversalAccessFromFileURLs()
 
         isVerticalScrollBarEnabled = config.isVerticalScrollBarEnabled()
         isHorizontalScrollBarEnabled = config.isHorizontalScrollBarEnabled()

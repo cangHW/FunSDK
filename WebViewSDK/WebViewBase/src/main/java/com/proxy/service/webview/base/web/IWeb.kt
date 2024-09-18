@@ -35,6 +35,11 @@ interface IWeb {
     annotation class Visibility
 
     /**
+     * 从父布局中移除，可以用于 Web 容器复用。[changeParentView]
+     * */
+    fun removeFromParent()
+
+    /**
      * 修改父布局
      * */
     fun changeParentView(viewGroup: ViewGroup?)

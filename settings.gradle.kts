@@ -44,3 +44,4 @@ include(":ImageLoaderSDK:ImageLoaderInfo")
 
 include(":WebViewSDK:WebViewBase")
 include(":WebViewSDK:WebViewInfo")
+include(":WebViewSDK:WebViewBridgeDS")

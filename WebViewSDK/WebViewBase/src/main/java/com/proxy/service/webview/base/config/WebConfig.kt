@@ -18,10 +18,6 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.getMixedContentMode()
     }
 
-    override fun isWebContentsDebuggingEnabled(): Boolean {
-        return builder.isWebContentsDebuggingEnabled()
-    }
-
     override fun isJavaScriptEnabled(): Boolean {
         return builder.isJavaScriptEnabled()
     }
@@ -46,8 +42,24 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.isUserAgentAppend()
     }
 
+    override fun isSavePassword(): Boolean {
+        return builder.isSavePassword()
+    }
+
     override fun isAllowFileAccess(): Boolean {
         return builder.isAllowFileAccess()
+    }
+
+    override fun isAllowContentAccess(): Boolean {
+        return builder.isAllowContentAccess()
+    }
+
+    override fun isAllowFileAccessFromFileURLs(): Boolean {
+        return builder.isAllowFileAccessFromFileURLs()
+    }
+
+    override fun isAllowUniversalAccessFromFileURLs(): Boolean {
+        return builder.isAllowUniversalAccessFromFileURLs()
     }
 
     override fun isVerticalScrollBarEnabled(): Boolean {
@@ -72,14 +84,17 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         private var isAcceptThirdPartyCookies: Boolean = true
         private var mixedContentMode: MixedContentMode = MixedContentMode.MIXED_CONTENT_NEVER_ALLOW
-        private var webContentsDebuggingEnabled: Boolean = false
         private var javaScriptEnabled: Boolean = true
         private var cacheMode: CacheMode = CacheMode.LOAD_DEFAULT
         private var isUseWideViewPort: Boolean = false
         private var isLoadWithOverviewMode: Boolean = true
         private var userAgent: String = ""
         private var isUserAgentAppend: Boolean = true
+        private var isSavePassword: Boolean = false
         private var isAllowFileAccess: Boolean = false
+        private var isAllowContentAccess: Boolean = false
+        private var isAllowFileAccessFromFileURLs: Boolean = false
+        private var isAllowUniversalAccessFromFileURLs: Boolean = false
         private var verticalScrollBarEnabled:Boolean = true
         private var horizontalScrollBarEnabled:Boolean = true
         private var horizontalFadingEdgeEnabled:Boolean = false
@@ -91,11 +106,6 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setMixedContentMode(mode: MixedContentMode): IBuilder {
             this.mixedContentMode = mode
-            return this
-        }
-
-        override fun setWebContentsDebuggingEnabled(enabled: Boolean): IBuilder {
-            this.webContentsDebuggingEnabled = enabled
             return this
         }
 
@@ -125,8 +135,28 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return this
         }
 
+        override fun setSavePassword(save: Boolean): IBuilder {
+            this.isSavePassword = save
+            return this
+        }
+
         override fun setAllowFileAccess(allow: Boolean): IBuilder {
             this.isAllowFileAccess = allow
+            return this
+        }
+
+        override fun setAllowContentAccess(allow: Boolean): IBuilder {
+            this.isAllowContentAccess = allow
+            return this
+        }
+
+        override fun setAllowFileAccessFromFileURLs(allow: Boolean): IBuilder {
+            this.isAllowFileAccessFromFileURLs = allow
+            return this
+        }
+
+        override fun setAllowUniversalAccessFromFileURLs(allow: Boolean): IBuilder {
+            this.isAllowUniversalAccessFromFileURLs = allow
             return this
         }
 
@@ -157,10 +187,6 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return mixedContentMode
         }
 
-        override fun isWebContentsDebuggingEnabled(): Boolean {
-            return webContentsDebuggingEnabled
-        }
-
         override fun isJavaScriptEnabled(): Boolean {
             return javaScriptEnabled
         }
@@ -185,8 +211,24 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return isUserAgentAppend
         }
 
+        override fun isSavePassword(): Boolean {
+            return isSavePassword
+        }
+
         override fun isAllowFileAccess(): Boolean {
             return isAllowFileAccess
+        }
+
+        override fun isAllowContentAccess(): Boolean {
+            return isAllowContentAccess
+        }
+
+        override fun isAllowFileAccessFromFileURLs(): Boolean {
+            return isAllowFileAccessFromFileURLs
+        }
+
+        override fun isAllowUniversalAccessFromFileURLs(): Boolean {
+            return isAllowUniversalAccessFromFileURLs
         }
 
         override fun isVerticalScrollBarEnabled(): Boolean {
