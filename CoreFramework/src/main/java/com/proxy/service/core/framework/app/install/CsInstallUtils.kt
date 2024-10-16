@@ -1,0 +1,193 @@
+package com.proxy.service.core.framework.app.install
+
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.app.CsAppUtils
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.uri.ProxyProvider
+import java.io.File
+
+/**
+ * @author: cangHX
+ * @data: 2024/9/23 10:31
+ * @desc:
+ */
+object CsInstallUtils {
+
+    private const val TAG = "${Constants.TAG}Install"
+
+    /**
+     * 通过 apk 获取包名
+     * */
+    fun getPackageNameByApk(apkPath: String?): String? {
+        if (apkPath == null) {
+            return null
+        }
+        val context: Context = CsContextManager.getApplication()
+        val packageManager: PackageManager = context.packageManager ?: return null
+        var packageInfo: PackageInfo? = null
+        try {
+            packageInfo =
+                packageManager.getPackageArchiveInfo(apkPath, PackageManager.GET_ACTIVITIES)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+        if (packageInfo == null) {
+            return null
+        }
+        val appInfo = packageInfo.applicationInfo
+        return appInfo.packageName
+    }
+
+    /**
+     * 判断目标应用是否已安装
+     * */
+    fun isInstallApp(packageName: String): Boolean {
+        val context: Context = CsContextManager.getApplication()
+        val packageManager: PackageManager = context.packageManager ?: return false
+        try {
+            return packageManager.getLaunchIntentForPackage(packageName) != null
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+        return false
+    }
+
+    /**
+     * 安装目标应用
+     *
+     * 需要权限 [android.Manifest.permission.REQUEST_INSTALL_PACKAGES]
+     * */
+    fun installApp(apkPath: String) {
+        val file = File(apkPath)
+        if (!file.exists()) {
+            CsLogger.tag(TAG).e("The apk file is empty. $apkPath")
+            return
+        }
+        val context: Context = CsContextManager.getApplication()
+
+//        val permissionService: UtilsPermissionServiceImpl = UtilsPermissionServiceImpl()
+//        if (!permissionService.isPermissionGranted(Manifest.permission.REQUEST_INSTALL_PACKAGES)) {
+//            Logger.Warning(
+//                CloudApiError.PERMISSION_DENIED.setAbout(Manifest.permission.REQUEST_INSTALL_PACKAGES)
+//                    .build()
+//            )
+//        }
+
+        val intent = Intent()
+        intent.setAction(Intent.ACTION_VIEW)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val type = "application/vnd.android.package-archive"
+
+        val uri: Uri?
+        val isSdkVersionReady = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+        // 部分机型系统版本为7.0，但使用provier形式会崩溃。所以判断如果targetV如果<=23并且系统版本为7.0时仍然使用file://形式
+        val isTargetReady =
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.N && CsAppUtils.getTargetSdkVersion() <= Build.VERSION_CODES.M
+        if (isSdkVersionReady || isTargetReady) {
+            uri = Uri.fromFile(file)
+        } else {
+            uri = ProxyProvider.getUriForFile(file)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        if (uri == null) {
+            return
+        }
+        intent.setDataAndType(uri, type)
+        val packageManager: PackageManager = context.packageManager
+        try {
+            if (packageManager.queryIntentActivities(
+                    intent,
+                    PackageManager.MATCH_DEFAULT_ONLY
+                ).size <= 0
+            ) {
+                CsLogger.tag(TAG).d("install failed")
+                return
+            }
+            context.startActivity(intent)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+    }
+
+    /**
+     * 卸载目标应用
+     *
+     * 需要权限 [android.Manifest.permission.REQUEST_DELETE_PACKAGES]
+     * */
+    fun unInstallApp(packageName: String) {
+        val context: Context = CsContextManager.getApplication()
+//        val permissionService: UtilsPermissionServiceImpl = UtilsPermissionServiceImpl()
+//        if (!permissionService.isPermissionGranted(Manifest.permission.REQUEST_DELETE_PACKAGES)) {
+//            Logger.Error(
+//                CloudApiError.PERMISSION_DENIED.setAbout(Manifest.permission.REQUEST_DELETE_PACKAGES)
+//                    .build()
+//            )
+//            return
+//        }
+        val intent = Intent()
+        intent.setAction(Intent.ACTION_DELETE)
+        intent.setData(Uri.parse("package:$packageName"))
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    }
+
+    /**
+     * 打开对应包名的应用
+     * */
+    fun openApp(packageName: String): Boolean {
+        try {
+            val context: Context = CsContextManager.getApplication()
+            val intent = context.packageManager.getLaunchIntentForPackage(packageName)
+            if (intent == null) {
+                CsLogger.tag(TAG).d("open failed")
+                return false
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+            return true
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+        return false
+    }
+
+    /**
+     * 获取所有已安装应用
+     * */
+    fun getAllInstallAppsInfo(): List<InstallAppInfo> {
+        val infoList: MutableList<InstallAppInfo> = ArrayList()
+        val context: Context = CsContextManager.getApplication()
+        val packageManager: PackageManager = context.packageManager
+        val apps = packageManager.getInstalledPackages(0)
+        for (packageInfo in apps) {
+            val applicationInfo = packageInfo.applicationInfo
+            val appInfo = InstallAppInfo()
+            appInfo.icon = applicationInfo.loadIcon(packageManager)
+            appInfo.name = applicationInfo.loadLabel(packageManager).toString()
+            appInfo.packageName = packageInfo.packageName
+            appInfo.versionCode = packageInfo.versionCode
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                appInfo.longVersionCode = packageInfo.longVersionCode
+            }
+            appInfo.versionName = packageInfo.versionName
+            appInfo.isInstallSd =
+                (applicationInfo.flags and ApplicationInfo.FLAG_EXTERNAL_STORAGE) != 0
+            val isUpDatedSystem =
+                (applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
+            val isSystem =
+                (applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM
+            appInfo.isSystemApp = isUpDatedSystem || isSystem
+
+            infoList.add(appInfo)
+        }
+        return infoList
+    }
+}

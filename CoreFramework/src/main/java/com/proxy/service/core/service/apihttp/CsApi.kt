@@ -3,7 +3,8 @@ package com.proxy.service.core.service.apihttp
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.apihttp.base.ApiHttpService
 import com.proxy.service.apihttp.base.init.ApiConfig
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
@@ -11,6 +12,7 @@ import com.proxy.service.core.framework.log.CsLogger
  * @desc: http 网络框架入口
  */
 object CsApi {
+    private const val TAG = "${Constants.TAG}Api"
 
     private var service: ApiHttpService? = null
 
@@ -19,7 +21,7 @@ object CsApi {
             service = CloudSystem.getService(ApiHttpService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-Apihttp:xxx>")
+            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Apihttp:xxx>")
         }
         return service
     }
@@ -42,7 +44,7 @@ object CsApi {
             api?.init(it)
             return api?.getService(service)
         } ?: let {
-            CsLogger.e("Please check whether initialization has been performed.")
+            CsLogger.tag(TAG).e("Please check whether initialization has been performed.")
         }
         return null
     }

@@ -5,7 +5,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.webview.base.web.IWeb

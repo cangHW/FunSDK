@@ -1,7 +1,8 @@
 package com.proxy.service.core.framework.system.device
 
 import android.os.Build
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 import java.lang.reflect.Method
 import java.util.Properties
 
@@ -27,7 +28,7 @@ enum class RomType {
                         || properties.getProperty(keyMiuiVersionName) != null
                         || properties.getProperty(keyMiuiInternalStorage) != null
             } catch (throwable: Throwable) {
-                CsLogger.d(throwable)
+                CsLogger.tag(TAG).d(throwable)
             }
             return false
         }
@@ -43,7 +44,7 @@ enum class RomType {
             try {
                 return properties.getProperty(keyEmuiVersionCode, null) != null
             } catch (throwable: Throwable) {
-                CsLogger.d(throwable)
+                CsLogger.tag(TAG).d(throwable)
             }
             return false
         }
@@ -58,7 +59,7 @@ enum class RomType {
                 val method: Method? = Build::class.java.getMethod("hasSmartBar")
                 return method !=null
             } catch (throwable: Throwable) {
-                CsLogger.d(throwable)
+                CsLogger.tag(TAG).d(throwable)
             }
             return false
         }
@@ -74,7 +75,7 @@ enum class RomType {
                 val osBrand = buildExClass.getMethod("getOsBrand").invoke(buildExClass) as? String?
                 return "Harmony".equals(osBrand ?: "", ignoreCase = true)
             } catch (throwable: Throwable) {
-                CsLogger.d(throwable)
+                CsLogger.tag(TAG).d(throwable)
             }
             return false
         }
@@ -88,6 +89,8 @@ enum class RomType {
             return true
         }
     };
+
+    protected val TAG = "${Constants.TAG}Rom"
 
     abstract fun check(properties: Properties): Boolean
 }

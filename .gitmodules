@@ -1,0 +1,3 @@
+[submodule "ScriptLibrary"]
+	path = ScriptLibrary
+	url = git@github.com:cangHW/ScriptLibrary.git

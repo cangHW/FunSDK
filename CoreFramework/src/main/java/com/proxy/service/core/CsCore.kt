@@ -6,7 +6,8 @@ import androidx.core.util.forEach
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.application.CoreApplication
 import com.proxy.service.core.application.base.CsBaseApplication
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -16,13 +17,16 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object CsCore {
 
+    private const val TAG = "${Constants.TAG}Init"
     private val isInit = AtomicBoolean(false)
 
     /**
      * 核心库初始化
      * */
     fun init(application: Application, isDebug: Boolean) {
+        CsLogger.tag(TAG).d("start init.")
         if (!isInit.compareAndSet(false, true)) {
+            CsLogger.tag(TAG).d("init is ready.")
             return
         }
 
@@ -45,7 +49,7 @@ object CsCore {
         }
         coreApplication?.onCreate(application, isDebug)
         sparse.forEach { key, value ->
-            CsLogger.d("run priority = $key")
+            CsLogger.tag(TAG).d("run priority = $key")
             value.forEach {
                 var time: Long = 0
                 if (isDebug) {
@@ -54,10 +58,10 @@ object CsCore {
                 try {
                     it.onCreate(application, isDebug)
                 } catch (throwable: Throwable) {
-                    CsLogger.e(throwable)
+                    CsLogger.tag(TAG).e(throwable)
                 }
                 if (isDebug) {
-                    CsLogger.d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
+                    CsLogger.tag(TAG).d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
                 }
             }
         }

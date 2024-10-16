@@ -3,8 +3,8 @@ package com.proxy.service.webview.info.web
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.framework.context.CsContextManager
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback

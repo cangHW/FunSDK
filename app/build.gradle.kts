@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+//    id("com.cloud.service")
 }
 
 android {
@@ -28,6 +29,14 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
     }
 }
 
@@ -47,6 +56,6 @@ dependencies {
     implementation(project(":WebViewSDK:WebViewBridgeDS"))
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/gradle/common.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/gradle/common.gradle").absolutePath)
 
 

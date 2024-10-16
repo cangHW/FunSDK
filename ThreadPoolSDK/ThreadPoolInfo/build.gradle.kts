@@ -46,4 +46,4 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)

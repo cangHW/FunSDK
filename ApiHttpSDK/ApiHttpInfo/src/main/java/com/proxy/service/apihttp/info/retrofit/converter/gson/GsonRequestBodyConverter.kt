@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.retrofit.converter.gson
 
-import com.proxy.service.core.framework.json.CsJsonUtils
+import com.proxy.service.core.framework.data.json.CsJsonUtils
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody

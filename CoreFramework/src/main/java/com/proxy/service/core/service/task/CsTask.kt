@@ -1,7 +1,8 @@
 package com.proxy.service.core.service.task
 
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.ThreadPoolService
 import com.proxy.service.threadpool.base.handler.option.IHandlerOption
 import com.proxy.service.threadpool.base.thread.ThreadService
@@ -17,6 +18,8 @@ import java.util.concurrent.TimeUnit
  */
 object CsTask {
 
+    private const val TAG = "${Constants.TAG}Task"
+
     private var service: ThreadPoolService? = null
 
     private fun getService(): ThreadPoolService? {
@@ -24,7 +27,7 @@ object CsTask {
             service = CloudSystem.getService(ThreadPoolService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-Threadpool:xxx>")
+            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Threadpool:xxx>")
         }
         return service
     }

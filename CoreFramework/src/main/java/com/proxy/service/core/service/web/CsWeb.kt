@@ -1,7 +1,8 @@
 package com.proxy.service.core.service.web
 
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.WebService
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.web.IWebLoader
@@ -13,6 +14,8 @@ import com.proxy.service.webview.base.web.IWebLoader
  */
 object CsWeb {
 
+    private const val TAG = "${Constants.TAG}Web"
+
     private var service: WebService? = null
 
     private fun getService(): WebService? {
@@ -20,7 +23,7 @@ object CsWeb {
             service = CloudSystem.getService(WebService::class.java)
         }
         if (service == null) {
-            CsLogger.e("Please check to see if it is referenced. <io.github.cangHW:Service-Webview:xxx>")
+            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Webview:xxx>")
         }
         return service
     }

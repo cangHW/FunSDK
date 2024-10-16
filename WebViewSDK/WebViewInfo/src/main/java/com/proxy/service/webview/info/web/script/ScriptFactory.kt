@@ -2,8 +2,8 @@ package com.proxy.service.webview.info.web.script
 
 import android.content.Context
 import android.webkit.JavascriptInterface
-import com.proxy.service.core.framework.context.CsContextManager
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.info.config.Config
 import com.proxy.service.webview.info.config.JavascriptInterfaceInfo
 import net.bytebuddy.ByteBuddy

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
 import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback

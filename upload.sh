@@ -18,8 +18,8 @@ upArray=(
 
 #  # web 容器库
 #  ":WebViewSDK:WebViewBase"
-#  ":WebViewSDK:WebViewInfo"
-  ":WebViewSDK:WebViewBridgeDS"
+  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewBridgeDS"
 )
 
 type_params="r"

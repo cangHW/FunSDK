@@ -1,7 +1,7 @@
 package com.proxy.service.threadpool.info.thread.info
 
 import android.os.Looper
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.info.constants.Constants
 import io.reactivex.Observable
 import io.reactivex.Scheduler

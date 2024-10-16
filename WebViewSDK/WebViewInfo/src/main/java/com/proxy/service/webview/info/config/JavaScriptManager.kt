@@ -1,6 +1,6 @@
 package com.proxy.service.webview.info.config
 
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.info.utils.WebUtils
 
 /**

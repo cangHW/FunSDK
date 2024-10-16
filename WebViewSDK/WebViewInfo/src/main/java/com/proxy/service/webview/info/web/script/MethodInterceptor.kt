@@ -1,6 +1,6 @@
 package com.proxy.service.webview.info.web.script
 
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.info.config.Config
 import net.bytebuddy.implementation.bind.annotation.AllArguments
 import net.bytebuddy.implementation.bind.annotation.RuntimeType

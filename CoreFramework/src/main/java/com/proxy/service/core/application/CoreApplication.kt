@@ -3,9 +3,9 @@ package com.proxy.service.core.application
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
-import com.proxy.service.core.framework.context.ContextInit
-import com.proxy.service.core.framework.file.sp.SpInit
-import com.proxy.service.core.framework.log.LogInit
+import com.proxy.service.core.framework.app.context.ContextInit
+import com.proxy.service.core.framework.io.sp.SpInit
+import com.proxy.service.core.framework.data.log.LogInit
 
 /**
  * @author: cangHX

@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission android:name="com.proxy.service.core.framework.action_send"
+        android:protectionLevel="normal"/>
+    <uses-permission android:name="com.proxy.service.core.framework.action_send" />
+
+    <permission android:name="com.proxy.service.core.framework.action_received"
+        android:protectionLevel="normal"/>
+    <uses-permission android:name="com.proxy.service.core.framework.action_received" />
+
+    <application>
+
+        <provider
+            android:name="com.proxy.service.core.framework.io.uri.ProxyProvider"
+            android:authorities="${applicationId}.proxy_core_provider"
+            android:exported="false"
+            android:grantUriPermissions="true"/>
+
+        <receiver android:name=".framework.app.event.broadcast.BroadcastReceiverImpl"
+            android:exported="true"
+            android:permission="com.proxy.service.core.framework.action_send">
+            <intent-filter>
+                <action android:name="com.proxy.service.core.framework.Event" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
 </manifest>

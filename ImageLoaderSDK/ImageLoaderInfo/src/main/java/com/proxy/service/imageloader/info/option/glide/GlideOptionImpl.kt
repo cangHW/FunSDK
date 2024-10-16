@@ -7,7 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.option.glide.BitmapTransformation
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
 import com.proxy.service.imageloader.info.config.Config

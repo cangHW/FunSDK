@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.info.handler.manager
 
 import android.os.Handler
 import android.os.HandlerThread
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.info.constants.Constants
 import java.util.concurrent.atomic.AtomicBoolean
 

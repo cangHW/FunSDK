@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:allowBackup="true"
@@ -30,6 +33,10 @@
         <activity android:name=".threadpool.ThreadPoolActivity" />
         <activity android:name=".apihttp.ApiHttpActivity" />
         <activity android:name=".webview.WebViewActivity"/>
+        <activity android:name=".framework.FrameWorkActivity"/>
+        <activity android:name=".framework.func.AppInstallActivity"/>
+        <activity android:name=".framework.func.FileActivity"/>
+        <activity android:name=".framework.func.SystemPageActivity"/>
     </application>
 
 </manifest>

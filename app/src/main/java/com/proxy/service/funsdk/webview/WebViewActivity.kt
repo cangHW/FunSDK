@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.web.CsWeb
 import com.proxy.service.funsdk.R
 import com.proxy.service.webview.base.config.WebConfig
@@ -32,12 +32,19 @@ class WebViewActivity : AppCompatActivity() {
     }
 
     private var viewGroup: FrameLayout? = null
-    private var webView: IWeb?=null
+    private var webView: IWeb? = null
+
+    class XX
+    class YY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
         viewGroup = findViewById(R.id.content)
+
+        // 测试 Android34 对动态 dex 的限制
+        CsWeb.addGlobalJavascriptInterface(XX())
+        CsWeb.addGlobalJavascriptInterface(YY())
 
         webView = CsWeb.createWebLoader(WebConfig.builder().build())
 //            ?.setLifecycleOwner(this)
@@ -67,7 +74,7 @@ class WebViewActivity : AppCompatActivity() {
                 val web = CsWeb.createWebLoader(WebConfig.builder().build())
                     ?.setLifecycleOwner(this)
                     ?.loadUrl("https://www.baidu.com")
-                    ?.setLoadCallback(object : WebLoadCallback{
+                    ?.setLoadCallback(object : WebLoadCallback {
                         override fun onPageError(
                             url: String,
                             isMainFrameError: Boolean,

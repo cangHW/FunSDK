@@ -2,8 +2,8 @@ package com.proxy.service.core.framework.system.screen
 
 import android.annotation.SuppressLint
 import android.util.TypedValue
-import com.proxy.service.core.framework.context.CsContextManager
-import com.proxy.service.core.framework.system.resource.CsDpUtils
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.app.resource.CsDpUtils
 
 /**
  * @author: cangHX
@@ -46,7 +46,7 @@ object CsScreenUtils {
             statusBarHeight = res.getDimensionPixelSize(resourceId)
         }
         if (statusBarHeight == 0) {
-            statusBarHeight = CsDpUtils.dip2px(25f)
+            statusBarHeight = CsDpUtils.dp2px(25f)
         }
         return statusBarHeight
     }

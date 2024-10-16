@@ -2,7 +2,7 @@ package com.proxy.service.webview.bridge.ds.bridge
 
 import android.webkit.JavascriptInterface
 import androidx.annotation.Keep
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.bridge.ds.callback.CompletionHandler
 import com.proxy.service.webview.bridge.ds.config.Config

@@ -1,6 +1,6 @@
 package com.proxy.service.threadpool.info.handler.info
 
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.info.constants.Constants
 import com.proxy.service.threadpool.info.handler.manager.HandlerController
 

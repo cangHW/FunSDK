@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.apihttp.base.init.ApiConfig
-import com.proxy.service.core.framework.json.CsJsonUtils
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.json.CsJsonUtils
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.apihttp.CsApi
 import com.proxy.service.funsdk.R
 import retrofit2.Call

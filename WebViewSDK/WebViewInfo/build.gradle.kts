@@ -49,9 +49,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     //noinspection UseTomlInstead
-    implementation("net.bytebuddy:byte-buddy:1.14.4")
+    implementation("net.bytebuddy:byte-buddy:1.15.4")
     //noinspection UseTomlInstead
-    implementation("net.bytebuddy:byte-buddy-android:1.14.4")
+    implementation("net.bytebuddy:byte-buddy-android:1.15.4")
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)

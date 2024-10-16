@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.retrofit.converter.gson
 
-import com.proxy.service.core.framework.json.CsJsonUtils
+import com.proxy.service.core.framework.data.json.CsJsonUtils
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import java.io.IOException

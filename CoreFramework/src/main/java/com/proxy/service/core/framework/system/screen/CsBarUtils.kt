@@ -7,6 +7,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.device.DeviceType
 import com.proxy.service.core.framework.system.device.CsDeviceUtils
 
@@ -16,6 +18,8 @@ import com.proxy.service.core.framework.system.device.CsDeviceUtils
  * @desc:
  */
 object CsBarUtils {
+
+    private const val TAG = "${Constants.TAG}Bar"
 
     internal interface IBarStatus {
 
@@ -103,8 +107,8 @@ object CsBarUtils {
                         if (isDarkModel) darkModeFlag else 0,
                         darkModeFlag
                     )
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(TAG).e(throwable)
                 }
             }
         }
@@ -142,8 +146,8 @@ object CsBarUtils {
                 window.attributes = params
                 darkFlag.isAccessible = false
                 meizuFlags.isAccessible = false
-            } catch (e: java.lang.Exception) {
-                e.printStackTrace()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
             }
         }
 

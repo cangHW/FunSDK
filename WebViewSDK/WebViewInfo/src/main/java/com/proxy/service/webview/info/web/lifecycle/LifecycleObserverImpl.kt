@@ -2,7 +2,7 @@ package com.proxy.service.webview.info.web.lifecycle
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.info.config.Config
 

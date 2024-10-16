@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import com.proxy.service.core.service.imageloader.CsImgLoader
+import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.funsdk.R
 import com.proxy.service.imageloader.base.option.lottie.LottieRepeatModel
 
@@ -44,7 +44,7 @@ class ImageLoaderActivity : AppCompatActivity() {
             R.id.load_net -> {
                 val url =
                     "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/aaa.png"
-                CsImgLoader.with(this)
+                CsImageLoader.with(this)
                     ?.loadUrl(url)
                     ?.roundedCorners(
                         150f, 0f, 150f, 0f
@@ -56,13 +56,13 @@ class ImageLoaderActivity : AppCompatActivity() {
             }
 
             R.id.load_res -> {
-                CsImgLoader.with(this)
+                CsImageLoader.with(this)
                     ?.loadRes(R.drawable.booklibrary_radio_recommend_select)
                     ?.grayscale()?.into(image)
             }
 
             R.id.load_lottie -> {
-                CsImgLoader.with(this)?.asLottieModel()
+                CsImageLoader.with(this)?.asLottieModel()
                     ?.loadRes(R.raw.reader_download_loading)
                     ?.setRepeatCount(3)
                     ?.setRepeatModel(LottieRepeatModel.REVERSE)

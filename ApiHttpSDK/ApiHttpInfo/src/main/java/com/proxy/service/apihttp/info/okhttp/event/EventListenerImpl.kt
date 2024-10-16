@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.okhttp.event
 
 import com.proxy.service.apihttp.info.config.Config
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import okhttp3.Call
 import okhttp3.Connection
 import okhttp3.EventListener

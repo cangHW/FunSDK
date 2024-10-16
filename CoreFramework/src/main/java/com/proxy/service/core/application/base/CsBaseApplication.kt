@@ -3,7 +3,8 @@ package com.proxy.service.core.application.base
 import android.app.Application
 import androidx.annotation.CallSuper
 import com.proxy.service.base.BaseService
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
@@ -11,6 +12,8 @@ import com.proxy.service.core.framework.log.CsLogger
  * @desc:
  */
 abstract class CsBaseApplication : BaseService {
+
+    protected val tag = "${Constants.TAG}Application"
 
     /**
      * 执行优先级，数字越小的优先执行[0 - ]
@@ -21,7 +24,7 @@ abstract class CsBaseApplication : BaseService {
 
     @CallSuper
     open fun onCreate(application: Application, isDebug: Boolean) {
-        CsLogger.tag(this.javaClass.simpleName).d("onCreate isDebug = $isDebug")
+        CsLogger.tag(tag).d("${this.javaClass.simpleName} onCreate isDebug = $isDebug")
     }
 
 }

@@ -6,8 +6,9 @@ import android.os.Build
 import android.os.Environment
 import android.os.Process
 import android.os.StatFs
-import com.proxy.service.core.framework.context.CsContextManager
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
@@ -19,6 +20,8 @@ import java.util.Properties
  * @desc:
  */
 object CsDeviceUtils {
+
+    private const val TAG = "${Constants.TAG}Device"
 
     /**
      * 获取设备品牌名称
@@ -57,7 +60,7 @@ object CsDeviceUtils {
                 return DeviceType.Honor
             }
         } catch (throwable: Throwable) {
-            CsLogger.d(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
         return DeviceType.UnKnown
     }
@@ -79,7 +82,7 @@ object CsDeviceUtils {
                 return RomType.HarmonyOs
             }
         } catch (throwable: Throwable) {
-            CsLogger.d(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
         return RomType.Android
     }
@@ -175,7 +178,7 @@ object CsDeviceUtils {
             val totalBlocks = stat.blockCountLong
             return totalBlocks * blockSize
         }
-        CsLogger.i("外部存储未挂载")
+        CsLogger.tag(TAG).i("外部存储未挂载")
         return 0
     }
 
@@ -192,7 +195,7 @@ object CsDeviceUtils {
             val availableBlocks = stat.availableBlocksLong
             return availableBlocks * blockSize
         }
-        CsLogger.i("外部存储未挂载")
+        CsLogger.tag(TAG).i("外部存储未挂载")
         return 0
     }
 

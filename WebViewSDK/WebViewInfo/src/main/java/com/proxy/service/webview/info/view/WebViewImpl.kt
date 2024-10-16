@@ -27,7 +27,7 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.webkit.WebViewAssetLoader
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.webview.base.config.WebConfig

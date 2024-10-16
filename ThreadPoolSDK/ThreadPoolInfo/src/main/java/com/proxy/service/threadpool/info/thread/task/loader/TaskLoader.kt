@@ -1,6 +1,6 @@
 package com.proxy.service.threadpool.info.thread.task.loader
 
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
 import com.proxy.service.threadpool.base.thread.callback.OnRunCallback
 import com.proxy.service.threadpool.base.thread.callback.OnStartCallback

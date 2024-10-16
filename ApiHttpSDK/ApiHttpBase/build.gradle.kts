@@ -35,4 +35,4 @@ dependencies {
     api("com.squareup.retrofit2:retrofit:2.9.0")
 }
 
-apply(from = File(project.rootDir.absolutePath, "plugins/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)

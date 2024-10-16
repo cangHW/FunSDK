@@ -2,9 +2,12 @@ package com.proxy.service.core.framework.app
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Build
-import com.proxy.service.core.framework.context.CsContextManager
-import com.proxy.service.core.framework.log.CsLogger
+import android.os.Process
+import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 
 
 /**
@@ -13,6 +16,8 @@ import com.proxy.service.core.framework.log.CsLogger
  * @desc:
  */
 object CsAppUtils {
+
+    private const val TAG = "${Constants.TAG}App"
 
     /**
      * 重启应用
@@ -54,10 +59,26 @@ object CsAppUtils {
             } else {
                 packageInfo.versionCode.toString()
             }
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
             return "0"
         }
+    }
+
+    /**
+     * 获取当前应用的目标设备 SDK 版本
+     * */
+    fun getTargetSdkVersion(): Int {
+        var targetSdkVersion = -1
+        try {
+            val context = CsContextManager.getApplication()
+            val packageManager: PackageManager = context.packageManager
+            val info = packageManager.getPackageInfo(getPackageName(), 0)
+            targetSdkVersion = info.applicationInfo.targetSdkVersion
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+        return targetSdkVersion
     }
 
     /**
@@ -68,8 +89,8 @@ object CsAppUtils {
             val context = CsContextManager.getApplication()
             val packageInfo = context.packageManager.getPackageInfo(getPackageName(), 0)
             return packageInfo.versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
             return "0"
         }
     }
@@ -86,9 +107,31 @@ object CsAppUtils {
             val ai = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
             value = ai.metaData.getString(key, "")
         } catch (throwable: Throwable) {
-            CsLogger.e(throwable)
+            CsLogger.tag(TAG).e(throwable)
         }
         return value
+    }
+
+    /**
+     * 获取应用 icon
+     * */
+    fun getIcon(): Drawable {
+        val context = CsContextManager.getApplication()
+        return context.applicationInfo.loadIcon(context.packageManager)
+    }
+
+    /**
+     * 获取当前应用的唯一标识符
+     * */
+    fun getUid(): Int {
+        return Process.myUid()
+    }
+
+    /**
+     * 获取当前进程的唯一标识符
+     * */
+    fun getPid(): Int {
+        return Process.myPid()
     }
 
 }

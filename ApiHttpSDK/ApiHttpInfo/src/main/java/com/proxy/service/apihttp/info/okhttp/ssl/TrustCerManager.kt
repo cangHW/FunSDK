@@ -1,8 +1,8 @@
 package com.proxy.service.apihttp.info.okhttp.ssl
 
 import android.annotation.SuppressLint
-import com.proxy.service.core.framework.context.CsContextManager
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import java.security.KeyStore
 import java.security.SecureRandom
 import java.security.cert.CertificateFactory

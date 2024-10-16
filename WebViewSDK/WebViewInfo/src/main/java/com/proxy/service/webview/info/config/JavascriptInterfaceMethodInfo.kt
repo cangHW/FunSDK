@@ -1,7 +1,7 @@
 package com.proxy.service.webview.info.config
 
 import android.webkit.JavascriptInterface
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import java.lang.reflect.Method
 import java.util.concurrent.atomic.AtomicBoolean
 

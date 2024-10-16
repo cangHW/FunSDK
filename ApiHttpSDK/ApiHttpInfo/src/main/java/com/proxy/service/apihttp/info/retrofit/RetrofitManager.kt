@@ -4,7 +4,7 @@ import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.okhttp.OkhttpManager
 import com.proxy.service.apihttp.info.retrofit.converter.gson.GsonConverterFactory
 import com.proxy.service.apihttp.info.retrofit.converter.scalars.ScalarsConverterFactory
-import com.proxy.service.core.framework.log.CsLogger
+import com.proxy.service.core.framework.data.log.CsLogger
 import retrofit2.Retrofit
 
 /**
