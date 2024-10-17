@@ -33,4 +33,4 @@ dependencies {
     api("androidx.webkit:webkit:1.8.0")
 }
 
-apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

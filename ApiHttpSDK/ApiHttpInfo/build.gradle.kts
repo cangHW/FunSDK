@@ -48,4 +48,4 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 }
 
-apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

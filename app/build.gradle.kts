@@ -56,6 +56,6 @@ dependencies {
     implementation(project(":WebViewSDK:WebViewBridgeDS"))
 }
 
-apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/gradle/common.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)
 
 

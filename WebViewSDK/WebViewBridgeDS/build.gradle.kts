@@ -41,4 +41,4 @@ dependencies {
     implementation(libs.service.threadpool)
 }
 
-apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

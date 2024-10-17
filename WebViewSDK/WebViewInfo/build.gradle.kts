@@ -54,4 +54,4 @@ dependencies {
     implementation("net.bytebuddy:byte-buddy-android:1.15.4")
 }
 
-apply(from = File(project.rootDir.absolutePath, "ScriptLibrary/script/maven_center.gradle").absolutePath)
+apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)
