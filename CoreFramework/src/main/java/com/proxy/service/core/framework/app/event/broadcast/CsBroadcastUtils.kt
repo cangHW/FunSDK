@@ -8,6 +8,8 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.event.broadcast.BroadcastReceiverImpl.ReceiverListener
 
 /**
+ * 广播相关操作工具
+ *
  * @author: cangHX
  * @data: 2024/9/23 16:07
  * @desc:

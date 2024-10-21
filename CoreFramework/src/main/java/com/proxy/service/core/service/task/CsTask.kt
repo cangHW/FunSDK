@@ -12,9 +12,11 @@ import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 import java.util.concurrent.TimeUnit
 
 /**
+ * 线程调度框架入口
+ *
  * @author: cangHX
  * @data: 2024/6/17 15:08
- * @desc: 线程调度框架入口
+ * @desc:
  */
 object CsTask {
 

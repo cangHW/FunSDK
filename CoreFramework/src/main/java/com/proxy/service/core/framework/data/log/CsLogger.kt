@@ -3,6 +3,8 @@ package com.proxy.service.core.framework.data.log
 import timber.log.Timber
 
 /**
+ * 日志工具
+ *
  * @author: cangHX
  * @data: 2024/4/28 17:26
  * @desc:

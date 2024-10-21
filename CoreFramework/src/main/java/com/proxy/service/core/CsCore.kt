@@ -11,6 +11,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
+ * 整体架构初始化入口
+ *
  * @author: cangHX
  * @data: 2024/4/28 18:14
  * @desc:

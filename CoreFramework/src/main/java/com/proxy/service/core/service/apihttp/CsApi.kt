@@ -7,9 +7,11 @@ import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
+ * http 网络框架入口
+ *
  * @author: cangHX
  * @data: 2024/7/18 16:42
- * @desc: http 网络框架入口
+ * @desc:
  */
 object CsApi {
     private const val TAG = "${Constants.TAG}Api"

@@ -12,6 +12,8 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
+ * view，输入框相关工具
+ *
  * @author: cangHX
  * @data: 2024/9/20 17:33
  * @desc:

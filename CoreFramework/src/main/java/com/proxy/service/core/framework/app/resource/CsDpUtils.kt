@@ -5,6 +5,8 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import kotlin.math.roundToInt
 
 /**
+ * 资源，dp、sp、px 转换相关工具
+ *
  * @author: cangHX
  * @data: 2024/4/28 17:33
  * @desc:

@@ -8,6 +8,8 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 
 
 /**
+ * 系统页面相关工具
+ *
  * @author: cangHX
  * @data: 2024/9/26 10:01
  * @desc:

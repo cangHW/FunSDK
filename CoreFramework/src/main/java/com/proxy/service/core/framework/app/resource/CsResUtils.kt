@@ -6,6 +6,8 @@ import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
+ * 资源，基于名称获取相关工具
+ *
  * @author: cangHX
  * @data: 2024/9/20 15:06
  * @desc:

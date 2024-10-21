@@ -3,9 +3,11 @@ package com.proxy.service.apihttp.base.annotation
 import java.util.concurrent.TimeUnit
 
 /**
+ * 失败自动重试
+ *
  * @author: cangHX
  * @data: 2024/5/21 17:20
- * @desc: 失败自动重试
+ * @desc:
  */
 @MustBeDocumented
 @Target(

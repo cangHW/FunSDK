@@ -1,13 +1,9 @@
 package com.proxy.service.funsdk
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.CsCore
-import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.data.log.LogCallback
-import com.proxy.service.core.framework.data.log.LogPriority
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiHttpActivity
@@ -21,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         CsCore.init(application, true)
 
         CsBarUtils.setStatusBarTransparent(this)

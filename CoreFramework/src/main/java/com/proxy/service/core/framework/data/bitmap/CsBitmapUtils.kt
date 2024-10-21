@@ -16,6 +16,8 @@ import kotlin.math.max
 
 
 /**
+ * bitmap 操作相关工具
+ *
  * @author: cangHX
  * @data: 2024/4/28 17:22
  * @desc:

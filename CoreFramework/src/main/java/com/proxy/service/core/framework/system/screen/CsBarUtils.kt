@@ -13,6 +13,8 @@ import com.proxy.service.core.framework.system.device.DeviceType
 import com.proxy.service.core.framework.system.device.CsDeviceUtils
 
 /**
+ * 导航栏、状态栏工具
+ *
  * @author: cangHX
  * @data: 2024/6/4 10:28
  * @desc:

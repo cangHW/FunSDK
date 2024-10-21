@@ -3,9 +3,11 @@ package com.proxy.service.apihttp.base.annotation
 import java.util.concurrent.TimeUnit
 
 /**
+ * 精确的超时控制，包含 Dns 解析时间
+ *
  * @author: cangHX
  * @data: 2024/5/21 17:11
- * @desc: 精确的超时控制，包含 Dns 解析时间
+ * @desc:
  */
 @MustBeDocumented
 @Target(

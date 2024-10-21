@@ -8,9 +8,11 @@ import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.web.IWebLoader
 
 /**
+ * Web 容器框架入口
+ *
  * @author: cangHX
  * @data: 2024/8/5 14:48
- * @desc: Web 容器框架入口
+ * @desc:
  */
 object CsWeb {
 

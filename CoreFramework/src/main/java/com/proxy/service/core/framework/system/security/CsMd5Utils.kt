@@ -9,6 +9,8 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 /**
+ * 安全，md5 相关工具
+ *
  * @author: cangHX
  * @data: 2024/4/28 17:31
  * @desc:

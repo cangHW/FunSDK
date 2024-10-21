@@ -15,6 +15,8 @@ import com.proxy.service.core.framework.io.uri.ProxyProvider
 import java.io.File
 
 /**
+ * 应用安装相关工具
+ *
  * @author: cangHX
  * @data: 2024/9/23 10:31
  * @desc:

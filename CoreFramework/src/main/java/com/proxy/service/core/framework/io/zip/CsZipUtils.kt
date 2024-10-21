@@ -17,6 +17,8 @@ import net.lingala.zip4j.model.enums.EncryptionMethod
 import java.io.File
 
 /**
+ * 压缩、解压缩相关工具
+ *
  * @author: cangHX
  * @data: 2024/4/30 10:26
  * @desc:

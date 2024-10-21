@@ -16,6 +16,8 @@ import java.util.WeakHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
+ * 网络状态相关工具
+ *
  * android.Manifest.permission.READ_PHONE_STATE
  * android.Manifest.permission.ACCESS_NETWORK_STATE
  *

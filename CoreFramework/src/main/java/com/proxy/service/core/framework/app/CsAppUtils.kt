@@ -10,6 +10,8 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
+ * 应用信息与操作相关工具
+ *
  * @author: cangHX
  * @data: 2024/4/28 17:22
  * @desc:

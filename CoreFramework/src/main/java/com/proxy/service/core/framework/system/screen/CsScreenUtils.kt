@@ -13,6 +13,8 @@ import com.proxy.service.core.framework.system.screen.info.ScreenInfo
 
 
 /**
+ * 设备屏幕信息工具
+ *
  * @author: cangHX
  * @data: 2024/4/28 17:32
  * @desc:

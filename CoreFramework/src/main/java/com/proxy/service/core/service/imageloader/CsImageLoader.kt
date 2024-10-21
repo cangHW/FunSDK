@@ -12,9 +12,11 @@ import com.proxy.service.imageloader.base.ImageLoaderService
 import com.proxy.service.imageloader.base.type.IType
 
 /**
+ * 图片 or 动画加载框架入口
+ *
  * @author: cangHX
  * @data: 2024/5/14 16:50
- * @desc: 图片 or 动画加载框架入口
+ * @desc:
  */
 object CsImageLoader {
 
