@@ -48,6 +48,40 @@ object CsInstallUtils {
 
     /**
      * 判断目标应用是否已安装
+     * 需要配置权限
+     *
+     * <manifest
+     *     .
+     *     .
+     *     .
+     *     <queries>
+     *         <!-- 以下规则均可以添加多个 -->
+     *
+     *         <!-- 查询特定包名应用 -->
+     *         <package android:name="com.example.someapp" />
+     *
+     *         <!-- 查询所有已安装的应用（仅在特殊情况下使用）-->
+     *         <intent>
+     *             <action android:name="android.intent.action.MAIN" />
+     *         </intent>
+     *
+     *         <!--应用商店-->
+     *         <intent>
+     *             <action android:name="android.intent.action.VIEW" />
+     *             <data
+     *                 android:host="*"
+     *                 android:scheme="market" />
+     *         </intent>
+     *
+     *         <!--拍照应用-->
+     *         <intent>
+     *             <action android:name="android.media.action.IMAGE_CAPTURE" />
+     *         </intent>
+     *
+     *         <!--略-->
+     *     </queries>
+     * </manifest>
+     *
      * */
     fun isInstallApp(packageName: String): Boolean {
         val context: Context = CsContextManager.getApplication()
@@ -63,7 +97,9 @@ object CsInstallUtils {
     /**
      * 安装目标应用
      *
-     * 需要权限 [android.Manifest.permission.REQUEST_INSTALL_PACKAGES]
+     * 需要权限
+     * <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+     *
      * */
     fun installApp(apkPath: String) {
         val file = File(apkPath)
@@ -120,7 +156,9 @@ object CsInstallUtils {
     /**
      * 卸载目标应用
      *
-     * 需要权限 [android.Manifest.permission.REQUEST_DELETE_PACKAGES]
+     * 需要权限
+     * <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
+     *
      * */
     fun unInstallApp(packageName: String) {
         val context: Context = CsContextManager.getApplication()
@@ -141,6 +179,40 @@ object CsInstallUtils {
 
     /**
      * 打开对应包名的应用
+     * 需要配置权限
+     *
+     * <manifest
+     *     .
+     *     .
+     *     .
+     *     <queries>
+     *         <!-- 以下规则均可以添加多个 -->
+     *
+     *         <!-- 查询特定包名应用 -->
+     *         <package android:name="com.example.someapp" />
+     *
+     *         <!-- 查询所有已安装的应用（仅在特殊情况下使用）-->
+     *         <intent>
+     *             <action android:name="android.intent.action.MAIN" />
+     *         </intent>
+     *
+     *         <!--应用商店-->
+     *         <intent>
+     *             <action android:name="android.intent.action.VIEW" />
+     *             <data
+     *                 android:host="*"
+     *                 android:scheme="market" />
+     *         </intent>
+     *
+     *         <!--拍照应用-->
+     *         <intent>
+     *             <action android:name="android.media.action.IMAGE_CAPTURE" />
+     *         </intent>
+     *
+     *         <!--略-->
+     *     </queries>
+     * </manifest>
+     *
      * */
     fun openApp(packageName: String): Boolean {
         try {
@@ -161,6 +233,40 @@ object CsInstallUtils {
 
     /**
      * 获取所有已安装应用
+     * 需要配置权限，否则无法获取数据或获取数据不全
+     *
+     * <manifest
+     *     .
+     *     .
+     *     .
+     *     <queries>
+     *         <!-- 以下规则均可以添加多个 -->
+     *
+     *         <!-- 查询特定包名应用 -->
+     *         <package android:name="com.example.someapp" />
+     *
+     *         <!-- 查询所有已安装的应用（仅在特殊情况下使用）-->
+     *         <intent>
+     *             <action android:name="android.intent.action.MAIN" />
+     *         </intent>
+     *
+     *         <!--应用商店-->
+     *         <intent>
+     *             <action android:name="android.intent.action.VIEW" />
+     *             <data
+     *                 android:host="*"
+     *                 android:scheme="market" />
+     *         </intent>
+     *
+     *         <!--拍照应用-->
+     *         <intent>
+     *             <action android:name="android.media.action.IMAGE_CAPTURE" />
+     *         </intent>
+     *
+     *         <!--略-->
+     *     </queries>
+     * </manifest>
+     *
      * */
     fun getAllInstallAppsInfo(): List<InstallAppInfo> {
         val infoList: MutableList<InstallAppInfo> = ArrayList()

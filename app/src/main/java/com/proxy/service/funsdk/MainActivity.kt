@@ -30,13 +30,13 @@ class MainActivity : AppCompatActivity() {
         val file = File(getExternalFilesDir(null), "asd.txt")
         CsFileUtils.createFile(file)
 
-        CsLogger.addLogCallback(object : LogCallback {
-            override fun onLog(priority: LogPriority, tag: String, message: String, t: Throwable?) {
-                if (priority == LogPriority.DEBUG) {
-                    Log.i(tag, message)
-                }
-            }
-        })
+//        CsLogger.addLogCallback(object : LogCallback {
+//            override fun onLog(priority: LogPriority, tag: String, message: String, t: Throwable?) {
+//                if (priority == LogPriority.DEBUG) {
+//                    Log.i(tag, message)
+//                }
+//            }
+//        })
     }
 
     fun onClick(view: View) {

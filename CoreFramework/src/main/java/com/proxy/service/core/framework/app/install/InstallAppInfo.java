@@ -50,4 +50,29 @@ public class InstallAppInfo {
      */
     public boolean isSystemApp;
 
+    @Override
+    public String toString() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return "InstallAppInfo{" +
+                    "name='" + name + '\'' +
+                    ", icon=" + icon +
+                    ", packageName='" + packageName + '\'' +
+                    ", versionName='" + versionName + '\'' +
+                    ", versionCode=" + versionCode +
+                    ", longVersionCode=" + longVersionCode +
+                    ", isInstallSd=" + isInstallSd +
+                    ", isSystemApp=" + isSystemApp +
+                    '}';
+        }else {
+            return "InstallAppInfo{" +
+                    "name='" + name + '\'' +
+                    ", icon=" + icon +
+                    ", packageName='" + packageName + '\'' +
+                    ", versionName='" + versionName + '\'' +
+                    ", versionCode=" + versionCode +
+                    ", isInstallSd=" + isInstallSd +
+                    ", isSystemApp=" + isSystemApp +
+                    '}';
+        }
+    }
 }

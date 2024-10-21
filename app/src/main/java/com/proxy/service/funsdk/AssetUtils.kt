@@ -54,7 +54,7 @@ object AssetUtils {
                 val subFiles = assetManager.list(assetFilePath)
 
                 if (subFiles.isNullOrEmpty()) {
-                    CsFileWriteUtils.setSourcePath(assetFilePath).writeSync(destFilePath)
+                    CsFileWriteUtils.setSourceAssetPath(assetFilePath).writeSync(destFilePath)
                 } else {
                     copyDir(context, assetFilePath, destFilePath)
                 }

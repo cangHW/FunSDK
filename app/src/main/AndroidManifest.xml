@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <application
         android:allowBackup="true"
@@ -32,11 +33,23 @@
         <activity android:name=".imageloader.ImageLoaderActivity" />
         <activity android:name=".threadpool.ThreadPoolActivity" />
         <activity android:name=".apihttp.ApiHttpActivity" />
-        <activity android:name=".webview.WebViewActivity"/>
-        <activity android:name=".framework.FrameWorkActivity"/>
-        <activity android:name=".framework.func.AppInstallActivity"/>
-        <activity android:name=".framework.func.FileActivity"/>
-        <activity android:name=".framework.func.SystemPageActivity"/>
+        <activity android:name=".webview.WebViewActivity" />
+        <activity android:name=".framework.FrameWorkActivity" />
+        <activity android:name=".framework.func.AppInstallActivity" />
+        <activity android:name=".framework.func.FileActivity" />
+        <activity android:name=".framework.func.SystemPageActivity" />
+        <activity android:name=".framework.func.ScreenActivity" />
     </application>
 
+    <queries>
+
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+
+    </queries>
+
 </manifest>
+
+
+

@@ -3,6 +3,10 @@ package com.proxy.service.core.framework.io.file.read
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.base.IReadSource
+import com.proxy.service.core.framework.io.file.read.impl.AutoCloseInputStreamSource
+import com.proxy.service.core.framework.io.file.read.impl.InputStreamSource
+import com.proxy.service.core.framework.io.file.read.impl.PathSource
+import com.proxy.service.core.framework.io.file.read.impl.ReaderSource
 import java.io.File
 import java.io.InputStream
 import java.io.Reader
@@ -22,7 +26,7 @@ object CsFileReadUtils : IReadSource {
      * */
     override fun setSourceAssetPath(fileName: String): IRead {
         val context = CsContextManager.getApplication()
-        return InputStreamSource(context.assets.open(fileName))
+        return AutoCloseInputStreamSource(context.assets.open(fileName))
     }
 
     /**

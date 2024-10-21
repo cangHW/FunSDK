@@ -36,6 +36,16 @@ object CsUriUtils {
     /**
      * 获取文件 uri
      * */
+    fun getUriByPath(path: String?): Uri? {
+        if (path == null) {
+            return null
+        }
+        return getUriByFile(File(path))
+    }
+
+    /**
+     * 获取文件 uri
+     * */
     fun getUriByFile(file: File?): Uri? {
         if (!CsFileUtils.isFile(file)) {
             return null

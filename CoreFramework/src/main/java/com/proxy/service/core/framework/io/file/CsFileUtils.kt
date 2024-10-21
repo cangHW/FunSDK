@@ -2,7 +2,9 @@ package com.proxy.service.core.framework.io.file
 
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.io.Closeable
 import java.io.File
+import java.io.Flushable
 
 /**
  * @author: cangHX
@@ -148,4 +150,21 @@ object CsFileUtils {
         return dir.isDirectory
     }
 
+    /**
+     * 关闭流（字节流、字符流、缓冲流、读写流等等）
+     * */
+    fun close(stream: Closeable?) {
+        try {
+            if (stream is Flushable) {
+                stream.flush()
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        try {
+            stream?.close()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+    }
 }

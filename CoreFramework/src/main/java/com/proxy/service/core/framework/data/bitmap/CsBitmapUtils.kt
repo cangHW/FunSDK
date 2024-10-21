@@ -26,6 +26,7 @@ object CsBitmapUtils {
 
     /**
      * drawable 转 bitmap
+     *
      * @param drawable  待转换 Drawable
      * @param config    bitmap 清晰度
      * */
@@ -56,6 +57,7 @@ object CsBitmapUtils {
 
     /**
      * bitmap 转 ByteArray
+     *
      * @param bitmap    待转换 bitmap
      * @param format    位图格式, 默认为 png
      * @param quality   压缩率, 默认不压缩
@@ -85,6 +87,7 @@ object CsBitmapUtils {
 
     /**
      * 保存 bitmap
+     *
      * @param bitmap    待保存 bitmap
      * @param file      保存位置
      * @param format    位图格式, 默认为 png
@@ -117,6 +120,7 @@ object CsBitmapUtils {
 
     /**
      * 修改 bitmap 尺寸
+     *
      * @param maxWidth  最大宽度
      * @param maxHeight 最大高度
      * @param isAdjust  是否保持纵横比
@@ -156,6 +160,7 @@ object CsBitmapUtils {
 
     /**
      * 修改 bitmap 大小
+     *
      * @param maxKb  最大 size
      * */
     @WorkerThread

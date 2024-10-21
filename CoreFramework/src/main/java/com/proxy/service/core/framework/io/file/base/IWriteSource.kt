@@ -23,6 +23,13 @@ interface IWriteSource {
 
     /**
      * 设置源数据
+     *
+     * fileName 示例：asd/xxx.txt
+     * */
+    fun setSourceAssetPath(fileName: String): IWrite
+
+    /**
+     * 设置源数据
      * */
     fun setSourcePath(filePath: String): IWrite
 

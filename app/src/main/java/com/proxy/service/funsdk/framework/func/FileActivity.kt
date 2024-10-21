@@ -33,8 +33,8 @@ class FileActivity : AppCompatActivity() {
         }
     }
 
-    private var filePath: String =
-        "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files/text/test.txt"
+    private var fileDir  = "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files"
+    private var filePath = "$fileDir/text/test.txt"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +63,12 @@ class FileActivity : AppCompatActivity() {
             }
 
             R.id.file_merge -> {
-                val srcPath = "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files/merge/test1.txt"
+                val srcPath = "$fileDir/merge/test1.txt"
                 CsFileUtils.delete(srcPath)
                 CsFileWriteUtils.setSourceString("源文件内容").writeSync(srcPath)
                 CsLogger.d(CsFileReadUtils.setSourcePath(srcPath).readString())
 
-                val destPath = "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files/merge/test2.txt"
+                val destPath = "$fileDir/merge/test2.txt"
                 CsFileUtils.delete(destPath)
                 CsFileWriteUtils.setSourceString("目标文件内容").writeSync(destPath)
                 CsLogger.d(CsFileReadUtils.setSourcePath(destPath).readString())

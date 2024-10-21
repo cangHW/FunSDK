@@ -14,6 +14,10 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven {
+            name="Repo"
+            setUrl("file://${rootDir}/Repo")
+        }
         google()
         mavenCentral()
     }

@@ -3,11 +3,12 @@
   <groupId>io.github.cangHW</groupId>
   <artifactId>Service-CoreFramework</artifactId>
   <versioning>
-    <latest>0.0.0.5</latest>
+    <latest>0.0.0.6-SNAPSHOT</latest>
     <release>0.0.0.5</release>
     <versions>
       <version>0.0.0.5</version>
+      <version>0.0.0.6-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20241015100452</lastUpdated>
+    <lastUpdated>20241021065258</lastUpdated>
   </versioning>
 </metadata>
