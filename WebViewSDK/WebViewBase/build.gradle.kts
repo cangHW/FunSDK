@@ -26,11 +26,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.appcompat)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
 
-    //noinspection UseTomlInstead
-    api("androidx.webkit:webkit:1.8.0")
+    api(libs.android.webkit)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

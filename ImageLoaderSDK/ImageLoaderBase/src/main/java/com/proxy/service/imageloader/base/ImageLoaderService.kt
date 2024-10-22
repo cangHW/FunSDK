@@ -20,7 +20,6 @@ interface ImageLoaderService : BaseService {
      * */
     fun with(activity: FragmentActivity): IType<Drawable>
 
-
     /**
      * 绑定上下文环境与生命周期
      * */

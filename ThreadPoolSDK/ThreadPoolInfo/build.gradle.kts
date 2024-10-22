@@ -33,8 +33,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+//    implementation(libs.android.core.ktx)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
     implementation(project(":ThreadPoolSDK:ThreadPoolBase"))
@@ -42,8 +42,7 @@ dependencies {
         exclude(group = "io.github.cangHW", module = "Service-ThreadPoolBase")
     }
 
-    implementation("io.reactivex.rxjava2:rxjava:2.2.9")
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation(libs.bundles.thread)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

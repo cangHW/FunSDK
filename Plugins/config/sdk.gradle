@@ -15,7 +15,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "0.4.6",
+                    version           : "0.4.7",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -24,14 +24,14 @@ ext {
             // 网络库
             ApiHttpBase    : [
                     artifact          : "Service-ApihttpBase",
-                    version           : "0.0.3",
+                    version           : "0.0.4",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ApiHttpInfo    : [
                     artifact          : "Service-Apihttp",
-                    version           : "0.0.5",
+                    version           : "0.0.6",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -40,14 +40,14 @@ ext {
             // 线程库
             ThreadPoolBase : [
                     artifact          : "Service-ThreadpoolBase",
-                    version           : "0.0.2",
+                    version           : "0.0.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.0.5",
+                    version           : "0.0.6",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -56,14 +56,14 @@ ext {
             // 图片库
             ImageLoaderBase: [
                     artifact          : "Service-ImageloaderBase",
-                    version           : "0.0.2",
+                    version           : "0.0.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ImageLoaderInfo: [
                     artifact          : "Service-Imageloader",
-                    version           : "0.0.5",
+                    version           : "0.0.6",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -72,21 +72,21 @@ ext {
             // web 库
             WebViewBase    : [
                     artifact          : "Service-WebviewBase",
-                    version           : "0.0.3",
+                    version           : "0.0.4",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview",
-                    version           : "0.0.6",
+                    version           : "0.0.7",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewBridgeDS    : [
                     artifact          : "Service-WebBridge-Ds",
-                    version           : "0.0.4",
+                    version           : "0.0.5",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

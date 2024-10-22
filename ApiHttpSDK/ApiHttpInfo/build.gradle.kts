@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation(libs.cloud.api)
-    implementation(libs.appcompat)
+    implementation(libs.android.appcompat)
     kapt(libs.cloud.compiler)
 
     implementation(project(":ApiHttpSDK:ApiHttpBase"))
@@ -44,8 +44,7 @@ dependencies {
     }
     implementation(libs.service.threadpool)
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation(libs.bundles.http)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

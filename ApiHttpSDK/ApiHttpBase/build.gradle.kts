@@ -26,13 +26,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+//    implementation(libs.android.core.ktx)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
     compileOnly(libs.core.framework)
 
-    api("com.squareup.okhttp3:okhttp:4.11.0")
-    api("com.squareup.retrofit2:retrofit:2.9.0")
+    api(libs.bundles.http)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

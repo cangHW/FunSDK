@@ -41,12 +41,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+//    implementation(libs.android.core.ktx)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
 
-    implementation("com.google.android.flexbox:flexbox:3.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.android.view.flexbox)
+    implementation(libs.android.view.constraintlayout)
 
     implementation(project(":CoreFramework"))
     implementation(project(":ApiHttpSDK:ApiHttpInfo"))

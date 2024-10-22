@@ -33,8 +33,7 @@ android {
 }
 
 dependencies {
-//    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
@@ -43,13 +42,9 @@ dependencies {
         exclude(group = "io.github.cangHW", module = "Service-ImageLoaderBase")
     }
 
-    //view
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.android.view.constraintlayout)
 
-    //glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    //lottie
-    implementation("com.airbnb.android:lottie:6.0.0")
+    implementation(libs.bundles.image)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

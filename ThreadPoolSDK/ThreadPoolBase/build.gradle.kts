@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.appcompat)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
 }
 

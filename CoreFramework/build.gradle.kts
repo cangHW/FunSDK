@@ -33,8 +33,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+//    implementation(libs.android.core.ktx)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 

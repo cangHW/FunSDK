@@ -33,8 +33,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
+//    implementation(libs.android.core.ktx)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
@@ -44,14 +44,9 @@ dependencies {
     }
     implementation(libs.service.threadpool)
 
-    //view
-    //noinspection UseTomlInstead
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.android.view.constraintlayout)
 
-    //noinspection UseTomlInstead
-    implementation("net.bytebuddy:byte-buddy:1.15.4")
-    //noinspection UseTomlInstead
-    implementation("net.bytebuddy:byte-buddy-android:1.15.4")
+    implementation(libs.bundles.bytecode)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

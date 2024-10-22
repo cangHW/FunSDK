@@ -2,7 +2,6 @@ package com.proxy.service.core
 
 import android.app.Application
 import android.util.SparseArray
-import androidx.core.util.forEach
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.application.CoreApplication
 import com.proxy.service.core.application.base.CsBaseApplication
@@ -50,9 +49,9 @@ object CsCore {
             }
         }
         coreApplication?.onCreate(application, isDebug)
-        sparse.forEach { key, value ->
-            CsLogger.tag(TAG).d("run priority = $key")
-            value.forEach {
+        for (index in 0 until sparse.size()) {
+            CsLogger.tag(TAG).d("run priority = $index")
+            sparse.get(index).forEach {
                 var time: Long = 0
                 if (isDebug) {
                     time = System.currentTimeMillis()
@@ -63,7 +62,8 @@ object CsCore {
                     CsLogger.tag(TAG).e(throwable)
                 }
                 if (isDebug) {
-                    CsLogger.tag(TAG).d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
+                    CsLogger.tag(TAG)
+                        .d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
                 }
             }
         }
