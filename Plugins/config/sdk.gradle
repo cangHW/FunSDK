@@ -15,7 +15,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "0.4.7",
+                    version           : "0.4.9",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -72,21 +72,21 @@ ext {
             // web 库
             WebViewBase    : [
                     artifact          : "Service-WebviewBase",
-                    version           : "0.0.4",
+                    version           : "0.0.6",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview",
-                    version           : "0.0.7",
+                    version           : "0.0.9",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewBridgeDS    : [
                     artifact          : "Service-WebBridge-Ds",
-                    version           : "0.0.5",
+                    version           : "0.0.6",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

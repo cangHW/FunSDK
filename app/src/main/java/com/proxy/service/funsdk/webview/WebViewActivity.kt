@@ -49,7 +49,7 @@ class WebViewActivity : AppCompatActivity() {
         webView = CsWeb.createWebLoader(WebConfig.builder().build())
 //            ?.setLifecycleOwner(this)
             ?.loadUrl("https://www.baidu.com")
-            ?.setLoadCallback(object : WebLoadCallback {
+            ?.setWebLoadCallback(object : WebLoadCallback {
                 override fun onPageError(
                     url: String,
                     isMainFrameError: Boolean,
@@ -74,7 +74,7 @@ class WebViewActivity : AppCompatActivity() {
                 val web = CsWeb.createWebLoader(WebConfig.builder().build())
                     ?.setLifecycleOwner(this)
                     ?.loadUrl("https://www.baidu.com")
-                    ?.setLoadCallback(object : WebLoadCallback {
+                    ?.setWebLoadCallback(object : WebLoadCallback {
                         override fun onPageError(
                             url: String,
                             isMainFrameError: Boolean,

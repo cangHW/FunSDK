@@ -3,6 +3,7 @@ package com.proxy.service.webview.base.web
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.webview.base.listener.WebInterceptCallback
+import com.proxy.service.webview.base.listener.WebLifecycleCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
 
 /**
@@ -35,12 +36,17 @@ interface IWebLoader {
     /**
      * 设置加载回调，用于展示加载动画、错误页面等
      * */
-    fun setLoadCallback(callback: WebLoadCallback): IWebLoader
+    fun setWebLoadCallback(callback: WebLoadCallback): IWebLoader
 
     /**
      * 设置加载拦截器，用于拦截请求、键盘事件等
      * */
-    fun setInterceptCallback(callback: WebInterceptCallback): IWebLoader
+    fun setWebInterceptCallback(callback: WebInterceptCallback): IWebLoader
+
+    /**
+     * 设置 web 容器的生命周期回调，用于监听进入屏幕、离开屏幕等
+     * */
+    fun setWebLifecycleCallback(callback: WebLifecycleCallback): IWebLoader
 
     /**
      * 加载 web 容器到 ViewGroup
