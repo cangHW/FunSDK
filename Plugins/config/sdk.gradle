@@ -15,7 +15,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "0.4.9",
+                    version           : "0.4.10",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -31,7 +31,7 @@ ext {
             ],
             ApiHttpInfo    : [
                     artifact          : "Service-Apihttp",
-                    version           : "0.0.6",
+                    version           : "0.0.7",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -47,7 +47,7 @@ ext {
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.0.6",
+                    version           : "0.0.7",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -63,7 +63,7 @@ ext {
             ],
             ImageLoaderInfo: [
                     artifact          : "Service-Imageloader",
-                    version           : "0.0.6",
+                    version           : "0.0.7",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -79,14 +79,14 @@ ext {
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview",
-                    version           : "0.0.9",
+                    version           : "0.0.10",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewBridgeDS    : [
                     artifact          : "Service-WebBridge-Ds",
-                    version           : "0.0.6",
+                    version           : "0.0.7",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

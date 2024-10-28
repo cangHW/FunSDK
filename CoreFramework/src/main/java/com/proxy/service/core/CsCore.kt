@@ -50,8 +50,9 @@ object CsCore {
         }
         coreApplication?.onCreate(application, isDebug)
         for (index in 0 until sparse.size()) {
-            CsLogger.tag(TAG).d("run priority = $index")
-            sparse.get(index).forEach {
+            val priority = sparse.keyAt(index)
+            CsLogger.tag(TAG).d("run priority = $priority")
+            sparse.get(priority).forEach {
                 var time: Long = 0
                 if (isDebug) {
                     time = System.currentTimeMillis()

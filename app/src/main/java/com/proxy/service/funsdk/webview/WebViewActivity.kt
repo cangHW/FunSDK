@@ -47,7 +47,7 @@ class WebViewActivity : AppCompatActivity() {
         CsWeb.addGlobalJavascriptInterface(YY())
 
         webView = CsWeb.createWebLoader(WebConfig.builder().build())
-//            ?.setLifecycleOwner(this)
+            ?.setLifecycleOwner(this)
             ?.loadUrl("https://www.baidu.com")
             ?.setWebLoadCallback(object : WebLoadCallback {
                 override fun onPageError(
