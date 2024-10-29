@@ -39,6 +39,7 @@
         <activity android:name=".framework.func.FileActivity" />
         <activity android:name=".framework.func.SystemPageActivity" />
         <activity android:name=".framework.func.ScreenActivity" />
+        <activity android:name=".framework.func.EventActivity" />
     </application>
 
     <queries>

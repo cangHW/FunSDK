@@ -4,14 +4,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <permission android:name="com.proxy.service.core.framework.action_send"
-        android:protectionLevel="normal"/>
-    <uses-permission android:name="com.proxy.service.core.framework.action_send" />
-
-    <permission android:name="com.proxy.service.core.framework.action_received"
-        android:protectionLevel="normal"/>
-    <uses-permission android:name="com.proxy.service.core.framework.action_received" />
-
     <application>
 
         <provider
@@ -21,8 +13,7 @@
             android:grantUriPermissions="true"/>
 
         <receiver android:name=".framework.app.event.broadcast.BroadcastReceiverImpl"
-            android:exported="true"
-            android:permission="com.proxy.service.core.framework.action_send">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.proxy.service.core.framework.Event" />
             </intent-filter>

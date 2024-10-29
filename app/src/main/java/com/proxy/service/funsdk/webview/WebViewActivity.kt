@@ -34,17 +34,10 @@ class WebViewActivity : AppCompatActivity() {
     private var viewGroup: FrameLayout? = null
     private var webView: IWeb? = null
 
-    class XX
-    class YY
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
         viewGroup = findViewById(R.id.content)
-
-        // 测试 Android34 对动态 dex 的限制
-        CsWeb.addGlobalJavascriptInterface(XX())
-        CsWeb.addGlobalJavascriptInterface(YY())
 
         webView = CsWeb.createWebLoader(WebConfig.builder().build())
             ?.setLifecycleOwner(this)

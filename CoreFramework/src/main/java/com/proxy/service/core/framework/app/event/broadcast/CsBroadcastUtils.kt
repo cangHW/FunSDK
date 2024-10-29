@@ -41,14 +41,14 @@ object CsBroadcastUtils {
         val context = CsContextManager.getApplication()
         val intent = Intent(BroadcastReceiverImpl.ACTION)
         intent.setClassName(
-            CsAppUtils.getPackageName(),
+            receiverPackageName,
             BroadcastReceiverImpl::class.java.name
         )
         intent.data = uri
         extras?.let {
             intent.putExtras(it)
         }
-        context.sendBroadcast(intent, "com.proxy.service.core.framework.action_received")
+        context.sendBroadcast(intent)
     }
 
 }

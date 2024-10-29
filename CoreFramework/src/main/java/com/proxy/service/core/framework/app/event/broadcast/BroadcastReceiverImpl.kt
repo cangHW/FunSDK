@@ -23,7 +23,7 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
         /**
          * 接收到消息
          */
-        fun onReceive(context: Context?, data: Uri?, extras: Bundle?)
+        fun onReceive(context: Context, data: Uri?, extras: Bundle?)
     }
 
     companion object {

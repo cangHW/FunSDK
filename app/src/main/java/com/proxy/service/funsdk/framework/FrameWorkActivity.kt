@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.framework.func.AppInstallActivity
+import com.proxy.service.funsdk.framework.func.EventActivity
 import com.proxy.service.funsdk.framework.func.FileActivity
 import com.proxy.service.funsdk.framework.func.ScreenActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
@@ -50,6 +51,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
             R.id.screen -> {
                 ScreenActivity.launch(this)
+            }
+
+            R.id.event -> {
+                EventActivity.launch(this)
             }
         }
     }

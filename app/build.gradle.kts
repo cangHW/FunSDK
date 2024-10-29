@@ -10,6 +10,8 @@ android {
 
     defaultConfig {
         applicationId = "com.proxy.service.funsdk"
+//        applicationId = "com.proxy.service.funsdk2"
+
         minSdk = libs.versions.min.sdk.get().toInt()
         targetSdk = libs.versions.target.sdk.get().toInt()
         versionCode = 1
