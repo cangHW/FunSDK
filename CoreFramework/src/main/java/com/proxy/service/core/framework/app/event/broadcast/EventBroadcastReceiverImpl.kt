@@ -6,6 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.app.install.InstallBroadcastReceiverImpl
+import com.proxy.service.core.framework.app.install.InstallBroadcastReceiverImpl.Companion
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.WeakHashMap
 
@@ -14,7 +16,7 @@ import java.util.WeakHashMap
  * @data: 2024/9/23 16:24
  * @desc:
  */
-class BroadcastReceiverImpl : BroadcastReceiver() {
+class EventBroadcastReceiverImpl : BroadcastReceiver() {
 
     /**
      * 接收消息回调
@@ -27,7 +29,7 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
     }
 
     companion object {
-        private const val TAG = "${Constants.TAG}BroadcastReceiver"
+        private const val TAG = "${Constants.TAG}EventReceiver"
         const val ACTION = "com.proxy.service.core.framework.Event"
 
         private val any = Any()
@@ -61,12 +63,16 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
 
         CsLogger.tag(TAG).d("onReceive extras = $extras, data = $data")
 
-        WeakHashMap(weakReceiverHashMap).keys.forEach {
-            try {
-                it.onReceive(context, data, extras)
-            } catch (throwable: Throwable) {
-                CsLogger.tag(TAG).e(throwable)
+        try {
+            weakReceiverHashMap.iterator().forEach {
+                try {
+                    it.key.onReceive(context, data, extras)
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(TAG).e(throwable)
+                }
             }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
         }
     }
 }

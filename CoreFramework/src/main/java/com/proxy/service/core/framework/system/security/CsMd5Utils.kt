@@ -5,7 +5,9 @@ import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStream
 import java.math.BigInteger
+import java.security.DigestInputStream
 import java.security.MessageDigest
 
 /**
@@ -46,24 +48,40 @@ object CsMd5Utils {
             return ""
         }
         try {
-            val buffer = ByteArray(8 * 1024)
-            var len: Int
-            val md = MessageDigest.getInstance("MD5")
-            var fis: FileInputStream? = null
-            try {
-                fis = FileInputStream(file)
-                while (fis.read(buffer).also { len = it } != -1) {
-                    md.update(buffer, 0, len)
-                }
-            } finally {
-                fis?.close()
+            FileInputStream(file).use { fis ->
+                return getMD5(fis)
             }
-            val md5 = BigInteger(1, md.digest()).toString(16)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        return ""
+    }
+
+    /**
+     * 对流进行 md5 加密
+     */
+    @WorkerThread
+    fun getMD5(inputStream: InputStream?): String {
+        if (inputStream == null) {
+            return ""
+        }
+        try {
+            val buffer = ByteArray(8 * 1024)
+            val digest = MessageDigest.getInstance("MD5")
+
+            DigestInputStream(inputStream, digest).use { dis ->
+                while (dis.read(buffer) > 0) {
+                    // No operation needed inside loop
+                }
+            }
+
+            val md5 = BigInteger(1, digest.digest()).toString(16)
             return md5.padStart(32, '0')
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
         return ""
     }
+
 
 }

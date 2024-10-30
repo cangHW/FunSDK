@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.app.event.broadcast.BroadcastReceiverImpl
+import com.proxy.service.core.framework.app.event.broadcast.EventBroadcastReceiverImpl
 import com.proxy.service.core.framework.app.event.broadcast.CsBroadcastUtils
 import com.proxy.service.funsdk.R
 
@@ -17,7 +17,7 @@ import com.proxy.service.funsdk.R
  * @data: 2024/10/29 11:37
  * @desc:
  */
-class EventActivity: AppCompatActivity(), BroadcastReceiverImpl.ReceiverListener {
+class EventActivity: AppCompatActivity(), EventBroadcastReceiverImpl.ReceiverListener {
 
     companion object {
         fun launch(context: Context) {

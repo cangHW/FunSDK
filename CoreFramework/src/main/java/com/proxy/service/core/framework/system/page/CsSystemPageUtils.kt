@@ -3,8 +3,11 @@ package com.proxy.service.core.framework.system.page
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.text.TextUtils
+import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 
 
 /**
@@ -16,27 +19,36 @@ import com.proxy.service.core.framework.app.context.CsContextManager
  */
 object CsSystemPageUtils {
 
+    private const val TAG = "${Constants.TAG}SystemPage"
+
     /**
      * 打开应用设置页面
      *
      * @param packageName : 包名，为空默认打开当前 app 的设置页面
      */
     fun openAppSetting(packageName: String? = null) {
-        val context = CsContextManager.getApplication()
+        CsLogger.tag(TAG).d("openAppSetting, packageName = $packageName")
+
         val pkg = packageName ?: CsAppUtils.getPackageName()
 
         val intent = Intent()
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.setData(Uri.parse("package:$pkg"))
-        context.startActivity(intent)
+
+        try {
+            CsContextManager.getApplication().startActivity(intent)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 
     /**
      * 打开应用通知设置页面
      */
     fun openNotificationSetting() {
-        val context = CsContextManager.getApplication()
+        CsLogger.tag(TAG).d("openNotificationSetting")
+
         val packageName = CsAppUtils.getPackageName()
         val uid = CsAppUtils.getUid()
 
@@ -46,18 +58,53 @@ object CsSystemPageUtils {
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
         intent.putExtra("app_package", packageName)
         intent.putExtra("app_uid", uid)
-        context.startActivity(intent)
+
+        try {
+            CsContextManager.getApplication().startActivity(intent)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 
     /**
      * 打开 WIFI 设置页面
      */
     fun openWifiSetting() {
-        val context = CsContextManager.getApplication()
+        CsLogger.tag(TAG).d("openWifiSetting")
+
         val intent = Intent()
         intent.setAction(Settings.ACTION_WIRELESS_SETTINGS)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+
+        try {
+            CsContextManager.getApplication().startActivity(intent)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 
+    /**
+     * 打电话
+     *
+     * @param phoneNumber   准备拨打的电话号码
+     */
+    fun openCall(phoneNumber: String?) {
+        CsLogger.tag(TAG).d("openCall, phoneNumber = $phoneNumber")
+
+        val intent = Intent()
+        if (TextUtils.isEmpty(phoneNumber)) {
+            intent.setAction(Intent.ACTION_CALL_BUTTON)
+        } else {
+            intent.setAction(Intent.ACTION_DIAL)
+            intent.setData(Uri.parse("tel:$phoneNumber"))
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        try {
+            CsContextManager.getApplication().startActivity(intent)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+
+    }
 }

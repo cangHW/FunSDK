@@ -44,6 +44,19 @@
         android:textSize="20dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/receiver_apk_install_status"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="监听应用安装事件"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/install_app"
         android:layout_width="match_parent"
         android:layout_height="50dp"

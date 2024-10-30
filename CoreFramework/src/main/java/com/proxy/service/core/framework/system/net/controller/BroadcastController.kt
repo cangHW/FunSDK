@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.os.Build
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.NetType
@@ -31,7 +32,12 @@ class BroadcastController(
 
     override fun start() {
         CsLogger.tag(IController.TAG).i("start")
-        CsContextManager.getApplication().registerReceiver(mReceiver, netIntentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            CsContextManager.getApplication()
+                .registerReceiver(mReceiver, netIntentFilter, Context.RECEIVER_EXPORTED)
+        } else {
+            CsContextManager.getApplication().registerReceiver(mReceiver, netIntentFilter)
+        }
     }
 
     override fun stop() {

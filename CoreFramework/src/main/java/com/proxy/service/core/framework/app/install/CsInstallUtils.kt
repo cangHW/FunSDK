@@ -97,6 +97,20 @@ object CsInstallUtils {
     }
 
     /**
+     * 添加安装消息回调，弱引用
+     * */
+    fun addWeakReceiverListener(listener: InstallBroadcastReceiverImpl.ReceiverListener) {
+        InstallBroadcastReceiverImpl.addWeakReceiverListener(listener)
+    }
+
+    /**
+     * 移除安装消息回调
+     * */
+    fun removeReceiverListener(listener: InstallBroadcastReceiverImpl.ReceiverListener) {
+        InstallBroadcastReceiverImpl.removeReceiverListener(listener)
+    }
+
+    /**
      * 安装目标应用
      *
      * 需要权限

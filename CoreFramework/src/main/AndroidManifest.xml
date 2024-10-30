@@ -12,7 +12,7 @@
             android:exported="false"
             android:grantUriPermissions="true"/>
 
-        <receiver android:name=".framework.app.event.broadcast.BroadcastReceiverImpl"
+        <receiver android:name=".framework.app.event.broadcast.EventBroadcastReceiverImpl"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.proxy.service.core.framework.Event" />

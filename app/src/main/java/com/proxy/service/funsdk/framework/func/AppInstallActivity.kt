@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.install.CsInstallUtils
+import com.proxy.service.core.framework.app.install.InstallBroadcastReceiverImpl
+import com.proxy.service.core.framework.app.install.InstallStatusEnum
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.CsUriUtils
 import com.proxy.service.core.framework.io.uri.ProxyProvider
@@ -21,7 +23,7 @@ import com.proxy.service.funsdk.R
  * @data: 2024/9/23 10:15
  * @desc:
  */
-class AppInstallActivity : AppCompatActivity() {
+class AppInstallActivity : AppCompatActivity(), InstallBroadcastReceiverImpl.ReceiverListener {
 
     companion object {
         fun launch(context: Context) {
@@ -60,13 +62,17 @@ class AppInstallActivity : AppCompatActivity() {
             }
 
             R.id.check_is_installed -> {
-                if (TextUtils.isEmpty(pkg)){
+                if (TextUtils.isEmpty(pkg)) {
                     Toast.makeText(this, "未设置包名", Toast.LENGTH_SHORT).show()
                     return
                 }
                 CsInstallUtils.isInstallApp(pkg).let {
                     Toast.makeText(this, "目标应用是否安装：$it", Toast.LENGTH_SHORT).show()
                 }
+            }
+
+            R.id.receiver_apk_install_status -> {
+                CsInstallUtils.addWeakReceiverListener(this)
             }
 
             R.id.install_app -> {
@@ -82,6 +88,18 @@ class AppInstallActivity : AppCompatActivity() {
                     CsInstallUtils.openApp(pkg)
                 }
             }
+        }
+    }
+
+    override fun onReceive(
+        context: Context,
+        installStatusEnum: InstallStatusEnum,
+        packageName: String
+    ) {
+        if (installStatusEnum == InstallStatusEnum.PACKAGE_ADDED) {
+            Toast.makeText(context, "安装：$packageName", Toast.LENGTH_SHORT).show()
+        } else if (installStatusEnum == InstallStatusEnum.PACKAGE_REMOVED) {
+            Toast.makeText(context, "卸载：$packageName", Toast.LENGTH_SHORT).show()
         }
     }
 
