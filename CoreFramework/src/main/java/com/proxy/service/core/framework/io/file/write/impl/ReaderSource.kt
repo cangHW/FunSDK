@@ -3,7 +3,6 @@ package com.proxy.service.core.framework.io.file.write.impl
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.core.framework.io.file.base.IoConfig
 import java.io.File
 import java.io.Reader
 import java.nio.file.Files
@@ -22,27 +21,20 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
      * 同步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeSync(file: File, append: Boolean) {
+    override fun writeSync(file: File, append: Boolean): Boolean {
         start(tag, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
-            val bufferedWriter = if (append) {
-                Files.newBufferedWriter(
-                    file.toPath(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND
-                )
+
+            val options = if (append) {
+                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.APPEND)
             } else {
-                Files.newBufferedWriter(
-                    file.toPath(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING
-                )
+                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
             }
 
-            bufferedWriter.use { writer ->
-                val buffer = CharArray(IoConfig.BUFFER_SIZE)
+            Files.newBufferedWriter(file.toPath(), *options).use { writer ->
+                val buffer = CharArray(Constants.IO_BUFFER_SIZE)
                 var bytesRead: Int
                 while ((reader.read(buffer).also { bytesRead = it }) != -1) {
                     writer.write(buffer, 0, bytesRead)
@@ -50,8 +42,10 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
                 writer.flush()
             }
             success(tag, file.absolutePath)
+            return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
         }
+        return false
     }
 }

@@ -21,37 +21,37 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
      * 同步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeSync(file: File, append: Boolean) {
+    override fun writeSync(file: File, append: Boolean): Boolean {
         start(tag, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
-            val fileChannel = if (append) {
-                FileChannel.open(
-                    file.toPath(),
+
+            val options = if (append) {
+                arrayOf(
                     StandardOpenOption.CREATE,
                     StandardOpenOption.WRITE,
                     StandardOpenOption.APPEND
                 )
             } else {
-                FileChannel.open(
-                    file.toPath(),
+                arrayOf(
                     StandardOpenOption.CREATE,
                     StandardOpenOption.WRITE,
                     StandardOpenOption.TRUNCATE_EXISTING
                 )
             }
 
-            fileChannel.use { channel ->
+            FileChannel.open(file.toPath(), *options).use { channel ->
                 val buffer = ByteBuffer.wrap(bytes)
-
                 while (buffer.hasRemaining()) {
                     channel.write(buffer)
                 }
             }
             success(tag, file.absolutePath)
+            return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
         }
+        return false
     }
 }

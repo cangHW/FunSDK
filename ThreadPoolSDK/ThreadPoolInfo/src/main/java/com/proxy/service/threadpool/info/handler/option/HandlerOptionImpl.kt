@@ -22,4 +22,8 @@ class HandlerOptionImpl(private val handlerInfo: HandlerInfo) :
         handlerInfo.uptimeMillis = uptimeMillis
         return this
     }
+
+    override fun getThreadId(): Long {
+        return handlerInfo.handlerController.getThreadId()
+    }
 }

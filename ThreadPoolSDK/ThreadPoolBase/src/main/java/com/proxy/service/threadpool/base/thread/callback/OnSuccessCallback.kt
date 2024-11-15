@@ -5,8 +5,8 @@ package com.proxy.service.threadpool.base.thread.callback
  * @data: 2024/6/13 19:09
  * @desc:
  */
-interface OnSuccessCallback {
+interface OnSuccessCallback<T> {
 
-    fun onCallback()
+    fun onCallback(value: T)
 
 }

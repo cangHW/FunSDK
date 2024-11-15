@@ -39,12 +39,15 @@ dependencies {
 
     implementation(project(":ApiHttpSDK:ApiHttpBase"))
 
-    implementation(libs.core.framework){
+    implementation(libs.core.framework) {
         exclude(group = "io.github.cangHW", module = "Service-ApihttpBase")
     }
     implementation(libs.service.threadpool)
 
     implementation(libs.bundles.http)
+
+    implementation(libs.room.api)
+    kapt(libs.room.compiler)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

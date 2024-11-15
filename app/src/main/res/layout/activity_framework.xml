@@ -10,6 +10,19 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/device_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="#330000ff"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="系统信息"
+            android:textSize="20dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/app_install"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -72,6 +85,19 @@
             android:gravity="center"
             android:onClick="onClick"
             android:text="消息事件"
+            android:textSize="20dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/security"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="#330000ff"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="安全"
             android:textSize="20dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

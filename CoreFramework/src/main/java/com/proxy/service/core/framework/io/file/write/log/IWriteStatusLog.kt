@@ -2,7 +2,6 @@ package com.proxy.service.core.framework.io.file.write.log
 
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.data.time.CsTimeUtils
-import java.util.WeakHashMap
 import java.util.concurrent.TimeUnit
 
 /**
@@ -13,21 +12,22 @@ import java.util.concurrent.TimeUnit
 interface IWriteStatusLog {
 
     companion object {
-        private val localTime = WeakHashMap<IWriteStatusLog, Long>()
+        private val localTime = ThreadLocal<Long>()
     }
 
     fun start(tag: String, path: String) {
         CsLogger.tag(tag).d("write start. path : $path")
-        localTime[this] = System.currentTimeMillis()
+        localTime.set(System.currentTimeMillis())
     }
 
     fun success(tag: String, path: String) {
-        val start = localTime[this] ?: return
-        val time = CsTimeUtils.toIntervalString(
-            System.currentTimeMillis() - start,
-            TimeUnit.MILLISECONDS
-        )
-        CsLogger.tag(tag).d("write success. time : $time, path : $path")
+        localTime.get()?.let {
+            val time = CsTimeUtils.toIntervalString(
+                System.currentTimeMillis() - it,
+                TimeUnit.MILLISECONDS
+            )
+            CsLogger.tag(tag).d("write success. time : $time, path : $path")
+        }
     }
 
 }

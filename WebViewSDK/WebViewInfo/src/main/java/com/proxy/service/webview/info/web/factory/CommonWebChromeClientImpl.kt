@@ -12,7 +12,6 @@ import android.webkit.PermissionRequest
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -32,7 +31,7 @@ import com.proxy.service.webview.info.web.permissions.PermissionRequestImpl
 class CommonWebChromeClientImpl(
     private val loadCallback: WebLoadCallback?,
     private val interceptCallback: WebInterceptCallback?
-): WebChromeClient() {
+) : WebChromeClient() {
 
     private val tag = "${Config.LOG_TAG_START}ChromeClient"
 
@@ -106,7 +105,7 @@ class CommonWebChromeClientImpl(
             .d("onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?) url = $url, message = $message")
         if (interceptCallback != null) {
             val realResult = JsResultImpl(result)
-            if (interceptCallback?.onJsAlert(url ?: "", message ?: "", realResult) == true) {
+            if (interceptCallback.onJsAlert(url ?: "", message ?: "", realResult)) {
                 return true
             }
         }
@@ -123,7 +122,7 @@ class CommonWebChromeClientImpl(
             .d("onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?) url = $url, message = $message")
         if (interceptCallback != null) {
             val realResult = JsResultImpl(result)
-            if (interceptCallback?.onJsConfirm(url ?: "", message ?: "", realResult) == true) {
+            if (interceptCallback.onJsConfirm(url ?: "", message ?: "", realResult)) {
                 return true
             }
         }
@@ -141,12 +140,12 @@ class CommonWebChromeClientImpl(
             .d("onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?) url = $url, message = $message, defaultValue = $defaultValue")
         if (interceptCallback != null) {
             val realResult = JsPromptResultImpl(result)
-            if (interceptCallback?.onJsPrompt(
+            if (interceptCallback.onJsPrompt(
                     url ?: "",
                     message ?: "",
                     defaultValue ?: "",
                     realResult
-                ) == true
+                )
             ) {
                 return true
             }
@@ -176,7 +175,7 @@ class CommonWebChromeClientImpl(
             override fun accept(): String {
                 if (interceptCallback != null) {
                     val permissionsCallback = GeolocationPermissionsCallbackImpl(callback)
-                    interceptCallback?.onGeolocationPermissionsShowPrompt(
+                    interceptCallback.onGeolocationPermissionsShowPrompt(
                         origin ?: "",
                         permissionsCallback
                     )
@@ -191,9 +190,7 @@ class CommonWebChromeClientImpl(
         CsLogger.tag(tag).d("onGeolocationPermissionsHidePrompt()")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (interceptCallback != null) {
-                    interceptCallback?.onGeolocationPermissionsHidePrompt()
-                }
+                interceptCallback?.onGeolocationPermissionsHidePrompt()
                 return ""
             }
         })?.start()
@@ -206,7 +203,7 @@ class CommonWebChromeClientImpl(
             override fun accept(): String {
                 if (interceptCallback != null) {
                     val permissionsCallback = PermissionRequestImpl(request)
-                    interceptCallback?.onPermissionRequest(permissionsCallback)
+                    interceptCallback.onPermissionRequest(permissionsCallback)
                 }
                 return ""
             }
@@ -220,7 +217,7 @@ class CommonWebChromeClientImpl(
             override fun accept(): String {
                 if (interceptCallback != null) {
                     val permissionsCallback = PermissionRequestImpl(request)
-                    interceptCallback?.onPermissionRequestCanceled(permissionsCallback)
+                    interceptCallback.onPermissionRequestCanceled(permissionsCallback)
                 }
                 return ""
             }

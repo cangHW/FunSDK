@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.info.config
 
-import com.proxy.service.apihttp.base.init.ApiConfig
+import com.proxy.service.apihttp.base.download.callback.DownloadCallback
+import com.proxy.service.apihttp.base.request.config.RequestConfig
 
 /**
  * @author: cangHX
@@ -9,13 +10,23 @@ import com.proxy.service.apihttp.base.init.ApiConfig
  */
 object Config {
 
-    const val LOG_TAG_START = "ApiHttp_"
-
     @Volatile
     private var isDebug = true
 
+    /*********  request  *********/
+    /**
+     * 接口请求配置
+     * */
     @Volatile
-    private var config: ApiConfig? = null
+    private var requestConfig: RequestConfig? = null
+
+    /*********  download  *********/
+    /**
+     * 最大同时下载数量
+     * */
+    @Volatile
+    private var maxTask: Int = 3
+
 
     fun setIsDebug(isDebug: Boolean) {
         Config.isDebug = isDebug
@@ -25,11 +36,21 @@ object Config {
         return isDebug
     }
 
-    fun setApiConfig(config: ApiConfig) {
-        Config.config = config
+    /*********  request  *********/
+    fun setRequestConfig(config: RequestConfig) {
+        requestConfig = config
     }
 
-    fun getApiConfig(): ApiConfig {
-        return config ?: ApiConfig.builder("").build()
+    fun getRequestConfig(): RequestConfig {
+        return requestConfig ?: RequestConfig.builder("").build()
+    }
+
+    /*********  download  *********/
+    fun setMaxDownloadTask(maxTask: Int) {
+        this.maxTask = maxTask
+    }
+
+    fun getMaxDownloadTask(): Int {
+        return maxTask
     }
 }

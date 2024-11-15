@@ -37,8 +37,10 @@ object CsFileUtils {
         if (file.exists()) {
             return true
         }
+        if (!createDir(file.parentFile)){
+            return false
+        }
         try {
-            file.parentFile?.mkdirs()
             return file.createNewFile()
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
@@ -153,6 +155,75 @@ object CsFileUtils {
     }
 
     /**
+     * 获取文件大小
+     * */
+    fun length(path: String?): Long {
+        if (path == null) {
+            return 0
+        }
+        return length(File(path))
+    }
+
+    /**
+     * 获取文件大小
+     * */
+    fun length(file: File?): Long {
+        return file?.length() ?: 0
+    }
+
+    /**
+     * 重命名文件
+     * */
+    fun rename(srcPath: String?, destPath: String?): Boolean {
+        if (srcPath.isNullOrEmpty() || srcPath.isBlank()) {
+            return false
+        }
+        if (destPath.isNullOrEmpty() || destPath.isBlank()) {
+            return false
+        }
+        return rename(File(srcPath), File(destPath))
+    }
+
+    /**
+     * 重命名文件
+     * */
+    fun rename(srcFile: File?, destPath: String?): Boolean {
+        if (srcFile == null || !isFile(srcFile)) {
+            return false
+        }
+        if (destPath.isNullOrEmpty() || destPath.isBlank()) {
+            return false
+        }
+        return rename(srcFile, File(destPath))
+    }
+
+    /**
+     * 重命名文件
+     * */
+    fun rename(srcPath: String?, destFile: File?): Boolean {
+        if (srcPath.isNullOrEmpty() || srcPath.isBlank()) {
+            return false
+        }
+        if (destFile == null || isFile(destFile)) {
+            return false
+        }
+        return rename(File(srcPath), destFile)
+    }
+
+    /**
+     * 重命名文件
+     * */
+    fun rename(srcFile: File?, destFile: File?): Boolean {
+        if (srcFile == null || !isFile(srcFile)) {
+            return false
+        }
+        if (destFile == null || isFile(destFile)) {
+            return false
+        }
+        return srcFile.renameTo(destFile)
+    }
+
+    /**
      * 关闭流（字节流、字符流、缓冲流、读写流等等）
      * */
     fun close(stream: Closeable?) {
@@ -161,12 +232,12 @@ object CsFileUtils {
                 stream.flush()
             }
         } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
         try {
             stream?.close()
         } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
     }
 }

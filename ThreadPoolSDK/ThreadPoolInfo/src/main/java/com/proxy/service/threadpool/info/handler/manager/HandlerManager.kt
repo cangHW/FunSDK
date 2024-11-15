@@ -21,21 +21,19 @@ object HandlerManager {
             return controller
         }
 
-        if (controller == null) {
-            synchronized(threads) {
-                controller = threads[threadName]
-                if (controller == null || controller?.isCanUse() != true) {
-                    controller?.close()
-                    val handler = ThreadHandlerInfo(threadName)
-                    threads[threadName] = handler
-                    controller = handler
-                }
+        synchronized(threads) {
+            controller = threads[threadName]
+            if (controller == null || controller?.isCanUse() != true) {
+                controller?.close()
+                val handler = ThreadHandlerInfo(threadName)
+                threads[threadName] = handler
+                controller = handler
             }
         }
         return controller!!
     }
 
-    private class ThreadHandlerInfo constructor(threadName: String) : HandlerController {
+    private class ThreadHandlerInfo(threadName: String) : HandlerController {
 
         private val handlerThread: HandlerThread = HandlerThread(threadName)
         private val handler: Handler
@@ -45,6 +43,10 @@ object HandlerManager {
         init {
             handlerThread.start()
             handler = Handler(handlerThread.looper)
+        }
+
+        override fun getThreadId(): Long {
+            return handlerThread.id
         }
 
         override fun getHandler(): Handler {

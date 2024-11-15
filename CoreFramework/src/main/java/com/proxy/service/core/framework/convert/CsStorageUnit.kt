@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.convert
 import android.annotation.SuppressLint
 
 /**
- * 存储数据转换器
+ * 存储数据格式转换器
  *
  * @author: cangHX
  * @data: 2024/7/26 11:38

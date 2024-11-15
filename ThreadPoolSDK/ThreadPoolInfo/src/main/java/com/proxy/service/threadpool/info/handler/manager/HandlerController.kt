@@ -9,6 +9,11 @@ import android.os.Handler
  */
 interface HandlerController {
 
+    /**
+     * 获取线程 ID
+     * */
+    fun getThreadId(): Long
+
     fun getHandler(): Handler
 
     fun isCanUse(): Boolean

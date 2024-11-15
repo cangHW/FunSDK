@@ -8,9 +8,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.framework.func.AppInstallActivity
+import com.proxy.service.funsdk.framework.func.DeviceActivity
 import com.proxy.service.funsdk.framework.func.EventActivity
 import com.proxy.service.funsdk.framework.func.FileActivity
 import com.proxy.service.funsdk.framework.func.ScreenActivity
+import com.proxy.service.funsdk.framework.func.SecurityActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
 
 /**
@@ -37,6 +39,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
     fun onClick(view: View) {
         when (view.id) {
+            R.id.device_info->{
+                DeviceActivity.launch(this)
+            }
+
             R.id.app_install -> {
                 AppInstallActivity.launch(this)
             }
@@ -55,6 +61,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
             R.id.event -> {
                 EventActivity.launch(this)
+            }
+
+            R.id.security -> {
+                SecurityActivity.launch(this)
             }
         }
     }

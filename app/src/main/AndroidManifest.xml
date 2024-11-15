@@ -31,15 +31,24 @@
         </activity>
 
         <activity android:name=".imageloader.ImageLoaderActivity" />
+
         <activity android:name=".threadpool.ThreadPoolActivity" />
-        <activity android:name=".apihttp.ApiHttpActivity" />
+
+        <activity android:name=".apihttp.ApiActivity"/>
+        <activity android:name=".apihttp.request.ApiRequestActivity" />
+        <activity android:name=".apihttp.download.ApiDownloadActivity"/>
+
         <activity android:name=".webview.WebViewActivity" />
+
         <activity android:name=".framework.FrameWorkActivity" />
+        <activity android:name=".framework.func.DeviceActivity"/>
         <activity android:name=".framework.func.AppInstallActivity" />
         <activity android:name=".framework.func.FileActivity" />
         <activity android:name=".framework.func.SystemPageActivity" />
         <activity android:name=".framework.func.ScreenActivity" />
         <activity android:name=".framework.func.EventActivity" />
+        <activity android:name=".framework.func.SecurityActivity"/>
+
     </application>
 
     <queries>

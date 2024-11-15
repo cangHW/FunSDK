@@ -44,9 +44,6 @@ dependencies {
     api(project(":ImageLoaderSDK:ImageLoaderBase"))
     api(project(":WebViewSDK:WebViewBase"))
 
-    // 日志库
-    implementation(libs.log.timber)
-
     // 压缩库
     implementation(libs.file.zip)
 

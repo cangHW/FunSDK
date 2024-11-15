@@ -6,7 +6,6 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 
 /**
@@ -22,38 +21,33 @@ class PathSource(private val path: Path) : AbstractWrite() {
      * 同步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeSync(file: File, append: Boolean) {
+    override fun writeSync(file: File, append: Boolean): Boolean {
         start(tag, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
-            if (append) {
-                Files.newBufferedReader(path).use { reader ->
-                    Files.newBufferedWriter(
-                        file.toPath(),
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.APPEND
-                    ).use { writer ->
-                        var line: String?
-                        while ((reader.readLine().also { line = it }) != null) {
-                            writer.write(line)
-                            writer.newLine()
-                        }
-                        writer.flush()
-                    }
-                }
-                success(tag, file.absolutePath)
-                return
+
+            val options = if (append) {
+                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+            } else {
+                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
             }
 
-            Files.copy(
-                path,
-                file.toPath(),
-                StandardCopyOption.REPLACE_EXISTING
-            )
+            Files.newInputStream(path).buffered().use { inputStream ->
+                Files.newOutputStream(file.toPath(), *options).buffered().use { outputStream ->
+                    val buffer = ByteArray(Constants.IO_BUFFER_SIZE)
+                    var bytesRead: Int
+                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
+                }
+            }
+
             success(tag, file.absolutePath)
+            return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
         }
+        return false
     }
 }

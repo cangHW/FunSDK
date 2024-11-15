@@ -9,9 +9,7 @@ import com.proxy.service.threadpool.info.handler.manager.HandlerController
  * @data: 2024/7/3 18:10
  * @desc:
  */
-class HandlerInfo {
-
-    var handlerController: HandlerController? = null
+class HandlerInfo(val handlerController: HandlerController) {
 
     var delay: Long = 0
     var uptimeMillis: Long = 0
@@ -19,11 +17,11 @@ class HandlerInfo {
     fun doRun(runnable: Runnable) {
         try {
             if (delay > 0) {
-                handlerController?.getHandler()?.postDelayed(runnable, delay)
+                handlerController.getHandler().postDelayed(runnable, delay)
             } else if (uptimeMillis > 0) {
-                handlerController?.getHandler()?.postAtTime(runnable, uptimeMillis)
+                handlerController.getHandler().postAtTime(runnable, uptimeMillis)
             } else {
-                handlerController?.getHandler()?.post(runnable)
+                handlerController.getHandler().post(runnable)
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(Constants.TAG).e(throwable)

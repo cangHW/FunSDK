@@ -11,9 +11,12 @@ import java.io.InputStream
  */
 class AutoCloseInputStreamSource(stream: InputStream) : InputStreamSource(stream) {
 
-    override fun writeSync(file: File, append: Boolean) {
-        super.writeSync(file, append)
+    override fun writeSync(file: File, append: Boolean): Boolean {
+        if (!super.writeSync(file, append)) {
+            return false
+        }
         CsFileUtils.close(stream)
+        return true
     }
 
 }

@@ -3,7 +3,6 @@ package com.proxy.service.core.framework.io.file.read.impl
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.base.IRead
-import com.proxy.service.core.framework.io.file.base.IoConfig
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.channels.Channels
@@ -25,7 +24,7 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
         try {
             val content = StringBuilder()
             Channels.newChannel(stream).use { channel ->
-                val buffer = ByteBuffer.allocate(IoConfig.BUFFER_SIZE)
+                val buffer = ByteBuffer.allocate(Constants.IO_BUFFER_SIZE)
 
                 while (channel.read(buffer) > 0) {
                     buffer.flip()

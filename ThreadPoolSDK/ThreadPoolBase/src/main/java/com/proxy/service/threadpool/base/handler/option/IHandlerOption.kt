@@ -19,4 +19,9 @@ interface IHandlerOption : IHandlerLoader {
      * 设置任务在对应时间点执行, 依赖于 SystemClock.uptimeMillis() 计算时间
      * */
     fun setAtTime(uptimeMillis: Long): IHandlerLoader
+
+    /**
+     * 获取当前线程 id, 可用于校验任务是否运行在该线程中
+     * */
+    fun getThreadId(): Long
 }

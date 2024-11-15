@@ -1,8 +1,8 @@
 package com.proxy.service.core.service.apihttp
 
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.apihttp.base.ApiHttpService
-import com.proxy.service.apihttp.base.init.ApiConfig
+import com.proxy.service.apihttp.base.request.RequestService
+import com.proxy.service.apihttp.base.request.config.RequestConfig
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -16,11 +16,11 @@ import com.proxy.service.core.framework.data.log.CsLogger
 object CsApi {
     private const val TAG = "${Constants.TAG}Api"
 
-    private var service: ApiHttpService? = null
+    private var service: RequestService? = null
 
-    private fun getService(): ApiHttpService? {
+    private fun getService(): RequestService? {
         if (service == null) {
-            service = CloudSystem.getService(ApiHttpService::class.java)
+            service = CloudSystem.getService(RequestService::class.java)
         }
         if (service == null) {
             CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Apihttp:xxx>")
@@ -28,12 +28,12 @@ object CsApi {
         return service
     }
 
-    private var config: ApiConfig? = null
+    private var config: RequestConfig? = null
 
     /**
      * 网络库初始化
      * */
-    fun init(config: ApiConfig) {
+    fun init(config: RequestConfig) {
         CsApi.config = config
     }
 
@@ -42,9 +42,9 @@ object CsApi {
      * */
     fun <T> getService(service: Class<T>): T? {
         config?.let {
-            val api = getService()
-            api?.init(it)
-            return api?.getService(service)
+            val request = getService()
+            request?.init(it)
+            return request?.getService(service)
         } ?: let {
             CsLogger.tag(TAG).e("Please check whether initialization has been performed.")
         }

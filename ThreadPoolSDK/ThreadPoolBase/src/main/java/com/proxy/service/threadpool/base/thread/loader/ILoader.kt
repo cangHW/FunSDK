@@ -1,8 +1,8 @@
 package com.proxy.service.threadpool.base.thread.loader
 
-import com.proxy.service.threadpool.base.thread.callback.OnSuccessCallback
+import com.proxy.service.threadpool.base.thread.callback.OnCompleteCallback
 import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
-import com.proxy.service.threadpool.base.thread.callback.OnRunCallback
+import com.proxy.service.threadpool.base.thread.callback.OnSuccessCallback
 import com.proxy.service.threadpool.base.thread.callback.OnStartCallback
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 
@@ -21,7 +21,7 @@ interface ILoader<T> {
     /**
      * 设置任务完成回调
      * */
-    fun setOnRunCallback(callback: OnRunCallback<T>): ILoader<T>
+    fun setOnSuccessCallback(callback: OnSuccessCallback<T>): ILoader<T>
 
     /**
      * 设置任务出错回调
@@ -31,7 +31,7 @@ interface ILoader<T> {
     /**
      * 设置任务结束回调
      * */
-    fun setOnSuccessCallback(callback: OnSuccessCallback): ILoader<T>
+    fun setOnCompleteCallback(callback: OnCompleteCallback): ILoader<T>
 
     /**
      * 开始任务

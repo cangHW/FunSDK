@@ -2,9 +2,9 @@ package com.proxy.service.threadpool.info.thread.task.loader
 
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
-import com.proxy.service.threadpool.base.thread.callback.OnRunCallback
-import com.proxy.service.threadpool.base.thread.callback.OnStartCallback
 import com.proxy.service.threadpool.base.thread.callback.OnSuccessCallback
+import com.proxy.service.threadpool.base.thread.callback.OnStartCallback
+import com.proxy.service.threadpool.base.thread.callback.OnCompleteCallback
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.loader.ILoader
 import com.proxy.service.threadpool.info.constants.Constants
@@ -34,14 +34,14 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
         return this
     }
 
-    override fun setOnSuccessCallback(callback: OnSuccessCallback): ILoader<T> {
+    override fun setOnCompleteCallback(callback: OnCompleteCallback): ILoader<T> {
         taskInfo.observable = taskInfo.observable?.doOnComplete {
             callback.onCallback()
         }
         return this
     }
 
-    override fun setOnRunCallback(callback: OnRunCallback<T>): ILoader<T> {
+    override fun setOnSuccessCallback(callback: OnSuccessCallback<T>): ILoader<T> {
         taskInfo.observable = taskInfo.observable?.doOnNext {
             callback.onCallback(it)
         }

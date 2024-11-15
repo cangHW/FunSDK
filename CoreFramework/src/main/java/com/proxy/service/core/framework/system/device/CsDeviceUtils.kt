@@ -28,14 +28,14 @@ object CsDeviceUtils {
     /**
      * 获取设备品牌名称
      * */
-    fun getBrand(): String {
+    fun getDeviceBrand(): String {
         return Build.BRAND ?: ""
     }
 
     /**
      * 获取设备型号名称
      * */
-    fun getModel(): String {
+    fun getDeviceModel(): String {
         return Build.MODEL ?: ""
     }
 

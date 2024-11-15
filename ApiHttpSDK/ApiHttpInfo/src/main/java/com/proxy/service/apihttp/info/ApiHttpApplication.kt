@@ -3,6 +3,7 @@ package com.proxy.service.apihttp.info
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apihttp.info.config.Config
+import com.proxy.service.apihttp.info.download.manager.AppRelaunchManager
 import com.proxy.service.core.application.base.CsBaseApplication
 
 /**
@@ -20,6 +21,7 @@ class ApiHttpApplication: CsBaseApplication() {
     override fun onCreate(application: Application, isDebug: Boolean) {
         super.onCreate(application, isDebug)
         Config.setIsDebug(isDebug)
+        AppRelaunchManager.reloadTask()
     }
 
 

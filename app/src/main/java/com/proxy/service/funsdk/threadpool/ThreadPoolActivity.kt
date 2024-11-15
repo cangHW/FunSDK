@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
 import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
-import com.proxy.service.threadpool.base.thread.callback.OnSuccessCallback
+import com.proxy.service.threadpool.base.thread.callback.OnCompleteCallback
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.threadpool.base.thread.task.IConsumer
@@ -53,7 +53,7 @@ class ThreadPoolActivity : AppCompatActivity() {
                         override fun accept(value: String) {
                             CsLogger.i("value = $value \n ")
                         }
-                    })?.setOnSuccessCallback(object : OnSuccessCallback {
+                    })?.setOnCompleteCallback(object : OnCompleteCallback {
                         override fun onCallback() {
                         }
                     })

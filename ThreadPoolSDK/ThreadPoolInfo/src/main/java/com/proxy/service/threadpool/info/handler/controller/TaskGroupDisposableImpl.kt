@@ -10,22 +10,22 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @desc:
  */
 class TaskGroupDisposableImpl(
-    private val handlerController: HandlerController?,
+    private val handlerController: HandlerController,
     private val runnable: Runnable,
     private val isDisposeTask:AtomicBoolean
 ) : ITaskGroupDisposable {
 
     override fun disposeTask() {
         isDisposeTask.set(true)
-        handlerController?.getHandler()?.removeCallbacks(runnable)
+        handlerController.getHandler().removeCallbacks(runnable)
     }
 
     override fun disposeGroup() {
-        handlerController?.close()
+        handlerController.close()
     }
 
     override fun disposeGroupSafely() {
-        handlerController?.closeSafely()
+        handlerController.closeSafely()
     }
 
     override fun isTaskDisposed(): Boolean {
@@ -33,6 +33,6 @@ class TaskGroupDisposableImpl(
     }
 
     override fun isGroupDisposed(): Boolean {
-        return handlerController?.isCanUse() != true
+        return !handlerController.isCanUse()
     }
 }

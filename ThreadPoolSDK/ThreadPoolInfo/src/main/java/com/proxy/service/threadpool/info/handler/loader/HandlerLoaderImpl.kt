@@ -15,8 +15,11 @@ open class HandlerLoaderImpl(private val handlerInfo: HandlerInfo) : IHandlerLoa
     override fun start(runnable: Runnable): ITaskGroupDisposable {
         val isDisposeTask = AtomicBoolean(false)
         val task = Runnable {
-            runnable.run()
-            isDisposeTask.set(true)
+            try {
+                runnable.run()
+            } finally {
+                isDisposeTask.set(true)
+            }
         }
         val disposable = TaskGroupDisposableImpl(handlerInfo.handlerController, task, isDisposeTask)
         handlerInfo.doRun(task)
