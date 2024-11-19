@@ -32,7 +32,7 @@ object RetrofitManager {
             }
             retrofit = create()
             RetrofitManager.retrofit = retrofit
-            return retrofit as Retrofit
+            return retrofit!!
         }
     }
 

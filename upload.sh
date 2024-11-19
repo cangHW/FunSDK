@@ -5,8 +5,8 @@ upArray=(
   ":CoreFramework"
 
   # 网络库
-  ":ApiHttpSDK:ApiHttpBase"
-  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpBase"
+#  ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolBase"
@@ -18,8 +18,12 @@ upArray=(
 
   # web 容器库
 #  ":WebViewSDK:WebViewBase"
-  ":WebViewSDK:WebViewInfo"
-  ":WebViewSDK:WebViewBridgeDS"
+#  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewBridgeDS"
+
+    # 权限库
+    ":Permission:PermissionBase"
+    ":Permission:PermissionInfo"
 )
 
 type_params="r"

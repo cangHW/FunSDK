@@ -12,6 +12,7 @@ import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiActivity
 import com.proxy.service.funsdk.framework.FrameWorkActivity
 import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
+import com.proxy.service.funsdk.permission.PermissionActivity
 import com.proxy.service.funsdk.threadpool.ThreadPoolActivity
 import com.proxy.service.funsdk.webview.WebViewActivity
 import java.io.File
@@ -62,6 +63,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.web_view -> {
                 WebViewActivity.launch(this)
+            }
+
+            R.id.permission -> {
+                PermissionActivity.launch(this)
             }
         }
     }

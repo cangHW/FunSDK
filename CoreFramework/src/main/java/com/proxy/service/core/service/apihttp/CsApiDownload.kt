@@ -11,6 +11,8 @@ import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
+ * http 下载框架入口
+ *
  * @author: cangHX
  * @data: 2024/11/5 13:38
  * @desc:

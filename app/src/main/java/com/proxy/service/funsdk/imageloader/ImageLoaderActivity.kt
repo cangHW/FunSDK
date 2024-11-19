@@ -57,13 +57,13 @@ class ImageLoaderActivity : AppCompatActivity() {
 
             R.id.load_res -> {
                 CsImageLoader.with(this)
-                    ?.loadRes(R.drawable.booklibrary_radio_recommend_select)
+                    ?.loadRes(R.drawable.test)
                     ?.grayscale()?.into(image)
             }
 
             R.id.load_lottie -> {
                 CsImageLoader.with(this)?.asLottieModel()
-                    ?.loadRes(R.raw.reader_download_loading)
+                    ?.loadRes(R.raw.test_loading)
                     ?.setRepeatCount(3)
                     ?.setRepeatModel(LottieRepeatModel.REVERSE)
                     ?.into(layout)

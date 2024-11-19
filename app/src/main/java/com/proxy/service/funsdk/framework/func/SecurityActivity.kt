@@ -39,7 +39,7 @@ class SecurityActivity : AppCompatActivity() {
             R.id.md5 -> {
                 CsTask.ioThread()?.call(object : ICallable<String> {
                     override fun accept(): String {
-                        CsLogger.d(CsMd5Utils.getMD5(resources.openRawResource(R.raw.reader_download_loading)))
+                        CsLogger.d(CsMd5Utils.getMD5(resources.openRawResource(R.raw.test_loading)))
                         return ""
                     }
                 })?.start()

@@ -1,4 +1,4 @@
-package com.proxy.service.apihttp.info.download
+package com.proxy.service.apihttp.info
 
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.annotations.CloudApiService
@@ -31,6 +31,7 @@ class DownloadServiceImpl : DownloadService {
     private val tag = "${Constants.LOG_DOWNLOAD_TAG_START}Service"
 
     private val lock = Any()
+    @Volatile
     private var isInit = false
 
     override fun init(config: DownloadConfig) {

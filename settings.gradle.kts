@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         maven {
-            name="Repo"
+            name = "Repo"
             setUrl("file://${rootDir}/Repo")
         }
         google()
@@ -40,3 +40,6 @@ include(":ImageLoaderSDK:ImageLoaderInfo")
 include(":WebViewSDK:WebViewBase")
 include(":WebViewSDK:WebViewInfo")
 include(":WebViewSDK:WebViewBridgeDS")
+
+include(":Permission:PermissionBase")
+include(":Permission:PermissionInfo")

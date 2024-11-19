@@ -1,4 +1,4 @@
-package com.proxy.service.apihttp.info.request
+package com.proxy.service.apihttp.info
 
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apihttp.base.request.RequestService
@@ -15,6 +15,7 @@ import com.proxy.service.apihttp.info.request.retrofit.RetrofitManager
 class RequestServiceImpl : RequestService {
 
     private val lock = Any()
+    @Volatile
     private var isInit = false
 
     override fun init(config: RequestConfig) {

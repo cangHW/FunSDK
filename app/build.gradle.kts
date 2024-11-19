@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":ImageLoaderSDK:ImageLoaderInfo"))
     implementation(project(":WebViewSDK:WebViewInfo"))
     implementation(project(":WebViewSDK:WebViewBridgeDS"))
+    implementation(project(":Permission:PermissionInfo"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

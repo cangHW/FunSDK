@@ -1,0 +1,132 @@
+package com.proxy.service.permission.info.fragment
+
+import android.content.pm.PackageManager
+import androidx.fragment.app.Fragment
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.permission.base.callback.ActionCallback
+import com.proxy.service.permission.info.config.Config
+import com.proxy.service.threadpool.base.thread.task.ICallable
+
+/**
+ * @author: cangHX
+ * @data: 2024/11/18 18:10
+ * @desc:
+ */
+class RequestFragment : Fragment(), IRequest {
+
+    private val requestCode: Int by lazy {
+        Config.REQUEST_CODE.incrementAndGet()
+    }
+
+    private val grantedPermission = ArrayList<String>()
+    private var grantedAction: ActionCallback? = null
+
+    private val deniedPermission = ArrayList<String>()
+    private var deniedAction: ActionCallback? = null
+
+    private val noPromptPermission = ArrayList<String>()
+    private var noPromptAction: ActionCallback? = null
+
+    /**
+     * 添加要申请的权限
+     * */
+    override fun addPermission(permission: String) {
+        if (Config.SERVICE.isPermissionGranted(permission)) {
+            grantedPermission.add(permission)
+        } else {
+            deniedPermission.add(permission)
+        }
+    }
+
+    /**
+     * 允许的权限回调
+     * */
+    override fun setGrantedCallback(callback: ActionCallback) {
+        this.grantedAction = callback
+    }
+
+    /**
+     * 拒绝的权限回调
+     * */
+    override fun setDeniedCallback(callback: ActionCallback) {
+        this.deniedAction = callback
+    }
+
+    /**
+     * 拒绝并不再提示的权限回调
+     * */
+    override fun setNoPromptCallback(callback: ActionCallback) {
+        this.noPromptAction = callback
+    }
+
+    /**
+     * 开始申请权限
+     */
+    override fun request() {
+        if (deniedPermission.isEmpty()) {
+            callback()
+            return
+        }
+        requestPermissions(deniedPermission.toTypedArray(), requestCode)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode != this.requestCode) {
+            return
+        }
+        if (permissions.isEmpty()) {
+            callback()
+            return
+        }
+
+        for (i in grantResults.indices) {
+            val permission = permissions[i]
+
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                grantedPermission.add(permission)
+                deniedPermission.remove(permission)
+                continue
+            }
+
+            if (shouldShowRequestPermissionRationale(permission)) {
+                continue
+            }
+
+            noPromptPermission.add(permission)
+            deniedPermission.remove(permission)
+        }
+
+        callback()
+    }
+
+    private fun clear() {
+        parentFragmentManager.beginTransaction().remove(this).commitNowAllowingStateLoss()
+    }
+
+    private fun callback() {
+        clear()
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                if (grantedPermission.isNotEmpty()) {
+                    grantedAction?.onAction(grantedPermission.toTypedArray())
+                }
+
+                if (deniedPermission.isNotEmpty()) {
+                    deniedAction?.onAction(deniedPermission.toTypedArray())
+                }
+
+                if (noPromptPermission.isNotEmpty()) {
+                    noPromptAction?.onAction(noPromptPermission.toTypedArray())
+                }
+                return ""
+            }
+        })?.start()
+    }
+
+}
