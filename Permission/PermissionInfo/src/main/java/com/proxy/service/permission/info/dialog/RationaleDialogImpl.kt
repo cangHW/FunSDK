@@ -1,11 +1,11 @@
 package com.proxy.service.permission.info.dialog
 
-import android.app.Activity
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.proxy.service.permission.base.callback.ButtonClick
+import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IRationaleDialog
+import com.proxy.service.permission.info.config.Config
 
 /**
  * @author: cangHX
@@ -14,19 +14,19 @@ import com.proxy.service.permission.base.manager.IRationaleDialog
  */
 class RationaleDialogImpl : IRationaleDialog {
 
-    private var title: String = ""
-    private var content: String = ""
+    private var title: String? = null
+    private var content: String? = null
 
-    private var leftText: String = ""
+    private var leftText: String? = null
     private var leftClick: ButtonClick? = null
 
-    private var rightText: String = ""
+    private var rightText: String? = null
     private var rightClick: ButtonClick? = null
 
     /**
      * 设置标题
      * */
-    override fun setTitle(title: String): IRationaleDialog {
+    override fun setTitle(title: String?): IRationaleDialog {
         this.title = title
         return this
     }
@@ -34,7 +34,7 @@ class RationaleDialogImpl : IRationaleDialog {
     /**
      * 设置内容
      * */
-    override fun setContent(content: String): IRationaleDialog {
+    override fun setContent(content: String?): IRationaleDialog {
         this.content = content
         return this
     }
@@ -45,7 +45,7 @@ class RationaleDialogImpl : IRationaleDialog {
      * @param text  默认值为: 取消, 可自定义
      * @param click 默认行为: 取消弹窗, 可自定义
      * */
-    override fun setLeftButton(text: String, click: ButtonClick): IRationaleDialog {
+    override fun setLeftButton(text: String?, click: ButtonClick?): IRationaleDialog {
         this.leftText = text
         this.leftClick = click
         return this
@@ -57,7 +57,7 @@ class RationaleDialogImpl : IRationaleDialog {
      * @param text  默认值为: 同意 或 去设置, 可自定义
      * @param click 默认行为: 继续申请权限 或 跳转设置, 可自定义
      * */
-    override fun setRightButton(text: String, click: ButtonClick): IRationaleDialog {
+    override fun setRightButton(text: String?, click: ButtonClick?): IRationaleDialog {
         this.rightText = text
         this.rightClick = click
         return this
@@ -76,28 +76,38 @@ class RationaleDialogImpl : IRationaleDialog {
      * 展示需要权限的理由
      * */
     override fun show(activity: FragmentActivity) {
-        if (activity.isFinishing) {
-            return
-        }
-        if (activity.isDestroyed) {
-            return
-        }
-        AlertDialog.Builder(activity)
-            .setTitle(title)
-            .setMessage(content)
-            .setNegativeButton(leftText) { dialog, _ ->
-                leftClick?.onClick(object : ButtonClick.DialogInterface {
-                    override fun dismiss() {
-                        dialog?.dismiss()
+        Config.factory.showDialog(
+            DialogFactory.MODE_RATIONALE,
+            activity,
+            title,
+            content,
+            leftText,
+            object : ButtonClick {
+                override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
+                    if (leftClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                        return true
                     }
-                })
+                    dialog.dismiss()
+                    return true
+                }
+            },
+            rightText,
+            object : ButtonClick {
+                override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
+                    if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                        return true
+                    }
+                    dialog.dismiss()
+                    return true
+                }
             }
-            .setPositiveButton(rightText) { dialog, _ ->
-                rightClick?.onClick(object : ButtonClick.DialogInterface {
-                    override fun dismiss() {
-                        dialog?.dismiss()
-                    }
-                })
-            }.show()
+        )
+    }
+
+    private class DialogInterfaceImpl(val dialog: ButtonClick.DialogInterface) :
+        ButtonClick.DialogInterface {
+        override fun dismiss() {
+            dialog.dismiss()
+        }
     }
 }

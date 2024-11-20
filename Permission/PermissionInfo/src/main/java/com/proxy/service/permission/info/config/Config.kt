@@ -1,6 +1,8 @@
 package com.proxy.service.permission.info.config
 
+import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.info.PermissionServiceImpl
+import com.proxy.service.permission.info.dialog.DialogFactoryImpl
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -14,4 +16,11 @@ object Config {
 
     val SERVICE = PermissionServiceImpl()
     val REQUEST_CODE: AtomicInteger = AtomicInteger(0)
+
+    var factory: DialogFactory = DialogFactoryImpl()
+
+    fun setDialogFactory(factory: DialogFactory) {
+        this.factory = factory
+    }
+
 }

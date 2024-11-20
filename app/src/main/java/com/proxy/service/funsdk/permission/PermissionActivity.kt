@@ -1,18 +1,23 @@
 package com.proxy.service.funsdk.permission
 
 import android.Manifest
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.funsdk.R
 import com.proxy.service.permission.base.callback.DeniedActionCallback
 import com.proxy.service.permission.base.callback.ActionCallback
+import com.proxy.service.permission.base.callback.ButtonClick
+import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
 import com.proxy.service.permission.base.callback.NoPromptActionCallback
+import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IRationaleDialog
 import com.proxy.service.permission.base.manager.ISettingDialog
 
@@ -81,8 +86,39 @@ class PermissionActivity : AppCompatActivity() {
                     ?.start()
             }
 
-            R.id.show_rationale -> {
-
+            R.id.set_dialog_factory -> {
+                CsPermission.setDialogFactory(object : DialogFactory{
+                    override fun showDialog(
+                        mode: String,
+                        activity: Activity,
+                        title: String?,
+                        content: String?,
+                        leftButtonText: String?,
+                        leftButtonClick: ButtonClick,
+                        rightButtonText: String?,
+                        rightButtonClick: ButtonClick
+                    ) {
+                        AlertDialog.Builder(activity)
+                            .setTitle("TITLE")
+                            .setMessage("CONTENT")
+                            .setCancelable(false)
+                            .setNegativeButton("LEFT_BUTTON_TEXT") { dialog, _ ->
+                                leftButtonClick.onClick(object : DialogInterface {
+                                    override fun dismiss() {
+                                        dialog.dismiss()
+                                    }
+                                })
+                            }
+                            .setPositiveButton("RIGHT_BUTTON_TEXT") { dialog, _ ->
+                                rightButtonClick.onClick(object : DialogInterface {
+                                    override fun dismiss() {
+                                        dialog.dismiss()
+                                    }
+                                })
+                            }
+                            .show()
+                    }
+                })
             }
         }
     }

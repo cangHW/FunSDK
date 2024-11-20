@@ -5,7 +5,9 @@ import androidx.core.content.ContextCompat
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.permission.base.PermissionService
+import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IPermissionRequest
+import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.request.PermissionRequestImpl
 
 
@@ -22,6 +24,13 @@ class PermissionServiceImpl: PermissionService {
     override fun isPermissionGranted(permission: String): Boolean {
         val context = CsContextManager.getApplication()
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    /**
+     * 设置弹窗工厂
+     * */
+    override fun setDialogFactory(factory: DialogFactory) {
+        Config.setDialogFactory(factory)
     }
 
     /**

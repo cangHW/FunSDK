@@ -25,7 +25,7 @@ class PermissionRequestImpl : IPermissionRequest {
 
     private val tag = "${Config.LOG_TAG_START}Request"
     private val fragment: IRequest = RequestFragment()
-    private var activity: FragmentActivity?=null
+    private var activity: FragmentActivity? = null
 
     /**
      * 添加要申请的权限
@@ -51,21 +51,15 @@ class PermissionRequestImpl : IPermissionRequest {
      * 拒绝的权限回调
      * */
     override fun setDeniedCallback(callback: DeniedActionCallback): IPermissionRequest {
-        fragment.setDeniedCallback(object :ActionCallback{
+        fragment.setDeniedCallback(object : ActionCallback {
             override fun onAction(list: Array<String>) {
                 val dialog = RationaleDialogImpl()
-                    .setTitle("权限")
-                    .setContent("维持该应用运行所需要的必要权限")
-                    .setLeftButton("取消", object : ButtonClick {
-                        override fun onClick(dialog: ButtonClick.DialogInterface) {
-                            dialog.dismiss()
-                        }
-                    }).setRightButton("同意", object : ButtonClick {
-                        override fun onClick(dialog: ButtonClick.DialogInterface) {
-                            dialog.dismiss()
+                    .setRightButton(click =  object : ButtonClick {
+                        override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
                             activity?.let {
                                 start(it)
                             }
+                            return false
                         }
                     })
                 callback.onAction(list, dialog)
@@ -78,9 +72,11 @@ class PermissionRequestImpl : IPermissionRequest {
      * 拒绝并不再提示的权限回调
      * */
     override fun setNoPromptCallback(callback: NoPromptActionCallback): IPermissionRequest {
-        fragment.setNoPromptCallback(object :ActionCallback{
+        fragment.setNoPromptCallback(object : ActionCallback {
             override fun onAction(list: Array<String>) {
-                callback.onAction(list, SettingDialogImpl(list))
+                val dialog = SettingDialogImpl(list)
+                    .setRightButton(text = "去设置")
+                callback.onAction(list, dialog)
             }
         })
         return this

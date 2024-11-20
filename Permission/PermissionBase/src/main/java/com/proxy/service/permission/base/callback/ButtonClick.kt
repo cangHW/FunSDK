@@ -14,6 +14,6 @@ interface ButtonClick {
         fun dismiss()
     }
 
-    fun onClick(dialog: DialogInterface)
+    fun onClick(dialog: DialogInterface): Boolean
 
 }

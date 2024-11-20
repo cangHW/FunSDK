@@ -4,6 +4,7 @@ import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.PermissionService
+import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IPermissionRequest
 
 /**
@@ -35,6 +36,13 @@ object CsPermission {
      * */
     fun isPermissionGranted(permission: String): Boolean {
         return getService()?.isPermissionGranted(permission) ?: false
+    }
+
+    /**
+     * 设置弹窗工厂
+     * */
+    fun setDialogFactory(factory: DialogFactory) {
+        getService()?.setDialogFactory(factory)
     }
 
     /**
