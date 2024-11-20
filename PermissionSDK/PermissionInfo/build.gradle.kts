@@ -43,7 +43,7 @@ dependencies {
         exclude(group = "io.github.cangHW", module = "Service-PermissionBase")
     }
 
-    implementation(project(":Permission:PermissionBase"))
+    implementation(project(":PermissionSDK:PermissionBase"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

@@ -41,5 +41,5 @@ include(":WebViewSDK:WebViewBase")
 include(":WebViewSDK:WebViewInfo")
 include(":WebViewSDK:WebViewBridgeDS")
 
-include(":Permission:PermissionBase")
-include(":Permission:PermissionInfo")
+include(":PermissionSDK:PermissionBase")
+include(":PermissionSDK:PermissionInfo")
