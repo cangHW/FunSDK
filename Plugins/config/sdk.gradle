@@ -92,6 +92,7 @@ ext {
                     libraryDescription: "The perfect framework for Android"
             ],
 
+            // 权限库
             PermissionBase    : [
                     artifact          : "Service-PermissionBase",
                     version           : "0.0.3",
