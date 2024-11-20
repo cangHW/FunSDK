@@ -2,6 +2,7 @@ package com.proxy.service.permission.info.fragment
 
 import android.content.pm.PackageManager
 import androidx.fragment.app.Fragment
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.info.config.Config
@@ -13,6 +14,8 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @desc:
  */
 class RequestFragment : Fragment(), IRequest {
+
+    private val tag = "${Config.LOG_TAG_START}Request"
 
     private val requestCode: Int by lazy {
         Config.REQUEST_CODE.incrementAndGet()
@@ -67,6 +70,7 @@ class RequestFragment : Fragment(), IRequest {
             callback()
             return
         }
+        CsLogger.tag(tag).i("start to request permission.")
         requestPermissions(deniedPermission.toTypedArray(), requestCode)
     }
 
@@ -80,6 +84,7 @@ class RequestFragment : Fragment(), IRequest {
         if (requestCode != this.requestCode) {
             return
         }
+        CsLogger.tag(tag).i("result from user selection.")
         if (permissions.isEmpty()) {
             callback()
             return
@@ -89,6 +94,7 @@ class RequestFragment : Fragment(), IRequest {
             val permission = permissions[i]
 
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                CsLogger.tag(tag).i("granted permission from user. permission: $permission")
                 grantedPermission.add(permission)
                 deniedPermission.remove(permission)
                 continue
@@ -97,7 +103,7 @@ class RequestFragment : Fragment(), IRequest {
             if (shouldShowRequestPermissionRationale(permission)) {
                 continue
             }
-
+            CsLogger.tag(tag).e("system prohibits reapplication. permission: $permission")
             noPromptPermission.add(permission)
             deniedPermission.remove(permission)
         }

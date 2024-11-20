@@ -43,6 +43,16 @@ class PermissionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
+
+//        val getResultLauncher = registerForActivityResult(
+//            ActivityResultContracts.StartActivityForResult()
+//        ) { result ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                val data: Intent? = result.data
+//                // Handle the Intent result here
+//            }
+//        }
+
     }
 
     fun onClick(view: View) {
@@ -51,39 +61,6 @@ class PermissionActivity : AppCompatActivity() {
                 CsPermission.isPermissionGranted(Manifest.permission.CAMERA).let {
                     CsLogger.tag(tag).i("CAMERA = $it")
                 }
-            }
-
-            R.id.request_permission -> {
-                CsPermission.createRequest()
-                    ?.addPermission(Manifest.permission.CAMERA)
-                    ?.setGrantedCallback(object : ActionCallback{
-                        override fun onAction(list: Array<String>) {
-                            CsLogger.tag(tag).i("onGrantedCallback = $list")
-                        }
-                    })
-                    ?.setDeniedCallback(object : DeniedActionCallback {
-                        override fun onAction(list: Array<String>, dialog: IRationaleDialog) {
-                            CsLogger.tag(tag).i("onDeniedCallback = $list")
-                            dialog.show(this@PermissionActivity)
-                        }
-                    })
-                    ?.setNoPromptCallback(object : NoPromptActionCallback {
-                        override fun onAction(list: Array<String>, dialog: ISettingDialog) {
-                            CsLogger.tag(tag).i("onNoPromptCallback = $list")
-                            dialog.setGrantedCallback(object :ActionCallback{
-                                override fun onAction(list: Array<String>) {
-                                    CsLogger.tag(tag).i("onGrantedCallback = $list")
-                                }
-                            })
-                            dialog.setDeniedCallback(object :ActionCallback{
-                                override fun onAction(list: Array<String>) {
-                                    CsLogger.tag(tag).i("onDeniedCallback = $list")
-                                }
-                            })
-                            dialog.show(this@PermissionActivity)
-                        }
-                    })
-                    ?.start()
             }
 
             R.id.set_dialog_factory -> {
@@ -120,6 +97,40 @@ class PermissionActivity : AppCompatActivity() {
                     }
                 })
             }
+
+            R.id.request_permission -> {
+                CsPermission.createRequest()
+                    ?.addPermission(Manifest.permission.CAMERA)
+                    ?.setGrantedCallback(object : ActionCallback{
+                        override fun onAction(list: Array<String>) {
+                            CsLogger.tag(tag).i("onGrantedCallback = $list")
+                        }
+                    })
+                    ?.setDeniedCallback(object : DeniedActionCallback {
+                        override fun onAction(list: Array<String>, dialog: IRationaleDialog) {
+                            CsLogger.tag(tag).i("onDeniedCallback = $list")
+                            dialog.show(this@PermissionActivity)
+                        }
+                    })
+                    ?.setNoPromptCallback(object : NoPromptActionCallback {
+                        override fun onAction(list: Array<String>, dialog: ISettingDialog) {
+                            CsLogger.tag(tag).i("onNoPromptCallback = $list")
+                            dialog.setGrantedCallback(object :ActionCallback{
+                                override fun onAction(list: Array<String>) {
+                                    CsLogger.tag(tag).i("onGrantedCallback = $list")
+                                }
+                            })
+                            dialog.setDeniedCallback(object :ActionCallback{
+                                override fun onAction(list: Array<String>) {
+                                    CsLogger.tag(tag).i("onDeniedCallback = $list")
+                                }
+                            })
+                            dialog.show(this@PermissionActivity)
+                        }
+                    })
+                    ?.start()
+            }
         }
     }
+
 }

@@ -2,6 +2,7 @@ package com.proxy.service.permission.info.dialog
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IRationaleDialog
@@ -13,6 +14,8 @@ import com.proxy.service.permission.info.config.Config
  * @desc:
  */
 class RationaleDialogImpl : IRationaleDialog {
+
+    private val tag = "${Config.LOG_TAG_START}RationaleDialog"
 
     private var title: String? = null
     private var content: String? = null
@@ -69,6 +72,8 @@ class RationaleDialogImpl : IRationaleDialog {
     override fun show(fragment: Fragment) {
         fragment.activity?.let {
             show(it)
+        } ?: let {
+            CsLogger.tag(tag).i("the activity is null from fragment : $fragment")
         }
     }
 
@@ -76,6 +81,7 @@ class RationaleDialogImpl : IRationaleDialog {
      * 展示需要权限的理由
      * */
     override fun show(activity: FragmentActivity) {
+        CsLogger.tag(tag).i("dialog is ready to show from activity : $activity")
         Config.factory.showDialog(
             DialogFactory.MODE_RATIONALE,
             activity,

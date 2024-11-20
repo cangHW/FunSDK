@@ -44,7 +44,7 @@ dependencies {
     }
     implementation(libs.service.threadpool)
 
-    implementation(libs.bundles.http)
+    api(libs.bundles.http)
 
     implementation(libs.room.api)
     kapt(libs.room.compiler)

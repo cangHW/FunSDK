@@ -31,7 +31,7 @@ dependencies {
     implementation(libs.cloud.api)
     compileOnly(libs.core.framework)
 
-    api(libs.bundles.http)
+    compileOnly(libs.bundles.http)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

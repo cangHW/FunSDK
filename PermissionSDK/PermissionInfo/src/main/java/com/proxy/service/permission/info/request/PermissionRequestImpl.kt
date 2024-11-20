@@ -23,7 +23,7 @@ import com.proxy.service.permission.info.fragment.RequestFragment
  */
 class PermissionRequestImpl : IPermissionRequest {
 
-    private val tag = "${Config.LOG_TAG_START}Request"
+    private val tag = "${Config.LOG_TAG_START}IRequest"
     private val fragment: IRequest = RequestFragment()
     private var activity: FragmentActivity? = null
 
@@ -113,7 +113,7 @@ class PermissionRequestImpl : IPermissionRequest {
             if (it is FragmentActivity) {
                 start(it)
             } else {
-                CsLogger.tag(tag).i("The top activity is not a subclass of ComponentActivity.")
+                CsLogger.tag(tag).i("The top activity is not a subclass of FragmentActivity.")
             }
         } ?: let {
             CsLogger.tag(tag).i("The top activity is null.")

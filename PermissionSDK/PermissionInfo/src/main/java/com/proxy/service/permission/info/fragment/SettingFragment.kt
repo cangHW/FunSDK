@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.fragment.app.Fragment
 import com.proxy.service.core.framework.app.CsAppUtils
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.info.config.Config
@@ -16,6 +17,8 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @desc:
  */
 class SettingFragment : Fragment(), ISetting {
+
+    private val tag = "${Config.LOG_TAG_START}Setting"
 
     private val grantedPermission = ArrayList<String>()
     private val deniedPermission = ArrayList<String>()
@@ -52,6 +55,7 @@ class SettingFragment : Fragment(), ISetting {
      * 开始申请权限
      */
     override fun request() {
+        CsLogger.tag(tag).i("start to launch setting page.")
         val intent = Intent()
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         intent.setData(Uri.parse("package:${CsAppUtils.getPackageName()}"))
@@ -63,12 +67,13 @@ class SettingFragment : Fragment(), ISetting {
         if (requestCode != this.requestCode) {
             return
         }
-
+        CsLogger.tag(tag).i("result from setting page.")
         val iterator = deniedPermission.iterator()
         while (iterator.hasNext()) {
             val permission = iterator.next()
             if (Config.SERVICE.isPermissionGranted(permission)) {
                 grantedPermission.add(permission)
+                CsLogger.tag(tag).i("granted permission from setting. permission: $permission")
                 iterator.remove()
             }
         }

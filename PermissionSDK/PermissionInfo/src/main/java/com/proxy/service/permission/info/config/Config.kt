@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 object Config {
 
-    const val LOG_TAG_START = "Permission_"
+    const val LOG_TAG_START = "Perm_"
 
     val SERVICE = PermissionServiceImpl()
     val REQUEST_CODE: AtomicInteger = AtomicInteger(0)

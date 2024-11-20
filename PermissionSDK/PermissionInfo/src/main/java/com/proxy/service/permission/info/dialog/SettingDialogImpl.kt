@@ -3,6 +3,7 @@ package com.proxy.service.permission.info.dialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.manager.DialogFactory
@@ -18,7 +19,7 @@ import com.proxy.service.permission.info.fragment.SettingFragment
  */
 class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
 
-    private val tag = "${Config.LOG_TAG_START}Setting"
+    private val tag = "${Config.LOG_TAG_START}SettingDialog"
     private val fragment: ISetting = SettingFragment()
 
     private var title: String? = null
@@ -95,6 +96,8 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
     override fun show(fragment: Fragment) {
         fragment.activity?.let {
             show(it)
+        } ?: let {
+            CsLogger.tag(tag).i("the activity is null from fragment : $fragment")
         }
     }
 
@@ -102,6 +105,7 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
      * 展示需要权限的理由
      * */
     override fun show(activity: FragmentActivity) {
+        CsLogger.tag(tag).i("dialog is ready to show from activity : $activity")
         Config.factory.showDialog(
             DialogFactory.MODE_SETTING,
             activity,
@@ -124,13 +128,20 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
                         return true
                     }
                     dialog.dismiss()
+                    CsLogger.tag(tag).i("Ready to launch setting page.")
                     if (activity.isFinishing) {
+                        CsLogger.tag(tag).i("The activity is finishing, so can not launch setting page.")
                         return true
                     }
                     if (activity.isDestroyed) {
+                        CsLogger.tag(tag).i("The activity is destroyed, so can not launch setting page.")
                         return true
                     }
-                    startSetting(activity.supportFragmentManager)
+                    try {
+                        startSetting(activity.supportFragmentManager)
+                    } catch (throwable: Throwable) {
+                        CsLogger.tag(tag).e(throwable)
+                    }
                     return true
                 }
             }
