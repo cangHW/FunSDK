@@ -3,6 +3,7 @@ package com.proxy.service.permission.base.manager.base
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.proxy.service.permission.base.callback.ButtonClick
+import com.proxy.service.permission.base.callback.DialogDismissCallback
 
 /**
  * @author: cangHX
@@ -32,6 +33,11 @@ interface IDialog : ICallback<IDialog> {
     fun setRightButton(text: String? = null, click: ButtonClick? = null): IDialog
 
     /**
+     * 设置弹窗关闭回调
+     * */
+    fun setDismissCallback(callback: DialogDismissCallback): IDialog
+
+    /**
      * 展示需要权限的理由
      * */
     fun show(fragment: Fragment)
@@ -41,4 +47,8 @@ interface IDialog : ICallback<IDialog> {
      * */
     fun show(activity: FragmentActivity)
 
+    /**
+     * 关闭弹窗
+     * */
+    fun dismiss()
 }

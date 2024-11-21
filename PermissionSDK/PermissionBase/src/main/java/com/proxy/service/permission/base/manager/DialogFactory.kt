@@ -3,6 +3,8 @@ package com.proxy.service.permission.base.manager
 import android.app.Activity
 import androidx.annotation.StringDef
 import com.proxy.service.permission.base.callback.ButtonClick
+import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
+import com.proxy.service.permission.base.callback.DialogDismissCallback
 
 /**
  * 弹窗工厂
@@ -43,7 +45,8 @@ interface DialogFactory {
         leftButtonText: String?,
         leftButtonClick: ButtonClick,
         rightButtonText: String?,
-        rightButtonClick: ButtonClick
-    )
+        rightButtonClick: ButtonClick,
+        dialogDismissCallback: DialogDismissCallback
+    ): DialogInterface?
 
 }

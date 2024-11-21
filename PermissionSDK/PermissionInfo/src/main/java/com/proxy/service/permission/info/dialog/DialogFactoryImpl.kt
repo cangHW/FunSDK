@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
+import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.info.config.Config
 
@@ -35,38 +36,44 @@ class DialogFactoryImpl : DialogFactory {
         leftButtonText: String?,
         leftButtonClick: ButtonClick,
         rightButtonText: String?,
-        rightButtonClick: ButtonClick
-    ) {
+        rightButtonClick: ButtonClick,
+        dialogDismissCallback: DialogDismissCallback
+    ): DialogInterface? {
         CsLogger.tag(tag).i("Ready to show the dialog.")
         if (activity.isFinishing) {
             CsLogger.tag(tag).i("The activity is finishing, so dialog are no longer displayed.")
-            return
+            return null
         }
         if (activity.isDestroyed) {
             CsLogger.tag(tag).i("The activity is destroyed, so dialog are no longer displayed.")
-            return
+            return null
         }
-        AlertDialog.Builder(activity)
+
+        var dialog: AlertDialog? = null
+
+        val dialogInterface = object : DialogInterface {
+            override fun dismiss() {
+                CsLogger.tag(tag).i("Dialog is ready to dismiss.")
+                dialog?.dismiss()
+            }
+        }
+
+        dialog = AlertDialog.Builder(activity)
             .setTitle(title ?: TITLE)
             .setMessage(content ?: CONTENT)
             .setCancelable(false)
-            .setNegativeButton(leftButtonText ?: LEFT_BUTTON_TEXT) { dialog, _ ->
-                CsLogger.tag(tag).i("The left button click.")
-                leftButtonClick.onClick(object : DialogInterface {
-                    override fun dismiss() {
-                        CsLogger.tag(tag).i("Dialog is ready to dismiss.")
-                        dialog.dismiss()
-                    }
-                })
+            .setOnDismissListener {
+                dialogDismissCallback.onDismiss()
             }
-            .setPositiveButton(rightButtonText ?: RIGHT_BUTTON_TEXT) { dialog, _ ->
+            .setNegativeButton(leftButtonText ?: LEFT_BUTTON_TEXT) { _, _ ->
+                CsLogger.tag(tag).i("The left button click.")
+                leftButtonClick.onClick(dialogInterface)
+            }
+            .setPositiveButton(rightButtonText ?: RIGHT_BUTTON_TEXT) { _, _ ->
                 CsLogger.tag(tag).i("The right button click.")
-                rightButtonClick.onClick(object : DialogInterface {
-                    override fun dismiss() {
-                        CsLogger.tag(tag).i("Dialog is ready to dismiss.")
-                        dialog.dismiss()
-                    }
-                })
+                rightButtonClick.onClick(dialogInterface)
             }.show()
+
+        return dialogInterface
     }
 }

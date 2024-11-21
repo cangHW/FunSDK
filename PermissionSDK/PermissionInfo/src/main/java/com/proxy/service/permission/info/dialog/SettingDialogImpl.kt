@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.callback.ButtonClick
+import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
+import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.IDialog
 import com.proxy.service.permission.info.config.Config
@@ -29,6 +31,9 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
     private var leftClick: ButtonClick? = null
     private var rightText: String? = null
     private var rightClick: ButtonClick? = null
+
+    private var dialogInterface: DialogInterface? = null
+    private var dialogDismissCallback: DialogDismissCallback? = null
 
     init {
         fragment.setPermission(permissions)
@@ -95,6 +100,11 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
         return this
     }
 
+    override fun setDismissCallback(callback: DialogDismissCallback): IDialog {
+        this.dialogDismissCallback = callback
+        return this
+    }
+
     /**
      * 展示需要权限的理由
      * */
@@ -111,14 +121,13 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
      * */
     override fun show(activity: FragmentActivity) {
         CsLogger.tag(tag).i("dialog is ready to show from activity : $activity")
-        Config.factory.showDialog(
-            DialogFactory.MODE_SETTING,
+        dialogInterface = Config.factory.showDialog(DialogFactory.MODE_SETTING,
             activity,
             title,
             content,
             leftText,
             object : ButtonClick {
-                override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
+                override fun onClick(dialog: DialogInterface): Boolean {
                     if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
                         return true
                     }
@@ -128,18 +137,20 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
             },
             rightText,
             object : ButtonClick {
-                override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
+                override fun onClick(dialog: DialogInterface): Boolean {
                     if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
                         return true
                     }
                     dialog.dismiss()
                     CsLogger.tag(tag).i("Ready to launch setting page.")
                     if (activity.isFinishing) {
-                        CsLogger.tag(tag).i("The activity is finishing, so can not launch setting page.")
+                        CsLogger.tag(tag)
+                            .i("The activity is finishing, so can not launch setting page.")
                         return true
                     }
                     if (activity.isDestroyed) {
-                        CsLogger.tag(tag).i("The activity is destroyed, so can not launch setting page.")
+                        CsLogger.tag(tag)
+                            .i("The activity is destroyed, so can not launch setting page.")
                         return true
                     }
                     try {
@@ -149,8 +160,16 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
                     }
                     return true
                 }
-            }
-        )
+            },
+            object : DialogDismissCallback {
+                override fun onDismiss() {
+                    dialogDismissCallback?.onDismiss()
+                }
+            })
+    }
+
+    override fun dismiss() {
+        dialogInterface?.dismiss()
     }
 
     private fun startSetting(manager: FragmentManager) {
@@ -160,8 +179,7 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
         fragment.request()
     }
 
-    private class DialogInterfaceImpl(val dialog: ButtonClick.DialogInterface) :
-        ButtonClick.DialogInterface {
+    private class DialogInterfaceImpl(val dialog: DialogInterface) : DialogInterface {
         override fun dismiss() {
             dialog.dismiss()
         }

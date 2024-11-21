@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.callback.ButtonClick
+import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
+import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.IDialog
 import com.proxy.service.permission.info.config.Config
@@ -31,6 +33,9 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
     private var grantedCallback: ActionCallback? = null
     private var deniedCallback: ActionCallback? = null
     private var noPromptCallback: ActionCallback? = null
+
+    private var dialogInterface: DialogInterface? = null
+    private var dialogDismissCallback: DialogDismissCallback? = null
 
     /**
      * 设置标题
@@ -72,6 +77,11 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
         return this
     }
 
+    override fun setDismissCallback(callback: DialogDismissCallback): IDialog {
+        this.dialogDismissCallback = callback
+        return this
+    }
+
     override fun setGrantedCallback(callback: ActionCallback): IDialog {
         this.grantedCallback = callback
         return this
@@ -103,14 +113,14 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
      * */
     override fun show(activity: FragmentActivity) {
         CsLogger.tag(tag).i("dialog is ready to show from activity: $activity")
-        Config.factory.showDialog(
+        dialogInterface = Config.factory.showDialog(
             DialogFactory.MODE_RATIONALE,
             activity,
             title,
             content,
             leftText,
             object : ButtonClick {
-                override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
+                override fun onClick(dialog: DialogInterface): Boolean {
                     if (leftClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
                         return true
                     }
@@ -120,7 +130,7 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
             },
             rightText,
             object : ButtonClick {
-                override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
+                override fun onClick(dialog: DialogInterface): Boolean {
                     if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
                         return true
                     }
@@ -153,12 +163,20 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
                     request.start(activity)
                     return true
                 }
+            },
+            object : DialogDismissCallback {
+                override fun onDismiss() {
+                    dialogDismissCallback?.onDismiss()
+                }
             }
         )
     }
 
-    private class DialogInterfaceImpl(val dialog: ButtonClick.DialogInterface) :
-        ButtonClick.DialogInterface {
+    override fun dismiss() {
+        dialogInterface?.dismiss()
+    }
+
+    private class DialogInterfaceImpl(val dialog: DialogInterface) : DialogInterface {
         override fun dismiss() {
             dialog.dismiss()
         }

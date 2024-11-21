@@ -16,6 +16,7 @@ import com.proxy.service.funsdk.R
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
+import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
 
 /**
@@ -70,27 +71,33 @@ class PermissionActivity : AppCompatActivity() {
                         leftButtonText: String?,
                         leftButtonClick: ButtonClick,
                         rightButtonText: String?,
-                        rightButtonClick: ButtonClick
-                    ) {
-                        AlertDialog.Builder(activity)
+                        rightButtonClick: ButtonClick,
+                        dialogDismissCallback: DialogDismissCallback
+                    ): DialogInterface {
+
+                        var dialog: AlertDialog? = null
+
+                        val dialogInterface = object : DialogInterface {
+                            override fun dismiss() {
+                                dialog?.dismiss()
+                            }
+                        }
+
+                        dialog = AlertDialog.Builder(activity)
                             .setTitle("TITLE")
                             .setMessage("CONTENT")
                             .setCancelable(false)
+                            .setOnDismissListener {
+                                dialogDismissCallback.onDismiss()
+                            }
                             .setNegativeButton("LEFT_BUTTON_TEXT") { dialog, _ ->
-                                leftButtonClick.onClick(object : DialogInterface {
-                                    override fun dismiss() {
-                                        dialog.dismiss()
-                                    }
-                                })
+                                leftButtonClick.onClick(dialogInterface)
                             }
                             .setPositiveButton("RIGHT_BUTTON_TEXT") { dialog, _ ->
-                                rightButtonClick.onClick(object : DialogInterface {
-                                    override fun dismiss() {
-                                        dialog.dismiss()
-                                    }
-                                })
+                                rightButtonClick.onClick(dialogInterface)
                             }
                             .show()
+                        return dialogInterface
                     }
                 })
             }
@@ -109,6 +116,9 @@ class PermissionActivity : AppCompatActivity() {
                     ?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setNoPromptCallback(noPromptCallback)
+                    ?.setLeftButton(click = leftButtonClick)
+                    ?.setRightButton(click = rightButtonClick)
+                    ?.setDismissCallback(dialogDismissCallback)
                     ?.show(this)
             }
 
@@ -117,6 +127,9 @@ class PermissionActivity : AppCompatActivity() {
                     ?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setNoPromptCallback(noPromptCallback)
+                    ?.setLeftButton(click = leftButtonClick)
+                    ?.setRightButton(click = rightButtonClick)
+                    ?.setDismissCallback(dialogDismissCallback)
                     ?.show(this)
             }
         }
@@ -143,4 +156,23 @@ class PermissionActivity : AppCompatActivity() {
         }
     }
 
+    private val leftButtonClick = object : ButtonClick {
+        override fun onClick(dialog: DialogInterface): Boolean {
+            Toast.makeText(this@PermissionActivity, "LeftButton click", Toast.LENGTH_SHORT).show()
+            return false
+        }
+    }
+
+    private val rightButtonClick = object : ButtonClick {
+        override fun onClick(dialog: DialogInterface): Boolean {
+            Toast.makeText(this@PermissionActivity, "RightButton click", Toast.LENGTH_SHORT).show()
+            return false
+        }
+    }
+
+    private val dialogDismissCallback = object : DialogDismissCallback {
+        override fun onDismiss() {
+            Toast.makeText(this@PermissionActivity, "dialog dismiss", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
