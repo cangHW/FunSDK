@@ -102,7 +102,7 @@ ext {
             ],
             PermissionInfo    : [
                     artifact          : "Service-Permission",
-                    version           : "0.0.7",
+                    version           : "0.0.8",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

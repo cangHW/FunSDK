@@ -128,7 +128,7 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
             leftText,
             object : ButtonClick {
                 override fun onClick(dialog: DialogInterface): Boolean {
-                    if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                    if (leftClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
                         return true
                     }
                     dialog.dismiss()
