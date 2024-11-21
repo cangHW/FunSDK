@@ -5,16 +5,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.permission.base.callback.ButtonClick
-import com.proxy.service.permission.base.callback.DeniedActionCallback
 import com.proxy.service.permission.base.callback.ActionCallback
-import com.proxy.service.permission.base.callback.NoPromptActionCallback
 import com.proxy.service.permission.base.manager.IPermissionRequest
 import com.proxy.service.permission.info.config.Config
-import com.proxy.service.permission.info.dialog.RationaleDialogImpl
-import com.proxy.service.permission.info.dialog.SettingDialogImpl
 import com.proxy.service.permission.info.fragment.IRequest
 import com.proxy.service.permission.info.fragment.RequestFragment
+import com.proxy.service.permission.info.utils.PermissionUtils
 
 /**
  * @author: cangHX
@@ -35,6 +31,9 @@ class PermissionRequestImpl : IPermissionRequest {
             CsLogger.tag(tag).i("permission can not be empty or blank.")
             return this
         }
+        if (!PermissionUtils.isPermissionDeclaredInManifest(permission)){
+            CsLogger.tag(tag).e("The permission is not registered in the manifest. permission: $permission")
+        }
         fragment.addPermission(permission)
         return this
     }
@@ -47,38 +46,13 @@ class PermissionRequestImpl : IPermissionRequest {
         return this
     }
 
-    /**
-     * 拒绝的权限回调
-     * */
-    override fun setDeniedCallback(callback: DeniedActionCallback): IPermissionRequest {
-        fragment.setDeniedCallback(object : ActionCallback {
-            override fun onAction(list: Array<String>) {
-                val dialog = RationaleDialogImpl()
-                    .setRightButton(click =  object : ButtonClick {
-                        override fun onClick(dialog: ButtonClick.DialogInterface): Boolean {
-                            activity?.let {
-                                start(it)
-                            }
-                            return false
-                        }
-                    })
-                callback.onAction(list, dialog)
-            }
-        })
+    override fun setDeniedCallback(callback: ActionCallback): IPermissionRequest {
+        fragment.setDeniedCallback(callback)
         return this
     }
 
-    /**
-     * 拒绝并不再提示的权限回调
-     * */
-    override fun setNoPromptCallback(callback: NoPromptActionCallback): IPermissionRequest {
-        fragment.setNoPromptCallback(object : ActionCallback {
-            override fun onAction(list: Array<String>) {
-                val dialog = SettingDialogImpl(list)
-                    .setRightButton(text = "去设置")
-                callback.onAction(list, dialog)
-            }
-        })
+    override fun setNoPromptCallback(callback: ActionCallback): IPermissionRequest {
+        fragment.setNoPromptCallback(callback)
         return this
     }
 

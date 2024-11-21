@@ -43,4 +43,30 @@
         android:text="申请权限"
         android:textSize="20dp" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/request_permission_with_rationale_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="弹窗并申请权限"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/request_permission_with_setting_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="跳转设置申请权限"
+        android:textSize="20dp" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

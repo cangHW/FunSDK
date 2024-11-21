@@ -22,7 +22,7 @@ upArray=(
 #  ":WebViewSDK:WebViewBridgeDS"
 
     # 权限库
-#  ":Permission:PermissionBase"
+  ":Permission:PermissionBase"
 #  ":Permission:PermissionInfo"
 )
 

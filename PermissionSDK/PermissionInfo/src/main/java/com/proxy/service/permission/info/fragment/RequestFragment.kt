@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.info.config.Config
+import com.proxy.service.permission.info.utils.PermissionUtils
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
@@ -34,7 +35,7 @@ class RequestFragment : Fragment(), IRequest {
      * 添加要申请的权限
      * */
     override fun addPermission(permission: String) {
-        if (Config.SERVICE.isPermissionGranted(permission)) {
+        if (PermissionUtils.isPermissionGranted(permission)) {
             grantedPermission.add(permission)
         } else {
             deniedPermission.add(permission)
@@ -84,7 +85,7 @@ class RequestFragment : Fragment(), IRequest {
         if (requestCode != this.requestCode) {
             return
         }
-        CsLogger.tag(tag).i("result from user selection.")
+        CsLogger.tag(tag).i("result from user selection or system.")
         if (permissions.isEmpty()) {
             callback()
             return
@@ -103,6 +104,7 @@ class RequestFragment : Fragment(), IRequest {
             if (shouldShowRequestPermissionRationale(permission)) {
                 continue
             }
+
             CsLogger.tag(tag).e("system prohibits reapplication. permission: $permission")
             noPromptPermission.add(permission)
             deniedPermission.remove(permission)

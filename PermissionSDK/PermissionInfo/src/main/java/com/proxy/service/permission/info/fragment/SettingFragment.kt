@@ -9,6 +9,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.info.config.Config
+import com.proxy.service.permission.info.utils.PermissionUtils
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
@@ -20,15 +21,18 @@ class SettingFragment : Fragment(), ISetting {
 
     private val tag = "${Config.LOG_TAG_START}Setting"
 
-    private val grantedPermission = ArrayList<String>()
-    private val deniedPermission = ArrayList<String>()
-
     private val requestCode: Int by lazy {
         Config.REQUEST_CODE.incrementAndGet()
     }
 
+    private val grantedPermission = ArrayList<String>()
     private var grantedCallback: ActionCallback? = null
+
+    private val deniedPermission = ArrayList<String>()
     private var deniedCallback: ActionCallback? = null
+
+    private val noPromptPermission = ArrayList<String>()
+    private var noPromptCallback: ActionCallback? = null
 
     /**
      * 添加要申请的权限
@@ -51,6 +55,10 @@ class SettingFragment : Fragment(), ISetting {
         this.deniedCallback = callback
     }
 
+    override fun setNoPromptCallback(callback: ActionCallback) {
+        this.noPromptCallback = callback
+    }
+
     /**
      * 开始申请权限
      */
@@ -71,14 +79,22 @@ class SettingFragment : Fragment(), ISetting {
         val iterator = deniedPermission.iterator()
         while (iterator.hasNext()) {
             val permission = iterator.next()
-            if (Config.SERVICE.isPermissionGranted(permission)) {
+            if (PermissionUtils.isPermissionGranted(permission)) {
                 grantedPermission.add(permission)
-                CsLogger.tag(tag).i("granted permission from setting. permission: $permission")
+                CsLogger.tag(tag).i("Granted from setting. permission: $permission")
                 iterator.remove()
+                continue
             }
+
+            if (shouldShowRequestPermissionRationale(permission)) {
+                continue
+            }
+
+            noPromptPermission.add(permission)
+            CsLogger.tag(tag).i("No prompt from setting. permission: $permission")
+            iterator.remove()
         }
         callback()
-
     }
 
     private fun clear() {
@@ -95,6 +111,10 @@ class SettingFragment : Fragment(), ISetting {
 
                 if (deniedPermission.isNotEmpty()) {
                     deniedCallback?.onAction(deniedPermission.toTypedArray())
+                }
+
+                if (noPromptPermission.isNotEmpty()) {
+                    noPromptCallback?.onAction(noPromptPermission.toTypedArray())
                 }
                 return ""
             }

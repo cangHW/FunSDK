@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.PermissionService
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IPermissionRequest
+import com.proxy.service.permission.base.manager.base.IDialog
 
 /**
  * 权限框架入口
@@ -50,6 +51,20 @@ object CsPermission {
      * */
     fun createRequest(): IPermissionRequest? {
         return getService()?.createRequest()
+    }
+
+    /**
+     * 创建一个用于展示所需权限理由的弹窗
+     * */
+    fun createRationaleDialog(permissions: Array<String>): IDialog? {
+        return getService()?.createRationaleDialog(permissions)
+    }
+
+    /**
+     * 创建一个用于展示跳转 setting 的弹窗
+     * */
+    fun createSettingDialog(permissions: Array<String>): IDialog? {
+        return getService()?.createSettingDialog(permissions)
     }
 
 }

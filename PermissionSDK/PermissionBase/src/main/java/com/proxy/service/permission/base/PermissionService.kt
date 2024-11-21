@@ -3,6 +3,7 @@ package com.proxy.service.permission.base
 import com.proxy.service.base.BaseService
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IPermissionRequest
+import com.proxy.service.permission.base.manager.base.IDialog
 
 /**
  * @author: cangHX
@@ -25,4 +26,15 @@ interface PermissionService : BaseService {
      * 创建权限请求器, 用于请求权限
      * */
     fun createRequest(): IPermissionRequest
+
+    /**
+     * 创建一个用于展示所需权限理由的弹窗
+     * */
+    fun createRationaleDialog(permissions: Array<String>): IDialog
+
+    /**
+     * 创建一个用于展示跳转 setting 的弹窗
+     * */
+    fun createSettingDialog(permissions: Array<String>): IDialog
+
 }
