@@ -10,6 +10,7 @@ import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
 import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.IDialog
+import com.proxy.service.permission.base.manager.base.ISettingDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.fragment.ISetting
 import com.proxy.service.permission.info.fragment.SettingFragment
@@ -19,7 +20,7 @@ import com.proxy.service.permission.info.fragment.SettingFragment
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class SettingDialogImpl(permissions: Array<String>) : IDialog {
+class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
 
     private val tag = "${Config.LOG_TAG_START}SettingDialog"
     private val fragment: ISetting = SettingFragment()
@@ -42,7 +43,7 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
     /**
      * 允许的权限回调
      * */
-    override fun setGrantedCallback(callback: ActionCallback): IDialog {
+    override fun setGrantedCallback(callback: ActionCallback): ISettingDialog {
         fragment.setGrantedCallback(callback)
         return this
     }
@@ -50,20 +51,15 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
     /**
      * 拒绝的权限回调
      * */
-    override fun setDeniedCallback(callback: ActionCallback): IDialog {
+    override fun setDeniedCallback(callback: ActionCallback): ISettingDialog {
         fragment.setDeniedCallback(callback)
-        return this
-    }
-
-    override fun setNoPromptCallback(callback: ActionCallback): IDialog {
-        fragment.setNoPromptCallback(callback)
         return this
     }
 
     /**
      * 设置标题
      * */
-    override fun setTitle(title: String?): IDialog {
+    override fun setTitle(title: String?): ISettingDialog {
         this.title = title
         return this
     }
@@ -71,7 +67,7 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
     /**
      * 设置内容
      * */
-    override fun setContent(content: String?): IDialog {
+    override fun setContent(content: String?): ISettingDialog {
         this.content = content
         return this
     }
@@ -82,7 +78,7 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
      * @param text  默认值为: 取消, 可自定义
      * @param click 默认行为: 取消弹窗, 可自定义
      * */
-    override fun setLeftButton(text: String?, click: ButtonClick?): IDialog {
+    override fun setLeftButton(text: String?, click: ButtonClick?): ISettingDialog {
         this.leftText = text
         this.leftClick = click
         return this
@@ -94,13 +90,13 @@ class SettingDialogImpl(permissions: Array<String>) : IDialog {
      * @param text  默认值为: 同意 或 去设置, 可自定义
      * @param click 默认行为: 继续申请权限 或 跳转设置, 可自定义
      * */
-    override fun setRightButton(text: String?, click: ButtonClick?): IDialog {
+    override fun setRightButton(text: String?, click: ButtonClick?): ISettingDialog {
         this.rightText = text
         this.rightClick = click
         return this
     }
 
-    override fun setDismissCallback(callback: DialogDismissCallback): IDialog {
+    override fun setDismissCallback(callback: DialogDismissCallback): ISettingDialog {
         this.dialogDismissCallback = callback
         return this
     }

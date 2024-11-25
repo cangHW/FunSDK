@@ -1,13 +1,13 @@
 package com.proxy.service.permission.info.fragment
 
-import com.proxy.service.permission.base.manager.base.ICallback
+import com.proxy.service.permission.base.manager.base.IPermissionCallback
 
 /**
  * @author: cangHX
  * @data: 2024/11/18 18:12
  * @desc:
  */
-interface ISetting : ICallback<Unit> {
+interface ISetting : IPermissionCallback<Unit> {
 
     /**
      * 添加要申请的权限

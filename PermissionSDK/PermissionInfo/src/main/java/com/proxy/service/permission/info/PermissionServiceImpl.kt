@@ -5,7 +5,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.PermissionService
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IPermissionRequest
-import com.proxy.service.permission.base.manager.base.IDialog
+import com.proxy.service.permission.base.manager.base.IRationaleDialog
+import com.proxy.service.permission.base.manager.base.ISettingDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.dialog.RationaleDialogImpl
 import com.proxy.service.permission.info.dialog.SettingDialogImpl
@@ -48,7 +49,7 @@ class PermissionServiceImpl : PermissionService {
         return PermissionRequestImpl()
     }
 
-    override fun createRationaleDialog(permissions: Array<String>): IDialog {
+    override fun createRationaleDialog(permissions: Array<String>): IRationaleDialog {
         permissions.forEach {
             if (!PermissionUtils.isPermissionDeclaredInManifest(it)) {
                 CsLogger.tag(tag)
@@ -62,7 +63,7 @@ class PermissionServiceImpl : PermissionService {
         return dialog
     }
 
-    override fun createSettingDialog(permissions: Array<String>): IDialog {
+    override fun createSettingDialog(permissions: Array<String>): ISettingDialog {
         permissions.forEach {
             if (!PermissionUtils.isPermissionDeclaredInManifest(it)) {
                 CsLogger.tag(tag)

@@ -1,13 +1,14 @@
 package com.proxy.service.permission.info.fragment
 
-import com.proxy.service.permission.base.manager.base.ICallback
+import com.proxy.service.permission.base.manager.base.IPermissionCallback
+import com.proxy.service.permission.base.manager.base.IShouldShowRequestRationaleCallback
 
 /**
  * @author: cangHX
  * @data: 2024/11/18 18:12
  * @desc:
  */
-interface IRequest:ICallback<Unit> {
+interface IRequest : IPermissionCallback<Unit>, IShouldShowRequestRationaleCallback<Unit> {
 
     /**
      * 添加要申请的权限

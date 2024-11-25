@@ -10,32 +10,32 @@ import com.proxy.service.permission.base.callback.DialogDismissCallback
  * @data: 2024/11/19 18:40
  * @desc:
  */
-interface IDialog : ICallback<IDialog> {
+interface IDialog<T> : IPermissionCallback<T> {
 
     /**
      * 设置标题
      * */
-    fun setTitle(title: String?): IDialog
+    fun setTitle(title: String?): T
 
     /**
      * 设置内容
      * */
-    fun setContent(content: String?): IDialog
+    fun setContent(content: String?): T
 
     /**
      * 设置左侧按钮
      * */
-    fun setLeftButton(text: String? = null, click: ButtonClick? = null): IDialog
+    fun setLeftButton(text: String? = null, click: ButtonClick? = null): T
 
     /**
      * 设置右侧按钮
      * */
-    fun setRightButton(text: String? = null, click: ButtonClick? = null): IDialog
+    fun setRightButton(text: String? = null, click: ButtonClick? = null): T
 
     /**
      * 设置弹窗关闭回调
      * */
-    fun setDismissCallback(callback: DialogDismissCallback): IDialog
+    fun setDismissCallback(callback: DialogDismissCallback): T
 
     /**
      * 展示需要权限的理由

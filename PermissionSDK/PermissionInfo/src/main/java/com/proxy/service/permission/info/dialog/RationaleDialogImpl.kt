@@ -8,7 +8,7 @@ import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
 import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
-import com.proxy.service.permission.base.manager.base.IDialog
+import com.proxy.service.permission.base.manager.base.IRationaleDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.request.PermissionRequestImpl
 
@@ -17,7 +17,7 @@ import com.proxy.service.permission.info.request.PermissionRequestImpl
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
+class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDialog {
 
     private val tag = "${Config.LOG_TAG_START}RationaleDialog"
 
@@ -40,7 +40,7 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
     /**
      * 设置标题
      * */
-    override fun setTitle(title: String?): IDialog {
+    override fun setTitle(title: String?): IRationaleDialog {
         this.title = title
         return this
     }
@@ -48,7 +48,7 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
     /**
      * 设置内容
      * */
-    override fun setContent(content: String?): IDialog {
+    override fun setContent(content: String?): IRationaleDialog {
         this.content = content
         return this
     }
@@ -59,7 +59,7 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
      * @param text  默认值为: 取消, 可自定义
      * @param click 默认行为: 取消弹窗, 可自定义
      * */
-    override fun setLeftButton(text: String?, click: ButtonClick?): IDialog {
+    override fun setLeftButton(text: String?, click: ButtonClick?): IRationaleDialog {
         this.leftText = text
         this.leftClick = click
         return this
@@ -71,28 +71,28 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IDialog {
      * @param text  默认值为: 同意 或 去设置, 可自定义
      * @param click 默认行为: 继续申请权限 或 跳转设置, 可自定义
      * */
-    override fun setRightButton(text: String?, click: ButtonClick?): IDialog {
+    override fun setRightButton(text: String?, click: ButtonClick?): IRationaleDialog {
         this.rightText = text
         this.rightClick = click
         return this
     }
 
-    override fun setDismissCallback(callback: DialogDismissCallback): IDialog {
+    override fun setDismissCallback(callback: DialogDismissCallback): IRationaleDialog {
         this.dialogDismissCallback = callback
         return this
     }
 
-    override fun setGrantedCallback(callback: ActionCallback): IDialog {
+    override fun setGrantedCallback(callback: ActionCallback): IRationaleDialog {
         this.grantedCallback = callback
         return this
     }
 
-    override fun setDeniedCallback(callback: ActionCallback): IDialog {
+    override fun setDeniedCallback(callback: ActionCallback): IRationaleDialog {
         this.deniedCallback = callback
         return this
     }
 
-    override fun setNoPromptCallback(callback: ActionCallback): IDialog {
+    override fun setNoPromptCallback(callback: ActionCallback): IRationaleDialog {
         this.noPromptCallback = callback
         return this
     }

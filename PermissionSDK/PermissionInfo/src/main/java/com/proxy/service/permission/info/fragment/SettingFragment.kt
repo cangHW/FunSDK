@@ -31,9 +31,6 @@ class SettingFragment : Fragment(), ISetting {
     private val deniedPermission = ArrayList<String>()
     private var deniedCallback: ActionCallback? = null
 
-    private val noPromptPermission = ArrayList<String>()
-    private var noPromptCallback: ActionCallback? = null
-
     /**
      * 添加要申请的权限
      * */
@@ -53,10 +50,6 @@ class SettingFragment : Fragment(), ISetting {
      * */
     override fun setDeniedCallback(callback: ActionCallback) {
         this.deniedCallback = callback
-    }
-
-    override fun setNoPromptCallback(callback: ActionCallback) {
-        this.noPromptCallback = callback
     }
 
     /**
@@ -83,16 +76,7 @@ class SettingFragment : Fragment(), ISetting {
                 grantedPermission.add(permission)
                 CsLogger.tag(tag).i("Granted from setting. permission: $permission")
                 iterator.remove()
-                continue
             }
-
-            if (shouldShowRequestPermissionRationale(permission)) {
-                continue
-            }
-
-            noPromptPermission.add(permission)
-            CsLogger.tag(tag).i("No prompt from setting. permission: $permission")
-            iterator.remove()
         }
         callback()
     }
@@ -111,10 +95,6 @@ class SettingFragment : Fragment(), ISetting {
 
                 if (deniedPermission.isNotEmpty()) {
                     deniedCallback?.onAction(deniedPermission.toTypedArray())
-                }
-
-                if (noPromptPermission.isNotEmpty()) {
-                    noPromptCallback?.onAction(noPromptPermission.toTypedArray())
                 }
                 return ""
             }

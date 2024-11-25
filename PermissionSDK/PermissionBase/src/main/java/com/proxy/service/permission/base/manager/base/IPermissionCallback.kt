@@ -7,7 +7,7 @@ import com.proxy.service.permission.base.callback.ActionCallback
  * @data: 2024/11/20 20:49
  * @desc:
  */
-interface ICallback<T> {
+interface IPermissionCallback<T> {
 
     /**
      * 允许的权限回调
@@ -18,10 +18,5 @@ interface ICallback<T> {
      * 拒绝的权限回调
      * */
     fun setDeniedCallback(callback: ActionCallback): T
-
-    /**
-     * 拒绝并不再提示的权限回调
-     * */
-    fun setNoPromptCallback(callback: ActionCallback): T
 
 }

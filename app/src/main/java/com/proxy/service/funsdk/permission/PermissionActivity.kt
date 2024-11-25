@@ -90,10 +90,10 @@ class PermissionActivity : AppCompatActivity() {
                             .setOnDismissListener {
                                 dialogDismissCallback.onDismiss()
                             }
-                            .setNegativeButton("LEFT_BUTTON_TEXT") { dialog, _ ->
+                            .setNegativeButton("LEFT_BUTTON_TEXT") { _, _ ->
                                 leftButtonClick.onClick(dialogInterface)
                             }
-                            .setPositiveButton("RIGHT_BUTTON_TEXT") { dialog, _ ->
+                            .setPositiveButton("RIGHT_BUTTON_TEXT") { _, _ ->
                                 rightButtonClick.onClick(dialogInterface)
                             }
                             .show()
@@ -126,7 +126,6 @@ class PermissionActivity : AppCompatActivity() {
                 CsPermission.createSettingDialog(arrayOf(Manifest.permission.CAMERA))
                     ?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
-                    ?.setNoPromptCallback(noPromptCallback)
                     ?.setLeftButton(click = leftButtonClick)
                     ?.setRightButton(click = rightButtonClick)
                     ?.setDismissCallback(dialogDismissCallback)
