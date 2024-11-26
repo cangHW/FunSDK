@@ -59,7 +59,7 @@ class PermissionServiceImpl : PermissionService {
 
         val dialog = RationaleDialogImpl(permissions)
             .setLeftButton(text = "取消")
-            .setRightButton(text = "同意")
+            .setRightButton(text = "允许")
         return dialog
     }
 

@@ -125,6 +125,7 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
             object : ButtonClick {
                 override fun onClick(dialog: DialogInterface): Boolean {
                     if (leftClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                        CsLogger.tag(tag).i("Left button click event has been taken over.")
                         return true
                     }
                     dialog.dismiss()
@@ -135,6 +136,7 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
             object : ButtonClick {
                 override fun onClick(dialog: DialogInterface): Boolean {
                     if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                        CsLogger.tag(tag).i("Right button click event has been taken over.")
                         return true
                     }
                     dialog.dismiss()

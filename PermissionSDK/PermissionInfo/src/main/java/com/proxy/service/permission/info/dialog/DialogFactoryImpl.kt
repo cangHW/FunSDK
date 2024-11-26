@@ -22,7 +22,7 @@ class DialogFactoryImpl : DialogFactory {
         private const val TITLE: String = "权限申请"
         private const val CONTENT: String = "申请权限理由"
         private const val LEFT_BUTTON_TEXT: String = "拒绝"
-        private const val RIGHT_BUTTON_TEXT: String = "同意"
+        private const val RIGHT_BUTTON_TEXT: String = "允许"
     }
 
     /**

@@ -95,7 +95,7 @@ class RequestFragment : Fragment(), IRequest {
             val permission = permissions[i]
 
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                CsLogger.tag(tag).i("granted permission from user. permission: $permission")
+                CsLogger.tag(tag).i("granted permission. permission: $permission")
                 grantedPermission.add(permission)
                 deniedPermission.remove(permission)
                 continue

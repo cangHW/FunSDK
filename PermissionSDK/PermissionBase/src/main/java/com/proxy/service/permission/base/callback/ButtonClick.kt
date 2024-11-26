@@ -14,6 +14,13 @@ interface ButtonClick {
         fun dismiss()
     }
 
+    /**
+     * 按钮点击回调
+     *
+     * @param dialog    dialog 管理接口, 可用于关闭 dialog
+     *
+     * @return 是否接管当前点击事件, true 接管
+     * */
     fun onClick(dialog: DialogInterface): Boolean
 
 }

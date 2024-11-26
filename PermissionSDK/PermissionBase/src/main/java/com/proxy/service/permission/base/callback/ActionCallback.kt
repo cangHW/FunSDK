@@ -10,7 +10,7 @@ package com.proxy.service.permission.base.callback
 interface ActionCallback {
 
     /**
-     * 权限信息
+     * @param list  权限信息
      * */
     fun onAction(list: Array<String>)
 

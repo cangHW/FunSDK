@@ -122,6 +122,7 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
             object : ButtonClick {
                 override fun onClick(dialog: DialogInterface): Boolean {
                     if (leftClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                        CsLogger.tag(tag).i("Left button click event has been taken over.")
                         return true
                     }
                     dialog.dismiss()
@@ -132,18 +133,19 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
             object : ButtonClick {
                 override fun onClick(dialog: DialogInterface): Boolean {
                     if (rightClick?.onClick(DialogInterfaceImpl(dialog)) == true) {
+                        CsLogger.tag(tag).i("Right button click event has been taken over.")
                         return true
                     }
                     dialog.dismiss()
-                    CsLogger.tag(tag).i("Ready to launch setting page.")
+                    CsLogger.tag(tag).i("Ready to launch request permission.")
                     if (activity.isFinishing) {
                         CsLogger.tag(tag)
-                            .i("The activity is finishing, so can not launch setting page.")
+                            .i("The activity is finishing, so can not request permission.")
                         return true
                     }
                     if (activity.isDestroyed) {
                         CsLogger.tag(tag)
-                            .i("The activity is destroyed, so can not launch setting page.")
+                            .i("The activity is destroyed, so can not request permission.")
                         return true
                     }
 
