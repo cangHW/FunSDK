@@ -4,6 +4,7 @@ import android.app.Application
 import android.webkit.WebView
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.info.config.Config
 
 
@@ -15,11 +16,16 @@ import com.proxy.service.webview.info.config.Config
 @CloudApiService(serviceTag = "application/web")
 class WebApplicationImpl : CsBaseApplication() {
 
+    private val webTag = "${Config.LOG_TAG_START}Application"
+
     override fun onCreate(application: Application, isDebug: Boolean) {
         super.onCreate(application, isDebug)
         Config.isDebug = isDebug
 
-        WebView.setWebContentsDebuggingEnabled(isDebug)
+        if (isDebug) {
+            CsLogger.tag(webTag).i("web 调试模式开启")
+            WebView.setWebContentsDebuggingEnabled(true)
+        }
     }
 
 }
