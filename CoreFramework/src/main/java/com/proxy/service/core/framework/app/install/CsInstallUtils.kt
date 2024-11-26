@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.app.install
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -12,6 +13,7 @@ import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.ProxyProvider
+import com.proxy.service.core.service.permission.CsPermission
 import java.io.File
 
 /**
@@ -125,13 +127,10 @@ object CsInstallUtils {
         }
         val context: Context = CsContextManager.getApplication()
 
-//        val permissionService: UtilsPermissionServiceImpl = UtilsPermissionServiceImpl()
-//        if (!permissionService.isPermissionGranted(Manifest.permission.REQUEST_INSTALL_PACKAGES)) {
-//            Logger.Warning(
-//                CloudApiError.PERMISSION_DENIED.setAbout(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-//                    .build()
-//            )
-//        }
+        if (!CsPermission.isPermissionGranted(Manifest.permission.REQUEST_INSTALL_PACKAGES)) {
+            CsLogger.tag(TAG)
+                .i("Please check permissions. permission: ${Manifest.permission.REQUEST_INSTALL_PACKAGES}")
+        }
 
         val intent = Intent()
         intent.setAction(Intent.ACTION_VIEW)
@@ -178,14 +177,12 @@ object CsInstallUtils {
      * */
     fun unInstallApp(packageName: String) {
         val context: Context = CsContextManager.getApplication()
-//        val permissionService: UtilsPermissionServiceImpl = UtilsPermissionServiceImpl()
-//        if (!permissionService.isPermissionGranted(Manifest.permission.REQUEST_DELETE_PACKAGES)) {
-//            Logger.Error(
-//                CloudApiError.PERMISSION_DENIED.setAbout(Manifest.permission.REQUEST_DELETE_PACKAGES)
-//                    .build()
-//            )
-//            return
-//        }
+
+        if (!CsPermission.isPermissionGranted(Manifest.permission.REQUEST_DELETE_PACKAGES)) {
+            CsLogger.tag(TAG)
+                .i("Please check permissions. permission: ${Manifest.permission.REQUEST_DELETE_PACKAGES}")
+        }
+
         val intent = Intent()
         intent.setAction(Intent.ACTION_DELETE)
         intent.setData(Uri.parse("package:$packageName"))
