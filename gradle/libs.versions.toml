@@ -22,13 +22,13 @@ android-appcompat = { group = "androidx.appcompat", name = "appcompat", version 
 android-webkit = {group = "androidx.webkit", name = "webkit", version = "1.4.0"}
 
 ##########################################  开发基础库  ############################################################################
-cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.4.1" }
-cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.4.1" }
+cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.6" }
+cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.5" }
 cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.3.4" }
 
-core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="0.4.26"}
+core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="0.4.27"}
 service-apihttp = {group = "io.github.cangHW", name="Service-Apihttp", version="0.0.12"}
-service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.0.8"}
+service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.0.9"}
 service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", version="0.0.7"}
 service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.0.12"}
 service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds", version="0.0.8"}

@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.proxy.service.api.log.base.LogTree
 import com.proxy.service.core.CsCore
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.data.log.base.LogTree
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiActivity
@@ -30,11 +30,6 @@ class MainActivity : AppCompatActivity() {
         CsFileUtils.createFile(file)
 
         CsLogger.addLogCallback(object : LogTree() {
-            /**
-             * 日志回调
-             *
-             * @param priority  日志级别, 参考[Log]的级别
-             * */
             override fun onLog(priority: Int, tag: String, message: String, throwable: Throwable?) {
                 if (priority == Log.DEBUG) {
 //                    Log.i(tag, message)

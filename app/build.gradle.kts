@@ -44,7 +44,6 @@ android {
 dependencies {
 //    implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)
-    implementation(libs.cloud.api)
 
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)

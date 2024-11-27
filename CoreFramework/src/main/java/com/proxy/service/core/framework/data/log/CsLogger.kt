@@ -1,9 +1,10 @@
 package com.proxy.service.core.framework.data.log
 
-import com.proxy.service.core.framework.data.log.base.IL
-import com.proxy.service.core.framework.data.log.base.LogTree
-import com.proxy.service.core.framework.data.log.tree.DebugTree
-import com.proxy.service.core.framework.data.log.tree.TreeGroup
+import com.proxy.service.api.log.base.IL
+import com.proxy.service.api.log.base.LogTree
+import com.proxy.service.api.log.tree.DebugTree
+import com.proxy.service.api.log.tree.TreeGroup
+
 
 /**
  * 日志工具
