@@ -25,13 +25,12 @@ object CsCore {
      * 核心库初始化
      * */
     fun init(application: Application, isDebug: Boolean) {
-        CsLogger.tag(TAG).d("start init.")
         if (!isInit.compareAndSet(false, true)) {
             CsLogger.tag(TAG).d("init is ready.")
             return
         }
-
         CloudSystem.init(application, isDebug)
+        CsLogger.tag(TAG).d("start init.")
 
         var coreApplication: CoreApplication? = null
         val sparse = SparseArray<ArrayList<CsBaseApplication>>()
