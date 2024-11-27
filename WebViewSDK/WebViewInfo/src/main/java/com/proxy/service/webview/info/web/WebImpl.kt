@@ -239,22 +239,23 @@ class WebImpl(private val webView: WebViewImpl, private val lifecycleOwner: Life
             return
         }
         lifecycleOwner?.lifecycle?.removeObserver(lifecycleObserver)
+
         try {
-            webView.parent?.let {
-                if (it is ViewGroup) {
-                    it.removeView(webView)
-                }
+            webView.apply {
+                stopLoading()
+                onPause()
+
+                setOnTouchListener(null)
+                setOnKeyListener(null)
+                onFocusChangeListener = null
+                webChromeClient = null
+
+                removeAllViews()
+
+                (parent as? ViewGroup)?.removeView(this)
+
+                destroy()
             }
-            webView.setOnTouchListener(null)
-            webView.setOnKeyListener(null)
-            webView.onFocusChangeListener = null
-            webView.webChromeClient = null
-//            webView.loadUrl("about:blank")
-            webView.onPause()
-            webView.stopLoading()
-            webView.removeAllViews()
-            webView.destroyDrawingCache()
-            webView.destroy()
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).d(throwable)
         }

@@ -29,7 +29,7 @@ class ColorFilterTransformation(val color: Int) : BaseBitmapTransformation() {
     ): Bitmap {
         val width = toTransform.width
         val height = toTransform.height
-        val config = if (toTransform.config != null) toTransform.config else Bitmap.Config.ARGB_8888
+        val config = toTransform.config
         val bitmap = pool[width, height, config]
 
         setCanvasBitmapDensity(toTransform, bitmap)
