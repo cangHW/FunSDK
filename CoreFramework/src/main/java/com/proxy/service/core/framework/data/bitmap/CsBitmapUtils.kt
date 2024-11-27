@@ -32,6 +32,7 @@ object CsBitmapUtils {
      * @param drawable  待转换 Drawable
      * @param config    bitmap 清晰度
      * */
+    @WorkerThread
     fun toBitmap(drawable: Drawable?, config: Bitmap.Config? = null): Bitmap? {
         if (drawable == null) {
             CsLogger.tag(TAG).d("Drawable is null.")
