@@ -1,10 +1,12 @@
 package com.proxy.service.webview.info
 
 import android.app.Application
+import android.os.Looper
 import android.webkit.WebView
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.webview.info.config.Config
 
 
@@ -23,8 +25,10 @@ class WebApplicationImpl : CsBaseApplication() {
         Config.isDebug = isDebug
 
         if (isDebug) {
-            CsLogger.tag(webTag).i("web 调试模式开启")
-            WebView.setWebContentsDebuggingEnabled(true)
+            CsTask.startWhenIdle {
+                CsLogger.tag(webTag).i("web 调试模式开启")
+                WebView.setWebContentsDebuggingEnabled(true)
+            }
         }
     }
 

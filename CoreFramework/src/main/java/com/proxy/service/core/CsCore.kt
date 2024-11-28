@@ -29,6 +29,12 @@ object CsCore {
             CsLogger.tag(TAG).d("init is ready.")
             return
         }
+
+        var startInitTime: Long = 0
+        if (isDebug) {
+            startInitTime = System.currentTimeMillis()
+        }
+
         CloudSystem.init(application, isDebug)
         CsLogger.tag(TAG).d("start init.")
 
@@ -66,6 +72,11 @@ object CsCore {
                         .d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
                 }
             }
+        }
+
+        if (isDebug) {
+            CsLogger.tag(TAG)
+                .d("CsCore 初始化完成. 总耗时 ${System.currentTimeMillis() - startInitTime} 毫秒")
         }
     }
 

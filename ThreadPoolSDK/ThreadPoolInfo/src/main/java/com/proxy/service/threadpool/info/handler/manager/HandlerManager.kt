@@ -35,6 +35,10 @@ object HandlerManager {
 
     private class ThreadHandlerInfo(threadName: String) : HandlerController {
 
+        companion object {
+            private const val TAG = "${Constants.TAG}_Handler"
+        }
+
         private val handlerThread: HandlerThread = HandlerThread(threadName)
         private val handler: Handler
 
@@ -54,21 +58,29 @@ object HandlerManager {
         }
 
         override fun close() {
-            isCanUse.set(false)
-            try {
-                handlerThread.quit()
-            } catch (throwable: Throwable) {
-                CsLogger.tag(Constants.TAG).e(throwable)
+            if (isCanUse.compareAndSet(true, false)) {
+                CsLogger.tag(TAG).i("The current task group is ready to shut down immediately.")
+                try {
+                    handlerThread.quit()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(Constants.TAG).e(throwable)
+                }
+                return
             }
+            CsLogger.tag(TAG).i("The current task group has been closed. You do not need to close it again.")
         }
 
         override fun closeSafely() {
-            isCanUse.set(false)
-            try {
-                handlerThread.quitSafely()
-            } catch (throwable: Throwable) {
-                CsLogger.tag(Constants.TAG).e(throwable)
+            if (isCanUse.compareAndSet(true, false)) {
+                CsLogger.tag(TAG).i("The current task group is ready to shut down safely")
+                try {
+                    handlerThread.quitSafely()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(Constants.TAG).e(throwable)
+                }
+                return
             }
+            CsLogger.tag(TAG).i("The current task group has been closed. You do not need to close it again.")
         }
 
         override fun isCanUse(): Boolean {

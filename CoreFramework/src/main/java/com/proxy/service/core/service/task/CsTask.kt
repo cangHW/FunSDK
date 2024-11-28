@@ -5,6 +5,7 @@ import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.ThreadPoolService
 import com.proxy.service.threadpool.base.handler.option.IHandlerOption
+import com.proxy.service.threadpool.base.idle.controller.IIdleTaskController
 import com.proxy.service.threadpool.base.thread.ThreadService
 import com.proxy.service.threadpool.base.thread.option.ITaskOption
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -29,7 +30,8 @@ object CsTask {
             service = CloudSystem.getService(ThreadPoolService::class.java)
         }
         if (service == null) {
-            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Threadpool:xxx>")
+            CsLogger.tag(TAG)
+                .e("Please check to see if it is referenced. <io.github.cangHW:Service-Threadpool:xxx>")
         }
         return service
     }
@@ -54,7 +56,7 @@ object CsTask {
      * @param period        循环间隔时间
      * @param unit          时间格式
      * */
-    fun interval(initialDelay: Long, period: Long, unit: TimeUnit): ITaskOption<Long>?{
+    fun interval(initialDelay: Long, period: Long, unit: TimeUnit): ITaskOption<Long>? {
         return getService()?.interval(initialDelay, period, unit)
     }
 
@@ -91,6 +93,13 @@ object CsTask {
      * */
     fun launchTaskGroup(groupName: String): IHandlerOption? {
         return getService()?.launchTaskGroup(groupName)
+    }
+
+    /**
+     * 添加一个当且仅当主线程空闲时任务, 执行时间不确定, 运行在主线程, 需要注意耗时与内存泄露
+     * */
+    fun startWhenIdle(task: Runnable): IIdleTaskController? {
+        return getService()?.startWhenIdle(task)
     }
 
 }

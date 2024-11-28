@@ -2,6 +2,7 @@ package com.proxy.service.threadpool.base
 
 import com.proxy.service.base.BaseService
 import com.proxy.service.threadpool.base.handler.HandlerService
+import com.proxy.service.threadpool.base.idle.IdleService
 import com.proxy.service.threadpool.base.thread.ThreadService
 
 /**
@@ -9,4 +10,4 @@ import com.proxy.service.threadpool.base.thread.ThreadService
  * @data: 2024/5/27 16:28
  * @desc:
  */
-interface ThreadPoolService : BaseService, ThreadService, HandlerService
+interface ThreadPoolService : BaseService, ThreadService, HandlerService, IdleService

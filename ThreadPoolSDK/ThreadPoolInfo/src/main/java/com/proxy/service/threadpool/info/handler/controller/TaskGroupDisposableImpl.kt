@@ -1,8 +1,10 @@
 package com.proxy.service.threadpool.info.handler.controller
 
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.handler.controller.ITaskGroupDisposable
-import com.proxy.service.threadpool.info.handler.manager.HandlerController
-import java.util.concurrent.atomic.AtomicBoolean
+import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.info.handler.info.HandlerInfo
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author: cangHX
@@ -10,29 +12,69 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @desc:
  */
 class TaskGroupDisposableImpl(
-    private val handlerController: HandlerController,
-    private val runnable: Runnable,
-    private val isDisposeTask:AtomicBoolean
-) : ITaskGroupDisposable {
+    private val handler: HandlerInfo,
+    private val task: Runnable
+) : ITaskGroupDisposable, Runnable {
 
-    override fun disposeTask() {
-        isDisposeTask.set(true)
-        handlerController.getHandler().removeCallbacks(runnable)
+    companion object {
+        private const val TAG = "${Constants.TAG}_HandlerTask"
+        private const val STATUS_DEFAULT = 0
+        private const val STATUS_COMPLETED = 1
+        private const val STATUS_DISPOSED = 0
     }
 
-    override fun disposeGroup() {
-        handlerController.close()
-    }
+    private val taskStatus = AtomicInteger(STATUS_DEFAULT)
 
-    override fun disposeGroupSafely() {
-        handlerController.closeSafely()
+    init {
+        try {
+            if (handler.delay > 0) {
+                handler.handlerController.getHandler().postDelayed(this, handler.delay)
+            } else if (handler.uptimeMillis > 0) {
+                handler.handlerController.getHandler().postAtTime(this, handler.uptimeMillis)
+            } else {
+                handler.handlerController.getHandler().post(this)
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 
     override fun isTaskDisposed(): Boolean {
-        return isDisposeTask.get()
+        return taskStatus.get() == STATUS_DISPOSED
+    }
+
+    override fun disposeTask() {
+        if (taskStatus.compareAndSet(STATUS_DEFAULT, STATUS_DISPOSED)) {
+            CsLogger.tag(TAG).i("Ready to dispose the current task.")
+            handler.handlerController.getHandler().removeCallbacks(this)
+            return
+        }
+        if (taskStatus.get() == STATUS_DISPOSED) {
+            CsLogger.tag(TAG)
+                .i("The current task has been cancelled. You do not need to dispose it again.")
+        } else if (taskStatus.get() == STATUS_COMPLETED) {
+            CsLogger.tag(TAG).i("The current task has been completed and cannot be canceled.")
+        }
     }
 
     override fun isGroupDisposed(): Boolean {
-        return !handlerController.isCanUse()
+        return !handler.handlerController.isCanUse()
+    }
+
+    override fun disposeGroup() {
+        handler.handlerController.close()
+    }
+
+    override fun disposeGroupSafely() {
+        handler.handlerController.closeSafely()
+    }
+
+    override fun run() {
+        if (taskStatus.compareAndSet(STATUS_DEFAULT, STATUS_COMPLETED)) {
+            CsLogger.tag(TAG).i("The current task is ready to run. task: $task")
+            task.run()
+            return
+        }
+        CsLogger.tag(TAG).i("The current task has been cancelled and cannot run. task: $task")
     }
 }

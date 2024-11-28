@@ -5,6 +5,7 @@ import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.info.idle.manager.IdleHandlerManager
 import io.reactivex.plugins.RxJavaPlugins
 
 /**
@@ -13,11 +14,11 @@ import io.reactivex.plugins.RxJavaPlugins
  * @desc:
  */
 @CloudApiService(serviceTag = "application/thread_pool")
-class ThreadPoolApplication: CsBaseApplication() {
+class ThreadPoolApplication : CsBaseApplication() {
 
     override fun onCreate(application: Application, isDebug: Boolean) {
         super.onCreate(application, isDebug)
-        RxJavaPlugins.setErrorHandler { throwable->
+        RxJavaPlugins.setErrorHandler { throwable ->
             CsLogger.tag(Constants.TAG).e(throwable)
         }
     }

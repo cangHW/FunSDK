@@ -11,7 +11,7 @@ import com.proxy.service.threadpool.info.handler.option.HandlerOptionImpl
  * @data: 2024/7/3 18:07
  * @desc:
  */
-class HandlerServiceImpl : HandlerService {
+object HandlerServiceImpl : HandlerService {
     override fun launchTaskGroup(groupName: String): IHandlerOption {
         val handlerInfo = HandlerInfo(HandlerManager.getThreadHandler(groupName))
         return HandlerOptionImpl(handlerInfo)

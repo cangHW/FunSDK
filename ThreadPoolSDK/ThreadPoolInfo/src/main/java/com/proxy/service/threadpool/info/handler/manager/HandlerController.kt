@@ -18,8 +18,14 @@ interface HandlerController {
 
     fun isCanUse(): Boolean
 
+    /**
+     * 立刻关闭
+     * */
     fun close()
 
+    /**
+     * 安全关闭
+     * */
     fun closeSafely()
 
 }
