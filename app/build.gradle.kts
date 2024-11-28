@@ -53,7 +53,7 @@ dependencies {
     implementation(project(":ThreadPoolSDK:ThreadPoolInfo"))
     implementation(project(":ImageLoaderSDK:ImageLoaderInfo"))
     implementation(project(":WebViewSDK:WebViewInfo"))
-    implementation(project(":WebViewSDK:WebViewBridgeDS"))
+    implementation(project(":WebViewSDK:WebViewDSBridge"))
     implementation(project(":PermissionSDK:PermissionInfo"))
 }
 

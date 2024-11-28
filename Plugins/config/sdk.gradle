@@ -84,7 +84,7 @@ ext {
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
-            WebViewBridgeDS    : [
+            WebViewDSBridge    : [
                     artifact          : "Service-WebBridge-Ds",
                     version           : "0.0.9",
                     source            : false,
