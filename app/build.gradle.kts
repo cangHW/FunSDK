@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-//    id("com.cloud.service")
+    id("com.cloud.service")
 }
 
 android {
@@ -48,13 +48,13 @@ dependencies {
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)
 
-    implementation(project(":CoreFramework"))
-    implementation(project(":ApiHttpSDK:ApiHttpInfo"))
-    implementation(project(":ThreadPoolSDK:ThreadPoolInfo"))
-    implementation(project(":ImageLoaderSDK:ImageLoaderInfo"))
-    implementation(project(":WebViewSDK:WebViewInfo"))
-    implementation(project(":WebViewSDK:WebViewDSBridge"))
-    implementation(project(":PermissionSDK:PermissionInfo"))
+    implementation(libs.core.framework)
+    implementation(libs.service.apihttp)
+    implementation(libs.service.threadpool)
+    implementation(libs.service.imageloader)
+    implementation(libs.service.webview)
+    implementation(libs.service.webview.bridge)
+    implementation(libs.service.permission)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)
