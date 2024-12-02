@@ -72,7 +72,11 @@ class TaskGroupDisposableImpl(
     override fun run() {
         if (taskStatus.compareAndSet(STATUS_DEFAULT, STATUS_COMPLETED)) {
             CsLogger.tag(TAG).i("The current task is ready to run. task: $task")
-            task.run()
+            try {
+                task.run()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+            }
             return
         }
         CsLogger.tag(TAG).i("The current task has been cancelled and cannot run. task: $task")

@@ -10,11 +10,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.install.CsInstallUtils
-import com.proxy.service.core.framework.app.install.InstallBroadcastReceiverImpl
-import com.proxy.service.core.framework.app.install.InstallStatusEnum
+import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
+import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.uri.CsUriUtils
-import com.proxy.service.core.framework.io.uri.ProxyProvider
+import com.proxy.service.core.framework.io.uri.CsUriManager
 import com.proxy.service.funsdk.AssetUtils
 import com.proxy.service.funsdk.R
 
@@ -23,7 +22,7 @@ import com.proxy.service.funsdk.R
  * @data: 2024/9/23 10:15
  * @desc:
  */
-class AppInstallActivity : AppCompatActivity(), InstallBroadcastReceiverImpl.ReceiverListener {
+class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
 
     companion object {
         fun launch(context: Context) {
@@ -43,7 +42,7 @@ class AppInstallActivity : AppCompatActivity(), InstallBroadcastReceiverImpl.Rec
         setContentView(R.layout.activity_framework_appinstall)
 
         AssetUtils.copyFolderFromAssets(this, "apk", apkDir) {}
-        CsUriUtils.addProviderResourcePath(apkDir)
+        CsUriManager.addProviderResourcePath(apkDir)
     }
 
     private var pkg = ""

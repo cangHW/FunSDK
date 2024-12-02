@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/11/27 20:38
  * @desc:
  */
-class IdleTaskControllerImpl(private var runnable: Runnable?) : IIdleTaskController,
+class IdleTaskControllerImpl(private var task: Runnable?) : IIdleTaskController,
     Callable<Boolean> {
 
     companion object {
@@ -34,13 +34,13 @@ class IdleTaskControllerImpl(private var runnable: Runnable?) : IIdleTaskControl
     }
 
     override fun isDisposed(): Boolean {
-        return runnable == null
+        return task == null
     }
 
     override fun dispose() {
         if (isCompleted.compareAndSet(false, true)) {
             CsLogger.tag(TAG).i("Ready to dispose task.")
-            runnable = null
+            task = null
             return
         }
         CsLogger.tag(TAG).i("There is no need to cancel tasks repeatedly.")
@@ -49,7 +49,11 @@ class IdleTaskControllerImpl(private var runnable: Runnable?) : IIdleTaskControl
     override fun forceRun() {
         if (isCompleted.compareAndSet(false, true)) {
             CsLogger.tag(TAG).i("Prepare to force the current task to run.")
-            runnable?.run()
+            try {
+                task?.run()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+            }
             return
         }
         CsLogger.tag(TAG).i("The current task is running and you do not need to run it again.")
@@ -58,7 +62,11 @@ class IdleTaskControllerImpl(private var runnable: Runnable?) : IIdleTaskControl
     override fun call(): Boolean {
         if (isCompleted.compareAndSet(false, true)) {
             CsLogger.tag(TAG).i("Ready to run the current task.")
-            runnable?.run()
+            try {
+                task?.run()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+            }
             return true
         }
         return false

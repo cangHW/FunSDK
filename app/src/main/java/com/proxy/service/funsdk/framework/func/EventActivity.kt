@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.app.event.broadcast.EventBroadcastReceiverImpl
-import com.proxy.service.core.framework.app.event.broadcast.CsBroadcastUtils
+import com.proxy.service.core.framework.app.message.broadcast.CsBroadcastManager
+import com.proxy.service.core.framework.app.message.broadcast.MessageReceiverListener
 import com.proxy.service.funsdk.R
 
 /**
@@ -17,7 +17,7 @@ import com.proxy.service.funsdk.R
  * @data: 2024/10/29 11:37
  * @desc:
  */
-class EventActivity: AppCompatActivity(), EventBroadcastReceiverImpl.ReceiverListener {
+class EventActivity: AppCompatActivity(), MessageReceiverListener {
 
     companion object {
         fun launch(context: Context) {
@@ -42,12 +42,12 @@ class EventActivity: AppCompatActivity(), EventBroadcastReceiverImpl.ReceiverLis
     fun onClick(view:View){
         when(view.id){
             R.id.set_callback->{
-                CsBroadcastUtils.addWeakReceiverListener(this)
+                CsBroadcastManager.addWeakReceiverListener(this)
             }
             R.id.send_event_msg->{
                 val bundle = Bundle()
                 bundle.putString("ss", "sss")
-                CsBroadcastUtils.sendBroadcast("com.proxy.service.funsdk2", null, bundle)
+                CsBroadcastManager.sendBroadcast("com.proxy.service.funsdk2", null, bundle)
             }
         }
     }

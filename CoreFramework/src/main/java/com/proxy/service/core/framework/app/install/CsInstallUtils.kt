@@ -11,6 +11,9 @@ import android.os.Build
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.app.install.bean.InstallAppInfo
+import com.proxy.service.core.framework.app.install.broadcast.BroadcastReceiverImpl
+import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.ProxyProvider
 import com.proxy.service.core.service.permission.CsPermission
@@ -101,15 +104,15 @@ object CsInstallUtils {
     /**
      * 添加安装消息回调，弱引用
      * */
-    fun addWeakReceiverListener(listener: InstallBroadcastReceiverImpl.ReceiverListener) {
-        InstallBroadcastReceiverImpl.addWeakReceiverListener(listener)
+    fun addWeakReceiverListener(listener: InstallReceiverListener) {
+        BroadcastReceiverImpl.addWeakReceiverListener(listener)
     }
 
     /**
      * 移除安装消息回调
      * */
-    fun removeReceiverListener(listener: InstallBroadcastReceiverImpl.ReceiverListener) {
-        InstallBroadcastReceiverImpl.removeReceiverListener(listener)
+    fun removeReceiverListener(listener: InstallReceiverListener) {
+        BroadcastReceiverImpl.removeReceiverListener(listener)
     }
 
     /**
@@ -288,7 +291,8 @@ object CsInstallUtils {
         val apps = packageManager.getInstalledPackages(0)
         for (packageInfo in apps) {
             val applicationInfo = packageInfo.applicationInfo
-            val appInfo = InstallAppInfo()
+            val appInfo =
+                InstallAppInfo()
             appInfo.icon = applicationInfo.loadIcon(packageManager)
             appInfo.name = applicationInfo.loadLabel(packageManager).toString()
             appInfo.packageName = packageInfo.packageName

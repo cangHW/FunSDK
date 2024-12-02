@@ -94,6 +94,13 @@ object CsContextManager {
     }
 
     /**
+     * 当前应用是否在后台
+     * */
+    fun isInBackground(): Boolean {
+        return AppShowStatusLifecycleImpl.getInstance().isInBackground()
+    }
+
+    /**
      * 添加应用显示状态变化监听
      * */
     fun addAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {

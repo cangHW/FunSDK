@@ -13,7 +13,6 @@ import com.tencent.mmkv.MMKV
  */
 object CsSpManager : ISpAction {
 
-
     private val explicitName: ThreadLocal<String> = ThreadLocal()
     private val explicitMode: ThreadLocal<SpMode> = ThreadLocal()
     private val explicitSecurity: ThreadLocal<String> = ThreadLocal()

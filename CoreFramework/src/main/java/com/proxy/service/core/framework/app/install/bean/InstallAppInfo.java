@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.app.install;
+package com.proxy.service.core.framework.app.install.bean;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;

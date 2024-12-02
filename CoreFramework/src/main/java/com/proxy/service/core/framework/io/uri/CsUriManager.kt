@@ -14,7 +14,7 @@ import java.io.File
  * @data: 2024/9/23 14:18
  * @desc:
  */
-object CsUriUtils {
+object CsUriManager {
 
     private const val TAG = "${Constants.TAG}Uri"
 

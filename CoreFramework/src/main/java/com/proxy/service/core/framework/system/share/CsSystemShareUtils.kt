@@ -5,7 +5,7 @@ import android.net.Uri
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.uri.CsUriUtils
+import com.proxy.service.core.framework.io.uri.CsUriManager
 
 /**
  * 系统分享相关工具
@@ -55,7 +55,7 @@ object CsSystemShareUtils {
 
         val imageUris = ArrayList<Uri>()
         imgPaths.forEach {
-            CsUriUtils.getUriByPath(it)?.let { uri ->
+            CsUriManager.getUriByPath(it)?.let { uri ->
                 imageUris.add(uri)
             }
         }

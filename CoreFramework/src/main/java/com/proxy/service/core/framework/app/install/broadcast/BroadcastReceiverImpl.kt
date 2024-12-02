@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.app.install
+package com.proxy.service.core.framework.app.install.broadcast
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,6 +7,8 @@ import android.content.IntentFilter
 import android.os.Build
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
+import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.controller.IController
 import java.util.WeakHashMap
@@ -17,31 +19,21 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/10/29 18:37
  * @desc:
  */
-class InstallBroadcastReceiverImpl : BroadcastReceiver() {
-
-    /**
-     * 接收消息回调
-     */
-    interface ReceiverListener {
-        /**
-         * 接收到消息
-         */
-        fun onReceive(context: Context, installStatusEnum: InstallStatusEnum, packageName: String)
-    }
+class BroadcastReceiverImpl : BroadcastReceiver() {
 
     companion object {
         private const val TAG = "${Constants.TAG}InstallReceiver"
 
         private val isStart = AtomicBoolean(false)
-        private val receiver = InstallBroadcastReceiverImpl()
+        private val receiver = BroadcastReceiverImpl()
 
         private val any = Any()
-        private val weakReceiverHashMap = WeakHashMap<ReceiverListener, Any>()
+        private val weakReceiverHashMap = WeakHashMap<InstallReceiverListener, Any>()
 
         /**
          * 添加弱引用回调
          * */
-        fun addWeakReceiverListener(listener: ReceiverListener) {
+        fun addWeakReceiverListener(listener: InstallReceiverListener) {
             synchronized(weakReceiverHashMap) {
                 weakReceiverHashMap[listener] = any
                 if (weakReceiverHashMap.size > 0) {
@@ -55,7 +47,7 @@ class InstallBroadcastReceiverImpl : BroadcastReceiver() {
         /**
          * 移除弱引用回调
          * */
-        fun removeReceiverListener(listener: ReceiverListener) {
+        fun removeReceiverListener(listener: InstallReceiverListener) {
             synchronized(weakReceiverHashMap) {
                 weakReceiverHashMap.remove(listener)
                 if (weakReceiverHashMap.size <= 0) {

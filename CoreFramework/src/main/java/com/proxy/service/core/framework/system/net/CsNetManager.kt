@@ -6,9 +6,9 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.telephony.TelephonyManager
-import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
 import com.proxy.service.core.framework.system.net.controller.BroadcastController
 import com.proxy.service.core.framework.system.net.controller.NetworkController
 import com.proxy.service.core.framework.system.net.controller.IController
@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/4/28 15:34
  * @desc:
  */
-object CsNetUtils {
+object CsNetManager {
 
     private var connectivityManager: ConnectivityManager? = null
     private var telephonyManager: TelephonyManager? = null
@@ -173,28 +173,6 @@ object CsNetUtils {
      * */
     fun isMobile5G(networkType: Int? = null): Boolean {
         return (networkType ?: getTelephonyNetworkType()) in mobile5GNetworkTypes
-    }
-
-    /**
-     * 网络连接状态变化监听
-     */
-    interface NetConnectChangedListener {
-        /**
-         * 网络连接
-         */
-        fun onNetConnected()
-
-        /**
-         * 网络连接变化
-         * */
-        fun onNetChanged(type: NetType) {
-            CsLogger.tag(IController.TAG).d("ScNetType: $type")
-        }
-
-        /**
-         * 网络断开连接
-         */
-        fun onNetDisConnected()
     }
 
     private val any = Any()

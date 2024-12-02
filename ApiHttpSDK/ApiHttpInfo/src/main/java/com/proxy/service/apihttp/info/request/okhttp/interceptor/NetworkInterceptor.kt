@@ -3,7 +3,7 @@ package com.proxy.service.apihttp.info.request.okhttp.interceptor
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.net.CsNetUtils
+import com.proxy.service.core.framework.system.net.CsNetManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.net.SocketTimeoutException
@@ -22,7 +22,7 @@ class NetworkInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        if (!CsNetUtils.isAvailable()){
+        if (!CsNetManager.isAvailable()){
             CsLogger.tag(TAG).d("Network unavailable. url = ${request.url}")
             throw SocketTimeoutException("Network unavailable. url = ${request.url}")
         }

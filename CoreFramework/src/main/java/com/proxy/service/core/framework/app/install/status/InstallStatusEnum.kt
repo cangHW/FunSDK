@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.app.install
+package com.proxy.service.core.framework.app.install.status
 
 import android.content.Intent
 

@@ -7,7 +7,8 @@ import android.net.NetworkRequest
 import androidx.annotation.RequiresPermission
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.NetType
-import com.proxy.service.core.framework.system.net.CsNetUtils
+import com.proxy.service.core.framework.system.net.CsNetManager
+import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
 import java.util.WeakHashMap
 
 /**
@@ -17,7 +18,7 @@ import java.util.WeakHashMap
  */
 class NetworkController(
     private val connectivityManager: ConnectivityManager?,
-    private val weakNetMapper: WeakHashMap<CsNetUtils.NetConnectChangedListener, Any>,
+    private val weakNetMapper: WeakHashMap<NetConnectChangedListener, Any>,
     private val callback: () -> Unit
 ) : IController {
 
@@ -87,25 +88,25 @@ class NetworkController(
                         }
                     }
                 } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    if (CsNetUtils.isMobile2G()) {
+                    if (CsNetManager.isMobile2G()) {
                         weakNetMapper.keys.forEach {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_2G)
                             }
                         }
-                    } else if (CsNetUtils.isMobile3G()) {
+                    } else if (CsNetManager.isMobile3G()) {
                         weakNetMapper.keys.forEach {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_3G)
                             }
                         }
-                    } else if (CsNetUtils.isMobile4G()) {
+                    } else if (CsNetManager.isMobile4G()) {
                         weakNetMapper.keys.forEach {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_4G)
                             }
                         }
-                    } else if (CsNetUtils.isMobile5G()) {
+                    } else if (CsNetManager.isMobile5G()) {
                         weakNetMapper.keys.forEach {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_5G)

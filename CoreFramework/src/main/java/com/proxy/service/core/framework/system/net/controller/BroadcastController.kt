@@ -10,7 +10,8 @@ import android.os.Build
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.NetType
-import com.proxy.service.core.framework.system.net.CsNetUtils
+import com.proxy.service.core.framework.system.net.CsNetManager
+import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
 import java.util.WeakHashMap
 
 /**
@@ -19,7 +20,7 @@ import java.util.WeakHashMap
  * @desc:
  */
 class BroadcastController(
-    private val weakNetMapper: WeakHashMap<CsNetUtils.NetConnectChangedListener, Any>,
+    private val weakNetMapper: WeakHashMap<NetConnectChangedListener, Any>,
     private val callback: () -> Unit
 ) : IController {
 
@@ -69,7 +70,7 @@ class BroadcastController(
                 return
             }
 
-            if (CsNetUtils.isAvailable()) {
+            if (CsNetManager.isAvailable()) {
                 synchronized(weakNetMapper) {
                     if (isHasNet != netHas) {
                         isHasNet = netHas
@@ -80,23 +81,23 @@ class BroadcastController(
                         }
                     }
                     weakNetMapper.keys.forEach {
-                        if (CsNetUtils.isWifi()) {
+                        if (CsNetManager.isWifi()) {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_WIFI)
                             }
-                        } else if (CsNetUtils.isMobile2G()) {
+                        } else if (CsNetManager.isMobile2G()) {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_2G)
                             }
-                        } else if (CsNetUtils.isMobile3G()) {
+                        } else if (CsNetManager.isMobile3G()) {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_3G)
                             }
-                        } else if (CsNetUtils.isMobile4G()) {
+                        } else if (CsNetManager.isMobile4G()) {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_4G)
                             }
-                        } else if (CsNetUtils.isMobile5G()) {
+                        } else if (CsNetManager.isMobile5G()) {
                             IController.runUiThread {
                                 it.onNetChanged(NetType.TRANSPORT_CELLULAR_5G)
                             }

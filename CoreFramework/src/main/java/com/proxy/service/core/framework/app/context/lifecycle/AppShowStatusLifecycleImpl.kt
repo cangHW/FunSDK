@@ -41,7 +41,7 @@ class AppShowStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     fun removeAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        CsTask.computationThread()?.call(object :ICallable<String>{
+        CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 synchronized(appShowStatusChangedCallbacks) {
                     appShowStatusChangedCallbacks.remove(callback)
@@ -51,6 +51,9 @@ class AppShowStatusLifecycleImpl : ActivityLifecycleCallbacks {
         })?.start()
     }
 
+    fun isInBackground(): Boolean {
+        return !isForeground.get()
+    }
 
     private var isForeground = AtomicBoolean(false)
     private var configCount = 0

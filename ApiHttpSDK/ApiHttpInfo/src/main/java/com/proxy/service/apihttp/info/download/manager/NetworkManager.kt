@@ -5,8 +5,8 @@ import com.proxy.service.apihttp.base.download.enums.StatusEnum
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.net.CsNetUtils
-import com.proxy.service.core.framework.system.net.CsNetUtils.NetConnectChangedListener
+import com.proxy.service.core.framework.system.net.CsNetManager
+import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
@@ -23,7 +23,7 @@ object NetworkManager {
         if (!isAutoRestartOnNetworkReconnect) {
             return
         }
-        CsNetUtils.addWeakNetConnectChangedListener(callback)
+        CsNetManager.addWeakNetConnectChangedListener(callback)
     }
 
     private val callback = object : NetConnectChangedListener {
