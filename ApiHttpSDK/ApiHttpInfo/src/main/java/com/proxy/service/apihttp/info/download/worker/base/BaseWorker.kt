@@ -6,7 +6,7 @@ import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.core.framework.system.security.CsMd5Utils
+import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.File

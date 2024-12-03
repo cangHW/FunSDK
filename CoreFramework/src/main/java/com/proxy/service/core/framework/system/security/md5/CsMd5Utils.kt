@@ -1,8 +1,9 @@
-package com.proxy.service.core.framework.system.security
+package com.proxy.service.core.framework.system.security.md5
 
 import androidx.annotation.WorkerThread
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.file.CsFileUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -19,7 +20,9 @@ import java.security.MessageDigest
  */
 object CsMd5Utils {
 
+    private const val ALGORITHM_MD5 = "MD5"
     private const val TAG = "${Constants.TAG}Md5"
+
 
     /**
      * 对字符串进行 md5 加密
@@ -29,7 +32,7 @@ object CsMd5Utils {
             return ""
         }
         try {
-            val md = MessageDigest.getInstance("MD5")
+            val md = MessageDigest.getInstance(ALGORITHM_MD5)
             md.update(str.toByteArray())
             val md5 = BigInteger(1, md.digest()).toString(16)
             return md5.padStart(32, '0')
@@ -44,9 +47,10 @@ object CsMd5Utils {
      */
     @WorkerThread
     fun getMD5(file: File?): String {
-        if (file == null || !file.exists() || !file.isFile) {
+        if (!CsFileUtils.isFile(file)) {
             return ""
         }
+
         try {
             FileInputStream(file).use { fis ->
                 return getMD5(fis)
@@ -58,7 +62,7 @@ object CsMd5Utils {
     }
 
     /**
-     * 对流进行 md5 加密
+     * 对流里面的内容进行 md5 加密
      */
     @WorkerThread
     fun getMD5(inputStream: InputStream?): String {
@@ -67,7 +71,7 @@ object CsMd5Utils {
         }
         try {
             val buffer = ByteArray(8 * 1024)
-            val digest = MessageDigest.getInstance("MD5")
+            val digest = MessageDigest.getInstance(ALGORITHM_MD5)
 
             DigestInputStream(inputStream, digest).use { dis ->
                 while (dis.read(buffer) > 0) {
@@ -82,6 +86,4 @@ object CsMd5Utils {
         }
         return ""
     }
-
-
 }

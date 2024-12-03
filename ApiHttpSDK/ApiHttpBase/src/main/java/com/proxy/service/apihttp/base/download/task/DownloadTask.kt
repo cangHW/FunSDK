@@ -5,7 +5,7 @@ import com.proxy.service.apihttp.base.download.task.base.IBuilder
 import com.proxy.service.apihttp.base.download.task.base.IBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.security.CsMd5Utils
+import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 import java.io.File
 
 /**
