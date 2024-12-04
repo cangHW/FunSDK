@@ -18,6 +18,11 @@ interface IController {
     fun update(byteArray: ByteArray): ByteArray
 
     /**
+     * 更新数据, 但不需要缓存
+     * */
+    fun updateWithOutCache(byteArray: ByteArray): ByteArray
+
+    /**
      * 结束使用
      * */
     fun finish(): ByteArray

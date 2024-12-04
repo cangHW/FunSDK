@@ -5,8 +5,8 @@ upArray=(
   ":CoreFramework"
 
   # 网络库
-  ":ApiHttpSDK:ApiHttpBase"
-  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpBase"
+#  ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolBase"

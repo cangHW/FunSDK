@@ -1,10 +1,8 @@
 package com.proxy.service.core.framework.system.security.aes.impl.action.encrypt
 
 import com.proxy.service.core.framework.data.string.CsStringUtils
-import com.proxy.service.core.framework.system.security.aes.base.action.IDecryptResult
 import com.proxy.service.core.framework.system.security.aes.base.action.IEncryptResult
 import com.proxy.service.core.framework.system.security.aes.base.controller.IController
-import java.util.Base64
 
 /**
  * @author: cangHX

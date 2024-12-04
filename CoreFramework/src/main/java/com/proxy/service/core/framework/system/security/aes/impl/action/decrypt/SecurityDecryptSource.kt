@@ -2,9 +2,9 @@ package com.proxy.service.core.framework.system.security.aes.impl.action.decrypt
 
 import com.proxy.service.core.framework.data.string.CsStringUtils
 import com.proxy.service.core.framework.system.security.aes.base.action.IDecryptResult
+import com.proxy.service.core.framework.system.security.aes.base.action.IInstantRun
 import com.proxy.service.core.framework.system.security.aes.base.action.ISource
 import com.proxy.service.core.framework.system.security.aes.base.controller.IController
-import java.util.Base64
 
 /**
  * @author: cangHX
@@ -37,19 +37,7 @@ class SecurityDecryptSource(
         return this
     }
 
-    override fun addSourceString(str: String): ByteArray {
-        return CsStringUtils.parseHexStr2Byte(str)?.let {
-            controller.update(it)
-        } ?: ByteArray(0)
-    }
-
-    override fun addSourceBase64String(base64: String): ByteArray {
-        return CsStringUtils.parseBase64Str2Byte(base64)?.let {
-            controller.update(it)
-        } ?: ByteArray(0)
-    }
-
-    override fun addSourceByteArray(byteArray: ByteArray): ByteArray {
-        return controller.update(byteArray)
+    override fun startInstantRun(): IInstantRun {
+        return SecurityDecryptInstantRun(controller)
     }
 }

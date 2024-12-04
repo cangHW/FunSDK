@@ -2,10 +2,10 @@ package com.proxy.service.core.framework.system.security.aes.impl.action.encrypt
 
 import com.proxy.service.core.framework.data.string.CsStringUtils
 import com.proxy.service.core.framework.system.security.aes.base.action.IEncryptResult
+import com.proxy.service.core.framework.system.security.aes.base.action.IInstantRun
 import com.proxy.service.core.framework.system.security.aes.base.action.ISource
 import com.proxy.service.core.framework.system.security.aes.base.controller.IController
 import java.nio.charset.StandardCharsets
-import java.util.Base64
 
 /**
  * @author: cangHX
@@ -36,17 +36,7 @@ class SecurityEncryptSource(
         return this
     }
 
-    override fun addSourceString(str: String): ByteArray {
-        return controller.update(str.toByteArray(StandardCharsets.UTF_8))
-    }
-
-    override fun addSourceBase64String(base64: String): ByteArray {
-        return CsStringUtils.parseBase64Str2Byte(base64)?.let {
-            controller.update(it)
-        } ?: ByteArray(0)
-    }
-
-    override fun addSourceByteArray(byteArray: ByteArray): ByteArray {
-        return controller.update(byteArray)
+    override fun startInstantRun(): IInstantRun {
+        return SecurityEncryptInstantRun(controller)
     }
 }

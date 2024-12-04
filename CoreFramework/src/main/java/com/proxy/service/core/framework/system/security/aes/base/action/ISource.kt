@@ -28,24 +28,8 @@ interface ISource<T> {
     fun setSourceByteArray(byteArray: ByteArray): T
 
     /**
-     * 添加元数据
-     *
-     * @return 当前添加的数据进行加解密后的值
+     * 开始即时处理, 可用于流处理, 需要开发者处理加解密后的字节数据
      * */
-    fun addSourceString(str: String): ByteArray
-
-    /**
-     * 添加元数据
-     *
-     * @return 当前添加的数据进行加解密后的值
-     * */
-    fun addSourceBase64String(base64: String): ByteArray
-
-    /**
-     * 添加元数据
-     *
-     * @return 当前添加的数据进行加解密后的值
-     * */
-    fun addSourceByteArray(byteArray: ByteArray): ByteArray
+    fun startInstantRun(): IInstantRun
 
 }

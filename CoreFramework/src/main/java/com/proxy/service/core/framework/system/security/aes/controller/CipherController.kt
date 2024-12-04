@@ -49,6 +49,15 @@ class CipherController(
         return ByteArray(0)
     }
 
+    override fun updateWithOutCache(byteArray: ByteArray): ByteArray {
+        try {
+            return cipher.update(byteArray)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(Config.TAG).e(throwable)
+        }
+        return ByteArray(0)
+    }
+
     override fun finish(): ByteArray {
         try {
             byteArrayList.add(cipher.doFinal())
