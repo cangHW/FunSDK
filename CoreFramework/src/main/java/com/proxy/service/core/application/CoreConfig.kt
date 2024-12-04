@@ -2,22 +2,23 @@ package com.proxy.service.core.application
 
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
-import com.proxy.service.core.application.base.CsBaseApplication
+import com.proxy.service.core.application.base.CsBaseConfig
 import com.proxy.service.core.framework.app.context.ContextInit
-import com.proxy.service.core.framework.io.sp.SpInit
 
 /**
  * @author: cangHX
  * @data: 2024/4/28 20:53
  * @desc:
  */
-@CloudApiService(serviceTag = "Core/Application")
-class CoreApplication : CsBaseApplication() {
+@CloudApiService(serviceTag = "Core/Config")
+class CoreConfig : CsBaseConfig() {
+
+    override fun priority(): Int {
+        return -999
+    }
 
     override fun onCreate(application: Application, isDebug: Boolean) {
-        super.onCreate(application, isDebug)
         ContextInit.init(application)
-        SpInit.init(application)
     }
 
 }

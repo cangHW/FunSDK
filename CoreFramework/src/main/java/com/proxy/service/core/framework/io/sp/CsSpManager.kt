@@ -71,7 +71,7 @@ object CsSpManager : ISpAction {
     }
 
     override fun getRootDir(): String {
-        val dir = SpInit.rootPath
+        val dir = SpInit.getRootPath()
         if (dir.isEmpty()) {
             CsLogger.tag(SpInit.TAG).e("ScCore is not init.")
         }

@@ -19,7 +19,6 @@ class ApiHttpApplication: CsBaseApplication() {
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {
-        super.onCreate(application, isDebug)
         Config.setIsDebug(isDebug)
         AppRelaunchManager.reloadTask()
     }

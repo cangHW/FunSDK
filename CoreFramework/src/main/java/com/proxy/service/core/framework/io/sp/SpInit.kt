@@ -1,8 +1,9 @@
 package com.proxy.service.core.framework.io.sp
 
-import android.content.Context
 import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.framework.app.context.CsContextManager
 import com.tencent.mmkv.MMKV
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
@@ -13,14 +14,25 @@ object SpInit {
 
     const val TAG = "${Constants.TAG}Sp"
 
-    var rootPath: String = ""
+    private val isInit = AtomicBoolean(false)
+
+    private var rootPath: String = ""
     private val SpMapper = HashMap<String, MMKV>()
 
-    fun init(context: Context) {
-        rootPath = MMKV.initialize(context)
+    private fun init() {
+        if (isInit.compareAndSet(false, true)) {
+            rootPath = MMKV.initialize(CsContextManager.getApplication())
+        }
+    }
+
+    fun getRootPath(): String {
+        init()
+        return rootPath
     }
 
     fun getSp(spName: String?, mode: SpMode, secretKey: String?): MMKV {
+        init()
+
         val key = "name_${spName}_mode_${mode.mode}_secretKey_${secretKey}"
         val value = SpMapper[key]
 

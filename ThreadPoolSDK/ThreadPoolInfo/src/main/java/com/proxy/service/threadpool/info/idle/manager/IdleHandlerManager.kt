@@ -32,7 +32,8 @@ object IdleHandlerManager {
             CsLogger.tag(TAG).d("The main thread is idle.")
             var num = 0
             while (num < MAX_NUM && queue.size > 0) {
-                if (queue.poll()?.call() == true) {
+                val call = queue.poll() ?: break
+                if (call.call() == true) {
                     break
                 }
                 num++

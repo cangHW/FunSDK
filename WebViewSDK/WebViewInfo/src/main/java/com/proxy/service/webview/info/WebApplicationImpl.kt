@@ -21,7 +21,6 @@ class WebApplicationImpl : CsBaseApplication() {
     private val webTag = "${Config.LOG_TAG_START}Application"
 
     override fun onCreate(application: Application, isDebug: Boolean) {
-        super.onCreate(application, isDebug)
         Config.isDebug = isDebug
 
         if (isDebug) {
