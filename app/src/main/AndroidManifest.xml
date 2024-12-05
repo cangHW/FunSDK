@@ -10,8 +10,11 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
 
     <application
@@ -40,22 +43,23 @@
 
         <activity android:name=".threadpool.ThreadPoolActivity" />
 
-        <activity android:name=".apihttp.ApiActivity"/>
+        <activity android:name=".apihttp.ApiActivity" />
         <activity android:name=".apihttp.request.ApiRequestActivity" />
-        <activity android:name=".apihttp.download.ApiDownloadActivity"/>
+        <activity android:name=".apihttp.download.ApiDownloadActivity" />
 
         <activity android:name=".webview.WebViewActivity" />
 
         <activity android:name=".framework.FrameWorkActivity" />
-        <activity android:name=".framework.func.DeviceActivity"/>
+        <activity android:name=".framework.func.DeviceActivity" />
         <activity android:name=".framework.func.AppInstallActivity" />
         <activity android:name=".framework.func.FileActivity" />
         <activity android:name=".framework.func.SystemPageActivity" />
         <activity android:name=".framework.func.ScreenActivity" />
         <activity android:name=".framework.func.EventActivity" />
-        <activity android:name=".framework.func.SecurityActivity"/>
+        <activity android:name=".framework.func.SecurityActivity" />
+        <activity android:name=".framework.func.MonitorActivity" />
 
-        <activity android:name=".permission.PermissionActivity"/>
+        <activity android:name=".permission.PermissionActivity" />
 
     </application>
 

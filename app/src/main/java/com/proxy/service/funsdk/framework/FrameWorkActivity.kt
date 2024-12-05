@@ -11,6 +11,7 @@ import com.proxy.service.funsdk.framework.func.AppInstallActivity
 import com.proxy.service.funsdk.framework.func.DeviceActivity
 import com.proxy.service.funsdk.framework.func.EventActivity
 import com.proxy.service.funsdk.framework.func.FileActivity
+import com.proxy.service.funsdk.framework.func.MonitorActivity
 import com.proxy.service.funsdk.framework.func.ScreenActivity
 import com.proxy.service.funsdk.framework.func.SecurityActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
@@ -39,7 +40,7 @@ class FrameWorkActivity : AppCompatActivity() {
 
     fun onClick(view: View) {
         when (view.id) {
-            R.id.device_info->{
+            R.id.device_info -> {
                 DeviceActivity.launch(this)
             }
 
@@ -65,6 +66,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
             R.id.security -> {
                 SecurityActivity.launch(this)
+            }
+
+            R.id.monitor -> {
+                MonitorActivity.launch(this)
             }
         }
     }

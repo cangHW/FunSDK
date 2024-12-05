@@ -61,7 +61,7 @@ class IdleTaskControllerImpl(private var task: Runnable?) : IIdleTaskController,
 
     override fun call(): Boolean {
         if (isCompleted.compareAndSet(false, true)) {
-            CsLogger.tag(TAG).i("Ready to run the current task.")
+            CsLogger.tag(TAG).d("Ready to run the current task.")
             try {
                 task?.run()
             } catch (throwable: Throwable) {
