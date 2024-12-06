@@ -2,7 +2,6 @@ package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.request.annotation.CsBaseUrl
-import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.core.framework.data.log.CsLogger
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -15,7 +14,7 @@ import retrofit2.Invocation
  * @data: 2024/5/23 16:54
  * @desc:
  */
-class BaseUrlInterceptor : Interceptor {
+class BaseUrlInterceptor(private val baseUrl: String) : Interceptor {
 
     companion object {
         private const val TAG = "${Constants.LOG_REQUEST_TAG_START}BaseUrl"
@@ -28,8 +27,7 @@ class BaseUrlInterceptor : Interceptor {
             request.tag(Invocation::class.java)?.method()?.getAnnotation(CsBaseUrl::class.java)
                 ?.let {
                     if (it.baseUrl.isNotBlank()) {
-                        val dUrl = Config.getRequestConfig().getBaseUrl()
-                        request.url.toString().replace(dUrl, it.baseUrl).toHttpUrlOrNull()
+                        request.url.toString().replace(baseUrl, it.baseUrl).toHttpUrlOrNull()
                             ?.let { httpUrl ->
                                 request = request.newBuilder().url(httpUrl).build()
                             }

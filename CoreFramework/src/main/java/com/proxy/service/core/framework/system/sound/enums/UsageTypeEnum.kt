@@ -7,89 +7,86 @@ import android.media.AudioAttributes
  * @data: 2024/12/5 20:34
  * @desc:
  */
-enum class ContentTypeEnum(usage: Int) {
+enum class UsageTypeEnum(val usageType: Int) {
 
     /**
      * 未知用法
      */
-     USAGE_UNKNOWN(AudioAttributes.USAGE_UNKNOWN),
+    USAGE_UNKNOWN(AudioAttributes.USAGE_UNKNOWN),
 
     /**
      * 媒体播放
      */
-    var USAGE_MEDIA: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_MEDIA(AudioAttributes.USAGE_MEDIA),
 
     /**
      * 通话
      */
-    var USAGE_VOICE_COMMUNICATION: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_VOICE_COMMUNICATION(AudioAttributes.USAGE_VOICE_COMMUNICATION),
 
     /**
      * 呼叫铃声
      */
-    var USAGE_VOICE_COMMUNICATION_SIGNALLING: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_VOICE_COMMUNICATION_SIGNALLING(AudioAttributes.USAGE_VOICE_COMMUNICATION_SIGNALLING),
 
     /**
      * 闹钟
      */
-    var USAGE_ALARM: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_ALARM(AudioAttributes.USAGE_ALARM),
 
     /**
      * 通知
      */
-    var USAGE_NOTIFICATION: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_NOTIFICATION(AudioAttributes.USAGE_NOTIFICATION),
 
     /**
      * 电话铃声
      */
-    var USAGE_NOTIFICATION_RINGTONE: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_NOTIFICATION_RINGTONE(AudioAttributes.USAGE_NOTIFICATION_RINGTONE),
 
     /**
      * 用于输入/结束通信请求，如VoIP通信、视频会议等。
      */
-    var USAGE_NOTIFICATION_COMMUNICATION_REQUEST: com.proxy.service.api.enums.CloudUsageEnum? =
-        null,
+    USAGE_NOTIFICATION_COMMUNICATION_REQUEST(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_REQUEST),
 
     /**
      * 即时通信的通知(如聊天或短信)
      */
-    var USAGE_NOTIFICATION_COMMUNICATION_INSTANT: com.proxy.service.api.enums.CloudUsageEnum? =
-        null,
+    USAGE_NOTIFICATION_COMMUNICATION_INSTANT(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_INSTANT),
 
     /**
      * 非即时通信的通知(如电子邮件)
      */
-    var USAGE_NOTIFICATION_COMMUNICATION_DELAYED: com.proxy.service.api.enums.CloudUsageEnum? =
-        null,
+    USAGE_NOTIFICATION_COMMUNICATION_DELAYED(AudioAttributes.USAGE_NOTIFICATION_COMMUNICATION_DELAYED),
 
     /**
      * 用于吸引用户的注意，如提示或低电量警告。
      */
-    var USAGE_NOTIFICATION_EVENT: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_NOTIFICATION_EVENT(AudioAttributes.USAGE_NOTIFICATION_EVENT),
 
     /**
      * 用于可访问性时(如使用屏幕阅读器)
      */
-    var USAGE_ASSISTANCE_ACCESSIBILITY: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_ASSISTANCE_ACCESSIBILITY(AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY),
 
     /**
      * 驾驶或导航
      */
-    var USAGE_ASSISTANCE_NAVIGATION_GUIDANCE: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_ASSISTANCE_NAVIGATION_GUIDANCE(AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE),
 
     /**
      * 声音化时(如用户界面声音)
      */
-    var USAGE_ASSISTANCE_SONIFICATION: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_ASSISTANCE_SONIFICATION(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION),
 
     /**
      * 游戏音频
      */
-    var USAGE_GAME: com.proxy.service.api.enums.CloudUsageEnum? = null,
+    USAGE_GAME(AudioAttributes.USAGE_GAME),
 
     /**
      * 用于音频回应用户查询，音频说明或帮助话语。
      */
-    var USAGE_ASSISTANT: com.proxy.service.api.enums.CloudUsageEnum? = null;
+    USAGE_ASSISTANT(AudioAttributes.USAGE_ASSISTANT);
 
 }

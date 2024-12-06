@@ -1,6 +1,5 @@
 package com.proxy.service.core.framework.system.sound.base
 
-import com.proxy.service.core.framework.system.sound.config.SoundConfig
 import com.proxy.service.core.framework.system.sound.enums.ContentTypeEnum
 import com.proxy.service.core.framework.system.sound.enums.UsageTypeEnum
 
@@ -9,25 +8,20 @@ import com.proxy.service.core.framework.system.sound.enums.UsageTypeEnum
  * @data: 2024/12/5 20:43
  * @desc:
  */
-interface IBuilder {
+interface IBuilderGet {
 
-    /**
-     * 设置标签
-     * */
-    fun setTag(tag: String): IBuilder
+    fun getSoundPoolTag(): String
 
-    /**
-     * 设置音频将用于什么场景
-     * */
-    fun setUsageEnum(usageEnum: UsageTypeEnum): IBuilder
+    fun getMaxStreams(): Int
 
-    /**
-     * 设置音频类型
-     * */
-    fun setContentTypeEnum(contentTypeEnum: ContentTypeEnum): IBuilder
+    fun getUsageType(): UsageTypeEnum
 
-    /**
-     * 创建配置
-     * */
-    fun build(): SoundConfig
+    fun getContentType(): ContentTypeEnum
+
+    fun getLeftVolume(): Float
+
+    fun getRightVolume(): Float
+
+    fun getRate(): Float
+
 }

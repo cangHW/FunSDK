@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.info.request.okhttp
 
 import android.text.TextUtils
+import com.proxy.service.apihttp.base.request.config.RequestConfig
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.request.okhttp.event.EventListenerImpl
 import com.proxy.service.apihttp.info.request.okhttp.interceptor.BaseUrlInterceptor
@@ -22,9 +23,8 @@ import java.util.concurrent.TimeUnit
  */
 object OkhttpManager {
 
-    fun create(): OkHttpClient {
+    fun create(config: RequestConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
-        val config = Config.getRequestConfig()
 
         builder.connectTimeout(config.getConnectTimeOut(), TimeUnit.MILLISECONDS)
         builder.writeTimeout(config.getWriteTimeOut(), TimeUnit.MILLISECONDS)
@@ -34,7 +34,7 @@ object OkhttpManager {
             builder.cache(Cache(File(config.getCacheDir()), config.getCacheMaxSize()))
         }
 
-        builder.addInterceptor(BaseUrlInterceptor())
+        builder.addInterceptor(BaseUrlInterceptor(config.getBaseUrl()))
         config.getInterceptor().forEach {
             builder.addInterceptor(it)
         }

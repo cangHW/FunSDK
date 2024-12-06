@@ -14,6 +14,7 @@ import com.proxy.service.funsdk.framework.func.FileActivity
 import com.proxy.service.funsdk.framework.func.MonitorActivity
 import com.proxy.service.funsdk.framework.func.ScreenActivity
 import com.proxy.service.funsdk.framework.func.SecurityActivity
+import com.proxy.service.funsdk.framework.func.SoundActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
 
 /**
@@ -70,6 +71,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
             R.id.monitor -> {
                 MonitorActivity.launch(this)
+            }
+
+            R.id.sound ->{
+                SoundActivity.launch(this)
             }
         }
     }

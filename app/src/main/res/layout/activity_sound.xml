@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/core_framework"
+        android:id="@+id/sound_init"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
@@ -14,7 +14,59 @@
         android:focusable="true"
         android:gravity="center"
         android:onClick="onClick"
-        android:text="使用基础能力"
+        android:text="初始化音频池"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sound_load"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="加载音频"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sound_play"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="播放"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sound_unload"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="卸载音频"
+        android:textSize="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sound_release"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="释放音频池"
         android:textSize="20dp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
