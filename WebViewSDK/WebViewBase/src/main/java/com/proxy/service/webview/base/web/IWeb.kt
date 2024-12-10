@@ -80,12 +80,12 @@ interface IWeb {
     fun canGoBack(): Boolean
 
     /**
-     * 进入上一页
+     * 回到上一页
      * */
     fun goBack()
 
     /**
-     * 是否可以回到下一页
+     * 是否可以进入下一页
      * */
     fun canGoForward(): Boolean
 
