@@ -8,7 +8,6 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.manager.IPermissionRequest
 import com.proxy.service.permission.info.config.Config
-import com.proxy.service.permission.info.fragment.IRequest
 import com.proxy.service.permission.info.fragment.RequestFragment
 import com.proxy.service.permission.info.utils.PermissionUtils
 
@@ -20,8 +19,11 @@ import com.proxy.service.permission.info.utils.PermissionUtils
 class PermissionRequestImpl : IPermissionRequest {
 
     private val tag = "${Config.LOG_TAG_START}IRequest"
-    private val fragment: IRequest = RequestFragment()
-    private var activity: FragmentActivity? = null
+
+    private val permissions = ArrayList<String>()
+    private var grantedCallback: ActionCallback? = null
+    private var deniedCallback: ActionCallback? = null
+    private var noPromptCallback: ActionCallback? = null
 
     /**
      * 添加要申请的权限
@@ -31,10 +33,11 @@ class PermissionRequestImpl : IPermissionRequest {
             CsLogger.tag(tag).i("permission can not be empty or blank.")
             return this
         }
-        if (!PermissionUtils.isPermissionDeclaredInManifest(permission)){
-            CsLogger.tag(tag).e("The permission is not registered in the manifest. permission: $permission")
+        if (!PermissionUtils.isPermissionDeclaredInManifest(permission)) {
+            CsLogger.tag(tag)
+                .e("The permission is not registered in the manifest. permission: $permission")
         }
-        fragment.addPermission(permission)
+        permissions.add(permission)
         return this
     }
 
@@ -42,17 +45,17 @@ class PermissionRequestImpl : IPermissionRequest {
      * 允许的权限回调
      * */
     override fun setGrantedCallback(callback: ActionCallback): IPermissionRequest {
-        fragment.setGrantedCallback(callback)
+        this.grantedCallback = callback
         return this
     }
 
     override fun setDeniedCallback(callback: ActionCallback): IPermissionRequest {
-        fragment.setDeniedCallback(callback)
+        this.deniedCallback = callback
         return this
     }
 
     override fun setNoPromptCallback(callback: ActionCallback): IPermissionRequest {
-        fragment.setNoPromptCallback(callback)
+        this.noPromptCallback = callback
         return this
     }
 
@@ -60,7 +63,6 @@ class PermissionRequestImpl : IPermissionRequest {
      * 开始申请
      * */
     override fun start(activity: FragmentActivity) {
-        this.activity = activity
         try {
             realRequestPermission(activity.supportFragmentManager)
         } catch (throwable: Throwable) {
@@ -95,8 +97,22 @@ class PermissionRequestImpl : IPermissionRequest {
     }
 
     private fun realRequestPermission(manager: FragmentManager) {
+        val fragment = RequestFragment()
+        permissions.forEach {
+            fragment.addPermission(it)
+        }
+        grantedCallback?.let {
+            fragment.setGrantedCallback(it)
+        }
+        deniedCallback?.let {
+            fragment.setDeniedCallback(it)
+        }
+        noPromptCallback?.let {
+            fragment.setNoPromptCallback(it)
+        }
+
         val transaction = manager.beginTransaction()
-        transaction.add(fragment as Fragment, "${tag}_${System.currentTimeMillis()}")
+        transaction.add(fragment, "${tag}_${System.currentTimeMillis()}")
         transaction.commitAllowingStateLoss()
     }
 }

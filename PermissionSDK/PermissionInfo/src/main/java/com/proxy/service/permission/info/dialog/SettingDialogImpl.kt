@@ -11,7 +11,6 @@ import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.ISettingDialog
 import com.proxy.service.permission.info.config.Config
-import com.proxy.service.permission.info.fragment.ISetting
 import com.proxy.service.permission.info.fragment.SettingFragment
 
 /**
@@ -19,10 +18,12 @@ import com.proxy.service.permission.info.fragment.SettingFragment
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
+class SettingDialogImpl(private val permissions: Array<String>) : ISettingDialog {
 
     private val tag = "${Config.LOG_TAG_START}SettingDialog"
-    private val fragment: ISetting = SettingFragment()
+
+    private var grantedCallback: ActionCallback? = null
+    private var deniedCallback: ActionCallback? = null
 
     private var title: String? = null
     private var content: String? = null
@@ -35,15 +36,11 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
     private var dialogInterface: DialogInterface? = null
     private var dialogDismissCallback: DialogDismissCallback? = null
 
-    init {
-        fragment.setPermission(permissions)
-    }
-
     /**
      * 允许的权限回调
      * */
     override fun setGrantedCallback(callback: ActionCallback): ISettingDialog {
-        fragment.setGrantedCallback(callback)
+        this.grantedCallback = callback
         return this
     }
 
@@ -51,7 +48,7 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
      * 拒绝的权限回调
      * */
     override fun setDeniedCallback(callback: ActionCallback): ISettingDialog {
-        fragment.setDeniedCallback(callback)
+        this.deniedCallback = callback
         return this
     }
 
@@ -78,7 +75,9 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
      * @param click 默认行为: 取消弹窗, 可自定义
      * */
     override fun setLeftButton(text: String?, click: ButtonClick?): ISettingDialog {
-        this.leftText = text
+        if (text != null) {
+            this.leftText = text
+        }
         this.leftClick = click
         return this
     }
@@ -90,7 +89,9 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
      * @param click 默认行为: 继续申请权限 或 跳转设置, 可自定义
      * */
     override fun setRightButton(text: String?, click: ButtonClick?): ISettingDialog {
-        this.rightText = text
+        if (text != null) {
+            this.rightText = text
+        }
         this.rightClick = click
         return this
     }
@@ -170,8 +171,17 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
     }
 
     private fun startSetting(manager: FragmentManager) {
+        val fragment = SettingFragment()
+        fragment.setPermission(permissions)
+        grantedCallback?.let {
+            fragment.setGrantedCallback(it)
+        }
+        deniedCallback?.let {
+            fragment.setDeniedCallback(it)
+        }
+
         val transaction = manager.beginTransaction()
-        transaction.add(fragment as Fragment, "${tag}_${System.currentTimeMillis()}")
+        transaction.add(fragment, "${tag}_${System.currentTimeMillis()}")
         transaction.commitAllowingStateLoss()
     }
 

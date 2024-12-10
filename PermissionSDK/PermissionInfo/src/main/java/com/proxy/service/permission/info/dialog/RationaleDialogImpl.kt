@@ -17,9 +17,11 @@ import com.proxy.service.permission.info.request.PermissionRequestImpl
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDialog {
+class RationaleDialogImpl(permissions: Array<String>) : IRationaleDialog {
 
     private val tag = "${Config.LOG_TAG_START}RationaleDialog"
+
+    private val fragment = PermissionRequestImpl()
 
     private var title: String? = null
     private var content: String? = null
@@ -30,12 +32,14 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
     private var rightText: String? = null
     private var rightClick: ButtonClick? = null
 
-    private var grantedCallback: ActionCallback? = null
-    private var deniedCallback: ActionCallback? = null
-    private var noPromptCallback: ActionCallback? = null
-
     private var dialogInterface: DialogInterface? = null
     private var dialogDismissCallback: DialogDismissCallback? = null
+
+    init {
+        permissions.iterator().forEach {
+            fragment.addPermission(it)
+        }
+    }
 
     /**
      * 设置标题
@@ -60,7 +64,9 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
      * @param click 默认行为: 取消弹窗, 可自定义
      * */
     override fun setLeftButton(text: String?, click: ButtonClick?): IRationaleDialog {
-        this.leftText = text
+        if (text != null) {
+            this.leftText = text
+        }
         this.leftClick = click
         return this
     }
@@ -72,7 +78,9 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
      * @param click 默认行为: 继续申请权限 或 跳转设置, 可自定义
      * */
     override fun setRightButton(text: String?, click: ButtonClick?): IRationaleDialog {
-        this.rightText = text
+        if (text != null) {
+            this.rightText = text
+        }
         this.rightClick = click
         return this
     }
@@ -83,17 +91,17 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
     }
 
     override fun setGrantedCallback(callback: ActionCallback): IRationaleDialog {
-        this.grantedCallback = callback
+        fragment.setGrantedCallback(callback)
         return this
     }
 
     override fun setDeniedCallback(callback: ActionCallback): IRationaleDialog {
-        this.deniedCallback = callback
+        fragment.setDeniedCallback(callback)
         return this
     }
 
     override fun setNoPromptCallback(callback: ActionCallback): IRationaleDialog {
-        this.noPromptCallback = callback
+        fragment.setNoPromptCallback(callback)
         return this
     }
 
@@ -148,21 +156,7 @@ class RationaleDialogImpl(private val permissions: Array<String>) : IRationaleDi
                             .i("The activity is destroyed, so can not request permission.")
                         return true
                     }
-
-                    val request = PermissionRequestImpl()
-                    permissions.iterator().forEach {
-                        request.addPermission(it)
-                    }
-                    grantedCallback?.let {
-                        request.setGrantedCallback(it)
-                    }
-                    deniedCallback?.let {
-                        request.setDeniedCallback(it)
-                    }
-                    noPromptCallback?.let {
-                        request.setNoPromptCallback(it)
-                    }
-                    request.start(activity)
+                    fragment.start(activity)
                     return true
                 }
             },
