@@ -3,6 +3,7 @@ package com.proxy.service.core.framework.io.file.write.impl
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
+import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
 import java.io.Reader
 import java.nio.file.Files
@@ -34,7 +35,7 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
             }
 
             Files.newBufferedWriter(file.toPath(), *options).use { writer ->
-                val buffer = CharArray(Constants.IO_BUFFER_SIZE)
+                val buffer = CharArray(IoConfig.IO_BUFFER_SIZE)
                 var bytesRead: Int
                 while ((reader.read(buffer).also { bytesRead = it }) != -1) {
                     writer.write(buffer, 0, bytesRead)

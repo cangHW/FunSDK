@@ -3,6 +3,7 @@ package com.proxy.service.core.framework.io.file.write.impl
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
+import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
 import java.io.InputStream
 import java.nio.file.Files
@@ -34,7 +35,7 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             }
 
             Files.newOutputStream(file.toPath(), *options).buffered().use { outputStream ->
-                val buffer = ByteArray(Constants.IO_BUFFER_SIZE)
+                val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
                 var bytesRead: Int
                 while (stream.read(buffer).also { bytesRead = it } != -1) {
                     outputStream.write(buffer, 0, bytesRead)

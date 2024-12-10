@@ -9,8 +9,4 @@ object Constants {
 
     const val TAG = "CoreFw_"
 
-    /**
-     * io 缓冲区大小
-     * */
-    const val IO_BUFFER_SIZE = 8 * 1024
 }
