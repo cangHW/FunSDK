@@ -1,6 +1,10 @@
 package com.proxy.service.permission.info.fragment
 
 import android.content.pm.PackageManager
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
@@ -63,16 +67,13 @@ class RequestFragment : Fragment(), IRequest {
         this.noPromptAction = callback
     }
 
-    /**
-     * 开始申请权限
-     */
-    override fun request() {
-        if (deniedPermission.isEmpty()) {
-            callback()
-            return
-        }
-        CsLogger.tag(tag).i("start to request permission.")
-        requestPermissions(deniedPermission.toTypedArray(), requestCode)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        request()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     @Deprecated("Deprecated in Java")
@@ -113,8 +114,20 @@ class RequestFragment : Fragment(), IRequest {
         callback()
     }
 
+    /**
+     * 开始申请权限
+     */
+    private fun request() {
+        if (deniedPermission.isEmpty()) {
+            callback()
+            return
+        }
+        CsLogger.tag(tag).i("start to request permission.")
+        requestPermissions(deniedPermission.toTypedArray(), requestCode)
+    }
+
     private fun clear() {
-        parentFragmentManager.beginTransaction().remove(this).commitNowAllowingStateLoss()
+        parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
     }
 
     private fun callback() {

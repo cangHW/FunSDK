@@ -2,7 +2,11 @@ package com.proxy.service.permission.info.fragment
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -52,15 +56,13 @@ class SettingFragment : Fragment(), ISetting {
         this.deniedCallback = callback
     }
 
-    /**
-     * 开始申请权限
-     */
-    override fun request() {
-        CsLogger.tag(tag).i("start to launch setting page.")
-        val intent = Intent()
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        intent.setData(Uri.parse("package:${CsAppUtils.getPackageName()}"))
-        startActivityForResult(intent, requestCode)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        request()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -81,8 +83,19 @@ class SettingFragment : Fragment(), ISetting {
         callback()
     }
 
+    /**
+     * 开始申请权限
+     */
+    private fun request() {
+        CsLogger.tag(tag).i("start to launch setting page.")
+        val intent = Intent()
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.setData(Uri.parse("package:${CsAppUtils.getPackageName()}"))
+        startActivityForResult(intent, requestCode)
+    }
+
     private fun clear() {
-        parentFragmentManager.beginTransaction().remove(this).commitNowAllowingStateLoss()
+        parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
     }
 
     private fun callback() {

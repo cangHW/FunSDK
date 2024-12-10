@@ -42,6 +42,10 @@ class PermissionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
 
+        val ft = supportFragmentManager.beginTransaction()
+        ft.add( R.id.container, PermissionFragment(),"test")
+        ft.commit()
+
 //        val getResultLauncher = registerForActivityResult(
 //            ActivityResultContracts.StartActivityForResult()
 //        ) { result ->

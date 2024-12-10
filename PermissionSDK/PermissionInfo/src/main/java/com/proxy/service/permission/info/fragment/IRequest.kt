@@ -15,9 +15,4 @@ interface IRequest : IPermissionCallback<Unit>, IShouldShowRequestRationaleCallb
      * */
     fun addPermission(permission: String)
 
-    /**
-     * 开始申请权限
-     */
-    fun request()
-
 }

@@ -9,7 +9,6 @@ import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
 import com.proxy.service.permission.base.callback.DialogDismissCallback
 import com.proxy.service.permission.base.manager.DialogFactory
-import com.proxy.service.permission.base.manager.base.IDialog
 import com.proxy.service.permission.base.manager.base.ISettingDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.fragment.ISetting
@@ -173,8 +172,7 @@ class SettingDialogImpl(permissions: Array<String>) : ISettingDialog {
     private fun startSetting(manager: FragmentManager) {
         val transaction = manager.beginTransaction()
         transaction.add(fragment as Fragment, "${tag}_${System.currentTimeMillis()}")
-        transaction.commitNowAllowingStateLoss()
-        fragment.request()
+        transaction.commitAllowingStateLoss()
     }
 
     private class DialogInterfaceImpl(val dialog: DialogInterface) : DialogInterface {

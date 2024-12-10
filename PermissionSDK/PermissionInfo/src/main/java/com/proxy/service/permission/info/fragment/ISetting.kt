@@ -14,9 +14,4 @@ interface ISetting : IPermissionCallback<Unit> {
      * */
     fun setPermission(permission: Array<String>)
 
-    /**
-     * 开始申请权限
-     */
-    fun request()
-
 }

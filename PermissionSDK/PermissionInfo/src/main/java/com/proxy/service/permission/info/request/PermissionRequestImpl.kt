@@ -97,7 +97,6 @@ class PermissionRequestImpl : IPermissionRequest {
     private fun realRequestPermission(manager: FragmentManager) {
         val transaction = manager.beginTransaction()
         transaction.add(fragment as Fragment, "${tag}_${System.currentTimeMillis()}")
-        transaction.commitNowAllowingStateLoss()
-        fragment.request()
+        transaction.commitAllowingStateLoss()
     }
 }

@@ -6,7 +6,7 @@ upArray=(
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpBase"
-  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolBase"
@@ -23,7 +23,7 @@ upArray=(
 
     # 权限库
 #  ":Permission:PermissionBase"
-#  ":Permission:PermissionInfo"
+  ":Permission:PermissionInfo"
 )
 
 type_params="r"
