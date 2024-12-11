@@ -59,6 +59,7 @@
         <activity android:name=".framework.func.SecurityActivity" />
         <activity android:name=".framework.func.MonitorActivity" />
         <activity android:name=".framework.func.SoundActivity" />
+        <activity android:name=".framework.func.AppInfoActivity" />
 
         <activity android:name=".permission.PermissionActivity" />
 

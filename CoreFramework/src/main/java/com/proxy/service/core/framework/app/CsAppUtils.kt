@@ -2,6 +2,7 @@ package com.proxy.service.core.framework.app
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Process
@@ -133,6 +134,15 @@ object CsAppUtils {
      * */
     fun getPid(): Int {
         return Process.myPid()
+    }
+
+    /**
+     * 获取当前是否是暗夜模式
+     * */
+    fun isNightMode(): Boolean {
+        val uiMode = CsContextManager.getApplication().resources.configuration.uiMode
+        val currentMode = uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentMode == Configuration.UI_MODE_NIGHT_YES
     }
 
 }

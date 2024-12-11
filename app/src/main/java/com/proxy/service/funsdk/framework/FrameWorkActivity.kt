@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.framework.func.AppInfoActivity
 import com.proxy.service.funsdk.framework.func.AppInstallActivity
 import com.proxy.service.funsdk.framework.func.DeviceActivity
 import com.proxy.service.funsdk.framework.func.EventActivity
@@ -41,6 +42,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
     fun onClick(view: View) {
         when (view.id) {
+            R.id.app_info -> {
+                AppInfoActivity.launch(this)
+            }
+
             R.id.device_info -> {
                 DeviceActivity.launch(this)
             }
@@ -73,7 +78,7 @@ class FrameWorkActivity : AppCompatActivity() {
                 MonitorActivity.launch(this)
             }
 
-            R.id.sound ->{
+            R.id.sound -> {
                 SoundActivity.launch(this)
             }
         }
