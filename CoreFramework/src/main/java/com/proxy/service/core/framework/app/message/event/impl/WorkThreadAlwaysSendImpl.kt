@@ -15,8 +15,9 @@ class WorkThreadAlwaysSendImpl(
 ) : BaseAlwaysActiveSend<WorkThreadEventCallback>(callback) {
 
     override fun onActive() {
-        controller?.forEachCache { value ->
-            handler?.start {
+        handler?.clearAllTask()
+        handler?.start {
+            controller?.forEachCache { value ->
                 try {
                     if (controller.use(value)) {
                         callback?.onWorkEvent(value)

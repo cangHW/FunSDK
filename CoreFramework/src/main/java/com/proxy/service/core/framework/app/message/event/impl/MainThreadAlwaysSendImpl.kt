@@ -17,21 +17,24 @@ class MainThreadAlwaysSendImpl(
 ) : BaseAlwaysActiveSend<MainThreadEventCallback>(callback) {
 
     override fun onActive() {
-        controller?.forEachCache { value ->
-            CsTask.mainThread()
-                ?.call(object : ICallable<String> {
-                    override fun accept(): String {
-                        try {
-                            if (controller.use(value)) {
-                                callback?.onMainEvent(value)
+        handler?.clearAllTask()
+        handler?.start{
+            controller?.forEachCache { value ->
+                CsTask.mainThread()
+                    ?.call(object : ICallable<String> {
+                        override fun accept(): String {
+                            try {
+                                if (controller.use(value)) {
+                                    callback?.onMainEvent(value)
+                                }
+                            } catch (throwable: Throwable) {
+                                CsLogger.tag(EventConfig.TAG).e(throwable)
                             }
-                        } catch (throwable: Throwable) {
-                            CsLogger.tag(EventConfig.TAG).e(throwable)
+                            return ""
                         }
-                        return ""
-                    }
-                })
-                ?.start()
+                    })
+                    ?.start()
+            }
         }
     }
 }

@@ -5,11 +5,6 @@ import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEve
 import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.framework.app.message.event.impl.base.BaseLifecycleActiveSend
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.callback.MultiRunnableEmitter
-import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
-import com.proxy.service.threadpool.base.thread.task.IConsumer
-import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 
 /**
  * @author: cangHX
@@ -21,34 +16,22 @@ class WorkThreadLifecycleSendImpl(
     lifecycleOwner: LifecycleOwner
 ) : BaseLifecycleActiveSend<WorkThreadEventCallback>(callback, lifecycleOwner) {
 
-    private var taskDisposable: ITaskDisposable? = null
-
     override fun onActive() {
-        taskDisposable = CsTask.computationThread()
-            ?.call(object : IMultiRunnable<Any> {
-                override fun accept(emitter: MultiRunnableEmitter<Any>) {
-                    controller?.forEachCache {
-                        emitter.onNext(it)
+        handler?.clearAllTask()
+        handler?.start{
+            controller?.forEachCache { value ->
+                try {
+                    if (controller.use(value)) {
+                        callback?.onWorkEvent(value)
                     }
-                    emitter.onComplete()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(EventConfig.TAG).e(throwable)
                 }
-            })
-            ?.doOnNext(object : IConsumer<Any> {
-                override fun accept(value: Any) {
-                    try {
-                        if (controller?.use(value) == true) {
-                            callback?.onWorkEvent(value)
-                        }
-                    } catch (throwable: Throwable) {
-                        CsLogger.tag(EventConfig.TAG).e(throwable)
-                    }
-                }
-            })
-            ?.start()
+            }
+        }
     }
 
     override fun onInActive() {
-        taskDisposable?.dispose()
-        taskDisposable = null
+        handler?.clearAllTask()
     }
 }

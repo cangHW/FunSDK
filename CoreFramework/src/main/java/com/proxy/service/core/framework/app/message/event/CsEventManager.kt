@@ -33,14 +33,12 @@ object CsEventManager {
      * @param lifecycleOwner    生命周期提供者, 作用：1、用于自动移除回调；2、在对应页面可见时再接收消息
      * */
     fun addWeakCallback(callback: MainThreadEventCallback, lifecycleOwner: LifecycleOwner? = null) {
-        handler?.start {
-            if (lifecycleOwner == null) {
-                weakCallbackMap[callback] = MainThreadAlwaysSendImpl(callback)
-            } else {
-                val send = MainThreadLifecycleSendImpl(callback, lifecycleOwner)
-                send.initLifecycle()
-                weakCallbackMap[callback] = send
-            }
+        if (lifecycleOwner == null) {
+            weakCallbackMap[callback] = MainThreadAlwaysSendImpl(callback)
+        } else {
+            val send = MainThreadLifecycleSendImpl(callback, lifecycleOwner)
+            send.initLifecycle()
+            weakCallbackMap[callback] = send
         }
     }
 
@@ -51,14 +49,12 @@ object CsEventManager {
      * @param lifecycleOwner    生命周期提供者, 作用：1、用于自动移除回调；2、在对应页面可见时再接收消息
      * */
     fun addWeakCallback(callback: WorkThreadEventCallback, lifecycleOwner: LifecycleOwner? = null) {
-        handler?.start {
-            if (lifecycleOwner == null) {
-                weakCallbackMap[callback] = WorkThreadAlwaysSendImpl(callback)
-            } else {
-                val send = WorkThreadLifecycleSendImpl(callback, lifecycleOwner)
-                send.initLifecycle()
-                weakCallbackMap[callback] = send
-            }
+        if (lifecycleOwner == null) {
+            weakCallbackMap[callback] = WorkThreadAlwaysSendImpl(callback)
+        } else {
+            val send = WorkThreadLifecycleSendImpl(callback, lifecycleOwner)
+            send.initLifecycle()
+            weakCallbackMap[callback] = send
         }
     }
 
@@ -66,18 +62,14 @@ object CsEventManager {
      * 移除监听
      * */
     fun remove(callback: MainThreadEventCallback) {
-        handler?.start {
-            weakCallbackMap.remove(callback)
-        }
+        weakCallbackMap.remove(callback)
     }
 
     /**
      * 移除监听
      * */
     fun remove(callback: WorkThreadEventCallback) {
-        handler?.start {
-            weakCallbackMap.remove(callback)
-        }
+        weakCallbackMap.remove(callback)
     }
 
     /**

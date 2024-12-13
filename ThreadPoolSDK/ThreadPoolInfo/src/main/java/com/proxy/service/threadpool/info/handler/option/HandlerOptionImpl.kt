@@ -26,4 +26,20 @@ class HandlerOptionImpl(private val handlerInfo: HandlerInfo) :
     override fun getThreadId(): Long {
         return handlerInfo.handlerController.getThreadId()
     }
+
+    override fun isGroupDisposed(): Boolean {
+        return !handlerInfo.handlerController.isCanUse()
+    }
+
+    override fun clearAllTask() {
+        handlerInfo.handlerController.getHandler().removeCallbacksAndMessages(null)
+    }
+
+    override fun disposeGroup() {
+        handlerInfo.handlerController.close()
+    }
+
+    override fun disposeGroupSafely() {
+        handlerInfo.handlerController.closeSafely()
+    }
 }

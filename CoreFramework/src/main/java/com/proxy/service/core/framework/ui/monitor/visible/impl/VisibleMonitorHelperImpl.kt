@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorH
 import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleConfig
 import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.handler.controller.ITaskGroupDisposable
+import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -29,7 +29,7 @@ class VisibleMonitorHelperImpl(
 
     private var control: VisibleControl? = VisibleControl(config, this)
 
-    private var disposable: ITaskGroupDisposable? = null
+    private var disposable: ITaskDisposable? = null
 
     init {
         config?.getLifecycleOwner()?.lifecycle?.addObserver(this)

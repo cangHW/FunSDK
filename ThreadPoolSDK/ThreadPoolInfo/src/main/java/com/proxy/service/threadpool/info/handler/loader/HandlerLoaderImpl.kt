@@ -1,8 +1,8 @@
 package com.proxy.service.threadpool.info.handler.loader
 
-import com.proxy.service.threadpool.base.handler.controller.ITaskGroupDisposable
+import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.handler.loader.IHandlerLoader
-import com.proxy.service.threadpool.info.handler.controller.TaskGroupDisposableImpl
+import com.proxy.service.threadpool.info.handler.controller.TaskDisposableImpl
 import com.proxy.service.threadpool.info.handler.info.HandlerInfo
 
 /**
@@ -11,7 +11,7 @@ import com.proxy.service.threadpool.info.handler.info.HandlerInfo
  * @desc:
  */
 open class HandlerLoaderImpl(private val handlerInfo: HandlerInfo) : IHandlerLoader {
-    override fun start(runnable: Runnable): ITaskGroupDisposable {
-        return TaskGroupDisposableImpl(handlerInfo, runnable)
+    override fun start(runnable: Runnable): ITaskDisposable {
+        return TaskDisposableImpl(handlerInfo, runnable)
     }
 }

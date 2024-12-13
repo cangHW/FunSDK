@@ -1,6 +1,6 @@
 package com.proxy.service.threadpool.base.handler.loader
 
-import com.proxy.service.threadpool.base.handler.controller.ITaskGroupDisposable
+import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 
 /**
  * @author: cangHX
@@ -12,6 +12,6 @@ interface IHandlerLoader {
     /**
      * 开始任务
      * */
-    fun start(runnable: Runnable): ITaskGroupDisposable
+    fun start(runnable: Runnable): ITaskDisposable
 
 }

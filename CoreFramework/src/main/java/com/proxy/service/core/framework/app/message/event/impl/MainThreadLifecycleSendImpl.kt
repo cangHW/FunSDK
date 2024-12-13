@@ -6,10 +6,7 @@ import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.framework.app.message.event.impl.base.BaseLifecycleActiveSend
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.callback.MultiRunnableEmitter
-import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
-import com.proxy.service.threadpool.base.thread.task.IConsumer
-import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
+import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
@@ -21,35 +18,27 @@ class MainThreadLifecycleSendImpl(
     lifecycleOwner: LifecycleOwner
 ) : BaseLifecycleActiveSend<MainThreadEventCallback>(callback, lifecycleOwner) {
 
-    private var taskDisposable: ITaskDisposable? = null
-
     override fun onActive() {
-        taskDisposable = CsTask.computationThread()
-            ?.call(object : IMultiRunnable<Any> {
-                override fun accept(emitter: MultiRunnableEmitter<Any>) {
-                    controller?.forEachCache {
-                        emitter.onNext(it)
-                    }
-                    emitter.onComplete()
-                }
-            })
-            ?.mainThread()
-            ?.doOnNext(object : IConsumer<Any> {
-                override fun accept(value: Any) {
-                    try {
-                        if (controller?.use(value) == true) {
-                            callback?.onMainEvent(value)
+        handler?.clearAllTask()
+        handler?.start {
+            controller?.forEachCache { value ->
+                CsTask.mainThread()?.call(object : ICallable<String> {
+                    override fun accept(): String {
+                        try {
+                            if (controller.use(value)) {
+                                callback?.onMainEvent(value)
+                            }
+                        } catch (throwable: Throwable) {
+                            CsLogger.tag(EventConfig.TAG).e(throwable)
                         }
-                    } catch (throwable: Throwable) {
-                        CsLogger.tag(EventConfig.TAG).e(throwable)
+                        return ""
                     }
-                }
-            })
-            ?.start()
+                })?.start()
+            }
+        }
     }
 
     override fun onInActive() {
-        taskDisposable?.dispose()
-        taskDisposable = null
+        handler?.clearAllTask()
     }
 }

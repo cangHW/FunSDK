@@ -1,7 +1,7 @@
 package com.proxy.service.threadpool.info.handler.controller
 
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.threadpool.base.handler.controller.ITaskGroupDisposable
+import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 import com.proxy.service.threadpool.info.constants.Constants
 import com.proxy.service.threadpool.info.handler.info.HandlerInfo
 import java.util.concurrent.atomic.AtomicInteger
@@ -11,10 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger
  * @data: 2024/7/3 17:27
  * @desc:
  */
-class TaskGroupDisposableImpl(
+class TaskDisposableImpl(
     private val handler: HandlerInfo,
     private val task: Runnable
-) : ITaskGroupDisposable, Runnable {
+) : ITaskDisposable, Runnable {
 
     companion object {
         private const val TAG = "${Constants.TAG}_HandlerTask"
@@ -55,18 +55,6 @@ class TaskGroupDisposableImpl(
         } else if (taskStatus.get() == STATUS_COMPLETED) {
             CsLogger.tag(TAG).i("The current task has been completed and cannot be canceled.")
         }
-    }
-
-    override fun isGroupDisposed(): Boolean {
-        return !handler.handlerController.isCanUse()
-    }
-
-    override fun disposeGroup() {
-        handler.handlerController.close()
-    }
-
-    override fun disposeGroupSafely() {
-        handler.handlerController.closeSafely()
     }
 
     override fun run() {

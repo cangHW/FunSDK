@@ -29,7 +29,6 @@ object IdleHandlerManager {
             return
         }
         Looper.myQueue().addIdleHandler {
-            CsLogger.tag(TAG).d("The main thread is idle.")
             var num = 0
             while (num < MAX_NUM && queue.size > 0) {
                 val call = queue.poll() ?: break
@@ -45,11 +44,11 @@ object IdleHandlerManager {
     fun addTask(callable: Callable<Boolean>): Boolean {
         init()
         if (queue.offer(callable)) {
-            CsLogger.tag(TAG).i("Task added successfully.")
+            CsLogger.tag(TAG).i("Idle task added successfully.")
             return true
         }
         CsLogger.tag(TAG)
-            .e("Description Failed to add a task because the number of existing tasks exceeded Int.MAX_VALUE.")
+            .e("Description Failed to add a idle task because the number of existing tasks exceeded Int.MAX_VALUE.")
         return false
     }
 

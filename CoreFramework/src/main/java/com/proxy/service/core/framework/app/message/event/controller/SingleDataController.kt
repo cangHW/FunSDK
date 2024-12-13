@@ -9,14 +9,24 @@ import com.proxy.service.core.framework.app.message.event.base.IController
  */
 class SingleDataController : IController {
 
+    private val lock = Any()
+
     private var any: Any? = null
 
     override fun addCache(any: Any) {
-        this.any = any
+        synchronized(lock) {
+            this.any = any
+        }
     }
 
     override fun use(any: Any): Boolean {
-        return this.any == any
+        synchronized(lock) {
+            val flag = this.any == any
+            if (flag) {
+                this.any = null
+            }
+            return flag
+        }
     }
 
     override fun forEachCache(callback: (any: Any) -> Unit) {

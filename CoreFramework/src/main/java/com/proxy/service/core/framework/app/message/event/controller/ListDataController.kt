@@ -20,9 +20,8 @@ class ListDataController : IController {
     }
 
     override fun forEachCache(callback: (any: Any) -> Unit) {
-        val iterator = list.iterator()
-        while (iterator.hasNext()){
-            callback(iterator.next())
+        ArrayList(list).forEach {
+            callback(it)
         }
     }
 }

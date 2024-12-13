@@ -39,16 +39,16 @@ class IdleTaskControllerImpl(private var task: Runnable?) : IIdleTaskController,
 
     override fun dispose() {
         if (isCompleted.compareAndSet(false, true)) {
-            CsLogger.tag(TAG).i("Ready to dispose task.")
+            CsLogger.tag(TAG).i("Ready to dispose idle task.")
             task = null
             return
         }
-        CsLogger.tag(TAG).i("There is no need to cancel tasks repeatedly.")
+        CsLogger.tag(TAG).i("There is no need to cancel idle tasks repeatedly.")
     }
 
     override fun forceRun() {
         if (isCompleted.compareAndSet(false, true)) {
-            CsLogger.tag(TAG).i("Prepare to force the current task to run.")
+            CsLogger.tag(TAG).i("Prepare to force the current idle task to run.")
             try {
                 task?.run()
             } catch (throwable: Throwable) {
@@ -56,12 +56,12 @@ class IdleTaskControllerImpl(private var task: Runnable?) : IIdleTaskController,
             }
             return
         }
-        CsLogger.tag(TAG).i("The current task is running and you do not need to run it again.")
+        CsLogger.tag(TAG).i("The current idle task is running and you do not need to run it again.")
     }
 
     override fun call(): Boolean {
         if (isCompleted.compareAndSet(false, true)) {
-            CsLogger.tag(TAG).d("Ready to run the current task.")
+            CsLogger.tag(TAG).d("Ready to run the current idle task.")
             try {
                 task?.run()
             } catch (throwable: Throwable) {

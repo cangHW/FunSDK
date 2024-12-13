@@ -14,8 +14,14 @@ interface HandlerController {
      * */
     fun getThreadId(): Long
 
+    /**
+     * 获取真实 handler 对象
+     * */
     fun getHandler(): Handler
 
+    /**
+     * 当前 handler 是否可用
+     * */
     fun isCanUse(): Boolean
 
     /**

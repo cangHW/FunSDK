@@ -1,5 +1,6 @@
 package com.proxy.service.threadpool.base.handler.option
 
+import com.proxy.service.threadpool.base.handler.controller.IGroupController
 import com.proxy.service.threadpool.base.handler.loader.IHandlerLoader
 import java.util.concurrent.TimeUnit
 
@@ -8,7 +9,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/7/3 17:00
  * @desc:
  */
-interface IHandlerOption : IHandlerLoader {
+interface IHandlerOption : IHandlerLoader, IGroupController {
 
     /**
      * 设置任务延迟时间

@@ -3,9 +3,10 @@ package com.proxy.service.core.framework.app.message.event.impl.base
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.message.event.base.BaseSend
 import com.proxy.service.core.framework.app.message.event.base.IEvent
-import java.util.concurrent.atomic.AtomicBoolean
+import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
@@ -17,7 +18,7 @@ abstract class BaseLifecycleActiveSend<T : IEvent>(
     private var lifecycleOwner: LifecycleOwner?
 ) : BaseSend<T>(callback), LifecycleEventObserver {
 
-    private val isActive = AtomicBoolean(false)
+    protected val handler = CsTask.launchTaskGroup("${Constants.TAG}EventLifecycleActive")
 
     fun initLifecycle() {
         lifecycleOwner?.lifecycle?.addObserver(this)
@@ -49,13 +50,9 @@ abstract class BaseLifecycleActiveSend<T : IEvent>(
 
     private fun changeActiveState(prevState: Lifecycle.State) {
         if (prevState.isAtLeast(Lifecycle.State.STARTED)) {
-            if (isActive.compareAndSet(false, true)) {
-                onActive()
-            }
+            onActive()
         } else {
-            if (isActive.compareAndSet(true, false)) {
-                onInActive()
-            }
+            onInActive()
         }
     }
 
