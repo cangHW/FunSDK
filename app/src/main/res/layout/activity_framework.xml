@@ -139,5 +139,18 @@
             android:text="音效"
             android:textSize="20dp" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/work"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="#330000ff"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="后台任务"
+            android:textSize="20dp" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>
