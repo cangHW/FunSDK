@@ -76,7 +76,7 @@ object CsCore {
         var list = sparse[t.priority()]
         if (list == null) {
             list = ArrayList()
-            sparse[t.priority()] = list
+            sparse.put(t.priority(), list)
         }
         list.add(t)
     }

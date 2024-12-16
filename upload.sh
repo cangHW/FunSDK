@@ -9,8 +9,8 @@ upArray=(
 #  ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
-  ":ThreadPoolSDK:ThreadPoolBase"
-  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolBase"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
 
   # 图片库
 #  ":ImageLoaderSDK:ImageLoaderBase"
