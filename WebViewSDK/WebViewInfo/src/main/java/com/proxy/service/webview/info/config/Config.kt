@@ -9,6 +9,7 @@ object Config {
 
     const val LOG_TAG_START = "WebView_"
 
+    @Volatile
     var isDebug = false
 
 }

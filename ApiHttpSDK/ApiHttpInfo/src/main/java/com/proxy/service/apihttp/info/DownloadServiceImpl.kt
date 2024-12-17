@@ -8,7 +8,6 @@ import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.config.DownloadConfig
 import com.proxy.service.apihttp.base.download.enums.StatusEnum
 import com.proxy.service.apihttp.base.download.task.DownloadTask
-import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
@@ -39,7 +38,7 @@ class DownloadServiceImpl : DownloadService {
             synchronized(lock) {
                 if (!isInit) {
                     TaskController.addGroup(config.getGroups())
-                    Config.setMaxDownloadTask(config.getMaxTask())
+                    TaskDispatcher.setMaxDownloadTask(config.getMaxTask())
                     AppRelaunchManager.setAutoResumeOnAppRelaunchEnable(config.getAutoResumeOnAppRelaunch())
                     NetworkManager.reStartTask(config.getAutoRestartOnNetworkReconnect())
                     isInit = true

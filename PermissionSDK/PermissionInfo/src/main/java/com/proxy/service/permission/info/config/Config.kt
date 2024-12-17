@@ -15,6 +15,7 @@ object Config {
 
     val REQUEST_CODE: AtomicInteger = AtomicInteger(0)
 
+    @Volatile
     var factory: DialogFactory = DialogFactoryImpl()
 
     fun setDialogFactory(factory: DialogFactory) {

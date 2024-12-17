@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.download.utils
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.core.service.task.CsTask
 
 /**
@@ -17,9 +17,9 @@ object ThreadUtils {
         if (
             Thread.currentThread().id
             !=
-            CsTask.launchTaskGroup(Constants.Download.TASK_LOOP_THREAD_NAME)?.getThreadId()
+            CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.getThreadId()
         ) {
-            throw IllegalArgumentException("The current thread is not the default thread. DefaultThreadName = ${Constants.Download.TASK_LOOP_THREAD_NAME}")
+            throw IllegalArgumentException("The current thread is not the default thread. DefaultThreadName = ${Config.TASK_LOOP_THREAD_NAME}")
         }
     }
 

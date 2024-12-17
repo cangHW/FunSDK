@@ -1,7 +1,6 @@
 package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
 import com.proxy.service.apihttp.base.constants.Constants
-import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.core.framework.data.log.CsLogger
 import okhttp3.Headers
 import okhttp3.Interceptor

@@ -4,6 +4,7 @@ import android.util.SparseArray
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.config.DownloadGroup
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.info.GroupInfo
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
@@ -143,13 +144,13 @@ abstract class BaseController {
      * */
     private fun getDefaultGroup(): GroupInfo {
         ThreadUtils.checkCurrentThread()
-        val group = groupMapper[Constants.Download.GROUP_DEFAULT_NAME]
+        val group = groupMapper[Config.GROUP_DEFAULT_NAME]
         if (group != null) {
             return group
         }
         return addGroup(
             DownloadGroup
-                .builder(Constants.Download.GROUP_DEFAULT_NAME)
+                .builder(Config.GROUP_DEFAULT_NAME)
                 .setPriority(0)
                 .setDir(FileUtils.getDefaultFileDir())
                 .build()

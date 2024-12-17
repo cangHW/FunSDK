@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info.download.dispatcher.base
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.apihttp.info.download.worker.base.BaseStatusWorker
 import com.proxy.service.apihttp.info.download.worker.base.IWorker
@@ -20,16 +21,27 @@ abstract class BaseDispatcher {
         fun onWorkerIdle(task: DownloadTask?)
     }
 
+    /**
+     * 最大同时下载数量
+     * */
+    protected var maxTaskCount: Int = 3
     protected val workerRunningList = ArrayList<IWorker>()
     protected var callback: OnWorkerIdleCallback? = null
 
     protected val taskWorkerFinishCallback = object : IWorker.TaskWorkerFinishCallback {
         override fun onFinished(worker: BaseStatusWorker, task: DownloadTask) {
-            CsTask.launchTaskGroup(Constants.Download.TASK_LOOP_THREAD_NAME)?.start {
+            CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
                 workerRunningList.remove(worker)
                 callback?.onWorkerIdle(task)
             }
         }
+    }
+
+    /**
+     * 设置同时并发下载最大任务量
+     * */
+    fun setMaxDownloadTask(maxTaskCount: Int) {
+        this.maxTaskCount = maxTaskCount
     }
 
     /**

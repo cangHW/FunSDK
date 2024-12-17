@@ -1,6 +1,5 @@
 package com.proxy.service.apihttp.info.download.dispatcher
 
-import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
@@ -22,7 +21,7 @@ object TaskDispatcher : BaseDispatcher() {
      * 任务是否已经满了
      * */
     fun isTaskFull(): Boolean {
-        return workerRunningList.size >= Config.getMaxDownloadTask()
+        return workerRunningList.size >= maxTaskCount
     }
 
     /**
@@ -48,7 +47,7 @@ object TaskDispatcher : BaseDispatcher() {
      * 重置全部正在运行的任务, 用于快速执行高优先级任务
      * */
     fun resetAllRunningTask() {
-        CsTask.launchTaskGroup(Constants.Download.TASK_LOOP_THREAD_NAME)?.start {
+        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
             CsLogger.tag(tag).i("重置全部正在运行的任务 taskNum = ${workerRunningList.size}")
             workerRunningList.forEach {
                 CsLogger.tag(tag).i("准备重置任务 taskTag = ${it.getDownloadTask().getTaskTag()}")
