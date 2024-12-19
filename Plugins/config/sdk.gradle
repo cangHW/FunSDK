@@ -15,7 +15,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "0.4.42",
+                    version           : "0.4.43",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -79,7 +79,7 @@ ext {
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview",
-                    version           : "0.0.19",
+                    version           : "0.0.20",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

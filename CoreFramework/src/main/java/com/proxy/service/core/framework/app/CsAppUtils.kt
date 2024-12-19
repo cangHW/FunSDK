@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.app
 
+import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -9,6 +10,10 @@ import android.os.Process
 import com.proxy.service.core.constants.Constants
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
+
 
 /**
  * 应用信息与操作相关工具
@@ -39,6 +44,32 @@ object CsAppUtils {
      * */
     fun getPackageName(): String {
         return CsContextManager.getApplication().packageName
+    }
+
+    /**
+     * 获取进程名称
+     * */
+    fun getProcessName(): String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return Application.getProcessName()
+        }
+        try {
+            BufferedReader(
+                InputStreamReader(
+                    FileInputStream("/proc/self/cmdline"), "UTF-8"
+                )
+            ).use { reader ->
+                val builder = StringBuilder()
+                var c: Int
+                while ((reader.read().also { c = it }) > 0) {
+                    builder.append(c.toChar())
+                }
+                return builder.toString().trim()
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        return ""
     }
 
     /**
@@ -143,6 +174,15 @@ object CsAppUtils {
         val uiMode = CsContextManager.getApplication().resources.configuration.uiMode
         val currentMode = uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentMode == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    /**
+     * 获取当前是否是主进程
+     * */
+    fun isMainProcess(): Boolean {
+        val packageName = getPackageName()
+        val processName = getProcessName()
+        return packageName == processName
     }
 
 }

@@ -18,6 +18,7 @@
 
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -47,7 +48,8 @@
         <activity android:name=".apihttp.request.ApiRequestActivity" />
         <activity android:name=".apihttp.download.ApiDownloadActivity" />
 
-        <activity android:name=".webview.WebViewActivity" />
+        <activity android:name=".webview.WebViewActivity"
+            android:process=":Unity"/>
 
         <activity android:name=".framework.FrameWorkActivity" />
         <activity android:name=".framework.func.DeviceActivity" />

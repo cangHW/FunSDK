@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        CsCore.init(application, true)
 
         CsBarUtils.setStatusBarTransparent(this)
         CsBarUtils.setNavigationBarTransparent(this)
