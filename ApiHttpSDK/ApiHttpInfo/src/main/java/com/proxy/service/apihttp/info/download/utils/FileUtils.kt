@@ -2,6 +2,8 @@ package com.proxy.service.apihttp.info.download.utils
 
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 import java.io.File
 
 /**
@@ -14,7 +16,15 @@ object FileUtils {
     /**
      * 获取默认文件名称
      * */
-    fun getDefaultFileName(): String {
+    fun getDefaultFileName(url: String): String {
+        try {
+            val end = url.split(File.separator).last()
+            if (end.trim().isNotEmpty()) {
+                return CsMd5Utils.getMD5(end)
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.d(throwable)
+        }
         return "${System.currentTimeMillis()}"
     }
 

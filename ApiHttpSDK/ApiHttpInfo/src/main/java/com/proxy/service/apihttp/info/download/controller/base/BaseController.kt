@@ -55,7 +55,9 @@ abstract class BaseController {
 
         groups.put(groupInfo.priority, groupInfo)
         groupMapper[groupInfo.name] = groupInfo
-        DownloadRoom.INSTANCE.getGroupDao().updateDownloadGroup(group)
+        if (shouldWriteToDb) {
+            DownloadRoom.INSTANCE.getGroupDao().updateDownloadGroup(group)
+        }
         return groupInfo
     }
 
@@ -144,13 +146,13 @@ abstract class BaseController {
      * */
     private fun getDefaultGroup(): GroupInfo {
         ThreadUtils.checkCurrentThread()
-        val group = groupMapper[Config.GROUP_DEFAULT_NAME]
+        val group = groupMapper[Config.DOWNLOAD_DEFAULT_GROUP_NAME]
         if (group != null) {
             return group
         }
         return addGroup(
             DownloadGroup
-                .builder(Config.GROUP_DEFAULT_NAME)
+                .builder(Config.DOWNLOAD_DEFAULT_GROUP_NAME)
                 .setPriority(0)
                 .setDir(FileUtils.getDefaultFileDir())
                 .build()

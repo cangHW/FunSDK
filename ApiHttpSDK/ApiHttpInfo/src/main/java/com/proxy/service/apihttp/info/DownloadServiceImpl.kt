@@ -8,12 +8,14 @@ import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.config.DownloadConfig
 import com.proxy.service.apihttp.base.download.enums.StatusEnum
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
 import com.proxy.service.apihttp.info.download.manager.AppRelaunchManager
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.apihttp.info.download.manager.NetworkManager
+import com.proxy.service.apihttp.info.download.manager.impl.OkhttpConfigImpl
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.service.task.CsTask
@@ -30,6 +32,7 @@ class DownloadServiceImpl : DownloadService {
     private val tag = "${Constants.LOG_DOWNLOAD_TAG_START}Service"
 
     private val lock = Any()
+
     @Volatile
     private var isInit = false
 
@@ -37,9 +40,10 @@ class DownloadServiceImpl : DownloadService {
         if (!isInit) {
             synchronized(lock) {
                 if (!isInit) {
+                    OkhttpConfigImpl.instance.setDownloadConfig(config)
                     TaskController.addGroup(config.getGroups())
-                    TaskDispatcher.setMaxDownloadTask(config.getMaxTask())
-                    AppRelaunchManager.setAutoResumeOnAppRelaunchEnable(config.getAutoResumeOnAppRelaunch())
+                    Config.maxDownloadTaskCount = config.getMaxTask()
+                    AppRelaunchManager.reResumeTask(config.getAutoResumeOnAppRelaunch())
                     NetworkManager.reStartTask(config.getAutoRestartOnNetworkReconnect())
                     isInit = true
                 }

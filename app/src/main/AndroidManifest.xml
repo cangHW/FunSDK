@@ -48,8 +48,7 @@
         <activity android:name=".apihttp.request.ApiRequestActivity" />
         <activity android:name=".apihttp.download.ApiDownloadActivity" />
 
-        <activity android:name=".webview.WebViewActivity"
-            android:process=":Unity"/>
+        <activity android:name=".webview.WebViewActivity" />
 
         <activity android:name=".framework.FrameWorkActivity" />
         <activity android:name=".framework.func.DeviceActivity" />

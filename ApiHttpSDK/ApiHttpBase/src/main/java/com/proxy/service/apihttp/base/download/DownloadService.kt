@@ -74,7 +74,7 @@ interface DownloadService : BaseService {
     fun getDownloadStatus(taskTag: String): StatusEnum
 
     /**
-     * 取消任务,
+     * 取消任务
      * */
     fun cancel(taskTag: String)
 

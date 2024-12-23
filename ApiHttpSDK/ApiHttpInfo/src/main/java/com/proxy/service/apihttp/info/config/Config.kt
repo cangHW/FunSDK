@@ -10,26 +10,30 @@ object Config {
     /**
      * 下载任务中消息分发事件所在线程名称
      * */
-    const val TASK_LOOP_THREAD_NAME = "download-dispatcher-thread"
+    const val DOWNLOAD_DISPATCHER_THREAD_NAME = "download-dispatcher-thread"
 
     /**
      * 下载任务中默认组名称
      * */
-    const val GROUP_DEFAULT_NAME = "download-group-name-default"
+    const val DOWNLOAD_DEFAULT_GROUP_NAME = "download-group-name-default"
+
 
     /**
-     * 配置文件名称
+     * 上传任务中消息分发事件所在线程名称
      * */
-    const val CONFIG_FILE_NAME = "api_http_config"
+    const val UPLOAD_DISPATCHER_THREAD_NAME = "upload-dispatcher-thread"
 
-    @Volatile
-    private var isDebug = true
 
-    fun setIsDebug(isDebug: Boolean) {
-        Config.isDebug = isDebug
-    }
+    var isDebug = true
 
-    fun isDebug(): Boolean {
-        return isDebug
-    }
+    /**
+     * 最大下载并发量
+     * */
+    var maxDownloadTaskCount = 3
+
+    /**
+     * 最大上传并发量
+     * */
+    var maxUploadTaskCount = 3
+
 }

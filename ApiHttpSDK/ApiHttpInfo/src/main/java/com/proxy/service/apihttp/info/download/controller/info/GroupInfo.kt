@@ -71,9 +71,10 @@ open class GroupInfo(val name: String, val priority: Int, val fileDir: String? =
 
         if (task.getFilePath().trim().isEmpty()) {
             CsLogger.tag(tag).d("下载路径为空, 开始配置默认路径. taskTag = ${task.getTaskTag()}")
-            if (task.getFileDir().trim().isNotEmpty()) {
-                task.builder().setFileName(FileUtils.getDefaultFileName())
-            } else if (task.getFileName().trim().isNotEmpty()) {
+            if (task.getFileName().trim().isEmpty()) {
+                task.builder().setFileName(FileUtils.getDefaultFileName(task.getDownloadUrl()))
+            }
+            if (task.getFileDir().trim().isEmpty()) {
                 if (fileDir?.trim()?.isNotEmpty() == true) {
                     task.builder().setFileDir(fileDir)
                 } else {

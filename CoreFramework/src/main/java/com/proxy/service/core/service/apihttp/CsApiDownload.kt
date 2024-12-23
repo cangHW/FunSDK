@@ -41,6 +41,7 @@ object CsApiDownload {
      * */
     fun init(config: DownloadConfig) {
         this.config = config
+        getService()?.init(config)
     }
 
     /**

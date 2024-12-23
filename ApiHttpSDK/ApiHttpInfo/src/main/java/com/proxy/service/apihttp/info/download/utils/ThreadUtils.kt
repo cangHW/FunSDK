@@ -17,9 +17,9 @@ object ThreadUtils {
         if (
             Thread.currentThread().id
             !=
-            CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.getThreadId()
+            CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.getThreadId()
         ) {
-            throw IllegalArgumentException("The current thread is not the default thread. DefaultThreadName = ${Config.TASK_LOOP_THREAD_NAME}")
+            throw IllegalArgumentException("The current thread is not the default thread. DefaultThreadName = ${Config.DOWNLOAD_DISPATCHER_THREAD_NAME}")
         }
     }
 

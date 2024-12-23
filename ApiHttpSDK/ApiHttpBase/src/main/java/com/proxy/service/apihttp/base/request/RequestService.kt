@@ -11,7 +11,7 @@ import com.proxy.service.apihttp.base.request.config.RequestConfig
 interface RequestService : BaseService {
 
     /**
-     * 网络库初始化
+     * 初始化
      * */
     fun init(config: RequestConfig)
 

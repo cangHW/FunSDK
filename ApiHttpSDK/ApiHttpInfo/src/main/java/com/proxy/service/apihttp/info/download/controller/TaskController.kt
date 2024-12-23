@@ -19,7 +19,7 @@ object TaskController : BaseController() {
      * 添加组信息
      * */
     fun addGroup(list: ArrayList<DownloadGroup>) {
-        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
+        CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             list.forEach {
                 if (groupMapper.containsKey(it.groupName)) {
                     return@forEach
@@ -33,7 +33,7 @@ object TaskController : BaseController() {
      * 添加任务
      * */
     fun addTask(task: DownloadTask) {
-        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
+        CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             val group = getGroup(task.getGroupName())
             // 参数补全
             group.checkParams(task)
@@ -60,7 +60,7 @@ object TaskController : BaseController() {
      * 取消任务
      * */
     fun cancelTask(taskTag: String) {
-        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
+        CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             val task = getTask(taskTag)
             if (task == null) {
                 CsLogger.tag(tag).i("准备取消的任务不存在 taskTag = $taskTag")
@@ -75,7 +75,7 @@ object TaskController : BaseController() {
      * 取消组任务
      * */
     fun cancelTaskByGroup(groupName: String) {
-        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
+        CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             val group = TaskController.getGroup(groupName)
             if (group.name != groupName) {
                 CsLogger.tag(tag).i("准备取消的任务组不存在 groupName = $groupName")
@@ -94,7 +94,7 @@ object TaskController : BaseController() {
      * 取消全部任务
      * */
     fun cancelAllTask() {
-        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
+        CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             CsLogger.tag(tag).i("取消全部任务 taskNum = ${taskWeakMap.size}")
             taskWeakMap.iterator().forEach {
                 CsLogger.tag(tag).i("取消任务 taskTag = ${it.key.getTaskTag()}")

@@ -1,10 +1,8 @@
 package com.proxy.service.apihttp.info.download.manager
 
 import com.proxy.service.apihttp.base.download.enums.StatusEnum
-import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
-import com.proxy.service.core.framework.io.sp.CsSpManager
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
@@ -15,24 +13,19 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  */
 object AppRelaunchManager {
 
-    private const val KEY = "IsAutoResumeOnAppRelaunch"
-
-    fun setAutoResumeOnAppRelaunchEnable(enable: Boolean) {
-        CsSpManager.name(Config.CONFIG_FILE_NAME).put(KEY, enable)
-    }
-
-    fun reloadTask() {
-        if (CsSpManager.name(Config.CONFIG_FILE_NAME).getBoolean(KEY)) {
-            CsTask.ioThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    DownloadRoom.INSTANCE.getTaskDao()
-                        .queryTasksByStatusUpTo(StatusEnum.PROGRESS.status).forEach {
-                            TaskController.addTask(it.getDownloadTask())
-                        }
-                    return ""
-                }
-            })?.start()
+    fun reResumeTask(enable: Boolean) {
+        if (!enable) {
+            return
         }
+        CsTask.ioThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                DownloadRoom.INSTANCE.getTaskDao()
+                    .queryTasksByStatusUpTo(StatusEnum.PROGRESS.status).forEach {
+                        TaskController.addTask(it.getDownloadTask())
+                    }
+                return ""
+            }
+        })?.start()
     }
 
 }

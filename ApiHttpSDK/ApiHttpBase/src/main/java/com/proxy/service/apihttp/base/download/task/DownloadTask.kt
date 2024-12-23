@@ -1,8 +1,8 @@
 package com.proxy.service.apihttp.base.download.task
 
 import com.proxy.service.apihttp.base.constants.Constants
-import com.proxy.service.apihttp.base.download.task.base.IBuilder
-import com.proxy.service.apihttp.base.download.task.base.IBuilderGet
+import com.proxy.service.apihttp.base.download.task.builder.IBuilder
+import com.proxy.service.apihttp.base.download.task.builder.IBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
@@ -128,7 +128,7 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         }
 
         override fun setFilePath(filePath: String): IBuilder {
-            if (filePath.isEmpty() || filePath.isBlank()) {
+            if (filePath.trim().isEmpty()) {
                 CsLogger.tag(TAG).e("filePath cannot be empty or blank. filePath = $filePath")
             } else if (filePath.endsWith(File.separator)) {
                 CsLogger.tag(TAG).e("filePath is error. filePath = $filePath")
@@ -143,11 +143,11 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         }
 
         override fun setFileDir(fileDir: String): IBuilder {
-            if (fileDir.isEmpty() || fileDir.isBlank()) {
+            if (fileDir.trim().isEmpty()) {
                 CsLogger.tag(TAG).e("fileDir cannot be empty or blank. fileDir = $fileDir")
             } else {
                 this.fileDir = fileDir
-                if (fileName.isNotEmpty() && fileName.isNotBlank()) {
+                if (fileName.trim().isNotEmpty()) {
                     filePath = File(fileDir, fileName).absolutePath
                 }
             }
@@ -155,11 +155,11 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         }
 
         override fun setFileName(fileName: String): IBuilder {
-            if (fileName.isEmpty() || fileName.isBlank()) {
+            if (fileName.trim().isEmpty()) {
                 CsLogger.tag(TAG).e("fileName cannot be empty or blank. fileName = $fileName")
             } else {
                 this.fileName = fileName
-                if (fileDir.isNotEmpty() && fileDir.isNotBlank()) {
+                if (fileDir.trim().isNotEmpty()) {
                     filePath = File(fileDir, fileName).absolutePath
                 }
             }

@@ -3,7 +3,7 @@ package com.proxy.service.apihttp.info.download.worker.task
 import androidx.annotation.WorkerThread
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
-import com.proxy.service.apihttp.info.download.okhttp.OkhttpManager
+import com.proxy.service.apihttp.info.download.manager.OkhttpManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils

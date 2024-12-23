@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info.download.worker.base
 
 import androidx.annotation.WorkerThread
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.common.cache.Cache
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -33,28 +34,14 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
     }
 
     private val isClear = AtomicBoolean(false)
-    private val msgArray = ArrayList<BaseTaskMsg>()
+    protected val msgCache = Cache<BaseTaskMsg>()
 
     /**
      * 添加下载任务信息
      * */
     protected fun addTaskMsg(msg: BaseTaskMsg) {
         ThreadUtils.checkCurrentThread()
-        msgArray.add(msg)
-    }
-
-    /**
-     * 获取全部任务信息
-     * */
-    protected fun getAllTaskMsg(): ArrayList<BaseTaskMsg> {
-        return ArrayList(msgArray)
-    }
-
-    /**
-     * 获取任务数量
-     * */
-    protected fun getTaskNum(): Int {
-        return msgArray.size
+        msgCache.tryAdd(msg)
     }
 
     final override fun startTask() {
@@ -78,7 +65,7 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
         }
         ThreadUtils.checkCurrentThread()
         CsLogger.tag(tag).i("取消任务. taskTag = ${task.getTaskTag()}")
-        msgArray.forEach {
+        msgCache.getAllCache().forEach {
             CsFileUtils.close(it.stream)
         }
         if (isNeedCallback) {

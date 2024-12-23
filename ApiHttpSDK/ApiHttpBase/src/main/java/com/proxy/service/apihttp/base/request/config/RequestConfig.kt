@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.base.request.config
 
-import com.proxy.service.apihttp.base.request.interfaces.IBuilder
-import com.proxy.service.apihttp.base.request.interfaces.IBuilderGet
+import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilder
+import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
 import okhttp3.Dns
 import okhttp3.EventListener
@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/5/21 16:59
  * @desc:
  */
-class RequestConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
+class RequestConfig private constructor(private val builder: IRequestConfigBuilderGet) :
+    IRequestConfigBuilderGet {
     override fun getBaseUrl(): String {
         return builder.getBaseUrl()
     }
@@ -48,7 +49,7 @@ class RequestConfig private constructor(private val builder: IBuilderGet) : IBui
         return builder.getNetworkInterceptor()
     }
 
-    override fun getEventListener(): MutableList<EventListener> {
+    override fun getEventListener(): EventListener? {
         return builder.getEventListener()
     }
 
@@ -81,12 +82,12 @@ class RequestConfig private constructor(private val builder: IBuilderGet) : IBui
     }
 
     companion object {
-        fun builder(baseUrl: String): IBuilder {
+        fun builder(baseUrl: String): IRequestConfigBuilder {
             return Builder(baseUrl)
         }
     }
 
-    private class Builder(baseUrl: String) : IBuilder, IBuilderGet {
+    private class Builder(baseUrl: String) : IRequestConfigBuilder, IRequestConfigBuilderGet {
 
         companion object {
             private const val TIMEOUT_MIN: Long = 5 * 1000
@@ -103,11 +104,11 @@ class RequestConfig private constructor(private val builder: IBuilderGet) : IBui
 
         private var interceptors: MutableList<Interceptor> = ArrayList()
         private var networkInterceptors: MutableList<Interceptor> = ArrayList()
-        private var eventListeners: MutableList<EventListener> = ArrayList()
+        private var eventListener: EventListener? = null
         private var converterFactory: MutableList<Converter.Factory> = ArrayList()
         private var callAdapterFactory: MutableList<CallAdapter.Factory> = ArrayList()
 
-        private var dns: Dns?=null
+        private var dns: Dns? = null
 
         private var serverCerAssetsName: String = ""
         private var clientCerAssetsName: String = ""
@@ -154,7 +155,11 @@ class RequestConfig private constructor(private val builder: IBuilderGet) : IBui
             return this
         }
 
-        override fun setCache(cacheMaxSize: Long, cacheSizeUnit: CsStorageUnit, cacheDir: String): Builder {
+        override fun setCache(
+            cacheMaxSize: Long,
+            cacheSizeUnit: CsStorageUnit,
+            cacheDir: String
+        ): Builder {
             cacheSizeUnit.toBLong(cacheMaxSize).let {
                 this.cacheMaxSize = if (it < 0) {
                     0
@@ -176,22 +181,22 @@ class RequestConfig private constructor(private val builder: IBuilderGet) : IBui
             return this
         }
 
-        override fun addEventListener(eventListener: EventListener): IBuilder {
-            eventListeners.add(eventListener)
+        override fun setEventListener(eventListener: EventListener): IRequestConfigBuilder {
+            this.eventListener = eventListener
             return this
         }
 
-        override fun addConverterFactory(factory: Converter.Factory): IBuilder {
+        override fun addConverterFactory(factory: Converter.Factory): IRequestConfigBuilder {
             converterFactory.add(factory)
             return this
         }
 
-        override fun addCallAdapterFactory(factory: CallAdapter.Factory): IBuilder {
+        override fun addCallAdapterFactory(factory: CallAdapter.Factory): IRequestConfigBuilder {
             callAdapterFactory.add(factory)
             return this
         }
 
-        override fun setDns(dns: Dns): IBuilder {
+        override fun setDns(dns: Dns): IRequestConfigBuilder {
             this.dns = dns
             return this
         }
@@ -257,8 +262,8 @@ class RequestConfig private constructor(private val builder: IBuilderGet) : IBui
             return networkInterceptors
         }
 
-        override fun getEventListener(): MutableList<EventListener> {
-            return eventListeners
+        override fun getEventListener(): EventListener? {
+            return eventListener
         }
 
         override fun getConverterFactory(): MutableList<Converter.Factory> {

@@ -1,4 +1,4 @@
-package com.proxy.service.apihttp.info.request.okhttp.ssl
+package com.proxy.service.apihttp.info.common.ssl
 
 import android.annotation.SuppressLint
 import com.proxy.service.core.framework.app.context.CsContextManager

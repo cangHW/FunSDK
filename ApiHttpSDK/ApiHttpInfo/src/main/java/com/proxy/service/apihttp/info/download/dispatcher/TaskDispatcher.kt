@@ -18,13 +18,6 @@ import com.proxy.service.core.service.task.CsTask
 object TaskDispatcher : BaseDispatcher() {
 
     /**
-     * 任务是否已经满了
-     * */
-    fun isTaskFull(): Boolean {
-        return workerRunningList.size >= maxTaskCount
-    }
-
-    /**
      * 发起一个任务并确认当前资源是否允许执行
      * */
     fun startTask(task: DownloadTask): Boolean {
@@ -37,8 +30,10 @@ object TaskDispatcher : BaseDispatcher() {
         } else {
             SingleTaskWorker(task)
         }
+        if (!workerRunningList.tryAdd(worker)) {
+            return false
+        }
         worker.setOnFinishedCallback(taskWorkerFinishCallback)
-        workerRunningList.add(worker)
         worker.startTask()
         return true
     }
@@ -47,9 +42,9 @@ object TaskDispatcher : BaseDispatcher() {
      * 重置全部正在运行的任务, 用于快速执行高优先级任务
      * */
     fun resetAllRunningTask() {
-        CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
-            CsLogger.tag(tag).i("重置全部正在运行的任务 taskNum = ${workerRunningList.size}")
-            workerRunningList.forEach {
+        CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
+            CsLogger.tag(tag).i("重置全部正在运行的任务 taskNum = ${workerRunningList.size()}")
+            workerRunningList.getAllCache().forEach {
                 CsLogger.tag(tag).i("准备重置任务 taskTag = ${it.getDownloadTask().getTaskTag()}")
                 cancelRunningTask(it.getDownloadTask().getTaskTag(), false)
                 TaskController.addTask(it.getDownloadTask())

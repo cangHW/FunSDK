@@ -1,4 +1,4 @@
-package com.proxy.service.apihttp.base.download.task.base
+package com.proxy.service.apihttp.base.download.task.builder
 
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 

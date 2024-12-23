@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info.download.dispatcher.base
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.common.cache.Cache
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.apihttp.info.download.worker.base.BaseStatusWorker
@@ -21,27 +22,16 @@ abstract class BaseDispatcher {
         fun onWorkerIdle(task: DownloadTask?)
     }
 
-    /**
-     * 最大同时下载数量
-     * */
-    protected var maxTaskCount: Int = 3
-    protected val workerRunningList = ArrayList<IWorker>()
     protected var callback: OnWorkerIdleCallback? = null
+    protected val workerRunningList = Cache<IWorker>(Config.maxDownloadTaskCount)
 
     protected val taskWorkerFinishCallback = object : IWorker.TaskWorkerFinishCallback {
         override fun onFinished(worker: BaseStatusWorker, task: DownloadTask) {
-            CsTask.launchTaskGroup(Config.TASK_LOOP_THREAD_NAME)?.start {
+            CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
                 workerRunningList.remove(worker)
                 callback?.onWorkerIdle(task)
             }
         }
-    }
-
-    /**
-     * 设置同时并发下载最大任务量
-     * */
-    fun setMaxDownloadTask(maxTaskCount: Int) {
-        this.maxTaskCount = maxTaskCount
     }
 
     /**
@@ -52,11 +42,18 @@ abstract class BaseDispatcher {
     }
 
     /**
+     * 任务是否已经满了
+     * */
+    fun isTaskFull(): Boolean {
+        return workerRunningList.isFull()
+    }
+
+    /**
      * 取消正在运行的任务
      * */
     fun cancelRunningTask(taskTag: String, isNeedCallback: Boolean) {
         ThreadUtils.checkCurrentThread()
-        workerRunningList.forEach {
+        workerRunningList.getAllCache().forEach {
             it.cancelTask(taskTag, isNeedCallback)
         }
     }

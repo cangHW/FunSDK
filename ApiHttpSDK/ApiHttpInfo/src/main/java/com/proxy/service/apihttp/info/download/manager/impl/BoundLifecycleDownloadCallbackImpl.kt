@@ -50,26 +50,26 @@ class BoundLifecycleDownloadCallbackImpl(
     }
 
     override fun onWaiting(task: DownloadTask) {
-        liveData.value = Runnable { callback?.onWaiting(task) }
+        liveData.postValue(Runnable { callback?.onWaiting(task) })
     }
 
     override fun onStart(task: DownloadTask) {
-        liveData.value = Runnable { callback?.onStart(task) }
+        liveData.postValue(Runnable { callback?.onStart(task) })
     }
 
     override fun onProgress(task: DownloadTask, currentSize: Long, progress: Float, speed: Long) {
-        liveData.value = Runnable { callback?.onProgress(task, currentSize, progress, speed) }
+        liveData.postValue(Runnable { callback?.onProgress(task, currentSize, progress, speed) })
     }
 
     override fun onSuccess(task: DownloadTask) {
-        liveData.value = Runnable { callback?.onSuccess(task) }
+        liveData.postValue(Runnable { callback?.onSuccess(task) })
     }
 
     override fun onCancel(task: DownloadTask) {
-        liveData.value = Runnable { callback?.onCancel(task) }
+        liveData.postValue(Runnable { callback?.onCancel(task) })
     }
 
     override fun onFailed(task: DownloadTask, throwable: Throwable) {
-        liveData.value = Runnable { callback?.onFailed(task, throwable) }
+        liveData.postValue(Runnable { callback?.onFailed(task, throwable) })
     }
 }
