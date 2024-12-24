@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.app.context
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
 import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
 import com.proxy.service.core.framework.app.context.lifecycle.ActivityStatusLifecycleImpl
@@ -25,7 +25,7 @@ import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 @SuppressLint("StaticFieldLeak")
 object CsContextManager {
 
-    private const val TAG = "${Constants.TAG}Context"
+    private const val TAG = "${CoreConfig.TAG}Context"
 
     /**
      * 获取当前 ApplicationContext

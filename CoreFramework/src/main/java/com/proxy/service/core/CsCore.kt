@@ -6,7 +6,7 @@ import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.application.base.BaseCoreFw
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.application.base.CsBaseConfig
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object CsCore {
 
-    private const val TAG = "${Constants.TAG}Init"
+    private const val TAG = "${CoreConfig.TAG}Init"
     private val isInit = AtomicBoolean(false)
 
     /**
@@ -37,6 +37,7 @@ object CsCore {
         }
 
         CloudSystem.init(application, isDebug)
+        CoreConfig.isDebug = isDebug
 
         val sparseApplication = SparseArray<ArrayList<CsBaseApplication>>()
         val sparseConfig = SparseArray<ArrayList<CsBaseConfig>>()

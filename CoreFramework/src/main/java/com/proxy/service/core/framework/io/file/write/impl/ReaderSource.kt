@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.file.write.impl
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.config.IoConfig
@@ -16,7 +16,7 @@ import java.nio.file.StandardOpenOption
  */
 class ReaderSource(private val reader: Reader) : AbstractWrite() {
 
-    private val tag = "${Constants.TAG}FileWrite_Reader"
+    private val tag = "${CoreConfig.TAG}FileWrite_Reader"
 
     /**
      * 同步写入文件

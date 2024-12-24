@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.ImageLoaderService
 import com.proxy.service.imageloader.base.type.IType
@@ -20,7 +20,7 @@ import com.proxy.service.imageloader.base.type.IType
  */
 object CsImageLoader {
 
-    private const val TAG = "${Constants.TAG}ImageLoader"
+    private const val TAG = "${CoreConfig.TAG}ImageLoader"
 
     private var service: ImageLoaderService? = null
 

@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.file.read.impl
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.base.IRead
 import java.nio.charset.Charset
@@ -15,7 +15,7 @@ import java.util.stream.Collectors
  */
 class PathSource(private val path: Path) : IRead {
 
-    private val tag = "${Constants.TAG}FileRead_Path"
+    private val tag = "${CoreConfig.TAG}FileRead_Path"
 
     /**
      * 读取全部数据

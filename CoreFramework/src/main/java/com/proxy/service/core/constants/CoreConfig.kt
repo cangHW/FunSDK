@@ -5,8 +5,10 @@ package com.proxy.service.core.constants
  * @data: 2024/9/23 20:42
  * @desc:
  */
-object Constants {
+object CoreConfig {
 
     const val TAG = "CoreFw_"
+
+    var isDebug = false
 
 }

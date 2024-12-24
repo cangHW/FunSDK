@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.system.net.controller
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
@@ -16,7 +16,7 @@ interface IController {
     fun stop()
 
     companion object {
-        const val TAG = "${Constants.TAG}Net"
+        const val TAG = "${CoreConfig.TAG}Net"
 
         fun runUiThread(runnable: Runnable) {
             CsTask.mainThread()?.call(object : ICallable<String> {

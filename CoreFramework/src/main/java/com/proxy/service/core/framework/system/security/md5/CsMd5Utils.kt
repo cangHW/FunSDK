@@ -1,7 +1,7 @@
 package com.proxy.service.core.framework.system.security.md5
 
 import androidx.annotation.WorkerThread
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import java.io.File
@@ -21,7 +21,7 @@ import java.security.MessageDigest
 object CsMd5Utils {
 
     private const val ALGORITHM_MD5 = "MD5"
-    private const val TAG = "${Constants.TAG}Md5"
+    private const val TAG = "${CoreConfig.TAG}Md5"
 
 
     /**

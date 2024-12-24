@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.file
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.Closeable
 import java.io.File
@@ -15,7 +15,7 @@ import java.io.Flushable
  */
 object CsFileUtils {
 
-    private const val TAG = "${Constants.TAG}File"
+    private const val TAG = "${CoreConfig.TAG}File"
 
     /**
      * 创建文件

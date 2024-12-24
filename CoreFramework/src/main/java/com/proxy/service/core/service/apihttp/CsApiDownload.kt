@@ -7,7 +7,7 @@ import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.config.DownloadConfig
 import com.proxy.service.apihttp.base.download.enums.StatusEnum
 import com.proxy.service.apihttp.base.download.task.DownloadTask
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -19,7 +19,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 object CsApiDownload {
 
-    private const val TAG = "${Constants.TAG}ApiDownload"
+    private const val TAG = "${CoreConfig.TAG}ApiDownload"
 
     private var service: DownloadService? = null
 

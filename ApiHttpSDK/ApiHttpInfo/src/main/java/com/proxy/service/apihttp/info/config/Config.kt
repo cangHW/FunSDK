@@ -24,8 +24,6 @@ object Config {
     const val UPLOAD_DISPATCHER_THREAD_NAME = "upload-dispatcher-thread"
 
 
-    var isDebug = true
-
     /**
      * 最大下载并发量
      * */

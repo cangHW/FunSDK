@@ -1,7 +1,7 @@
 package com.proxy.service.core.framework.io.zip
 
 import androidx.annotation.WorkerThread
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
@@ -26,7 +26,7 @@ import java.io.File
 @WorkerThread
 object CsZipUtils {
 
-    private const val TAG = "${Constants.TAG}Zip"
+    private const val TAG = "${CoreConfig.TAG}Zip"
 
     private val callbackThreadLocal = ThreadLocal<ZipCallback>()
     private val passwordThreadLocal = ThreadLocal<String>()

@@ -1,7 +1,7 @@
 package com.proxy.service.core.application.base
 
 import android.app.Application
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -13,7 +13,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 abstract class CsBaseConfig : BaseCoreFw() {
 
-    protected val tag = "${Constants.TAG}Config"
+    protected val tag = "${CoreConfig.TAG}Config"
 
     override fun create(application: Application, isDebug: Boolean) {
         onCreate(application, isDebug)

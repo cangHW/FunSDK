@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.Reader
 import java.io.Writer
@@ -19,7 +19,7 @@ import java.lang.reflect.Type
  */
 object CsJsonUtils {
 
-    private const val TAG = "${Constants.TAG}Json"
+    private const val TAG = "${CoreConfig.TAG}Json"
 
     private var gson: Gson = Gson()
 

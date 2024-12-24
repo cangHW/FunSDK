@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.file.read.impl
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.base.IRead
 import java.io.BufferedReader
@@ -16,7 +16,7 @@ import java.util.stream.Collectors
  */
 class ReaderSource(private val reader: Reader) : IRead {
 
-    private val tag = "${Constants.TAG}FileRead_Reader"
+    private val tag = "${CoreConfig.TAG}FileRead_Reader"
 
     /**
      * 读取全部数据

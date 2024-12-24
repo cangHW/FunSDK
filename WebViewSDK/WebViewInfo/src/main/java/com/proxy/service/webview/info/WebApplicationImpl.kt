@@ -2,7 +2,6 @@ package com.proxy.service.webview.info
 
 import android.app.Application
 import android.os.Build
-import android.os.Looper
 import android.webkit.WebView
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
@@ -23,7 +22,6 @@ class WebApplicationImpl : CsBaseApplication() {
     private val webTag = "${Config.LOG_TAG_START}Application"
 
     override fun onCreate(application: Application, isDebug: Boolean) {
-        Config.isDebug = isDebug
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             WebView.setDataDirectorySuffix("_${CsAppUtils.getProcessName()}")
             if (isDebug) {

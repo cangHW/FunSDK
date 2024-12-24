@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.io.uri
 
 import android.net.Uri
 import android.os.Build
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.File
@@ -16,7 +16,7 @@ import java.io.File
  */
 object CsUriManager {
 
-    private const val TAG = "${Constants.TAG}Uri"
+    private const val TAG = "${CoreConfig.TAG}Uri"
 
     /**
      * 添加允许通过 provider 共享的文件路径，用于对外提供资源 Uri 等

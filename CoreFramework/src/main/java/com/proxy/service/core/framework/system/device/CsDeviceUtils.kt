@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.Process
 import android.os.StatFs
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.File
@@ -23,7 +23,7 @@ import java.util.Properties
  */
 object CsDeviceUtils {
 
-    private const val TAG = "${Constants.TAG}Device"
+    private const val TAG = "${CoreConfig.TAG}Device"
 
     /**
      * 获取设备品牌名称

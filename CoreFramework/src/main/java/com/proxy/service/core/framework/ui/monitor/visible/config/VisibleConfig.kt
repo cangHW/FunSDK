@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.ui.monitor.visible.config
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
@@ -9,7 +9,7 @@ import com.proxy.service.core.constants.Constants
  */
 object VisibleConfig {
 
-    const val TAG = "${Constants.TAG}Monitor_V"
+    const val TAG = "${CoreConfig.TAG}Monitor_V"
 
     /**
      * 显示状态检查任务

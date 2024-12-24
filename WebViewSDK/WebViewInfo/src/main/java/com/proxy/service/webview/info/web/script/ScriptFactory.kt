@@ -2,6 +2,7 @@ package com.proxy.service.webview.info.web.script
 
 import android.content.Context
 import android.webkit.JavascriptInterface
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.info.config.Config
@@ -59,7 +60,7 @@ object ScriptFactory {
             byteBuddy.make()
         }
 
-        if (Config.isDebug) {
+        if (CoreConfig.isDebug) {
             try {
                 writeToFile(dynamicType.bytes)
             } catch (throwable: Throwable) {

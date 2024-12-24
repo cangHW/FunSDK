@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.common.okhttp
 
 import com.proxy.service.apihttp.info.common.ssl.TrustCerManager
-import com.proxy.service.apihttp.info.config.Config
+import com.proxy.service.core.constants.CoreConfig
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
@@ -63,7 +63,7 @@ object OkhttpFactory {
             builder.sslSocketFactory(it, TrustCerManager())
         }
 
-        if (!Config.isDebug) {
+        if (!CoreConfig.isDebug) {
             builder.proxy(Proxy.NO_PROXY)
         }
 

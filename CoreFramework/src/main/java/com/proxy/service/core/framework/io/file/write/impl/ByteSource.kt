@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.file.write.impl
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import java.io.File
@@ -15,7 +15,7 @@ import java.nio.file.StandardOpenOption
  */
 class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
 
-    private val tag = "${Constants.TAG}FileWrite_Byte"
+    private val tag = "${CoreConfig.TAG}FileWrite_Byte"
 
     /**
      * 同步写入文件

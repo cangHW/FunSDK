@@ -1,7 +1,7 @@
 package com.proxy.service.core.service.web
 
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.WebService
 import com.proxy.service.webview.base.config.WebConfig
@@ -16,7 +16,7 @@ import com.proxy.service.webview.base.web.IWebLoader
  */
 object CsWeb {
 
-    private const val TAG = "${Constants.TAG}Web"
+    private const val TAG = "${CoreConfig.TAG}Web"
 
     private var service: WebService? = null
 

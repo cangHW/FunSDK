@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.file.read.impl
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
@@ -16,7 +16,7 @@ import java.nio.charset.Charset
  */
 open class InputStreamSource(protected val stream: InputStream) : IRead {
 
-    private val tag = "${Constants.TAG}FileRead_InputStream"
+    private val tag = "${CoreConfig.TAG}FileRead_InputStream"
 
     /**
      * 读取全部数据

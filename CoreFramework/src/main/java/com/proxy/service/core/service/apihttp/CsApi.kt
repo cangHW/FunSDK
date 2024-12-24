@@ -3,7 +3,7 @@ package com.proxy.service.core.service.apihttp
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.apihttp.base.request.RequestService
 import com.proxy.service.apihttp.base.request.config.RequestConfig
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -14,7 +14,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @desc:
  */
 object CsApi {
-    private const val TAG = "${Constants.TAG}Api"
+    private const val TAG = "${CoreConfig.TAG}Api"
 
     private var service: RequestService? = null
 

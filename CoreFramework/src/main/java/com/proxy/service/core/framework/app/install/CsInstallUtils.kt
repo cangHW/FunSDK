@@ -8,7 +8,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.install.bean.InstallAppInfo
@@ -28,7 +28,7 @@ import java.io.File
  */
 object CsInstallUtils {
 
-    private const val TAG = "${Constants.TAG}Install"
+    private const val TAG = "${CoreConfig.TAG}Install"
 
     /**
      * 通过 apk 获取包名

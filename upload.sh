@@ -9,21 +9,21 @@ upArray=(
   ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
-#  ":ThreadPoolSDK:ThreadPoolBase"
-#  ":ThreadPoolSDK:ThreadPoolInfo"
+  ":ThreadPoolSDK:ThreadPoolBase"
+  ":ThreadPoolSDK:ThreadPoolInfo"
 
   # 图片库
-#  ":ImageLoaderSDK:ImageLoaderBase"
-#  ":ImageLoaderSDK:ImageLoaderInfo"
+  ":ImageLoaderSDK:ImageLoaderBase"
+  ":ImageLoaderSDK:ImageLoaderInfo"
 
   # web 容器库
-#  ":WebViewSDK:WebViewBase"
-#  ":WebViewSDK:WebViewInfo"
-#  ":WebViewSDK:WebViewDSBridge"
+  ":WebViewSDK:WebViewBase"
+  ":WebViewSDK:WebViewInfo"
+  ":WebViewSDK:WebViewDSBridge"
 
     # 权限库
-#  ":Permission:PermissionBase"
-#  ":Permission:PermissionInfo"
+  ":Permission:PermissionBase"
+  ":Permission:PermissionInfo"
 )
 
 type_params="r"

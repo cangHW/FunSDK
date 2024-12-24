@@ -7,7 +7,7 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Process
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.BufferedReader
@@ -24,7 +24,7 @@ import java.io.InputStreamReader
  */
 object CsAppUtils {
 
-    private const val TAG = "${Constants.TAG}App"
+    private const val TAG = "${CoreConfig.TAG}App"
 
     /**
      * 重启应用

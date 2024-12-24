@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.sp
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.tencent.mmkv.MMKV
 import java.util.concurrent.atomic.AtomicBoolean
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object SpInit {
 
-    const val TAG = "${Constants.TAG}Sp"
+    const val TAG = "${CoreConfig.TAG}Sp"
 
     private val isInit = AtomicBoolean(false)
 

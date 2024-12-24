@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.data.string
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.Base64
 
@@ -13,7 +13,7 @@ import java.util.Base64
  */
 object CsStringUtils {
 
-    private const val TAG = "${Constants.TAG}String"
+    private const val TAG = "${CoreConfig.TAG}String"
 
     /**
      * byte 数组转为 16 进制字符串

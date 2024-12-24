@@ -4,7 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.text.TextUtils
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -19,7 +19,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 object CsSystemPageUtils {
 
-    private const val TAG = "${Constants.TAG}SystemPage"
+    private const val TAG = "${CoreConfig.TAG}SystemPage"
 
     /**
      * 打开应用设置页面
