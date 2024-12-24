@@ -22,11 +22,11 @@ class CipherController(
     private val byteArrayList = ArrayList<ByteArray>()
 
     init {
-        byteArrayList.clear()
         reset()
     }
 
     override fun reset() {
+        byteArrayList.clear()
         try {
             if (ivSpec == null) {
                 cipher.init(opMode, secretKey)
