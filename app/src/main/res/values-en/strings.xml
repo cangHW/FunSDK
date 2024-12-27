@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">测试SDK</string>
+
+    <string name="language">英文</string>
+    <string name="ui_mode">浅色</string>
+
+</resources>

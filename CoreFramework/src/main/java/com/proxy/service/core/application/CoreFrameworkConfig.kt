@@ -3,6 +3,7 @@ package com.proxy.service.core.application
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseConfig
+import com.proxy.service.core.framework.app.config.controller.AppConfigInit
 import com.proxy.service.core.framework.app.context.ContextInit
 
 /**
@@ -19,6 +20,7 @@ class CoreFrameworkConfig : CsBaseConfig() {
 
     override fun onCreate(application: Application, isDebug: Boolean) {
         ContextInit.init(application)
+        AppConfigInit.init()
     }
 
 }
