@@ -1,12 +1,15 @@
-package com.proxy.service.core.framework.io.file.write.impl
+package com.proxy.service.core.framework.io.file.write.source
 
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
+import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
+import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 import java.nio.file.StandardOpenOption
+
 
 /**
  * @author: cangHX
@@ -48,6 +51,27 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
                 }
             }
             success(tag, file.absolutePath)
+            return true
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
+        return false
+    }
+
+    override fun writeSync(stream: OutputStream, append: Boolean): Boolean {
+        start(tag, "OutputStream")
+        try {
+            val outputStream = stream.buffered()
+            val buffer = ByteBuffer.wrap(bytes)
+            buffer.flip()
+            val temp = ByteArray(IoConfig.IO_BUFFER_SIZE)
+            while (buffer.hasRemaining()) {
+                val length = Math.min(buffer.remaining(), temp.size)
+                buffer.get(temp, 0, length)
+                outputStream.write(temp, 0, length)
+            }
+            outputStream.flush()
+            success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)

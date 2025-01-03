@@ -1,8 +1,8 @@
-package com.proxy.service.core.framework.io.file.write.impl
+package com.proxy.service.core.framework.io.file.read.source
 
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import java.io.File
 import java.io.InputStream
+import java.nio.charset.Charset
 
 /**
  * @author: cangHX
@@ -11,12 +11,10 @@ import java.io.InputStream
  */
 class AutoCloseInputStreamSource(stream: InputStream) : InputStreamSource(stream) {
 
-    override fun writeSync(file: File, append: Boolean): Boolean {
-        if (!super.writeSync(file, append)) {
-            return false
-        }
+    override fun readString(charset: Charset): String {
+        val content = super.readString(charset)
         CsFileUtils.close(stream)
-        return true
+        return content
     }
 
 }

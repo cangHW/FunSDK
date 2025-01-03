@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.io.file.write.impl
+package com.proxy.service.core.framework.io.file.write.source
 
 import com.proxy.service.core.framework.io.file.base.IWrite
 import com.proxy.service.core.framework.io.file.callback.IoCallback
@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.io.file.write.log.IWriteStatusLog
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.File
+import java.io.OutputStream
 
 /**
  * @author: cangHX
@@ -37,7 +38,24 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
     override fun writeAsync(file: File, append: Boolean, callback: IoCallback?) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                writeSync(file, append)
+                if (writeSync(file, append)) {
+                    callback?.onSuccess()
+                } else {
+                    callback?.onFailed()
+                }
+                return ""
+            }
+        })?.start()
+    }
+
+    override fun writeAsync(stream: OutputStream, append: Boolean, callback: IoCallback?) {
+        CsTask.ioThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                if (writeSync(stream, append)) {
+                    callback?.onSuccess()
+                } else {
+                    callback?.onFailed()
+                }
                 return ""
             }
         })?.start()

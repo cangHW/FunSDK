@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.io.file.read.impl
+package com.proxy.service.core.framework.io.file.read.source
 
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger

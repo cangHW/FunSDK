@@ -14,4 +14,8 @@ interface IRead {
      * */
     fun readString(charset: Charset = Charsets.UTF_8): String
 
+    /**
+     * 源数据
+     * */
+    interface Source : ISource<IRead>
 }

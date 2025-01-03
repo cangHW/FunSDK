@@ -4,14 +4,23 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
+import com.proxy.service.core.framework.io.file.callback.IoCallback
+import com.proxy.service.core.framework.io.file.media.CsFileMediaUtils
+import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
+import com.proxy.service.core.framework.io.file.media.callback.QueryCallback
+import com.proxy.service.core.framework.io.file.media.config.DataInfo
+import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.read.CsFileReadUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
+import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
+import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -33,7 +42,7 @@ class FileActivity : AppCompatActivity() {
         }
     }
 
-    private var fileDir  = "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files"
+    private var fileDir = "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files"
     private var filePath = "$fileDir/text/test.txt"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +84,49 @@ class FileActivity : AppCompatActivity() {
 
                 CsFileWriteUtils.setSourcePath(srcPath).writeSync(destPath, true)
                 CsLogger.d(CsFileReadUtils.setSourcePath(destPath).readString())
+            }
+
+            R.id.save_album -> {
+                CsFileMediaUtils.getImageManager()
+                    .setDisplayName("测试图片")
+                    .setMimeType(MimeType.IMAGE_PNG)
+                    .setSourceAssetPath("image/asd.png")
+                    .insert(object : InsertCallback {
+                        override fun onFailed() {
+                            CsLogger.i("insert onFailed")
+                        }
+
+                        override fun onSuccess(path: String) {
+                            CsLogger.i("insert onSuccess path = $path")
+                        }
+                    })
+            }
+
+            R.id.query_file -> {
+                CsFileMediaUtils.getQueryManager()
+                    .setMimeType(MimeType.create("*/*"))
+//                    .setMimeType(MimeType.IMAGE_JPEG)
+                    .query(object : QueryCallback {
+                        override fun onFailed() {
+
+                        }
+
+                        override fun onSuccess(list: ArrayList<DataInfo>) {
+                            list.forEach { info ->
+                                CsTask.ioThread()?.call(object : ICallable<String> {
+                                    override fun accept(): String {
+                                        CsFileWriteUtils.setSourcePath(info.path)
+                                            .writeAsync(
+                                                Environment.getExternalStoragePublicDirectory(
+                                                    Environment.DIRECTORY_DOWNLOADS
+                                                ).absolutePath + File.separator + "asd.jpg"
+                                            )
+                                        return ""
+                                    }
+                                })?.start()
+                            }
+                        }
+                    })
             }
         }
     }

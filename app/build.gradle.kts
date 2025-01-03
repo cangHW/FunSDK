@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)
 
+    implementation(libs.cloud.api)
+
     implementation(libs.core.framework)
     implementation(libs.service.apihttp)
     implementation(libs.service.threadpool)

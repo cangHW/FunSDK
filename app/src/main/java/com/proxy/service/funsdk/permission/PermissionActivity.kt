@@ -43,7 +43,7 @@ class PermissionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_permission)
 
         val ft = supportFragmentManager.beginTransaction()
-        ft.add( R.id.container, PermissionFragment(),"test")
+        ft.add(R.id.container, PermissionFragment(), "test")
         ft.commit()
 
 //        val getResultLauncher = registerForActivityResult(
@@ -108,7 +108,8 @@ class PermissionActivity : AppCompatActivity() {
 
             R.id.request_permission -> {
                 CsPermission.createRequest()
-                    ?.addPermission(Manifest.permission.CAMERA)
+                    ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    ?.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     ?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setNoPromptCallback(noPromptCallback)
@@ -116,8 +117,12 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission_with_rationale_dialog -> {
-                CsPermission.createRationaleDialog(arrayOf(Manifest.permission.CAMERA))
-                    ?.setGrantedCallback(grantedCallback)
+                CsPermission.createRationaleDialog(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                )?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setNoPromptCallback(noPromptCallback)
                     ?.setLeftButton(click = leftButtonClick)
@@ -127,8 +132,12 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission_with_setting_dialog -> {
-                CsPermission.createSettingDialog(arrayOf(Manifest.permission.CAMERA))
-                    ?.setGrantedCallback(grantedCallback)
+                CsPermission.createSettingDialog(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                )?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setLeftButton(click = leftButtonClick)
                     ?.setRightButton(click = rightButtonClick)
@@ -140,21 +149,21 @@ class PermissionActivity : AppCompatActivity() {
 
     private val grantedCallback = object : ActionCallback {
         override fun onAction(list: Array<String>) {
-            CsLogger.tag(tag).i("onGrantedCallback = $list")
+            CsLogger.tag(tag).i("onGrantedCallback = ${list.joinToString(", ")}")
             Toast.makeText(this@PermissionActivity, "onGrantedCallback", Toast.LENGTH_SHORT).show()
         }
     }
 
     private val deniedCallback = object : ActionCallback {
         override fun onAction(list: Array<String>) {
-            CsLogger.tag(tag).i("onDeniedCallback = $list")
+            CsLogger.tag(tag).i("onDeniedCallback = ${list.joinToString(", ")}")
             Toast.makeText(this@PermissionActivity, "onDeniedCallback", Toast.LENGTH_SHORT).show()
         }
     }
 
     private val noPromptCallback = object : ActionCallback {
         override fun onAction(list: Array<String>) {
-            CsLogger.tag(tag).i("onNoPromptCallback = $list")
+            CsLogger.tag(tag).i("onNoPromptCallback = ${list.joinToString(", ")}")
             Toast.makeText(this@PermissionActivity, "onNoPromptCallback", Toast.LENGTH_SHORT).show()
         }
     }

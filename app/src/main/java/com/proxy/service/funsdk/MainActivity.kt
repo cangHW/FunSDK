@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.log.base.LogTree
+import com.proxy.service.api.log.tree.DebugTree
 import com.proxy.service.core.CsCore
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
@@ -31,10 +32,13 @@ class MainActivity : AppCompatActivity() {
         CsLogger.addLogCallback(object : LogTree() {
             override fun onLog(priority: Int, tag: String, message: String, throwable: Throwable?) {
                 if (priority == Log.DEBUG) {
-//                    Log.i(tag, message)
+                    Log.i(tag, message)
                 }
             }
         })
+
+        CsLogger.i("sssss")
+        CsLogger.d("qqqq")
     }
 
     fun onClick(view: View) {

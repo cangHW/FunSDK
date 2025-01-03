@@ -53,6 +53,7 @@ class VisibleMonitorHelperImpl(
 
     override fun destroy() {
         CsLogger.tag(VisibleConfig.TAG).d("monitor destroy. view: ${config?.getBindView()}")
+        config?.getLifecycleOwner()?.lifecycle?.removeObserver(this)
         config = null
         control?.destroy()
         control = null
@@ -86,7 +87,6 @@ class VisibleMonitorHelperImpl(
             val currentState = it.lifecycle.currentState
             if (currentState == Lifecycle.State.DESTROYED) {
                 CsLogger.tag(VisibleConfig.TAG).d("page destroy. lifecycleOwner: $it")
-                it.lifecycle.removeObserver(this)
                 destroy()
             }
         }

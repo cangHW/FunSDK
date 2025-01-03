@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.io.file.write.impl
+package com.proxy.service.core.framework.io.file.write.source
 
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
 import java.io.InputStream
+import java.io.OutputStream
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 
@@ -43,6 +44,25 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             }
 
             success(tag, file.absolutePath)
+            return true
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
+        return false
+    }
+
+    override fun writeSync(stream: OutputStream, append: Boolean): Boolean {
+        start(tag, "OutputStream")
+        try {
+            stream.buffered().use { outputStream ->
+                val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
+                var bytesRead: Int
+                while (this.stream.read(buffer).also { bytesRead = it } != -1) {
+                    outputStream.write(buffer, 0, bytesRead)
+                }
+            }
+
+            success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)

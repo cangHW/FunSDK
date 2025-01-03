@@ -2,14 +2,14 @@ package com.proxy.service.core.framework.io.file.read
 
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IRead
-import com.proxy.service.core.framework.io.file.base.IReadSource
-import com.proxy.service.core.framework.io.file.read.impl.AutoCloseInputStreamSource
-import com.proxy.service.core.framework.io.file.read.impl.InputStreamSource
-import com.proxy.service.core.framework.io.file.read.impl.PathSource
-import com.proxy.service.core.framework.io.file.read.impl.ReaderSource
+import com.proxy.service.core.framework.io.file.read.source.AutoCloseInputStreamSource
+import com.proxy.service.core.framework.io.file.read.source.InputStreamSource
+import com.proxy.service.core.framework.io.file.read.source.PathSource
+import com.proxy.service.core.framework.io.file.read.source.ReaderSource
 import java.io.File
 import java.io.InputStream
 import java.io.Reader
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -19,7 +19,7 @@ import java.nio.file.Paths
  * @data: 2024/4/28 15:33
  * @desc:
  */
-object CsFileReadUtils : IReadSource {
+object CsFileReadUtils : IRead.Source {
 
     /**
      * 设置源数据
@@ -34,15 +34,22 @@ object CsFileReadUtils : IReadSource {
     /**
      * 设置源数据
      * */
-    override fun setSourcePath(file: String): IRead {
-        return PathSource(Paths.get(file))
+    override fun setSourcePath(filePath: String): IRead {
+        return setSourcePath(Paths.get(filePath))
+    }
+
+    /**
+     * 设置源数据
+     * */
+    override fun setSourcePath(path: Path): IRead {
+        return PathSource(path)
     }
 
     /**
      * 设置源数据
      * */
     override fun setSourceFile(file: File): IRead {
-        return PathSource(file.toPath())
+        return setSourcePath(file.toPath())
     }
 
     /**

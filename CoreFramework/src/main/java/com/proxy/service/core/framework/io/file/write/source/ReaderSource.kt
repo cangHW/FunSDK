@@ -1,13 +1,18 @@
-package com.proxy.service.core.framework.io.file.write.impl
+package com.proxy.service.core.framework.io.file.write.source
 
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
+import java.io.OutputStream
 import java.io.Reader
+import java.nio.CharBuffer
+import java.nio.channels.Channels
+import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
+
 
 /**
  * @author: cangHX
@@ -43,6 +48,29 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
                 writer.flush()
             }
             success(tag, file.absolutePath)
+            return true
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
+        return false
+    }
+
+    override fun writeSync(stream: OutputStream, append: Boolean): Boolean {
+        start(tag, "OutputStream")
+
+        try {
+            Channels.newChannel(stream).use { channel ->
+                val encoder = Charset.defaultCharset().newEncoder()
+                val charBuffer = CharBuffer.allocate(IoConfig.IO_BUFFER_SIZE)
+                while (reader.read(charBuffer) != -1) {
+                    charBuffer.flip()
+                    val byteBuffer = encoder.encode(charBuffer)
+                    channel.write(byteBuffer)
+                    charBuffer.clear()
+                }
+            }
+
+            success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
