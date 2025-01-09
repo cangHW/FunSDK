@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.io.file.media.base
 
+import java.io.File
 import java.io.OutputStream
 
 /**
@@ -9,6 +10,8 @@ import java.io.OutputStream
  */
 interface ISourceWrite {
 
-    fun write(stream:OutputStream):Boolean
+    fun write(file: File): Boolean
+
+    fun write(stream: OutputStream): Boolean
 
 }

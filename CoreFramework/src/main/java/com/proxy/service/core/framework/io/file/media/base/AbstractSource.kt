@@ -1,11 +1,8 @@
 package com.proxy.service.core.framework.io.file.media.base
 
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.io.file.base.IMediaStore
 import com.proxy.service.core.framework.io.file.base.ISource
-import com.proxy.service.core.framework.io.file.base.IWrite
 import com.proxy.service.core.framework.io.file.media.source.AutoCloseInputStreamSource
-import com.proxy.service.core.framework.io.file.media.source.ByteSource
 import com.proxy.service.core.framework.io.file.media.source.InputStreamSource
 import com.proxy.service.core.framework.io.file.media.source.PathSource
 import com.proxy.service.core.framework.io.file.media.source.ReaderSource

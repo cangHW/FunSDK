@@ -1,7 +1,5 @@
 package com.proxy.service.core.framework.io.file.media.config
 
-import android.os.Environment
-
 /**
  * @author: cangHX
  * @data: 2025/1/2 16:19
@@ -25,9 +23,14 @@ class DataInfo {
     var mimeType: String = ""
 
     /**
+     * 文件大小
+     * */
+    var size: Long = 0
+
+    /**
      * 根路径
      * */
-    val rootDir = getEnvironmentRootDir()
+    var rootDir = ""
 
     /**
      * 绝对路径
@@ -45,6 +48,11 @@ class DataInfo {
     var dateAdded: Long = 0
 
     /**
+     * 修改时间
+     * */
+    var dateModified: Long = 0
+
+    /**
      * 是否挂起, 0 未挂起, 1 挂起
      * */
     var isPending: Int = 0
@@ -54,15 +62,8 @@ class DataInfo {
      * */
     var isTrashed: Int = 0
 
-
-    private fun getEnvironmentRootDir(): String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            .parentFile
-            ?.absolutePath
-            ?: ""
-    }
-
     override fun toString(): String {
-        return "DataInfo(id=$id, displayName='$displayName', mimeType='$mimeType', rootDir=$rootDir, path='$path', relativePath='$relativePath', dateAdded=$dateAdded, isPending=$isPending, isTrashed=$isTrashed)"
+        return "DataInfo(id=$id, displayName='$displayName', mimeType='$mimeType', size=$size, rootDir='$rootDir', path='$path', relativePath='$relativePath', dateAdded=$dateAdded, dateModified=$dateModified, isPending=$isPending, isTrashed=$isTrashed)"
     }
+
 }

@@ -4,6 +4,7 @@ import android.media.MediaScannerConnection
 import android.os.Build
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.base.IMediaStore
 import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
 import com.proxy.service.core.framework.io.file.media.callback.QueryCallback
@@ -29,7 +30,11 @@ abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,
     }
 
     override fun setDisplayName(displayName: String): T {
-        store.setDisplayName(displayName)
+        if (displayName.trim().isEmpty()){
+            CsLogger.tag(tag).d("displayName can not be null or empty.")
+        }else {
+            store.setDisplayName(displayName)
+        }
         return getT()
     }
 

@@ -1,8 +1,8 @@
 package com.proxy.service.core.framework.io.file.media.compat
 
-import android.provider.MediaStore
 import com.proxy.service.core.framework.io.file.base.IMediaStore
 import com.proxy.service.core.framework.io.file.media.base.AbstractMedia
+import com.proxy.service.core.framework.io.file.media.config.StoreType
 
 /**
  * @author: cangHX
@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.io.file.media.base.AbstractMedia
 class QueryStoreCompat : AbstractMedia<IMediaStore.IQuery>(), IMediaStore.IQuery {
 
     init {
-        store.setUri(MediaStore.Files.getContentUri("external"))
+        store.setStoreType(StoreType.FILE)
     }
 
     override fun getT(): IMediaStore.IQuery {

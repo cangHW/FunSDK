@@ -1,11 +1,11 @@
 package com.proxy.service.core.framework.io.file.media.compat
 
 import android.os.Environment
-import android.provider.MediaStore
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.io.file.base.IMediaStore
 import com.proxy.service.core.framework.io.file.media.base.AbstractSource
 import com.proxy.service.core.framework.io.file.media.config.MimeType
+import com.proxy.service.core.framework.io.file.media.config.StoreType
 import com.proxy.service.core.framework.io.file.media.source.ByteSource
 import java.io.File
 
@@ -17,7 +17,7 @@ import java.io.File
 class VideoStoreCompat : AbstractSource<IMediaStore.IVideo>(), IMediaStore.IVideo {
 
     init {
-        store.setUri(MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+        store.setStoreType(StoreType.VIDEO)
         store.setDisplayName("video_${System.currentTimeMillis()}")
         store.setMimeType(MimeType.VIDEO_MP4)
         store.setDir(Environment.DIRECTORY_MOVIES + File.separator + CsAppUtils.getAppName())

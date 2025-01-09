@@ -2,6 +2,7 @@ package com.proxy.service.core.framework.io.file.media.source
 
 import com.proxy.service.core.framework.io.file.media.base.ISourceWrite
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
+import java.io.File
 import java.io.OutputStream
 import java.nio.file.Path
 
@@ -11,6 +12,11 @@ import java.nio.file.Path
  * @desc:
  */
 class PathSource(private val path: Path) : ISourceWrite {
+
+    override fun write(file: File): Boolean {
+        return CsFileWriteUtils.setSourcePath(path).writeSync(file)
+    }
+
     override fun write(stream: OutputStream): Boolean {
         return CsFileWriteUtils.setSourcePath(path).writeSync(stream)
     }

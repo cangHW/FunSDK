@@ -32,13 +32,10 @@ class MainActivity : AppCompatActivity() {
         CsLogger.addLogCallback(object : LogTree() {
             override fun onLog(priority: Int, tag: String, message: String, throwable: Throwable?) {
                 if (priority == Log.DEBUG) {
-                    Log.i(tag, message)
+//                    Log.i(tag, message)
                 }
             }
         })
-
-        CsLogger.i("sssss")
-        CsLogger.d("qqqq")
     }
 
     fun onClick(view: View) {

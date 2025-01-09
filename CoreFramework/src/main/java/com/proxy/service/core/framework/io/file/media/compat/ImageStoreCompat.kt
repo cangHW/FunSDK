@@ -2,12 +2,12 @@ package com.proxy.service.core.framework.io.file.media.compat
 
 import android.graphics.Bitmap
 import android.os.Environment
-import android.provider.MediaStore
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.bitmap.CsBitmapUtils
 import com.proxy.service.core.framework.io.file.base.IMediaStore
 import com.proxy.service.core.framework.io.file.media.base.AbstractSource
 import com.proxy.service.core.framework.io.file.media.config.MimeType
+import com.proxy.service.core.framework.io.file.media.config.StoreType
 import com.proxy.service.core.framework.io.file.media.source.ByteSource
 import java.io.File
 
@@ -20,7 +20,7 @@ import java.io.File
 class ImageStoreCompat : AbstractSource<IMediaStore.IImage>(), IMediaStore.IImage {
 
     init {
-        store.setUri(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        store.setStoreType(StoreType.IMAGE)
         store.setDisplayName("image_${System.currentTimeMillis()}")
         store.setMimeType(MimeType.IMAGE_JPEG)
         store.setDir(Environment.DIRECTORY_PICTURES + File.separator + CsAppUtils.getAppName())

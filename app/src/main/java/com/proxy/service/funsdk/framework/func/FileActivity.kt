@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -104,8 +105,7 @@ class FileActivity : AppCompatActivity() {
 
             R.id.query_file -> {
                 CsFileMediaUtils.getQueryManager()
-                    .setMimeType(MimeType.create("*/*"))
-//                    .setMimeType(MimeType.IMAGE_JPEG)
+                    .setMimeType(MimeType.create("image/*"))
                     .query(object : QueryCallback {
                         override fun onFailed() {
 
