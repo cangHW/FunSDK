@@ -12,6 +12,9 @@ import com.proxy.service.core.framework.io.file.media.compat.VideoStoreCompat
  * @author: cangHX
  * @data: 2024/12/31 11:51
  * @desc:
+ *
+ * 需要权限才能访问全部文件，否则只能访问当前应用关联的文件
+ * <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
  */
 object CsFileMediaUtils {
 

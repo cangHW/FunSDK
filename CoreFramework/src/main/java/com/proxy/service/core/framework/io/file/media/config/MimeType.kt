@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.io.file.media.config
 /**
  * @author: cangHX
  * @data: 2025/1/2 14:39
- * @desc:
+ * @desc: 更多类型查看：https://www.file-extensions.org/filetype/extension/name/document-files
  */
 class MimeType private constructor(val type: String) {
 
