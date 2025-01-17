@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.log.base.LogTree
-import com.proxy.service.api.log.tree.DebugTree
-import com.proxy.service.core.CsCore
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils

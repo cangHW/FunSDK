@@ -13,11 +13,11 @@ android-appcompat = { group = "androidx.appcompat", name = "appcompat", version 
 android-webkit = {group = "androidx.webkit", name = "webkit", version = "1.4.0"}
 
 ##########################################  开发基础库  ############################################################################
-cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.11" }
+cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.12" }
 cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.6" }
 cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.4" }
 
-core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="0.4.49"}
+core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="0.4.50"}
 service-apihttp = {group = "io.github.cangHW", name="Service-Apihttp", version="0.0.23"}
 service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.0.19"}
 service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", version="0.0.12"}
