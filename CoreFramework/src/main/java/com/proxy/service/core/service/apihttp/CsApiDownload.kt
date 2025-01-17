@@ -34,7 +34,7 @@ object CsApiDownload {
         return service
     }
 
-    private var config: DownloadConfig? = DownloadConfig.builder().build()
+    private var config: DownloadConfig = DownloadConfig.builder().build()
 
     /**
      * 下载库初始化
@@ -48,14 +48,20 @@ object CsApiDownload {
      * 设置全局下载回调, 可用于监听全部任务
      * */
     fun registerGlobalDownloadCallback(callback: DownloadCallback) {
-        getService()?.registerGlobalDownloadCallback(callback)
+        getService()?.let {
+            it.init(config)
+            it.registerGlobalDownloadCallback(callback)
+        }
     }
 
     /**
      * 移除全局下载回调
      * */
     fun unregisterGlobalDownloadCallback(callback: DownloadCallback) {
-        getService()?.unregisterGlobalDownloadCallback(callback)
+        getService()?.let {
+            it.init(config)
+            it.unregisterGlobalDownloadCallback(callback)
+        }
     }
 
     /**
@@ -68,12 +74,9 @@ object CsApiDownload {
         callback: DownloadCallback? = null,
         lifecycleOwner: LifecycleOwner? = null
     ): String {
-        config?.let {
-            val loader = getService()
-            loader?.init(it)
-            return loader?.addTask(task, callback, lifecycleOwner) ?: ""
-        } ?: let {
-            CsLogger.tag(TAG).e("Please check whether initialization has been performed.")
+        getService()?.let {
+            it.init(config)
+            return it.addTask(task, callback, lifecycleOwner)
         }
         return ""
     }
@@ -82,7 +85,10 @@ object CsApiDownload {
      * 移除下载任务回调
      * */
     fun removeTaskDownloadCallback(callback: DownloadCallback?) {
-        getService()?.removeTaskDownloadCallback(callback)
+        getService()?.let {
+            it.init(config)
+            it.removeTaskDownloadCallback(callback)
+        }
     }
 
     /**
@@ -91,30 +97,41 @@ object CsApiDownload {
      * @return 是否重新开始成功
      * */
     fun reStartTask(taskTag: String): Boolean {
-        return getService()?.reStartTask(taskTag) ?: false
+        getService()?.let {
+            it.init(config)
+            return it.reStartTask(taskTag)
+        }
+        return false
     }
 
     /**
      * 重置并还原正在运行的任务到未运行状态, 可用于让高优先级任务立刻执行
      * */
     fun resetRunningTask() {
-        getService()?.resetRunningTask()
+        getService()?.let {
+            it.init(config)
+            it.resetRunningTask()
+        }
     }
 
     /**
      * 获取任务
      * */
     fun getTask(taskTag: String): DownloadTask? {
-        return getService()?.getTask(taskTag)
+        getService()?.let {
+            it.init(config)
+            return it.getTask(taskTag)
+        }
+        return null
     }
 
     /**
      * 获取下载状态
      * */
     fun getDownloadStatus(taskTag: String): StatusEnum {
-        val status = getService()?.getDownloadStatus(taskTag)
-        if (status != null) {
-            return status
+        getService()?.let {
+            it.init(config)
+            return it.getDownloadStatus(taskTag)
         }
         return StatusEnum.UNKNOWN
     }
@@ -123,21 +140,30 @@ object CsApiDownload {
      * 取消任务,
      * */
     fun cancel(taskTag: String) {
-        getService()?.cancel(taskTag)
+        getService()?.let {
+            it.init(config)
+            it.cancel(taskTag)
+        }
     }
 
     /**
      * 取消任务组内全部任务
      * */
     fun cancelGroup(groupName: String) {
-        getService()?.cancelGroup(groupName)
+        getService()?.let {
+            it.init(config)
+            it.cancelGroup(groupName)
+        }
     }
 
     /**
      * 取消全部任务
      * */
     fun cancelAllTask() {
-        getService()?.cancelAllTask()
+        getService()?.let {
+            it.init(config)
+            it.cancelAllTask()
+        }
     }
 
 }

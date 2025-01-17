@@ -16,7 +16,7 @@ import com.proxy.service.webview.bridge.ds.converter.WebServiceConverter
 class WebBridgeConfig : CsBaseConfig() {
 
     override fun priority(): Int {
-        return -99
+        return -550
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {

@@ -21,6 +21,10 @@ class WebApplicationImpl : CsBaseApplication() {
 
     private val webTag = "${Config.LOG_TAG_START}Application"
 
+    override fun priority(): Int {
+        return -100
+    }
+
     override fun onCreate(application: Application, isDebug: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             WebView.setDataDirectorySuffix("_${CsAppUtils.getProcessName()}")

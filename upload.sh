@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-  ":CoreFramework"
+#  ":CoreFramework"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpBase"
@@ -18,12 +18,14 @@ upArray=(
 
   # web 容器库
 #  ":WebViewSDK:WebViewBase"
-#  ":WebViewSDK:WebViewInfo"
-#  ":WebViewSDK:WebViewDSBridge"
+  ":WebViewSDK:WebViewInfo"
+  ":WebViewSDK:WebViewDSBridge"
 
     # 权限库
 #  ":Permission:PermissionBase"
-#  ":Permission:PermissionInfo"
+  ":Permission:PermissionInfo"
+
+  ":LogFileSDK:LogFileInfo"
 )
 
 type_params="r"

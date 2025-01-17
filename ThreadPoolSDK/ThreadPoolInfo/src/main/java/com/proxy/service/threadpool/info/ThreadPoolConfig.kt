@@ -15,6 +15,10 @@ import io.reactivex.plugins.RxJavaPlugins
 @CloudApiService(serviceTag = "config/thread_pool")
 class ThreadPoolConfig : CsBaseConfig() {
 
+    override fun priority(): Int {
+        return -900
+    }
+
     override fun onCreate(application: Application, isDebug: Boolean) {
         RxJavaPlugins.setErrorHandler { throwable ->
             CsLogger.tag(Constants.TAG).e(throwable)
