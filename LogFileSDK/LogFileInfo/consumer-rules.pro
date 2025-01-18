@@ -1,0 +1,2 @@
+-keep class com.proxy.service.logfile.info.manager.Strategy{*;}
+-keep class com.proxy.service.logfile.info.manager.LogFileManager{*;}

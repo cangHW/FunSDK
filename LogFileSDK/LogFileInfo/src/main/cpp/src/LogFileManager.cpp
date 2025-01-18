@@ -57,7 +57,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileManager_initTask(
     if (!pkg.empty()) {
         spdlog::set_pattern("%v");
         spdlog::info(
-                "---------------------------- PROCESS STARTED ({}) for package {} ----------------------------",
+                "\n\n\n---------------------------- PROCESS STARTED ({}) for package {} ----------------------------",
                 pid, pkg);
     }
 
