@@ -31,7 +31,7 @@ object LocaleImpl : BaseAction(), ILocale {
     override fun setLocale(context: Context, locale: Locale) {
         isSave().let {
             LocaleStore.setSave(locale, it)
-            LocaleStore.setFollowSystemLocale(false, it)
+            LocaleStore.setFollowSystem(false, it)
         }
 
         ConfigurationManager.applyConfiguration(context)
@@ -40,7 +40,7 @@ object LocaleImpl : BaseAction(), ILocale {
 
     override fun setFollowSystemLocale(context: Context) {
         isSave().let {
-            LocaleStore.setFollowSystemLocale(true, it)
+            LocaleStore.setFollowSystem(true, it)
         }
 
         ConfigurationManager.applyConfiguration(context)

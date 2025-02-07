@@ -32,7 +32,7 @@ abstract class BaseStore<T> : ISerializable<T>, IStore<T> {
         if (version != followingSystemVersion) {
             followingSystemVersion = version
             diskStore.isFollowingSystem()?.let {
-                memoryStore.setFollowSystemLocale(it)
+                memoryStore.setFollowSystem(it)
             }
         }
 
@@ -40,10 +40,10 @@ abstract class BaseStore<T> : ISerializable<T>, IStore<T> {
         return isFollowingSystem ?: true
     }
 
-    override fun setFollowSystemLocale(value: Boolean, isSave: Boolean) {
-        memoryStore.setFollowSystemLocale(value)
+    override fun setFollowSystem(value: Boolean, isSave: Boolean) {
+        memoryStore.setFollowSystem(value)
         if (isSave) {
-            diskStore.setFollowSystemLocale(value)
+            diskStore.setFollowSystem(value)
             updateVersionWidthKey(KEY_VERSION_FOLLOWING_SYSTEM)
         }
         followingSystemVersion = getVersionWithKey(KEY_VERSION_FOLLOWING_SYSTEM)
@@ -113,7 +113,7 @@ abstract class BaseStore<T> : ISerializable<T>, IStore<T> {
             return null
         }
 
-        override fun setFollowSystemLocale(value: Boolean, isSave: Boolean) {
+        override fun setFollowSystem(value: Boolean, isSave: Boolean) {
             val isEnable = if (value) {
                 VALUE_FOLLOWING_SYSTEM_ENABLE
             } else {
@@ -155,7 +155,7 @@ abstract class BaseStore<T> : ISerializable<T>, IStore<T> {
             return mIsFollowingSystem
         }
 
-        override fun setFollowSystemLocale(value: Boolean, isSave: Boolean) {
+        override fun setFollowSystem(value: Boolean, isSave: Boolean) {
             this.mIsFollowingSystem = value
         }
 

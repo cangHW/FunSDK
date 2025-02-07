@@ -17,7 +17,7 @@ interface IStore<T> {
      *
      * @param isSave 是否持久化存储
      * */
-    fun setFollowSystemLocale(value: Boolean, isSave: Boolean = true)
+    fun setFollowSystem(value: Boolean, isSave: Boolean = true)
 
     /**
      * 获取存储数据

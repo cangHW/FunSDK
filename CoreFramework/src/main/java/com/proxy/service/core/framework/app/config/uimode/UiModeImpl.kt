@@ -21,7 +21,7 @@ object UiModeImpl : BaseAction(), IUiMode {
 
     override fun setFollowSystemMode(context: Context) {
         isSave().let {
-            UiModeStore.setFollowSystemLocale(true, it)
+            UiModeStore.setFollowSystem(true, it)
         }
 
         ConfigurationManager.applyConfiguration(context)
@@ -31,7 +31,7 @@ object UiModeImpl : BaseAction(), IUiMode {
     override fun openNightMode(context: Context) {
         isSave().let {
             UiModeStore.setSave(Configuration.UI_MODE_NIGHT_YES, it)
-            UiModeStore.setFollowSystemLocale(false, it)
+            UiModeStore.setFollowSystem(false, it)
         }
 
         ConfigurationManager.applyConfiguration(context)
@@ -41,7 +41,7 @@ object UiModeImpl : BaseAction(), IUiMode {
     override fun closeNightMode(context: Context) {
         isSave().let {
             UiModeStore.setSave(Configuration.UI_MODE_NIGHT_NO, it)
-            UiModeStore.setFollowSystemLocale(false, it)
+            UiModeStore.setFollowSystem(false, it)
         }
 
         ConfigurationManager.applyConfiguration(context)
