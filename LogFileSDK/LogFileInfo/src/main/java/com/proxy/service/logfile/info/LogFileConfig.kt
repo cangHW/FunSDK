@@ -18,7 +18,7 @@ import com.proxy.service.logfile.info.utils.Utils
 @CloudApiService(serviceTag = "config/log_file")
 class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
-    private val uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+    private var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler? = null
 
     private var application: Application? = null
 
@@ -32,6 +32,7 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
         LogFileManager.getInstance().init(application, CsLogFile.getLogConfig())
 
+        uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
@@ -60,6 +61,7 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
                 Log.ERROR -> {
                     LogFileManager.getInstance().log("E", tag, message)
+                    LogFileManager.getInstance().flush()
                 }
 
                 Log.ASSERT -> {
@@ -76,15 +78,15 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
     override fun uncaughtException(t: Thread, e: Throwable) {
         try {
             val msg = "FATAL EXCEPTION: ${t.name} \n" +
-                        "Process: ${application?.packageName}, PID: ${Process.myPid()} \n" +
-                        Utils.getStackTraceString(e)
+                    "Process: ${application?.packageName}, PID: ${Process.myPid()} \n" +
+                    Utils.getStackTraceString(e)
 
             if (LogFileManager.getInstance().isInitSuccess()) {
                 LogFileManager.getInstance().log("E", "AndroidRuntime", msg)
             }
         } catch (throwable: Throwable) {
             CsLogger.e(throwable)
-        }finally {
+        } finally {
             if (LogFileManager.getInstance().isInitSuccess()) {
                 LogFileManager.getInstance().flush()
             }

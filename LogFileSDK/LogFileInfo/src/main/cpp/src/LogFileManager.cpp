@@ -79,10 +79,6 @@ Java_com_proxy_service_logfile_info_manager_LogFileManager_log(
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
         spdlog::log(spdlog::level::info, "{}  [{}] {}", levelString, tagString, msgString);
-
-        if (strcmp(tagString, "E") == 0) {
-            spdlog::default_logger()->flush();
-        }
     }
 
     if (levelString != nullptr) {

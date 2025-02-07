@@ -24,7 +24,7 @@ service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", v
 service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.0.22"}
 service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds", version="0.0.15"}
 service-permission = {group = "io.github.cangHW", name="Service-Permission", version="0.0.19"}
-service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.0.2"}
+service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.0.3"}
 
 ##########################################  三方库  ############################################################################
 # 网络库
