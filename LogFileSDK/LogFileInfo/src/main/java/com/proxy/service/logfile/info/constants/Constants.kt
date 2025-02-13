@@ -16,7 +16,7 @@ object Constants {
     const val TYPE_DAILY = 2
 
 
-    const val IS_SYNC = false
+    const val IS_SYNC_MODE = false
 
     const val NAME_PREFIX = "log"
 

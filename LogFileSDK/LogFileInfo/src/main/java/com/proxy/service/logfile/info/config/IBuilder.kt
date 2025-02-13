@@ -10,9 +10,11 @@ import java.util.concurrent.TimeUnit
 interface IBuilder {
 
     /**
-     * 设置是否同步, 默认: false
+     * 设置日志模式, 是否同步模式, 默认: false
+     *
+     * @desc 异步模式性能最高
      * */
-    fun setSync(isSync: Boolean): IBuilder
+    fun setLogMode(isSyncMode: Boolean): IBuilder
 
     /**
      * 设置日志文件路径, 默认: /storage/emulated/0/Android/<app package>/file/logfile/

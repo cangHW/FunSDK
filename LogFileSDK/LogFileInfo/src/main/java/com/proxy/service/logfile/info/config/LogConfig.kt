@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit
  */
 class LogConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
 
-    override fun getSync(): Boolean {
-        return builder.getSync()
+    override fun getSyncMode(): Boolean {
+        return builder.getSyncMode()
     }
 
     override fun getLogDir(): String {
@@ -59,7 +59,7 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
     }
 
     class Builder : IBuilder, IBuilderGet {
-        private var isSync: Boolean = Constants.IS_SYNC
+        private var isSyncMode: Boolean = Constants.IS_SYNC_MODE
 
         private var dir: String = ""
 
@@ -76,8 +76,8 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var hour: Int = Constants.HOUR
         private var minute: Int = Constants.MINUTE
 
-        override fun setSync(isSync: Boolean): IBuilder {
-            this.isSync = isSync
+        override fun setLogMode(isSyncMode: Boolean): IBuilder {
+            this.isSyncMode = isSyncMode
             return this
         }
 
@@ -150,8 +150,8 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return LogConfig(this)
         }
 
-        override fun getSync(): Boolean {
-            return isSync
+        override fun getSyncMode(): Boolean {
+            return isSyncMode
         }
 
         override fun getLogDir(): String {

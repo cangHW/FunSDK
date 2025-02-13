@@ -10,7 +10,7 @@ import com.proxy.service.logfile.info.constants.Constants
 class Strategy {
     var _pkg: String = ""
 
-    var _isSync: Boolean = false
+    var _isSyncMode: Boolean = false
 
     var _dir: String = ""
 
@@ -31,8 +31,8 @@ class Strategy {
         return _pkg
     }
 
-    fun isSync(): Boolean {
-        return _isSync
+    fun isSyncMode(): Boolean {
+        return _isSyncMode
     }
 
     fun getDir(): String {

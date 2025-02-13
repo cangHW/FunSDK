@@ -26,7 +26,7 @@ upArray=(
 #  ":Permission:PermissionInfo"
 
     # 日志文件库
-  ":LogFileSDK:LogFileInfo"
+#  ":LogFileSDK:LogFileInfo"
 )
 
 type_params="r"

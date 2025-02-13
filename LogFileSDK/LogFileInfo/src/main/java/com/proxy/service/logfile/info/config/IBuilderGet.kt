@@ -10,7 +10,7 @@ interface IBuilderGet {
     /**
      * 获取是否同步
      * */
-    fun getSync(): Boolean
+    fun getSyncMode(): Boolean
 
     /**
      * 获取文件路径

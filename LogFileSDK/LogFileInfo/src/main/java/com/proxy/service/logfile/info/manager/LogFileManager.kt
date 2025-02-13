@@ -30,7 +30,7 @@ class LogFileManager {
     fun init(application: Application, logConfig: LogConfig) {
         val config = Strategy()
         config._pkg = application.packageName
-        config._isSync = logConfig.getSync()
+        config._isSyncMode = logConfig.getSyncMode()
         config._dir = if (TextUtils.isEmpty(logConfig.getLogDir())) {
             getDefaultDir(application)
         } else {

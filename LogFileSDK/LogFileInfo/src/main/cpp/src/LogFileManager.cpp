@@ -33,7 +33,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileManager_initTask(
     }
     std::string path = dir + namePrefix + namePostfix;
 
-    jboolean isSync = callBooleanFrom(env, config, "isSync", "()Z");
+    jboolean isSync = callBooleanFrom(env, config, "isSyncMode", "()Z");
     jint type = callIntFrom(env, config, "getType", "()I");
 
     if (type == 0) {
