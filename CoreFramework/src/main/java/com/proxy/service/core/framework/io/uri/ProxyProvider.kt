@@ -96,9 +96,6 @@ class ProxyProvider : ContentProvider() {
     override fun attachInfo(context: Context, info: ProviderInfo) {
         super.attachInfo(context, info)
 
-        if (info.exported) {
-            throw SecurityException("Provider must not be exported")
-        }
         if (!info.grantUriPermissions) {
             throw SecurityException("Provider must grant uri permissions")
         }

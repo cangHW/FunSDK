@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-#  ":CoreFramework"
+  ":CoreFramework"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpBase"
