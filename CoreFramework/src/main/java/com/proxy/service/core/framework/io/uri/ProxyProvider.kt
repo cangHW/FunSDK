@@ -242,6 +242,7 @@ class ProxyProvider : ContentProvider() {
 
         override fun getFileForUri(uri: Uri): File? {
             val path = uri.encodedPath
+            CsLogger.tag(TAG).i("path = $path")
 
             if (TextUtils.isEmpty(path)) {
                 return null

@@ -5,28 +5,28 @@ upArray=(
   ":CoreFramework"
 
   # 网络库
-  ":ApiHttpSDK:ApiHttpBase"
-  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpBase"
+#  ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
-  ":ThreadPoolSDK:ThreadPoolBase"
-  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolBase"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
 
   # 图片库
-  ":ImageLoaderSDK:ImageLoaderBase"
-  ":ImageLoaderSDK:ImageLoaderInfo"
+#  ":ImageLoaderSDK:ImageLoaderBase"
+#  ":ImageLoaderSDK:ImageLoaderInfo"
 
   # web 容器库
-  ":WebViewSDK:WebViewBase"
-  ":WebViewSDK:WebViewInfo"
-  ":WebViewSDK:WebViewDSBridge"
+#  ":WebViewSDK:WebViewBase"
+#  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewDSBridge"
 
     # 权限库
-  ":Permission:PermissionBase"
-  ":Permission:PermissionInfo"
+#  ":Permission:PermissionBase"
+#  ":Permission:PermissionInfo"
 
     # 日志文件库
-  ":LogFileSDK:LogFileInfo"
+#  ":LogFileSDK:LogFileInfo"
 )
 
 type_params="r"
