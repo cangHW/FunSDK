@@ -12,6 +12,7 @@ import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
+import com.proxy.service.permission.base.manager.base.IPermissionCallback
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.utils.PermissionUtils
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -21,7 +22,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @data: 2024/11/19 20:05
  * @desc:
  */
-class SettingFragment : Fragment(), ISetting {
+class SettingFragment : Fragment(), IPermissionCallback<Unit> {
 
     private val tag = "${Config.LOG_TAG_START}Setting"
 
@@ -38,8 +39,8 @@ class SettingFragment : Fragment(), ISetting {
     /**
      * 添加要申请的权限
      * */
-    override fun setPermission(permission: Array<String>) {
-        deniedPermission.addAll(permission)
+    override fun addPermission(permission: String) {
+        deniedPermission.add(permission)
     }
 
     /**

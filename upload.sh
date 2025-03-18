@@ -2,15 +2,15 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-  ":CoreFramework"
+#  ":CoreFramework"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpBase"
 #  ":ApiHttpSDK:ApiHttpInfo"
 
   # 线程库
-  ":ThreadPoolSDK:ThreadPoolBase"
-  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolBase"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
 
   # 图片库
 #  ":ImageLoaderSDK:ImageLoaderBase"
@@ -23,7 +23,7 @@ upArray=(
 
     # 权限库
 #  ":Permission:PermissionBase"
-#  ":Permission:PermissionInfo"
+  ":Permission:PermissionInfo"
 
     # 日志文件库
 #  ":LogFileSDK:LogFileInfo"

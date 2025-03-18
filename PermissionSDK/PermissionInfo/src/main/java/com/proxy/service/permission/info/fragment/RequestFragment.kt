@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
+import com.proxy.service.permission.base.manager.base.IPermissionCallback
+import com.proxy.service.permission.base.manager.base.IShouldShowRequestRationaleCallback
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.utils.PermissionUtils
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -18,7 +20,8 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @data: 2024/11/18 18:10
  * @desc:
  */
-class RequestFragment : Fragment(), IRequest {
+class RequestFragment : Fragment(), IPermissionCallback<Unit>,
+    IShouldShowRequestRationaleCallback<Unit> {
 
     private val tag = "${Config.LOG_TAG_START}Request"
 

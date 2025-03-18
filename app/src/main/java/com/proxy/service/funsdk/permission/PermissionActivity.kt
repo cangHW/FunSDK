@@ -117,12 +117,10 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission_with_rationale_dialog -> {
-                CsPermission.createRationaleDialog(
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                )?.setGrantedCallback(grantedCallback)
+                CsPermission.createRationaleDialog()
+                    ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    ?.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setNoPromptCallback(noPromptCallback)
                     ?.setLeftButton(click = leftButtonClick)
@@ -132,12 +130,10 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission_with_setting_dialog -> {
-                CsPermission.createSettingDialog(
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                )?.setGrantedCallback(grantedCallback)
+                CsPermission.createSettingDialog()
+                    ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    ?.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ?.setGrantedCallback(grantedCallback)
                     ?.setDeniedCallback(deniedCallback)
                     ?.setLeftButton(click = leftButtonClick)
                     ?.setRightButton(click = rightButtonClick)

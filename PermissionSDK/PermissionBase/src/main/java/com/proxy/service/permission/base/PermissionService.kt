@@ -31,11 +31,11 @@ interface PermissionService : BaseService {
     /**
      * 创建一个用于展示所需权限理由的弹窗
      * */
-    fun createRationaleDialog(permissions: Array<String>): IRationaleDialog
+    fun createRationaleDialog(): IRationaleDialog
 
     /**
      * 创建一个用于展示跳转 setting 的弹窗
      * */
-    fun createSettingDialog(permissions: Array<String>): ISettingDialog
+    fun createSettingDialog(): ISettingDialog
 
 }

@@ -57,15 +57,15 @@ object CsPermission {
     /**
      * 创建一个用于展示所需权限理由的弹窗
      * */
-    fun createRationaleDialog(permissions: Array<String>): IRationaleDialog? {
-        return getService()?.createRationaleDialog(permissions)
+    fun createRationaleDialog(): IRationaleDialog? {
+        return getService()?.createRationaleDialog()
     }
 
     /**
      * 创建一个用于展示跳转 setting 的弹窗
      * */
-    fun createSettingDialog(permissions: Array<String>): ISettingDialog? {
-        return getService()?.createSettingDialog(permissions)
+    fun createSettingDialog(): ISettingDialog? {
+        return getService()?.createSettingDialog()
     }
 
 }

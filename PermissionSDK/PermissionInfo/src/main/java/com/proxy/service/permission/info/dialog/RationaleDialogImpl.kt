@@ -17,11 +17,11 @@ import com.proxy.service.permission.info.request.PermissionRequestImpl
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class RationaleDialogImpl(permissions: Array<String>) : IRationaleDialog {
+class RationaleDialogImpl() : IRationaleDialog {
 
     private val tag = "${Config.LOG_TAG_START}RationaleDialog"
 
-    private val fragment = PermissionRequestImpl()
+    private val permissionRequest = PermissionRequestImpl()
 
     private var title: String? = null
     private var content: String? = null
@@ -34,12 +34,6 @@ class RationaleDialogImpl(permissions: Array<String>) : IRationaleDialog {
 
     private var dialogInterface: DialogInterface? = null
     private var dialogDismissCallback: DialogDismissCallback? = null
-
-    init {
-        permissions.iterator().forEach {
-            fragment.addPermission(it)
-        }
-    }
 
     /**
      * 设置标题
@@ -90,18 +84,23 @@ class RationaleDialogImpl(permissions: Array<String>) : IRationaleDialog {
         return this
     }
 
+    override fun addPermission(permission: String): IRationaleDialog {
+        permissionRequest.addPermission(permission)
+        return this
+    }
+
     override fun setGrantedCallback(callback: ActionCallback): IRationaleDialog {
-        fragment.setGrantedCallback(callback)
+        permissionRequest.setGrantedCallback(callback)
         return this
     }
 
     override fun setDeniedCallback(callback: ActionCallback): IRationaleDialog {
-        fragment.setDeniedCallback(callback)
+        permissionRequest.setDeniedCallback(callback)
         return this
     }
 
     override fun setNoPromptCallback(callback: ActionCallback): IRationaleDialog {
-        fragment.setNoPromptCallback(callback)
+        permissionRequest.setNoPromptCallback(callback)
         return this
     }
 
@@ -156,7 +155,7 @@ class RationaleDialogImpl(permissions: Array<String>) : IRationaleDialog {
                             .i("The activity is destroyed, so can not request permission.")
                         return true
                     }
-                    fragment.start(activity)
+                    permissionRequest.start(activity)
                     return true
                 }
             },
