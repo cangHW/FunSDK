@@ -3,7 +3,8 @@ package com.proxy.service.threadpool.info.handler.controller
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 import com.proxy.service.threadpool.info.constants.Constants
-import com.proxy.service.threadpool.info.handler.info.HandlerInfo
+import com.proxy.service.threadpool.info.handler.manager.HandlerController
+import com.proxy.service.threadpool.info.handler.manager.TaskInfo
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -12,8 +13,11 @@ import java.util.concurrent.atomic.AtomicInteger
  * @desc:
  */
 class TaskDisposableImpl(
-    private val handler: HandlerInfo,
-    private val task: Runnable
+    private val handlerController: HandlerController,
+    tag: String,
+    private val task: Runnable,
+    delayMillis: Long,
+    uptimeMillis: Long
 ) : ITaskDisposable, Runnable {
 
     companion object {
@@ -26,16 +30,22 @@ class TaskDisposableImpl(
     private val taskStatus = AtomicInteger(STATUS_DEFAULT)
 
     init {
-        try {
-            if (handler.delay > 0) {
-                handler.handlerController.getHandler().postDelayed(this, handler.delay)
-            } else if (handler.uptimeMillis > 0) {
-                handler.handlerController.getHandler().postAtTime(this, handler.uptimeMillis)
-            } else {
-                handler.handlerController.getHandler().post(this)
+        if (handlerController.isCanUse()) {
+            try {
+                handlerController.startTask(this, TaskInfo.create(tag, this))
+                if (delayMillis > 0) {
+                    handlerController.getHandler().postDelayed(this, delayMillis)
+                } else if (uptimeMillis > 0) {
+                    handlerController.getHandler().postAtTime(this, uptimeMillis)
+                } else {
+                    handlerController.getHandler().post(this)
+                }
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+                handlerController.finishTask(this)
             }
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
+        } else {
+            CsLogger.tag(TAG).i("The current task cannot be started because the task group is unavailable.")
         }
     }
 
@@ -46,7 +56,8 @@ class TaskDisposableImpl(
     override fun disposeTask() {
         if (taskStatus.compareAndSet(STATUS_DEFAULT, STATUS_DISPOSED)) {
             CsLogger.tag(TAG).i("Ready to dispose the current task.")
-            handler.handlerController.getHandler().removeCallbacks(this)
+            handlerController.finishTask(this)
+            handlerController.getHandler().removeCallbacks(this)
             return
         }
         if (taskStatus.get() == STATUS_DISPOSED) {
@@ -61,6 +72,7 @@ class TaskDisposableImpl(
         if (taskStatus.compareAndSet(STATUS_DEFAULT, STATUS_COMPLETED)) {
             CsLogger.tag(TAG).d("The current task is ready to run. task: $task")
             try {
+                handlerController.finishTask(this)
                 task.run()
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).e(throwable)

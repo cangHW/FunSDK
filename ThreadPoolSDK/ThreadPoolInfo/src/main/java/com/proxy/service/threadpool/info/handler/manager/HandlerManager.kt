@@ -4,6 +4,8 @@ import android.os.Handler
 import android.os.HandlerThread
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.info.constants.Constants
+import java.util.WeakHashMap
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -33,12 +35,13 @@ object HandlerManager {
         return controller!!
     }
 
-    private class ThreadHandlerInfo(threadName: String) : HandlerController {
+    private class ThreadHandlerInfo(private val threadName: String) : HandlerController {
 
         companion object {
             private const val TAG = "${Constants.TAG}_Handler"
         }
 
+        private val cacheTaskMap = WeakHashMap<Any, TaskInfo>()
         private val handlerThread: HandlerThread = HandlerThread(threadName)
         private val handler: Handler
 
@@ -49,6 +52,10 @@ object HandlerManager {
             handler = Handler(handlerThread.looper)
         }
 
+        override fun getThreadName(): String {
+            return threadName
+        }
+
         override fun getThreadId(): Long {
             return handlerThread.id
         }
@@ -57,17 +64,52 @@ object HandlerManager {
             return handler
         }
 
+        override fun startTask(key: Any, value: TaskInfo) {
+            synchronized(cacheTaskMap){
+                cacheTaskMap.put(key, value)
+            }
+        }
+
+        override fun finishTask(key: Any) {
+            synchronized(cacheTaskMap) {
+                cacheTaskMap.remove(key)
+            }
+        }
+
+        override fun cancelTaskByTag(tag: String) {
+            synchronized(cacheTaskMap) {
+                val iterator = cacheTaskMap.iterator()
+                while (iterator.hasNext()) {
+                    val entry = iterator.next()
+                    val info = entry.value
+                    if (info.tag == tag) {
+                        handler.removeCallbacks(info.runnable)
+                        iterator.remove()
+                    }
+                }
+            }
+        }
+
+        override fun cancelAllTask() {
+            synchronized(cacheTaskMap) {
+                handler.removeCallbacksAndMessages(null)
+                cacheTaskMap.clear()
+            }
+        }
+
         override fun close() {
             if (isCanUse.compareAndSet(true, false)) {
                 CsLogger.tag(TAG).i("The current task group is ready to shut down immediately.")
                 try {
+                    cancelAllTask()
                     handlerThread.quit()
                 } catch (throwable: Throwable) {
                     CsLogger.tag(Constants.TAG).e(throwable)
                 }
                 return
             }
-            CsLogger.tag(TAG).i("The current task group has been closed. You do not need to close it again.")
+            CsLogger.tag(TAG)
+                .i("The current task group has been closed. You do not need to close it again.")
         }
 
         override fun closeSafely() {
@@ -80,7 +122,8 @@ object HandlerManager {
                 }
                 return
             }
-            CsLogger.tag(TAG).i("The current task group has been closed. You do not need to close it again.")
+            CsLogger.tag(TAG)
+                .i("The current task group has been closed. You do not need to close it again.")
         }
 
         override fun isCanUse(): Boolean {
@@ -89,7 +132,6 @@ object HandlerManager {
             }
             return handlerThread.isAlive
         }
-
     }
 
 }

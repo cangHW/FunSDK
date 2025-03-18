@@ -9,6 +9,8 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.sound.config.Config
 import com.proxy.service.core.framework.system.sound.info.SoundConfig
 import com.proxy.service.core.framework.system.sound.info.SoundInfo
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * 音频工具类
@@ -26,10 +28,10 @@ object CsSoundUtils {
 
     /**
      * 初始化, 可以多次调用。
-     * 根据 [SoundConfig] 中的 tag 信息, 可以初始化多套不同配置
+     * 根据 [SoundConfig] 中的 name 信息, 可以初始化多套不同配置
      * */
     fun init(config: SoundConfig) {
-        if (soundPoolMap.containsKey(config.getSoundPoolTag())) {
+        if (soundPoolMap.containsKey(config.getSoundPoolName())) {
             return
         }
 
@@ -44,15 +46,15 @@ object CsSoundUtils {
 
         soundPool.setOnLoadCompleteListener(
             LoadCompleteListener(
-                config.getSoundPoolTag(),
+                config.getSoundPoolName(),
                 soundInfoMap
             )
         )
 
-        soundPoolMap[config.getSoundPoolTag()] = soundPool
-        soundConfigMap[config.getSoundPoolTag()] = config
+        soundPoolMap[config.getSoundPoolName()] = soundPool
+        soundConfigMap[config.getSoundPoolName()] = config
 
-        CsLogger.tag(Config.TAG).i("init success. soundPoolTag: ${config.getSoundPoolTag()}")
+        CsLogger.tag(Config.TAG).i("init success. soundPoolName: ${config.getSoundPoolName()}")
     }
 
     /**
@@ -62,7 +64,7 @@ object CsSoundUtils {
      * @param soundTag  音频唯一标示, 后续可以通过此标示控制音频的播放、释放等.
      * @param path      音频地址
      * */
-    fun loadFile(soundTag: String, path: String, soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
+    fun loadFile(soundTag: String, path: String, soundPoolName: String = Config.DEFAULT_POOL_NAME) {
         if (!checkSoundTag(soundTag)) {
             return
         }
@@ -76,7 +78,7 @@ object CsSoundUtils {
             return
         }
 
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+        val soundPool = getSoundPool(soundPoolName) ?: return
 
         CsLogger.tag(Config.TAG).i("start load. soundTag: $soundTag")
 
@@ -87,7 +89,7 @@ object CsSoundUtils {
                 return
             }
 
-            val info = SoundInfo(soundPoolTag)
+            val info = SoundInfo(soundPoolName)
             info.soundId = id
             soundInfoMap[soundTag] = info
         }
@@ -103,7 +105,7 @@ object CsSoundUtils {
     fun loadRes(
         soundTag: String,
         @RawRes resId: Int,
-        soundPoolTag: String = Config.DEFAULT_POOL_NAME
+        soundPoolName: String = Config.DEFAULT_POOL_NAME
     ) {
         if (!checkSoundTag(soundTag)) {
             return
@@ -113,7 +115,7 @@ object CsSoundUtils {
             return
         }
 
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+        val soundPool = getSoundPool(soundPoolName) ?: return
 
         CsLogger.tag(Config.TAG).i("start load. soundTag: $soundTag")
 
@@ -124,7 +126,7 @@ object CsSoundUtils {
                 return
             }
 
-            val info = SoundInfo(soundPoolTag)
+            val info = SoundInfo(soundPoolName)
             info.soundId = id
             soundInfoMap[soundTag] = info
         }
@@ -140,7 +142,7 @@ object CsSoundUtils {
     fun loadAsset(
         soundTag: String,
         fileName: String,
-        soundPoolTag: String = Config.DEFAULT_POOL_NAME
+        soundPoolName: String = Config.DEFAULT_POOL_NAME
     ) {
         if (!checkSoundTag(soundTag)) {
             return
@@ -155,7 +157,7 @@ object CsSoundUtils {
             return
         }
 
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+        val soundPool = getSoundPool(soundPoolName) ?: return
 
         CsLogger.tag(Config.TAG).i("start load. soundTag: $soundTag")
 
@@ -169,7 +171,7 @@ object CsSoundUtils {
                     return
                 }
 
-                val info = SoundInfo(soundPoolTag)
+                val info = SoundInfo(soundPoolName)
                 info.soundId = id
                 soundInfoMap[soundTag] = info
             }
@@ -187,7 +189,7 @@ object CsSoundUtils {
      * */
     fun play(soundTag: String): Int {
         val soundInfo = getSoundInfo(soundTag) ?: return -1
-        val soundConfig = getSoundConfig(soundInfo.poolTag) ?: return -1
+        val soundConfig = getSoundConfig(soundInfo.poolName) ?: return -1
         return play(
             soundTag,
             soundConfig.getLeftVolume(),
@@ -211,13 +213,14 @@ object CsSoundUtils {
         soundTag: String,
         leftVolume: Float,
         rightVolume: Float,
-        loop: Int, rate: Float
+        loop: Int,
+        rate: Float
     ): Int {
         val soundInfo = getSoundInfo(soundTag) ?: return -1
         if (!soundInfo.isReady) {
             return -1
         }
-        val soundPool = getSoundPool(soundInfo.poolTag) ?: return -1
+        val soundPool = getSoundPool(soundInfo.poolName) ?: return -1
         return soundPool.play(soundInfo.soundId, leftVolume, rightVolume, 0, loop, rate)
     }
 
@@ -226,8 +229,8 @@ object CsSoundUtils {
      *
      * @param playId    播放 id, 播放时返回的 id
      * */
-    fun pause(playId: Int, soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+    fun pause(playId: Int, soundPoolName: String = Config.DEFAULT_POOL_NAME) {
+        val soundPool = getSoundPool(soundPoolName) ?: return
         soundPool.pause(playId)
         CsLogger.tag(Config.TAG).i("pause success. playId: $playId")
     }
@@ -235,8 +238,8 @@ object CsSoundUtils {
     /**
      * 暂停所有正在播放的音频
      * */
-    fun pauseAll(soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+    fun pauseAll(soundPoolName: String = Config.DEFAULT_POOL_NAME) {
+        val soundPool = getSoundPool(soundPoolName) ?: return
         soundPool.autoPause()
         CsLogger.tag(Config.TAG).i("autoPause success.")
     }
@@ -246,8 +249,8 @@ object CsSoundUtils {
      *
      * @param playId    播放 id, 播放时返回的 id
      * */
-    fun resume(playId: Int, soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+    fun resume(playId: Int, soundPoolName: String = Config.DEFAULT_POOL_NAME) {
+        val soundPool = getSoundPool(soundPoolName) ?: return
         soundPool.resume(playId)
         CsLogger.tag(Config.TAG).i("resume success. playId: $playId")
     }
@@ -255,8 +258,8 @@ object CsSoundUtils {
     /**
      * 继续播放所有暂停的音频
      * */
-    fun resumeAll(soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+    fun resumeAll(soundPoolName: String = Config.DEFAULT_POOL_NAME) {
+        val soundPool = getSoundPool(soundPoolName) ?: return
         soundPool.autoResume()
         CsLogger.tag(Config.TAG).i("autoResume success.")
     }
@@ -266,8 +269,8 @@ object CsSoundUtils {
      *
      * @param playId    播放 id, 播放时返回的 id
      * */
-    fun stop(playId: Int, soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
-        val soundPool = getSoundPool(soundPoolTag) ?: return
+    fun stop(playId: Int, soundPoolName: String = Config.DEFAULT_POOL_NAME) {
+        val soundPool = getSoundPool(soundPoolName) ?: return
         soundPool.stop(playId)
         CsLogger.tag(Config.TAG).i("stop success. playId: $playId")
     }
@@ -279,7 +282,7 @@ object CsSoundUtils {
      * */
     fun unload(soundTag: String) {
         val soundInfo = soundInfoMap.remove(soundTag) ?: return
-        val soundPool = getSoundPool(soundInfo.poolTag) ?: return
+        val soundPool = getSoundPool(soundInfo.poolName) ?: return
 
         if (soundPool.unload(soundInfo.soundId)) {
             CsLogger.tag(Config.TAG).i("unload success. soundTag: $soundTag")
@@ -289,51 +292,61 @@ object CsSoundUtils {
     /**
      * 清除全部资源
      * */
-    fun release(soundPoolTag: String = Config.DEFAULT_POOL_NAME) {
-        val soundPool = soundPoolMap.remove(soundPoolTag) ?: return
-        soundPool.release()
-        soundConfigMap.remove(soundPoolTag)
+    fun release(soundPoolName: String = Config.DEFAULT_POOL_NAME) {
+        synchronized(soundPoolMap) {
+            val soundPool = soundPoolMap.remove(soundPoolName) ?: return
+            soundPool.release()
+        }
 
-        val iterator = soundInfoMap.iterator()
-        while (iterator.hasNext()) {
-            val entry = iterator.next()
-            if (entry.value.poolTag == soundPoolTag) {
-                iterator.remove()
+        synchronized(soundConfigMap) {
+            soundConfigMap.remove(soundPoolName)
+        }
+
+        synchronized(soundInfoMap) {
+            val iterator = soundInfoMap.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
+                if (entry.value.poolName == soundPoolName) {
+                    iterator.remove()
+                }
             }
         }
 
-        CsLogger.tag(Config.TAG).i("release success. soundPoolTag: $soundPoolTag")
+        CsLogger.tag(Config.TAG).i("release success. soundPoolName: $soundPoolName")
     }
 
     private class LoadCompleteListener(
-        private val poolTag: String,
+        private val poolName: String,
         private val soundMap: HashMap<String, SoundInfo>
     ) : SoundPool.OnLoadCompleteListener {
         override fun onLoadComplete(soundPool: SoundPool?, sampleId: Int, status: Int) {
-            val iterator = synchronized(soundInfoMap) {
-                soundMap.iterator()
-            }
-            while (iterator.hasNext()) {
-                val entry = iterator.next()
-                val value = entry.value
+            CsTask.ioThread()?.call(object : ICallable<String> {
+                override fun accept(): String {
+                    synchronized(soundMap) {
+                        for (entry in soundMap) {
+                            val value = entry.value
 
-                if (value.poolTag != poolTag) {
-                    continue
-                }
+                            if (value.poolName != poolName) {
+                                continue
+                            }
 
-                if (value.soundId != sampleId) {
-                    continue
-                }
+                            if (value.soundId != sampleId) {
+                                continue
+                            }
 
-                if (status == 0) {
-                    value.isReady = true
-                    CsLogger.tag(Config.TAG).i("load success. sound tag: ${entry.key}")
-                } else {
-                    CsLogger.tag(Config.TAG)
-                        .i("load failed. sound tag: ${entry.key}, status: $status")
+                            if (status == 0) {
+                                value.isReady = true
+                                CsLogger.tag(Config.TAG).i("load success. sound tag: ${entry.key}")
+                            } else {
+                                CsLogger.tag(Config.TAG)
+                                    .i("load failed. sound tag: ${entry.key}, status: $status")
+                            }
+                            return ""
+                        }
+                    }
+                    return ""
                 }
-                return
-            }
+            })?.start()
         }
     }
 
@@ -376,11 +389,11 @@ object CsSoundUtils {
     /**
      * 获取对应 SoundPool
      * */
-    private fun getSoundPool(soundPoolTag: String): SoundPool? {
-        val soundPool = soundPoolMap[soundPoolTag]
+    private fun getSoundPool(soundPoolName: String): SoundPool? {
+        val soundPool = soundPoolMap[soundPoolName]
         if (soundPool == null) {
             CsLogger.tag(Config.TAG)
-                .e("The target soundPool has not been initialized. soundPoolTag: $soundPoolTag")
+                .e("The target soundPool has not been initialized. soundPoolName: $soundPoolName")
             return null
         }
         return soundPool
@@ -389,11 +402,11 @@ object CsSoundUtils {
     /**
      * 获取对应 SoundConfig
      * */
-    private fun getSoundConfig(soundPoolTag: String): SoundConfig? {
-        val soundConfig = soundConfigMap[soundPoolTag]
+    private fun getSoundConfig(soundPoolName: String): SoundConfig? {
+        val soundConfig = soundConfigMap[soundPoolName]
         if (soundConfig == null) {
             CsLogger.tag(Config.TAG)
-                .e("The target soundPool has not been initialized. soundPoolTag: $soundPoolTag")
+                .e("The target soundPool has not been initialized. soundPoolName: $soundPoolName")
             return null
         }
         return soundConfig

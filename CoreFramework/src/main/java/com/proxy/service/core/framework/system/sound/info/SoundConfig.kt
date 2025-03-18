@@ -13,8 +13,8 @@ import com.proxy.service.core.framework.system.sound.enums.UsageTypeEnum
  */
 class SoundConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
 
-    override fun getSoundPoolTag(): String {
-        return builder.getSoundPoolTag()
+    override fun getSoundPoolName(): String {
+        return builder.getSoundPoolName()
     }
 
     override fun getMaxStreams(): Int {
@@ -49,7 +49,7 @@ class SoundConfig private constructor(private val builder: IBuilderGet) : IBuild
 
     private class Builder : IBuilder, IBuilderGet {
 
-        private var tag: String = Config.DEFAULT_POOL_NAME
+        private var poolName: String = Config.DEFAULT_POOL_NAME
 
         private var maxStreams: Int = Config.DEFAULT_MAX_STREAMS
 
@@ -61,8 +61,8 @@ class SoundConfig private constructor(private val builder: IBuilderGet) : IBuild
 
         private var rate: Float = Config.DEFAULT_RATE
 
-        override fun setSoundPoolTag(tag: String): IBuilder {
-            this.tag = tag
+        override fun setSoundPoolName(poolName: String): IBuilder {
+            this.poolName = poolName
             return this
         }
 
@@ -102,8 +102,8 @@ class SoundConfig private constructor(private val builder: IBuilderGet) : IBuild
             return SoundConfig(this)
         }
 
-        override fun getSoundPoolTag(): String {
-            return tag
+        override fun getSoundPoolName(): String {
+            return poolName
         }
 
         override fun getMaxStreams(): Int {

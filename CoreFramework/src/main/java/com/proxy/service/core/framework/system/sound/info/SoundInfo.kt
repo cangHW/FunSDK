@@ -5,7 +5,7 @@ package com.proxy.service.core.framework.system.sound.info
  * @data: 2024/12/6 10:28
  * @desc:
  */
-class SoundInfo(val poolTag: String) {
+class SoundInfo(val poolName: String) {
 
     var soundId: Int = -1
 

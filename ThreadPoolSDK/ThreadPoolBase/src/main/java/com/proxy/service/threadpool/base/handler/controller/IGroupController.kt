@@ -18,6 +18,11 @@ interface IGroupController {
     fun clearAllTask()
 
     /**
+     * 移除组内全部还未运行的任务
+     * */
+    fun clearAllTaskWithTag(tag: String)
+
+    /**
      * 取消当前任务组, 立刻取消，放弃组内任务
      * */
     fun disposeGroup()

@@ -14,4 +14,9 @@ interface IHandlerLoader {
      * */
     fun start(runnable: Runnable): ITaskDisposable
 
+    /**
+     * 开始任务
+     * */
+    fun start(tag: String, runnable: Runnable): ITaskDisposable
+
 }

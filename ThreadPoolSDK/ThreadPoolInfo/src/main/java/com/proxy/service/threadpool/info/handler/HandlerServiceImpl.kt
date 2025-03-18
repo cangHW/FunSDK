@@ -2,7 +2,6 @@ package com.proxy.service.threadpool.info.handler
 
 import com.proxy.service.threadpool.base.handler.HandlerService
 import com.proxy.service.threadpool.base.handler.option.IHandlerOption
-import com.proxy.service.threadpool.info.handler.info.HandlerInfo
 import com.proxy.service.threadpool.info.handler.manager.HandlerManager
 import com.proxy.service.threadpool.info.handler.option.HandlerOptionImpl
 
@@ -13,7 +12,6 @@ import com.proxy.service.threadpool.info.handler.option.HandlerOptionImpl
  */
 object HandlerServiceImpl : HandlerService {
     override fun launchTaskGroup(groupName: String): IHandlerOption {
-        val handlerInfo = HandlerInfo(HandlerManager.getThreadHandler(groupName))
-        return HandlerOptionImpl(handlerInfo)
+        return HandlerOptionImpl(HandlerManager.getThreadHandler(groupName))
     }
 }

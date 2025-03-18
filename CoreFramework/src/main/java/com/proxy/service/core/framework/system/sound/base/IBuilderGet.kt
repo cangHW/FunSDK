@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.system.sound.enums.UsageTypeEnum
  */
 interface IBuilderGet {
 
-    fun getSoundPoolTag(): String
+    fun getSoundPoolName(): String
 
     fun getMaxStreams(): Int
 

@@ -123,6 +123,33 @@ class ThreadPoolActivity : AppCompatActivity() {
                     })
                     ?.start()
             }
+
+            R.id.run_handler_task -> {
+                CsLogger.i("开始执行")
+                val taskGroup = CsTask.launchTaskGroup("asd")
+
+                for (index in 0..10000){
+                    taskGroup?.start("xxx", object :Runnable{
+                        override fun run() {
+                            Thread.sleep(2)
+                            CsLogger.i("$index 运行完成")
+                        }
+                    })
+                }
+
+                CsTask.delay(5, TimeUnit.SECONDS)?.doOnNext(object :IConsumer<Long>{
+                    override fun accept(value: Long) {
+                        taskGroup?.clearAllTaskWithTag("xxx")
+                        taskGroup?.start("xxx", object :Runnable{
+                            override fun run() {
+                                CsLogger.i("测试最终任务")
+                            }
+                        })
+                    }
+                })?.start()
+
+                CsLogger.i("执行结束")
+            }
         }
     }
 
