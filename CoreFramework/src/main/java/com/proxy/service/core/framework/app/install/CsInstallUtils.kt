@@ -15,6 +15,7 @@ import com.proxy.service.core.framework.app.install.bean.InstallAppInfo
 import com.proxy.service.core.framework.app.install.broadcast.BroadcastReceiverImpl
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.uri.CsUriManager
 import com.proxy.service.core.framework.io.uri.ProxyProvider
 import com.proxy.service.core.service.permission.CsPermission
 import java.io.File
@@ -148,7 +149,8 @@ object CsInstallUtils {
         if (isSdkVersionReady || isTargetReady) {
             uri = Uri.fromFile(file)
         } else {
-            uri = ProxyProvider.getUriForFile(file)
+            CsUriManager.addProviderResourcePath(apkPath)
+            uri = CsUriManager.getUriByFile(file)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         if (uri == null) {
@@ -157,11 +159,11 @@ object CsInstallUtils {
         intent.setDataAndType(uri, type)
         val packageManager: PackageManager = context.packageManager
         try {
-            if (packageManager.queryIntentActivities(
-                    intent,
-                    PackageManager.MATCH_DEFAULT_ONLY
-                ).size <= 0
-            ) {
+            val activities = packageManager.queryIntentActivities(
+                intent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+            if (activities.size <= 0) {
                 CsLogger.tag(TAG).d("install failed")
                 return
             }
@@ -182,8 +184,13 @@ object CsInstallUtils {
         val context: Context = CsContextManager.getApplication()
 
         if (!CsPermission.isPermissionGranted(Manifest.permission.REQUEST_DELETE_PACKAGES)) {
-            CsLogger.tag(TAG)
-                .i("Please check permissions. permission: ${Manifest.permission.REQUEST_DELETE_PACKAGES}")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CsLogger.tag(TAG)
+                    .i("Please check permissions. permission: ${Manifest.permission.REQUEST_DELETE_PACKAGES}")
+            } else {
+                CsLogger.tag(TAG)
+                    .i("Please check permissions. permission: android.permission.REQUEST_DELETE_PACKAGES")
+            }
         }
 
         val intent = Intent()

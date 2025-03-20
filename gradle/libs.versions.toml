@@ -17,14 +17,14 @@ cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.13"
 cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.7" }
 cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.5" }
 
-core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="0.4.55"}
+core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="0.4.56"}
 service-apihttp = {group = "io.github.cangHW", name="Service-Apihttp", version="0.0.24"}
 service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.0.21"}
 service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", version="0.0.13"}
-service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.0.23"}
+service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.0.24"}
 service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds", version="0.0.16"}
 service-permission = {group = "io.github.cangHW", name="Service-Permission", version="0.0.21"}
-service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.0.4"}
+service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.0.5"}
 
 ##########################################  三方库  ############################################################################
 # 网络库

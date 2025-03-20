@@ -48,10 +48,10 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
         })?.start()
     }
 
-    override fun writeAsync(stream: OutputStream, append: Boolean, callback: IoCallback?) {
+    override fun writeAsync(stream: OutputStream, callback: IoCallback?) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (writeSync(stream, append)) {
+                if (writeSync(stream)) {
                     callback?.onSuccess()
                 } else {
                     callback?.onFailed()

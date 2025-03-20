@@ -1,10 +1,13 @@
 package com.proxy.service.core.framework.io.file.write.source
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.nio.file.Files
@@ -29,17 +32,11 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
 
-            val options = if (append) {
-                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                write(file, append)
             } else {
-                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
-            }
-
-            Files.newOutputStream(file.toPath(), *options).buffered().use { outputStream ->
-                val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
-                var bytesRead: Int
-                while (stream.read(buffer).also { bytesRead = it } != -1) {
-                    outputStream.write(buffer, 0, bytesRead)
+                FileOutputStream(file, append).use {
+                    write(it)
                 }
             }
 
@@ -51,22 +48,42 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
         return false
     }
 
-    override fun writeSync(stream: OutputStream, append: Boolean): Boolean {
+    override fun writeSync(stream: OutputStream): Boolean {
         start(tag, "OutputStream")
         try {
-            stream.buffered().use { outputStream ->
-                val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
-                var bytesRead: Int
-                while (this.stream.read(buffer).also { bytesRead = it } != -1) {
-                    outputStream.write(buffer, 0, bytesRead)
-                }
-            }
-
+            write(stream)
             success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
         }
         return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun write(file: File, append: Boolean) {
+        val options = if (append) {
+            arrayOf(StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+        } else {
+            arrayOf(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+        }
+
+        Files.newOutputStream(file.toPath(), *options).buffered().use { outputStream ->
+            val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
+            var bytesRead: Int
+            while (stream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+        }
+    }
+
+    private fun write(stream: OutputStream) {
+        val outputStream = stream.buffered()
+        val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
+        var bytesRead: Int
+        while (this.stream.read(buffer).also { bytesRead = it } != -1) {
+            outputStream.write(buffer, 0, bytesRead)
+        }
+        outputStream.flush()
     }
 }

@@ -1,6 +1,7 @@
 package com.proxy.service.webview.info.web.intercept
 
 import android.net.Uri
+import android.os.Build
 import com.proxy.service.webview.base.web.request.WebResourceRequest
 
 /**
@@ -8,8 +9,10 @@ import com.proxy.service.webview.base.web.request.WebResourceRequest
  * @data: 2024/8/3 16:19
  * @desc:
  */
-class WebResourceRequestImpl(private val request: android.webkit.WebResourceRequest) :
-    WebResourceRequest {
+class WebResourceRequestImpl(
+    private val request: android.webkit.WebResourceRequest
+) : WebResourceRequest {
+
     override fun getUrl(): Uri {
         return request.url
     }
@@ -19,7 +22,11 @@ class WebResourceRequestImpl(private val request: android.webkit.WebResourceRequ
     }
 
     override fun isRedirect(): Boolean {
-        return request.isRedirect
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            request.isRedirect
+        } else {
+            false
+        }
     }
 
     override fun hasGesture(): Boolean {

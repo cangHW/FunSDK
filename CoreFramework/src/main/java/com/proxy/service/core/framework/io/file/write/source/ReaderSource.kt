@@ -1,10 +1,13 @@
 package com.proxy.service.core.framework.io.file.write.source
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.File
+import java.io.FileOutputStream
 import java.io.OutputStream
 import java.io.Reader
 import java.nio.CharBuffer
@@ -33,20 +36,14 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
 
-            val options = if (append) {
-                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                write(file, append)
             } else {
-                arrayOf(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+                FileOutputStream(file, append).use {
+                    write(it)
+                }
             }
 
-            Files.newBufferedWriter(file.toPath(), *options).use { writer ->
-                val buffer = CharArray(IoConfig.IO_BUFFER_SIZE)
-                var bytesRead: Int
-                while ((reader.read(buffer).also { bytesRead = it }) != -1) {
-                    writer.write(buffer, 0, bytesRead)
-                }
-                writer.flush()
-            }
             success(tag, file.absolutePath)
             return true
         } catch (throwable: Throwable) {
@@ -55,26 +52,46 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
         return false
     }
 
-    override fun writeSync(stream: OutputStream, append: Boolean): Boolean {
+    override fun writeSync(stream: OutputStream): Boolean {
         start(tag, "OutputStream")
-
         try {
-            Channels.newChannel(stream).use { channel ->
-                val encoder = Charset.defaultCharset().newEncoder()
-                val charBuffer = CharBuffer.allocate(IoConfig.IO_BUFFER_SIZE)
-                while (reader.read(charBuffer) != -1) {
-                    charBuffer.flip()
-                    val byteBuffer = encoder.encode(charBuffer)
-                    channel.write(byteBuffer)
-                    charBuffer.clear()
-                }
-            }
-
+            write(stream)
             success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
         }
         return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun write(file: File, append: Boolean) {
+        val options = if (append) {
+            arrayOf(StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+        } else {
+            arrayOf(StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+        }
+
+        Files.newBufferedWriter(file.toPath(), *options).use { writer ->
+            val buffer = CharArray(IoConfig.IO_BUFFER_SIZE)
+            var bytesRead: Int
+            while ((reader.read(buffer).also { bytesRead = it }) != -1) {
+                writer.write(buffer, 0, bytesRead)
+            }
+            writer.flush()
+        }
+    }
+
+    private fun write(stream: OutputStream) {
+        Channels.newChannel(stream).use { channel ->
+            val encoder = Charset.defaultCharset().newEncoder()
+            val charBuffer = CharBuffer.allocate(IoConfig.IO_BUFFER_SIZE)
+            while (reader.read(charBuffer) != -1) {
+                charBuffer.flip()
+                val byteBuffer = encoder.encode(charBuffer)
+                channel.write(byteBuffer)
+                charBuffer.clear()
+            }
+        }
     }
 }

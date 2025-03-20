@@ -8,8 +8,10 @@ import com.proxy.service.webview.base.web.error.SslError
  * @data: 2024/8/3 10:52
  * @desc:
  */
-class SslErrorImpl(private val sslError: android.net.http.SslError) :
-    SslError {
+class SslErrorImpl(
+    private val sslError: android.net.http.SslError
+) : SslError {
+
     override fun getCertificate(): SslCertificate {
         return sslError.certificate
     }

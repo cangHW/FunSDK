@@ -22,8 +22,10 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/8/1 15:41
  * @desc:
  */
-class WebImpl(private val webView: WebViewImpl, private val lifecycleOwner: LifecycleOwner?) :
-    IWeb {
+class WebImpl(
+    private val webView: WebViewImpl,
+    private val lifecycleOwner: LifecycleOwner?
+) : IWeb {
 
     private val tag = "${Config.LOG_TAG_START}IWeb"
 

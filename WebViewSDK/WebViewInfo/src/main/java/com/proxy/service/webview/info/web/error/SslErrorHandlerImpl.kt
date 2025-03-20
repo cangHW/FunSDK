@@ -7,8 +7,10 @@ import com.proxy.service.webview.base.web.error.SslErrorHandler
  * @data: 2024/8/3 11:02
  * @desc:
  */
-class SslErrorHandlerImpl(private val handler: android.webkit.SslErrorHandler) :
-    SslErrorHandler {
+class SslErrorHandlerImpl(
+    private val handler: android.webkit.SslErrorHandler
+) : SslErrorHandler {
+
     override fun proceed() {
         handler.proceed()
     }

@@ -1,5 +1,7 @@
 package com.proxy.service.core.framework.io.file.base
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.InputStream
 import java.io.Reader

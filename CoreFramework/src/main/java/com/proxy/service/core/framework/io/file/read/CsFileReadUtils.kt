@@ -1,5 +1,7 @@
 package com.proxy.service.core.framework.io.file.read
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.read.source.AutoCloseInputStreamSource
@@ -7,6 +9,7 @@ import com.proxy.service.core.framework.io.file.read.source.InputStreamSource
 import com.proxy.service.core.framework.io.file.read.source.PathSource
 import com.proxy.service.core.framework.io.file.read.source.ReaderSource
 import java.io.File
+import java.io.FileInputStream
 import java.io.InputStream
 import java.io.Reader
 import java.nio.file.Path
@@ -35,12 +38,17 @@ object CsFileReadUtils : IRead.Source {
      * 设置源数据
      * */
     override fun setSourcePath(filePath: String): IRead {
-        return setSourcePath(Paths.get(filePath))
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setSourcePath(Paths.get(filePath))
+        } else {
+            setSourceFile(File(filePath))
+        }
     }
 
     /**
      * 设置源数据
      * */
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun setSourcePath(path: Path): IRead {
         return PathSource(path)
     }
@@ -49,7 +57,11 @@ object CsFileReadUtils : IRead.Source {
      * 设置源数据
      * */
     override fun setSourceFile(file: File): IRead {
-        return setSourcePath(file.toPath())
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setSourcePath(file.toPath())
+        } else {
+            setSourceStream(FileInputStream(file))
+        }
     }
 
     /**

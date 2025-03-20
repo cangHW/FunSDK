@@ -7,14 +7,16 @@ import com.proxy.service.webview.base.web.permissions.PermissionRequest
  * @data: 2024/8/5 11:46
  * @desc:
  */
-class PermissionRequestImpl(private val request:android.webkit.PermissionRequest?):
-    PermissionRequest {
+class PermissionRequestImpl(
+    private val request: android.webkit.PermissionRequest?
+) : PermissionRequest {
+
     override fun getOrigin(): String {
-        return request?.origin?.toString()?:""
+        return request?.origin?.toString() ?: ""
     }
 
     override fun getResources(): Array<String> {
-        return request?.resources?: arrayOf()
+        return request?.resources ?: arrayOf()
     }
 
     override fun grant(resources: Array<String>) {

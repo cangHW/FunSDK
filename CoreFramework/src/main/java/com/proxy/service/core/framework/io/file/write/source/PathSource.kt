@@ -1,5 +1,7 @@
 package com.proxy.service.core.framework.io.file.write.source
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
@@ -15,6 +17,7 @@ import java.nio.file.StandardOpenOption
  * @data: 2024/9/25 10:24
  * @desc:
  */
+@RequiresApi(Build.VERSION_CODES.O)
 class PathSource(private val path: Path) : AbstractWrite() {
 
     private val tag = "${CoreConfig.TAG}FileWrite_Path"
@@ -24,6 +27,9 @@ class PathSource(private val path: Path) : AbstractWrite() {
      * @param append    是否追加写入
      * */
     override fun writeSync(file: File, append: Boolean): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return false
+        }
         start(tag, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
@@ -53,7 +59,10 @@ class PathSource(private val path: Path) : AbstractWrite() {
         return false
     }
 
-    override fun writeSync(stream: OutputStream, append: Boolean): Boolean {
+    override fun writeSync(stream: OutputStream): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return false
+        }
         start(tag, "OutputStream")
         try {
             Files.newInputStream(path).buffered().use { inputStream ->
