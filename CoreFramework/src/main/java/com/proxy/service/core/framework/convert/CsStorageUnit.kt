@@ -9,12 +9,21 @@ import android.annotation.SuppressLint
  * @data: 2024/7/26 11:38
  * @desc:
  */
-enum class CsStorageUnit(private val type: String) {
+enum class CsStorageUnit(private val type: String, private val unit: Int) {
 
-    GB(TYPE.TYPE_GB),
-    MB(TYPE.TYPE_MB),
-    KB(TYPE.TYPE_KB),
-    B(TYPE.TYPE_B);
+    // 单位进制 1024
+
+    GB_UNIT_1024(TYPE.TYPE_GB, TYPE.UNIT_1024),
+    MB_UNIT_1024(TYPE.TYPE_MB, TYPE.UNIT_1024),
+    KB_UNIT_1024(TYPE.TYPE_KB, TYPE.UNIT_1024),
+    B_UNIT_1024(TYPE.TYPE_B, TYPE.UNIT_1024),
+
+    // 单位进制 1000
+
+    GB_UNIT_1000(TYPE.TYPE_GB, TYPE.UNIT_1000),
+    MB_UNIT_1000(TYPE.TYPE_MB, TYPE.UNIT_1000),
+    KB_UNIT_1000(TYPE.TYPE_KB, TYPE.UNIT_1000),
+    B_UNIT_1000(TYPE.TYPE_B, TYPE.UNIT_1000);
 
     /**
      * 转化为 Gb, 格式为 long
@@ -26,15 +35,15 @@ enum class CsStorageUnit(private val type: String) {
             }
 
             TYPE.TYPE_MB -> {
-                size / TYPE.OFFSET
+                size / unit
             }
 
             TYPE.TYPE_KB -> {
-                size / TYPE.OFFSET / TYPE.OFFSET
+                size / unit / unit
             }
 
             TYPE.TYPE_B -> {
-                size / TYPE.OFFSET / TYPE.OFFSET / TYPE.OFFSET
+                size / unit / unit / unit
             }
 
             else -> -1
@@ -54,17 +63,17 @@ enum class CsStorageUnit(private val type: String) {
             }
 
             TYPE.TYPE_MB -> {
-                String.format("%.${decimalSize}f", size * 1f / TYPE.OFFSET)
+                String.format("%.${decimalSize}f", size * 1f / unit)
             }
 
             TYPE.TYPE_KB -> {
-                String.format("%.${decimalSize}f", size * 1f / TYPE.OFFSET / TYPE.OFFSET)
+                String.format("%.${decimalSize}f", size * 1f / unit / unit)
             }
 
             TYPE.TYPE_B -> {
                 String.format(
                     "%.${decimalSize}f",
-                    size * 1f / TYPE.OFFSET / TYPE.OFFSET / TYPE.OFFSET
+                    size * 1f / unit / unit / unit
                 )
             }
 
@@ -78,7 +87,7 @@ enum class CsStorageUnit(private val type: String) {
     fun toMbLong(size: Long): Long {
         return when (type) {
             TYPE.TYPE_GB -> {
-                size * TYPE.OFFSET
+                size * unit
             }
 
             TYPE.TYPE_MB -> {
@@ -86,11 +95,11 @@ enum class CsStorageUnit(private val type: String) {
             }
 
             TYPE.TYPE_KB -> {
-                size / TYPE.OFFSET
+                size / unit
             }
 
             TYPE.TYPE_B -> {
-                size / TYPE.OFFSET / TYPE.OFFSET
+                size / unit / unit
             }
 
             else -> -1
@@ -105,7 +114,7 @@ enum class CsStorageUnit(private val type: String) {
     fun toMbString(size: Long, decimalSize: Int): String {
         return when (type) {
             TYPE.TYPE_GB -> {
-                (size * TYPE.OFFSET).toString()
+                (size * unit).toString()
             }
 
             TYPE.TYPE_MB -> {
@@ -113,11 +122,11 @@ enum class CsStorageUnit(private val type: String) {
             }
 
             TYPE.TYPE_KB -> {
-                String.format("%.${decimalSize}f", size * 1f / TYPE.OFFSET)
+                String.format("%.${decimalSize}f", size * 1f / unit)
             }
 
             TYPE.TYPE_B -> {
-                String.format("%.${decimalSize}f", size * 1f / TYPE.OFFSET / TYPE.OFFSET)
+                String.format("%.${decimalSize}f", size * 1f / unit / unit)
             }
 
             else -> "-1"
@@ -130,11 +139,11 @@ enum class CsStorageUnit(private val type: String) {
     fun toKbLong(size: Long): Long {
         return when (type) {
             TYPE.TYPE_GB -> {
-                size * TYPE.OFFSET * TYPE.OFFSET
+                size * unit * unit
             }
 
             TYPE.TYPE_MB -> {
-                size * TYPE.OFFSET
+                size * unit
             }
 
             TYPE.TYPE_KB -> {
@@ -142,7 +151,7 @@ enum class CsStorageUnit(private val type: String) {
             }
 
             TYPE.TYPE_B -> {
-                size / TYPE.OFFSET
+                size / unit
             }
 
             else -> -1
@@ -157,11 +166,11 @@ enum class CsStorageUnit(private val type: String) {
     fun toKbString(size: Long, decimalSize: Int): String {
         return when (type) {
             TYPE.TYPE_GB -> {
-                (size * TYPE.OFFSET * TYPE.OFFSET).toString()
+                (size * unit * unit).toString()
             }
 
             TYPE.TYPE_MB -> {
-                (size * TYPE.OFFSET).toString()
+                (size * unit).toString()
             }
 
             TYPE.TYPE_KB -> {
@@ -169,7 +178,7 @@ enum class CsStorageUnit(private val type: String) {
             }
 
             TYPE.TYPE_B -> {
-                String.format("%.${decimalSize}f", size * 1f / TYPE.OFFSET)
+                String.format("%.${decimalSize}f", size * 1f / unit)
             }
 
             else -> "-1"
@@ -182,15 +191,15 @@ enum class CsStorageUnit(private val type: String) {
     fun toBLong(size: Long): Long {
         return when (type) {
             TYPE.TYPE_GB -> {
-                size * TYPE.OFFSET * TYPE.OFFSET * TYPE.OFFSET
+                size * unit * unit * unit
             }
 
             TYPE.TYPE_MB -> {
-                size * TYPE.OFFSET * TYPE.OFFSET
+                size * unit * unit
             }
 
             TYPE.TYPE_KB -> {
-                size * TYPE.OFFSET
+                size * unit
             }
 
             TYPE.TYPE_B -> {
@@ -207,15 +216,15 @@ enum class CsStorageUnit(private val type: String) {
     fun toBString(size: Long): String {
         return when (type) {
             TYPE.TYPE_GB -> {
-                (size * TYPE.OFFSET * TYPE.OFFSET * TYPE.OFFSET).toString()
+                (size * unit * unit * unit).toString()
             }
 
             TYPE.TYPE_MB -> {
-                (size * TYPE.OFFSET * TYPE.OFFSET).toString()
+                (size * unit * unit).toString()
             }
 
             TYPE.TYPE_KB -> {
-                (size * TYPE.OFFSET).toString()
+                (size * unit).toString()
             }
 
             TYPE.TYPE_B -> {
@@ -228,7 +237,8 @@ enum class CsStorageUnit(private val type: String) {
 }
 
 private object TYPE {
-    const val OFFSET = 1024
+    const val UNIT_1024 = 1024
+    const val UNIT_1000 = 1000
 
     const val TYPE_GB = "gb"
     const val TYPE_MB = "mb"

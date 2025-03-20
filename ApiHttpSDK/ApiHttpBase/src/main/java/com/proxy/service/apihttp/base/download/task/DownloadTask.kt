@@ -193,7 +193,7 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
                 if (fileSize <= minSizeForMultiPart) {
                     CsLogger.tag(TAG).i(
                         "启动分片下载, 需要文件长度大于: ${
-                            CsStorageUnit.B.toMbString(
+                            CsStorageUnit.B_UNIT_1024.toMbString(
                                 minSizeForMultiPart,
                                 2
                             )
