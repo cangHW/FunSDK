@@ -19,26 +19,36 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
      * 同步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeSync(file: String, append: Boolean): Boolean {
-        return writeSync(File(file), append)
+    override fun writeSync(file: String, append: Boolean, shouldThrow: Boolean): Boolean {
+        return writeSync(File(file), append, shouldThrow)
     }
 
     /**
      * 异步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeAsync(file: String, append: Boolean, callback: IoCallback?) {
-        writeAsync(File(file), append, callback)
+    override fun writeAsync(
+        file: String,
+        callback: IoCallback?,
+        append: Boolean,
+        shouldThrow: Boolean
+    ) {
+        writeAsync(File(file), callback, append, shouldThrow)
     }
 
     /**
      * 异步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeAsync(file: File, append: Boolean, callback: IoCallback?) {
+    override fun writeAsync(
+        file: File,
+        callback: IoCallback?,
+        append: Boolean,
+        shouldThrow: Boolean
+    ) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (writeSync(file, append)) {
+                if (writeSync(file, append, shouldThrow)) {
                     callback?.onSuccess()
                 } else {
                     callback?.onFailed()
@@ -48,10 +58,10 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
         })?.start()
     }
 
-    override fun writeAsync(stream: OutputStream, callback: IoCallback?) {
+    override fun writeAsync(stream: OutputStream, callback: IoCallback?, shouldThrow: Boolean) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (writeSync(stream)) {
+                if (writeSync(stream, shouldThrow)) {
                     callback?.onSuccess()
                 } else {
                     callback?.onFailed()

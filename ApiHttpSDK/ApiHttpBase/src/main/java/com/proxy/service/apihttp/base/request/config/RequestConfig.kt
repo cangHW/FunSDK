@@ -1,11 +1,10 @@
 package com.proxy.service.apihttp.base.request.config
 
+import com.proxy.service.apihttp.base.common.config.BaseConfig
+import com.proxy.service.apihttp.base.common.config.BaseConfigGet
 import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilder
 import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
-import okhttp3.Dns
-import okhttp3.EventListener
-import okhttp3.Interceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import java.util.concurrent.TimeUnit
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit
  * @desc:
  */
 class RequestConfig private constructor(private val builder: IRequestConfigBuilderGet) :
-    IRequestConfigBuilderGet {
+    BaseConfigGet(builder), IRequestConfigBuilderGet {
     override fun getBaseUrl(): String {
         return builder.getBaseUrl()
     }
@@ -41,40 +40,12 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
         return builder.getCacheDir()
     }
 
-    override fun getInterceptor(): MutableList<Interceptor> {
-        return builder.getInterceptor()
-    }
-
-    override fun getNetworkInterceptor(): MutableList<Interceptor> {
-        return builder.getNetworkInterceptor()
-    }
-
-    override fun getEventListener(): EventListener? {
-        return builder.getEventListener()
-    }
-
     override fun getConverterFactory(): MutableList<Converter.Factory> {
         return builder.getConverterFactory()
     }
 
     override fun getCallAdapterFactory(): MutableList<CallAdapter.Factory> {
         return builder.getCallAdapterFactory()
-    }
-
-    override fun getDns(): Dns? {
-        return builder.getDns()
-    }
-
-    override fun getServerCerAssetsName(): String {
-        return builder.getServerCerAssetsName()
-    }
-
-    override fun getClientCerAssetsName(): String {
-        return builder.getClientCerAssetsName()
-    }
-
-    override fun getClientCerPassWord(): String {
-        return builder.getClientCerPassWord()
     }
 
     override fun getMaxRequest(): Int {
@@ -87,7 +58,8 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
         }
     }
 
-    private class Builder(baseUrl: String) : IRequestConfigBuilder, IRequestConfigBuilderGet {
+    private class Builder(baseUrl: String) : BaseConfig<IRequestConfigBuilder>(),
+        IRequestConfigBuilder, IRequestConfigBuilderGet {
 
         companion object {
             private const val TIMEOUT_MIN: Long = 5 * 1000
@@ -102,17 +74,8 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
         private var cacheDir: String = ""
         private var cacheMaxSize: Long = 1024 * 1024
 
-        private var interceptors: MutableList<Interceptor> = ArrayList()
-        private var networkInterceptors: MutableList<Interceptor> = ArrayList()
-        private var eventListener: EventListener? = null
         private var converterFactory: MutableList<Converter.Factory> = ArrayList()
         private var callAdapterFactory: MutableList<CallAdapter.Factory> = ArrayList()
-
-        private var dns: Dns? = null
-
-        private var serverCerAssetsName: String = ""
-        private var clientCerAssetsName: String = ""
-        private var clientCerPassWord: String = ""
 
         private var maxRequests = 4
 
@@ -171,21 +134,6 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
             return this
         }
 
-        override fun addInterceptor(interceptor: Interceptor): Builder {
-            interceptors.add(interceptor)
-            return this
-        }
-
-        override fun addNetworkInterceptor(interceptor: Interceptor): Builder {
-            networkInterceptors.add(interceptor)
-            return this
-        }
-
-        override fun setEventListener(eventListener: EventListener): IRequestConfigBuilder {
-            this.eventListener = eventListener
-            return this
-        }
-
         override fun addConverterFactory(factory: Converter.Factory): IRequestConfigBuilder {
             converterFactory.add(factory)
             return this
@@ -193,29 +141,6 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
 
         override fun addCallAdapterFactory(factory: CallAdapter.Factory): IRequestConfigBuilder {
             callAdapterFactory.add(factory)
-            return this
-        }
-
-        override fun setDns(dns: Dns): IRequestConfigBuilder {
-            this.dns = dns
-            return this
-        }
-
-        override fun setSslSocket(serverCerAssetsName: String): Builder {
-            this.serverCerAssetsName = serverCerAssetsName
-            this.clientCerAssetsName = ""
-            this.clientCerPassWord = ""
-            return this
-        }
-
-        override fun setSslSocket(
-            serverCerAssetsName: String,
-            clientCerAssetsName: String,
-            clientCerPassWord: String
-        ): Builder {
-            this.serverCerAssetsName = serverCerAssetsName
-            this.clientCerAssetsName = clientCerAssetsName
-            this.clientCerPassWord = clientCerPassWord
             return this
         }
 
@@ -254,18 +179,6 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
             return cacheDir
         }
 
-        override fun getInterceptor(): MutableList<Interceptor> {
-            return interceptors
-        }
-
-        override fun getNetworkInterceptor(): MutableList<Interceptor> {
-            return networkInterceptors
-        }
-
-        override fun getEventListener(): EventListener? {
-            return eventListener
-        }
-
         override fun getConverterFactory(): MutableList<Converter.Factory> {
             return converterFactory
         }
@@ -274,24 +187,12 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
             return callAdapterFactory
         }
 
-        override fun getDns(): Dns? {
-            return this.dns
-        }
-
-        override fun getServerCerAssetsName(): String {
-            return serverCerAssetsName
-        }
-
-        override fun getClientCerAssetsName(): String {
-            return clientCerAssetsName
-        }
-
-        override fun getClientCerPassWord(): String {
-            return clientCerPassWord
-        }
-
         override fun getMaxRequest(): Int {
             return maxRequests
+        }
+
+        override fun getInstance(): IRequestConfigBuilder {
+            return this
         }
 
     }

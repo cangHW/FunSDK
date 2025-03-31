@@ -21,7 +21,7 @@ object TaskController : BaseController() {
     fun addGroup(list: ArrayList<DownloadGroup>) {
         CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             list.forEach {
-                if (groupMapper.containsKey(it.groupName)) {
+                if (groupCache.isHas(it.groupName)) {
                     return@forEach
                 }
                 addGroup(it)
@@ -40,8 +40,8 @@ object TaskController : BaseController() {
             // 检查是否允许添加任务
             if (checkIsTaskCanAdd(task)) {
                 // 添加待下载
-                taskWeakMap[task] = task.getTaskTag()
                 group.addTask(task)
+                taskCache.add(task)
             } else {
                 CsLogger.tag(tag).i("任务已存在, 无需重复添加. taskTag = ${task.getTaskTag()}")
             }
@@ -82,7 +82,7 @@ object TaskController : BaseController() {
                 return@start
             }
             CsLogger.tag(tag)
-                .i("取消任务组 groupName = $groupName, taskNum = ${group.getTaskNum()}")
+                .i("取消任务组 groupName = $groupName, allTaskNum = ${group.getAllTaskNum()}")
             group.getAllTask().forEach {
                 CsLogger.tag(tag).i("取消任务 taskTag = ${it.getTaskTag()}")
                 cancel(it, true)
@@ -95,10 +95,10 @@ object TaskController : BaseController() {
      * */
     fun cancelAllTask() {
         CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
-            CsLogger.tag(tag).i("取消全部任务 taskNum = ${taskWeakMap.size}")
-            taskWeakMap.iterator().forEach {
-                CsLogger.tag(tag).i("取消任务 taskTag = ${it.key.getTaskTag()}")
-                cancel(it.key, true)
+            CsLogger.tag(tag).i("取消全部任务 taskNum = ${taskCache.size()}")
+            taskCache.getAllCache().forEach {
+                CsLogger.tag(tag).i("取消任务 taskTag = ${it.getTaskTag()}")
+                cancel(it, true)
             }
         }
     }

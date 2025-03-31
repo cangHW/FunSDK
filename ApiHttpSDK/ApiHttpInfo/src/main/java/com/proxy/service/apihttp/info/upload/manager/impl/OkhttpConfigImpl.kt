@@ -5,6 +5,8 @@ import com.proxy.service.apihttp.info.common.okhttp.IOkhttpConfig
 import okhttp3.Dns
 import okhttp3.EventListener
 import okhttp3.Interceptor
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
@@ -71,6 +73,14 @@ class OkhttpConfigImpl : IOkhttpConfig {
 
     override fun getClientCerPassWord(): String? {
         return config?.getClientCerPassWord()
+    }
+
+    override fun getX509TrustManager(): X509TrustManager? {
+        return config?.getX509TrustManager()
+    }
+
+    override fun getHostnameVerifier(): HostnameVerifier? {
+        return config?.getHostnameVerifier()
     }
 
     override fun getMaxRequest(): Int? {

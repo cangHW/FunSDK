@@ -1,9 +1,10 @@
 package com.proxy.service.apihttp.info.download.manager
 
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.constants.Constants
-import com.proxy.service.apihttp.base.download.enums.StatusEnum
+import com.proxy.service.apihttp.base.download.callback.DownloadCallback
+import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.controller.TaskController
-import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.CsNetManager
 import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
@@ -19,10 +20,14 @@ object NetworkManager {
 
     private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}Network"
 
+    private val lock = Any()
+    private val failedTaskMap = ArrayList<DownloadTask>()
+
     fun reStartTask(isAutoRestartOnNetworkReconnect: Boolean) {
         if (!isAutoRestartOnNetworkReconnect) {
             return
         }
+        CallbackManager.addGlobalDownloadCallback(downloadCallback)
         CsNetManager.addWeakNetConnectChangedListener(callback)
     }
 
@@ -46,12 +51,49 @@ object NetworkManager {
     private fun reLoadTask() {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                DownloadRoom.INSTANCE.getTaskDao().queryTasksByStatus(StatusEnum.FAILED.status)
-                    .forEach {
-                        TaskController.addTask(it.getDownloadTask())
+                while (failedTaskMap.size > 0) {
+                    val task = synchronized(lock) {
+                        failedTaskMap.removeLastOrNull()
                     }
+                    task?.let {
+                        TaskController.addTask(it)
+                    }
+                }
                 return ""
             }
         })?.start()
+    }
+
+    private val downloadCallback = object : DownloadCallback {
+        override fun onWaiting(task: DownloadTask) {
+
+        }
+
+        override fun onStart(task: DownloadTask) {
+
+        }
+
+        override fun onProgress(
+            task: DownloadTask,
+            currentSize: Long,
+            progress: Float,
+            speed: Long
+        ) {
+
+        }
+
+        override fun onSuccess(task: DownloadTask) {
+
+        }
+
+        override fun onCancel(task: DownloadTask) {
+
+        }
+
+        override fun onFailed(task: DownloadTask, exception: DownloadException) {
+            synchronized(lock) {
+                failedTaskMap.add(task)
+            }
+        }
     }
 }

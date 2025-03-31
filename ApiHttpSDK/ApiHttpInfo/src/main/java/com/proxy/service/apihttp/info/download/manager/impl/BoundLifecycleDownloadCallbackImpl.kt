@@ -4,6 +4,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
@@ -69,7 +70,7 @@ class BoundLifecycleDownloadCallbackImpl(
         liveData.postValue(Runnable { callback?.onCancel(task) })
     }
 
-    override fun onFailed(task: DownloadTask, throwable: Throwable) {
-        liveData.postValue(Runnable { callback?.onFailed(task, throwable) })
+    override fun onFailed(task: DownloadTask, exception: DownloadException) {
+        liveData.postValue(Runnable { callback?.onFailed(task, exception) })
     }
 }

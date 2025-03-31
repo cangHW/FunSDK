@@ -26,7 +26,7 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
      * 同步写入文件
      * @param append    是否追加写入
      * */
-    override fun writeSync(file: File, append: Boolean): Boolean {
+    override fun writeSync(file: File, append: Boolean, shouldThrow: Boolean): Boolean {
         start(tag, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
@@ -43,19 +43,29 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             success(tag, file.absolutePath)
             return true
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            if (shouldThrow) {
+                CsLogger.tag(tag).d(throwable)
+                throw throwable
+            } else {
+                CsLogger.tag(tag).e(throwable)
+            }
         }
         return false
     }
 
-    override fun writeSync(stream: OutputStream): Boolean {
+    override fun writeSync(stream: OutputStream, shouldThrow: Boolean): Boolean {
         start(tag, "OutputStream")
         try {
             write(stream)
             success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            if (shouldThrow) {
+                CsLogger.tag(tag).d(throwable)
+                throw throwable
+            } else {
+                CsLogger.tag(tag).e(throwable)
+            }
         }
         return false
     }

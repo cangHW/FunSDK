@@ -10,6 +10,8 @@ import com.proxy.service.apihttp.info.request.okhttp.interceptor.RetryWithDelayI
 import okhttp3.Dns
 import okhttp3.EventListener
 import okhttp3.Interceptor
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
@@ -19,6 +21,7 @@ import okhttp3.Interceptor
 class OkhttpConfigImpl(
     private val config: RequestConfig
 ): IOkhttpConfig {
+
     override fun getConnectTimeOut(): Long {
         return config.getConnectTimeOut()
     }
@@ -62,16 +65,24 @@ class OkhttpConfigImpl(
         return config.getDns()
     }
 
-    override fun getServerCerAssetsName(): String {
+    override fun getServerCerAssetsName(): String? {
         return config.getServerCerAssetsName()
     }
 
-    override fun getClientCerAssetsName(): String {
+    override fun getClientCerAssetsName(): String? {
         return config.getClientCerAssetsName()
     }
 
-    override fun getClientCerPassWord(): String {
+    override fun getClientCerPassWord(): String? {
         return config.getClientCerPassWord()
+    }
+
+    override fun getX509TrustManager(): X509TrustManager? {
+        return config.getX509TrustManager()
+    }
+
+    override fun getHostnameVerifier(): HostnameVerifier? {
+        return config.getHostnameVerifier()
     }
 
     override fun getMaxRequest(): Int {

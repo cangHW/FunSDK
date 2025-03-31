@@ -19,15 +19,17 @@ import java.util.Collections
  * @data: 2024/11/1 10:12
  * @desc:
  */
-open class GroupInfo(val name: String, val priority: Int, val fileDir: String? = null) :
-    BaseGroup() {
+open class GroupInfo(
+    val name: String,
+    val priority: Int,
+    val fileDir: String? = null
+) : BaseGroup() {
 
     /**
      * 添加任务
      * */
     fun addTask(task: DownloadTask) {
-        tasks.add(task)
-        Collections.sort(tasks, this)
+        groupCache.add(task)
 
         val oldTask = DownloadRoom.INSTANCE.getTaskDao().query(task.getTaskTag())?.getDownloadTask()
         if (oldTask != null) {
@@ -54,7 +56,14 @@ open class GroupInfo(val name: String, val priority: Int, val fileDir: String? =
      * 移除任务
      * */
     fun removeTask(task: DownloadTask) {
-        tasks.removeAll { it.getTaskTag() == task.getTaskTag() }
+        groupCache.removeAll { it.getTaskTag() == task.getTaskTag() }
+    }
+
+    /**
+     * 设置任务开始运行
+     * */
+    fun setTaskStart(task: DownloadTask) {
+        groupCache.setWaitingToRunning(task)
     }
 
     /**

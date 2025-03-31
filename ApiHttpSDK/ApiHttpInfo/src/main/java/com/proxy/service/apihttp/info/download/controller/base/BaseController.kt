@@ -1,9 +1,10 @@
 package com.proxy.service.apihttp.info.download.controller.base
 
-import android.util.SparseArray
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.config.DownloadGroup
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.common.cache.SortCache
+import com.proxy.service.apihttp.info.common.cache.WeakCache
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.info.GroupInfo
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
@@ -11,9 +12,7 @@ import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
 import com.proxy.service.apihttp.info.download.dispatcher.base.BaseDispatcher
 import com.proxy.service.apihttp.info.download.utils.FileUtils
 import com.proxy.service.apihttp.info.download.utils.TaskUtils
-import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.core.framework.data.log.CsLogger
-import java.util.WeakHashMap
 
 /**
  * @author: cangHX
@@ -24,15 +23,18 @@ abstract class BaseController {
 
     protected val tag = "${Constants.LOG_DOWNLOAD_TAG_START}TaskController"
 
-    protected val groupMapper = HashMap<String, GroupInfo>()
-    protected val groups = SparseArray<GroupInfo>()
+    protected val groupCache = SortCache<String, GroupInfo> { o1, o2 ->
+        o1.priority.compareTo(o2.priority)
+    }
 
-    protected val taskWeakMap = WeakHashMap<DownloadTask, String>()
+    protected val taskCache = WeakCache<DownloadTask>()
 
     private val onWorkerIdleCallback = object : BaseDispatcher.OnWorkerIdleCallback {
         override fun onWorkerIdle(task: DownloadTask?) {
-            ThreadUtils.checkCurrentThread()
-            taskWeakMap.remove(task)
+            taskCache.remove(task)
+            task?.getTaskTag()?.let {
+                groupCache.getOrNull(it)?.removeTask(task)
+            }
             tryStartTask()
         }
     }
@@ -45,16 +47,13 @@ abstract class BaseController {
      * 添加组信息
      * */
     protected fun addGroup(group: DownloadGroup, shouldWriteToDb: Boolean = true): GroupInfo {
-        ThreadUtils.checkCurrentThread()
-
         val groupInfo = GroupInfo(
             group.groupName,
             group.priority,
             group.fileDir
         )
 
-        groups.put(groupInfo.priority, groupInfo)
-        groupMapper[groupInfo.name] = groupInfo
+        groupCache.tryAdd(groupInfo.name, groupInfo)
         if (shouldWriteToDb) {
             DownloadRoom.INSTANCE.getGroupDao().updateDownloadGroup(group)
         }
@@ -65,18 +64,15 @@ abstract class BaseController {
         if (TaskDispatcher.isTaskFull()) {
             return
         }
-        ThreadUtils.checkCurrentThread()
         CsLogger.tag(tag).i("尝试执行执行一个高优先级下载任务")
-        for (index in 0 until groups.size()) {
-            val priority = groups.keyAt(index)
-            val groupInfo = groups.get(priority)
+        for (group in groupCache.getAllValues()) {
             CsLogger.tag(tag)
-                .i("检查任务组 GroupName = ${groupInfo.name}, GroupPriority = ${groupInfo.priority}, TaskNum = ${groupInfo.getTaskNum()}")
+                .i("检查任务组 GroupName = ${group.name}, GroupPriority = ${group.priority}, WaitingTaskNum = ${group.getWaitingTaskNum()}")
 
-            val task = groupInfo.getFirstDownloadTask()
+            val task = group.getFirstDownloadTaskOnWaiting()
             if (task != null) {
                 if (TaskDispatcher.startTask(task)) {
-                    groupInfo.removeTask(task)
+                    group.setTaskStart(task)
                     return
                 }
             }
@@ -90,10 +86,9 @@ abstract class BaseController {
      * @return 是否允许添加
      * */
     protected fun checkIsTaskCanAdd(task: DownloadTask): Boolean {
-        ThreadUtils.checkCurrentThread()
-        val oldTask = taskWeakMap.filter {
-            it.key.getTaskTag() == task.getTaskTag()
-        }.keys.firstOrNull()
+        val oldTask = taskCache.filter {
+            it.getTaskTag() == task.getTaskTag()
+        }.firstOrNull()
 
         if (oldTask == null) {
             return true
@@ -109,7 +104,6 @@ abstract class BaseController {
      * 取消任务
      * */
     protected fun cancel(task: DownloadTask, isNeedCallback: Boolean) {
-        ThreadUtils.checkCurrentThread()
         val group = getGroup(task.getGroupName())
         group.removeTask(task)
         TaskDispatcher.cancelRunningTask(task.getTaskTag(), isNeedCallback)
@@ -119,12 +113,11 @@ abstract class BaseController {
      * 基于组名称获取对应组
      * */
     protected fun getGroup(groupName: String): GroupInfo {
-        ThreadUtils.checkCurrentThread()
         if (groupName.trim().isEmpty()) {
             return getDefaultGroup()
         }
 
-        val group = groupMapper[groupName]
+        val group = groupCache.getOrNull(groupName)
 
         if (group != null) {
             return group
@@ -145,8 +138,7 @@ abstract class BaseController {
      * 获取默认组
      * */
     private fun getDefaultGroup(): GroupInfo {
-        ThreadUtils.checkCurrentThread()
-        val group = groupMapper[Config.DOWNLOAD_DEFAULT_GROUP_NAME]
+        val group = groupCache.getOrNull(Config.DOWNLOAD_DEFAULT_GROUP_NAME)
         if (group != null) {
             return group
         }

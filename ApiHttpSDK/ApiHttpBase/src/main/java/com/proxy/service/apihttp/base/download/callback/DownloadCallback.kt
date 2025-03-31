@@ -1,5 +1,6 @@
 package com.proxy.service.apihttp.base.download.callback
 
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 
 /**
@@ -49,7 +50,7 @@ interface DownloadCallback {
     /**
      * 下载失败
      * @param task      任务信息
-     * @param throwable 错误信息
+     * @param exception 错误信息
      * */
-    fun onFailed(task: DownloadTask, throwable: Throwable)
+    fun onFailed(task: DownloadTask, exception: DownloadException)
 }

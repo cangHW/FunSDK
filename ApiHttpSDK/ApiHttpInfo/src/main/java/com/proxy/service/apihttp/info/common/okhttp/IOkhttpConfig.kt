@@ -3,6 +3,8 @@ package com.proxy.service.apihttp.info.common.okhttp
 import okhttp3.Dns
 import okhttp3.EventListener
 import okhttp3.Interceptor
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
@@ -70,6 +72,16 @@ interface IOkhttpConfig {
      * 获取客户端证书密钥
      * */
     fun getClientCerPassWord(): String?
+
+    /**
+     * 获取证书管理器
+     * */
+    fun getX509TrustManager(): X509TrustManager?
+
+    /**
+     * 获取域名校验器
+     * */
+    fun getHostnameVerifier(): HostnameVerifier?
 
     /**
      * 获取最大并发数

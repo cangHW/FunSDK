@@ -2,7 +2,6 @@ package com.proxy.service.apihttp.info.common.ssl
 
 import android.annotation.SuppressLint
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.data.log.CsLogger
 import java.security.KeyStore
 import java.security.SecureRandom
 import java.security.cert.CertificateFactory
@@ -19,80 +18,97 @@ import javax.net.ssl.X509TrustManager
  * @data: 2024/5/21 21:03
  * @desc:
  */
-@SuppressLint("CustomX509TrustManager")
-class TrustCerManager : X509TrustManager {
-    @SuppressLint("TrustAllX509TrustManager")
-    override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+object TrustCerManager {
 
+    fun getX509TrustManager(x509TrustManager: X509TrustManager?): X509TrustManager {
+        return ApiX509TrustManager(x509TrustManager)
+    }
+
+    fun getSSLSocketFactory(
+        serverCerAssetsName: String?,
+        clientCerAssetsName: String?,
+        clientCerPassWord: String?,
+        x509TrustManager: X509TrustManager?
+    ): SSLSocketFactory? {
+        if (
+            serverCerAssetsName.isNullOrEmpty() &&
+            clientCerAssetsName.isNullOrEmpty() &&
+            clientCerPassWord.isNullOrEmpty() &&
+            x509TrustManager == null
+        ) {
+            return null
+        }
+
+        val application = CsContextManager.getApplication()
+        val sslContext: SSLContext = SSLContext.getInstance("TLS")
+
+        val serverFactory: TrustManagerFactory? = if (!serverCerAssetsName.isNullOrEmpty()) {
+            val factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+            val certificateFactory = CertificateFactory.getInstance("X.509")
+            val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+            keyStore.load(null)
+            application.assets.open(serverCerAssetsName).use { certificate ->
+                keyStore.setCertificateEntry(
+                    "1",
+                    certificateFactory.generateCertificate(certificate)
+                )
+            }
+            factory.init(keyStore)
+            factory
+        } else {
+            null
+        }
+
+        val clientFactory: KeyManagerFactory? =
+            if (!clientCerAssetsName.isNullOrEmpty() && !clientCerPassWord.isNullOrEmpty()) {
+                val factory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
+                val clientKeyStore = KeyStore.getInstance("BKS")
+                application.assets.open(clientCerAssetsName).use { clientCert ->
+                    clientKeyStore.load(clientCert, clientCerPassWord.toCharArray())
+                }
+                factory.init(clientKeyStore, clientCerPassWord.toCharArray())
+                factory
+            } else {
+                null
+            }
+
+        val km = clientFactory?.keyManagers
+        val tm = if (serverFactory == null) {
+            arrayOf<TrustManager>(ApiX509TrustManager(x509TrustManager))
+        } else {
+            serverFactory.trustManagers
+        }
+
+        sslContext.init(km, tm, SecureRandom())
+        return sslContext.socketFactory
+    }
+}
+
+@SuppressLint("CustomX509TrustManager")
+private class ApiX509TrustManager(
+    private val x509TrustManager: X509TrustManager?
+) : X509TrustManager {
+
+    private val defaultTrustManager: X509TrustManager = TrustManagerFactory.getInstance(
+        TrustManagerFactory.getDefaultAlgorithm()
+    ).apply {
+        init(null as? KeyStore?)
+    }.trustManagers
+        .filterIsInstance<X509TrustManager>()
+        .first()
+
+    @SuppressLint("TrustAllX509TrustManager")
+    override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        (x509TrustManager ?: defaultTrustManager).checkClientTrusted(chain, authType)
     }
 
     @SuppressLint("TrustAllX509TrustManager")
-    override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
-
+    override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        (x509TrustManager ?: defaultTrustManager).checkServerTrusted(chain, authType)
     }
 
     override fun getAcceptedIssuers(): Array<X509Certificate> {
-        return arrayOf()
+        return (x509TrustManager ?: defaultTrustManager).acceptedIssuers
     }
-
-    companion object {
-        fun getSSLSocketFactory(
-            serverCerAssetsName: String?,
-            clientCerAssetsName: String?,
-            clientCerPassWord: String?
-        ): SSLSocketFactory? {
-            var sslContext: SSLContext? = null
-            try {
-                sslContext = SSLContext.getInstance("TLS")
-
-                var serverFactory: TrustManagerFactory? = null
-                if (!serverCerAssetsName.isNullOrEmpty()) {
-                    val certificateFactory = CertificateFactory.getInstance("X.509")
-                    val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-                    keyStore.load(null)
-                    val certificate = CsContextManager.getApplication().assets.open(serverCerAssetsName)
-                    keyStore.setCertificateEntry(
-                        "1",
-                        certificateFactory.generateCertificate(certificate)
-                    )
-                    try {
-                        certificate.close()
-                    } catch (throwable: Throwable) {
-                        CsLogger.e(throwable)
-                    }
-                    serverFactory =
-                        TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-                    serverFactory.init(keyStore)
-                }
-
-                var clientFactory: KeyManagerFactory? = null
-                if (!clientCerAssetsName.isNullOrEmpty() && !clientCerPassWord.isNullOrEmpty()) {
-                    val clientKeyStore = KeyStore.getInstance("BKS")
-                    clientKeyStore.load(
-                        CsContextManager.getApplication().assets.open(clientCerAssetsName),
-                        clientCerPassWord.toCharArray()
-                    )
-                    clientFactory =
-                        KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
-                    clientFactory.init(clientKeyStore, clientCerPassWord.toCharArray())
-                }
-
-                if (serverFactory != null && clientFactory != null) {
-                    sslContext.init(
-                        clientFactory.keyManagers,
-                        serverFactory.trustManagers,
-                        SecureRandom()
-                    )
-                } else if (serverFactory != null) {
-                    sslContext.init(null, serverFactory.trustManagers, SecureRandom())
-                } else {
-                    sslContext.init(null, arrayOf<TrustManager>(TrustCerManager()), SecureRandom())
-                }
-            } catch (throwable: Throwable) {
-                CsLogger.e(throwable)
-            }
-            return sslContext?.socketFactory
-        }
-    }
-
 }
+

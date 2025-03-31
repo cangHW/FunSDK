@@ -2,9 +2,8 @@ package com.proxy.service.apihttp.info.upload.dispatcher.base
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.upload.task.UploadTask
-import com.proxy.service.apihttp.info.common.cache.Cache
+import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.config.Config
-import com.proxy.service.apihttp.info.upload.worker.TaskWorker
 import com.proxy.service.apihttp.info.upload.worker.base.IWorker
 import com.proxy.service.core.service.task.CsTask
 
@@ -21,7 +20,7 @@ abstract class BaseDispatcher {
         fun onWorkerIdle()
     }
 
-    protected var workers: Cache<IWorker> = Cache(Config.maxUploadTaskCount)
+    protected var workers: MaxCache<IWorker> = MaxCache(Config.maxUploadTaskCount)
     protected var workerIdleCallback: OnWorkerIdleCallback? = null
 
     protected val taskWorkerFinishCallback = object : IWorker.TaskWorkerFinishCallback {

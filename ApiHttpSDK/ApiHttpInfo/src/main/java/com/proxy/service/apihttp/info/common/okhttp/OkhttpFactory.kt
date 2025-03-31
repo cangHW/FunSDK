@@ -58,13 +58,21 @@ object OkhttpFactory {
         TrustCerManager.getSSLSocketFactory(
             config.getServerCerAssetsName(),
             config.getClientCerAssetsName(),
-            config.getClientCerPassWord()
+            config.getClientCerPassWord(),
+            config.getX509TrustManager()
         )?.let {
-            builder.sslSocketFactory(it, TrustCerManager())
+            builder.sslSocketFactory(
+                it,
+                TrustCerManager.getX509TrustManager(config.getX509TrustManager())
+            )
         }
 
         if (!CoreConfig.isDebug) {
             builder.proxy(Proxy.NO_PROXY)
+        }
+
+        config.getHostnameVerifier()?.let {
+            builder.hostnameVerifier(it)
         }
 
         val client = builder.build()

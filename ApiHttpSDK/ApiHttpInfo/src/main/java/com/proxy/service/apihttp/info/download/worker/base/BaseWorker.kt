@@ -1,10 +1,10 @@
 package com.proxy.service.apihttp.info.download.worker.base
 
 import androidx.annotation.WorkerThread
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.task.DownloadTask
-import com.proxy.service.apihttp.info.common.cache.Cache
+import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
-import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
@@ -34,18 +34,16 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
     }
 
     private val isClear = AtomicBoolean(false)
-    protected val msgCache = Cache<BaseTaskMsg>()
+    protected val msgMaxCache = MaxCache<BaseTaskMsg>()
 
     /**
      * 添加下载任务信息
      * */
     protected fun addTaskMsg(msg: BaseTaskMsg) {
-        ThreadUtils.checkCurrentThread()
-        msgCache.tryAdd(msg)
+        msgMaxCache.tryAdd(msg)
     }
 
     final override fun startTask() {
-        ThreadUtils.checkCurrentThread()
         onStartTask()
     }
 
@@ -63,9 +61,8 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
         if (!super.cancelTask(taskTag)) {
             return
         }
-        ThreadUtils.checkCurrentThread()
         CsLogger.tag(tag).i("取消任务. taskTag = ${task.getTaskTag()}")
-        msgCache.getAllCache().forEach {
+        msgMaxCache.getAllCache().forEach {
             CsFileUtils.close(it.stream)
         }
         if (isNeedCallback) {
@@ -93,19 +90,11 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
         try {
             if (CsFileUtils.length(task.getFilePath()) > 0) {
                 endTaskCheck(task.getFilePath())
-                //文件已存在, 且满足要求
+                //文件已存在, 且满足要求v
                 CsLogger.tag(tag)
                     .i("文件已存在, 且满足要求. taskTag = ${task.getTaskTag()}, path = ${task.getFilePath()}")
 
-                CsTask.mainThread()?.call(object : ICallable<String> {
-                    override fun accept(): String {
-                        CallbackManager.getDownloadCallbacks(task.getTaskTag()).forEach {
-                            it.onSuccess(task)
-                        }
-                        return ""
-                    }
-                })?.start()
-
+                callbackEnd(true, null)
                 return true
             }
         } catch (throwable: Throwable) {
@@ -129,7 +118,10 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
             if (task.getFileSize() != CsFileUtils.length(filePath)) {
                 CsLogger.tag(tag).i("文件长度不一致, 删除对应文件. path = $filePath")
                 CsFileUtils.delete(filePath)
-                throw IllegalArgumentException("文件长度不一致")
+                throw DownloadException.create(
+                    DownloadException.FILE_LENGTH_IS_INCONSISTENT,
+                    "文件长度不一致"
+                )
             }
         }
 
@@ -138,7 +130,10 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
             if (task.getFileMd5() != CsMd5Utils.getMD5(File(filePath))) {
                 CsLogger.tag(tag).i("文件 md5 不一致, 删除对应文件. path = $filePath")
                 CsFileUtils.delete(filePath)
-                throw IllegalArgumentException("文件 md5 不一致")
+                throw DownloadException.create(
+                    DownloadException.FILE_MD5_IS_INCONSISTENT,
+                    "文件 md5 不一致"
+                )
             }
         }
     }

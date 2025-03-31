@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info
 
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.annotations.CloudApiService
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.DownloadService
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
@@ -12,7 +13,6 @@ import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
-import com.proxy.service.apihttp.info.download.manager.AppRelaunchManager
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.apihttp.info.download.manager.NetworkManager
 import com.proxy.service.apihttp.info.download.manager.impl.OkhttpConfigImpl
@@ -43,7 +43,6 @@ class DownloadServiceImpl : DownloadService {
                     OkhttpConfigImpl.instance.setDownloadConfig(config)
                     TaskController.addGroup(config.getGroups())
                     Config.maxDownloadTaskCount = config.getMaxTask()
-                    AppRelaunchManager.reResumeTask(config.getAutoResumeOnAppRelaunch())
                     NetworkManager.reStartTask(config.getAutoRestartOnNetworkReconnect())
                     isInit = true
                 }
@@ -70,7 +69,10 @@ class DownloadServiceImpl : DownloadService {
                     callback?.onStart(task)
                     callback?.onFailed(
                         task,
-                        IllegalArgumentException("downloadUrl 不能为空. downloadUrl = ${task.getDownloadUrl()}")
+                        DownloadException.create(
+                            DownloadException.URL_IS_NULL,
+                            "downloadUrl 不能为空. downloadUrl = ${task.getDownloadUrl()}"
+                        )
                     )
                     return ""
                 }

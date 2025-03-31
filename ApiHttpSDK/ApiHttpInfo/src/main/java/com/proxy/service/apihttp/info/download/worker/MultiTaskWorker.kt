@@ -1,5 +1,6 @@
 package com.proxy.service.apihttp.info.download.worker
 
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.utils.FileUtils
@@ -76,7 +77,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
             index++
         }
 
-        latch = CountDownLatch(msgCache.size())
+        latch = CountDownLatch(msgMaxCache.size())
     }
 
     /**
@@ -147,11 +148,17 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                 if (isShouldIntercept(value)) {
                     return value
                 }
-                msgCache.getAllCache().forEach {
+                msgMaxCache.getAllCache().forEach {
                     if (it is MultiMsg) {
                         if (it.status != STATUS_SUCCESS) {
                             CsLogger.tag(tag).i("下载失败. taskTag = ${task.getTaskTag()}")
-                            callbackEnd(false, IllegalArgumentException("下载失败"))
+                            callbackEnd(
+                                false,
+                                DownloadException.create(
+                                    DownloadException.MULTI_TASK_HAS_FAILURE,
+                                    "下载失败"
+                                )
+                            )
                             return TASK_FINISH
                         }
                     }
@@ -166,24 +173,36 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                 }
                 if (!CsFileUtils.createFile(tempPath)) {
                     CsLogger.tag(tag).i("创建文件失败. taskTag = ${task.getTaskTag()}")
-                    callbackEnd(false, IllegalArgumentException("创建文件失败"))
+                    callbackEnd(
+                        false,
+                        DownloadException.create(
+                            DownloadException.CREATE_FILE_FAILURE,
+                            "创建文件失败"
+                        )
+                    )
                     return TASK_FINISH
                 }
-                msgCache.getAllCache().forEach {
+                msgMaxCache.getAllCache().forEach {
                     if (it is MultiMsg) {
                         CsLogger.tag(tag)
-                            .i("开始合并分片. taskTag = ${task.getTaskTag()}, part: ${it.partPosition}, totalPart: ${msgCache.size()}")
+                            .i("开始合并分片. taskTag = ${task.getTaskTag()}, part: ${it.partPosition}, totalPart: ${msgMaxCache.size()}")
                         if (
                             !CsFileWriteUtils.setSourcePath(it.filePath).writeSync(tempPath, true)
                         ) {
                             CsFileUtils.delete(tempPath)
                             CsLogger.tag(tag)
-                                .i("合并分片失败. taskTag = ${task.getTaskTag()}, part: ${it.partPosition}, totalPart: ${msgCache.size()}")
-                            callbackEnd(false, IllegalArgumentException("合并文件失败"))
+                                .i("合并分片失败. taskTag = ${task.getTaskTag()}, part: ${it.partPosition}, totalPart: ${msgMaxCache.size()}")
+                            callbackEnd(
+                                false,
+                                DownloadException.create(
+                                    DownloadException.FILE_MERGE_FAILURE,
+                                    "合并文件失败"
+                                )
+                            )
                             return TASK_FINISH
                         }
                         CsLogger.tag(tag)
-                            .i("分片合并成功. taskTag = ${task.getTaskTag()}, part: ${it.partPosition}, totalPart: ${msgCache.size()}")
+                            .i("分片合并成功. taskTag = ${task.getTaskTag()}, part: ${it.partPosition}, totalPart: ${msgMaxCache.size()}")
                     }
                 }
                 return value
@@ -200,7 +219,14 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     return value
                 } catch (throwable: Throwable) {
                     //文件有问题
-                    callbackEnd(false, throwable)
+                    if (throwable is DownloadException) {
+                        callbackEnd(false, throwable)
+                    } else {
+                        callbackEnd(
+                            false,
+                            DownloadException.createUnknownError(throwable.message ?: "未知异常")
+                        )
+                    }
                     return TASK_FINISH
                 }
             }
@@ -216,7 +242,10 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                         .i("文件重命名失败. srcPath = $tempPath, destPath = ${task.getFilePath()}")
                     callbackEnd(
                         false,
-                        IllegalArgumentException("文件重命名失败")
+                        DownloadException.create(
+                            DownloadException.FILE_RENAME_FAILURE,
+                            "文件重命名失败"
+                        )
                     )
                     return
                 }
@@ -228,7 +257,6 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
             override fun onCallback() {
                 //10.下载结束
                 disposable?.dispose()
-                finishTask()
                 CsLogger.tag(tag).i("下载结束. taskTag = ${task.getTaskTag()}")
             }
         })?.start()
@@ -238,7 +266,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
      * 垃圾回收
      * */
     override fun onClear() {
-        for (i in 0 until msgCache.size()) {
+        for (i in 0 until msgMaxCache.size()) {
             latch?.countDown()
         }
     }
@@ -251,7 +279,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
         disposable = CsTask.computationThread()?.delay(1, TimeUnit.SECONDS)
             ?.doOnNext(object : IConsumer<Long> {
                 override fun accept(value: Long) {
-                    val list = msgCache.getAllCache().filter { it.stream != null }
+                    val list = msgMaxCache.getAllCache().filter { it.stream != null }
 
                     if (list.isEmpty()) {
                         return
@@ -265,9 +293,11 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                             }
                             callbackEnd(
                                 false,
-                                IllegalArgumentException("未知异常, 文件丢失. taskTag = ${task.getTaskTag()}")
+                                DownloadException.create(
+                                    DownloadException.FILE_NOT_FOUND,
+                                    "未知异常, 文件丢失. taskTag = ${task.getTaskTag()}"
+                                )
                             )
-                            finishTask()
                             return
                         }
                         tempLength += CsFileUtils.length(it.filePath)
@@ -298,7 +328,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
      * 获取一个还未下载的任务
      * */
     private fun getTaskMsg(): MultiMsg? {
-        msgCache.getAllCache().forEach {
+        msgMaxCache.getAllCache().forEach {
             if (it is MultiMsg) {
                 if (it.status == STATUS_NORMAL) {
                     it.status = STATUS_START
@@ -317,10 +347,10 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
             override fun accept(): String {
                 //1.任务开始
                 CsLogger.tag(tag)
-                    .i("准备下载分片 taskTag: ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                    .i("准备下载分片 taskTag: ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                 if (CsFileUtils.length(msg.filePath) == msg.partSize) {
                     CsLogger.tag(tag)
-                        .i("分片已存在且满足要求 taskTag: ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                        .i("分片已存在且满足要求 taskTag: ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                     msg.status = STATUS_SUCCESS
                     return TASK_FINISH
                 }
@@ -333,10 +363,10 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     return value
                 }
                 CsLogger.tag(tag)
-                    .i("创建分片文件 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                    .i("创建分片文件 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                 if (!CsFileUtils.createFile(msg.filePath)) {
                     CsLogger.tag(tag)
-                        .i("创建分片文件失败 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                        .i("创建分片文件失败 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                     msg.status = STATUS_FAILED
                     return TASK_FINISH
                 }
@@ -349,7 +379,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     return value
                 }
                 CsLogger.tag(tag)
-                    .i("开始下载分片 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                    .i("开始下载分片 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                 try {
                     Task.start(
                         task,
@@ -366,7 +396,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     }
                     if (CsFileUtils.length(msg.filePath) == msg.partSize) {
                         CsLogger.tag(tag)
-                            .i("分片下载成功 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                            .i("分片下载成功 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                         msg.status = STATUS_SUCCESS
                         return TASK_RUNNING
                     }
@@ -374,7 +404,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     CsLogger.tag(tag).d(throwable)
                 }
                 CsLogger.tag(tag)
-                    .e("分片下载失败 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                    .e("分片下载失败 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                 //下载失败
                 msg.status = STATUS_FAILED
                 return TASK_FINISH
@@ -383,7 +413,7 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
             override fun onCallback() {
                 //4.执行后续分片任务
                 CsLogger.tag(tag)
-                    .i("分片下载结束 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgCache.size()}")
+                    .i("分片下载结束 taskTag = ${task.getTaskTag()}, part: ${msg.partPosition}, totalPart: ${msgMaxCache.size()}")
                 runningNum.decrementAndGet()
                 tryStartTask()
                 latch?.countDown()

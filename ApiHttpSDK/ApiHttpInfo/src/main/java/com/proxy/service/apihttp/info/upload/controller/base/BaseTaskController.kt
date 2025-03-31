@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.upload.controller.base
 
 import com.proxy.service.apihttp.base.upload.task.UploadTask
-import com.proxy.service.apihttp.info.common.cache.Cache
+import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.upload.dispatcher.TaskDispatcher
 import com.proxy.service.apihttp.info.upload.dispatcher.base.BaseDispatcher.OnWorkerIdleCallback
 import com.proxy.service.apihttp.info.upload.utils.ThreadUtils
@@ -13,7 +13,7 @@ import com.proxy.service.apihttp.info.upload.utils.ThreadUtils
  */
 abstract class BaseTaskController {
 
-    protected val tasks = Cache<UploadTask>(Int.MAX_VALUE)
+    protected val tasks = MaxCache<UploadTask>(Int.MAX_VALUE)
 
     private val onWorkerIdleCallback = object : OnWorkerIdleCallback {
         override fun onWorkerIdle() {

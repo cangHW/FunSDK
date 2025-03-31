@@ -4,7 +4,6 @@ import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.dispatcher.base.BaseDispatcher
-import com.proxy.service.apihttp.info.download.utils.ThreadUtils
 import com.proxy.service.apihttp.info.download.worker.MultiTaskWorker
 import com.proxy.service.apihttp.info.download.worker.SingleTaskWorker
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -21,7 +20,6 @@ object TaskDispatcher : BaseDispatcher() {
      * 发起一个任务并确认当前资源是否允许执行
      * */
     fun startTask(task: DownloadTask): Boolean {
-        ThreadUtils.checkCurrentThread()
         if (isTaskFull()) {
             return false
         }

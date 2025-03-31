@@ -18,7 +18,7 @@ upArray=(
 
   # web 容器库
 #  ":WebViewSDK:WebViewBase"
-  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewInfo"
 #  ":WebViewSDK:WebViewDSBridge"
 
     # 权限库
@@ -26,7 +26,7 @@ upArray=(
 #  ":Permission:PermissionInfo"
 
     # 日志文件库
-  ":LogFileSDK:LogFileInfo"
+#  ":LogFileSDK:LogFileInfo"
 )
 
 type_params="r"
