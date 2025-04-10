@@ -77,7 +77,7 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
     override fun uncaughtException(t: Thread, e: Throwable) {
         try {
-            val msg = "\n FATAL EXCEPTION: ${t.name} \n" +
+            val msg = "\n\nFATAL EXCEPTION: ${t.name} \n" +
                     "Process: ${application?.packageName}, PID: ${Process.myPid()} \n" +
                     Utils.getStackTraceString(e)
 

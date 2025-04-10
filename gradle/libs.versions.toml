@@ -2,6 +2,11 @@
 compile-sdk = "34"
 min-sdk = "23"
 target-sdk = "34"
+kotlin-bom = "1.8.0"
+junit = "4.13.2"
+junit-version = "1.1.5"
+espresso-core = "3.5.1"
+material = "1.10.0"
 
 
 [libraries]
@@ -24,7 +29,7 @@ service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", v
 service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.0.24"}
 service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds", version="0.0.16"}
 service-permission = {group = "io.github.cangHW", name="Service-Permission", version="0.0.21"}
-service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.0.5"}
+service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.0.6"}
 
 ##########################################  三方库  ############################################################################
 # 网络库
@@ -56,6 +61,7 @@ json-gson = { group = "com.google.code.gson", name = "gson", version = "2.10.1" 
 # 类似 SharedPreferences, 高性能键值对存储库
 sp-mmkv = { group = "com.tencent", name = "mmkv", version = "1.2.11" }
 
+##########################################  Other  ############################################################################
 
 [plugins]
 android-application = { id = "com.android.application", version = "8.5.0" }

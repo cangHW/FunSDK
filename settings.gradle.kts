@@ -45,3 +45,6 @@ include(":PermissionSDK:PermissionBase")
 include(":PermissionSDK:PermissionInfo")
 
 include(":LogFileSDK:LogFileInfo")
+
+include(":DocumentsSDK:DocumentBase")
+include(":DocumentsSDK:PdfInfo")

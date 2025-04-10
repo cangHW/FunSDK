@@ -33,7 +33,7 @@ object SpInit {
     fun getSp(spName: String?, mode: SpMode, secretKey: String?): MMKV {
         init()
 
-        val key = "name_${spName}_mode_${mode.mode}_secretKey_${secretKey}"
+        val key = "CoreFw_${spName}"
         val value = spMapper[key]
 
         if (value != null) {

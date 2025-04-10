@@ -20,6 +20,7 @@ std::string callStringFrom(JNIEnv *env, jobject config, const char *name, const 
         return "";
     }
     auto obj = (jstring) env->CallObjectMethod(config, method);
+    env->DeleteLocalRef(configClass);
     return jStringToString(env, obj);
 }
 
@@ -32,7 +33,9 @@ jlong callLongFrom(JNIEnv *env, jobject config, const char *name, const char *si
     if (method == nullptr) {
         return -1;
     }
-    return env->CallLongMethod(config, method);
+    jlong result = env->CallLongMethod(config, method);
+    env->DeleteLocalRef(configClass);
+    return result;
 }
 
 jint callIntFrom(JNIEnv *env, jobject config, const char *name, const char *sig) {
@@ -44,10 +47,12 @@ jint callIntFrom(JNIEnv *env, jobject config, const char *name, const char *sig)
     if (method == nullptr) {
         return 0;
     }
-    return env->CallIntMethod(config, method);
+    jint result = env->CallIntMethod(config, method);
+    env->DeleteLocalRef(configClass);
+    return result;
 }
 
-jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name, const char *sig){
+jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name, const char *sig) {
     jclass configClass = env->GetObjectClass(config);
     if (configClass == nullptr) {
         return 0;
@@ -56,5 +61,7 @@ jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name, const ch
     if (method == nullptr) {
         return 0;
     }
-    return env->CallBooleanMethod(config, method);
+    jboolean result = env->CallBooleanMethod(config, method);
+    env->DeleteLocalRef(configClass);
+    return result;
 }

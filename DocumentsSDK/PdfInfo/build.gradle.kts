@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.proxy.service.logfile.info"
+    namespace = "com.proxy.service.document.pdf"
     compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
@@ -13,12 +13,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        externalNativeBuild {
-            cmake {
-                cppFlags("-std=c++11")
-            }
-        }
 
         kapt {
             arguments {
@@ -36,21 +30,17 @@ android {
             )
         }
     }
-    externalNativeBuild {
-        cmake {
-            path("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
-        }
-    }
 }
 
 dependencies {
-//    implementation(libs.android.appcompat)
+    implementation(libs.android.appcompat)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
-    implementation(libs.core.framework)
-
+    implementation(project(":DocumentsSDK:DocumentBase"))
+    implementation(libs.core.framework){
+        exclude(group = "io.github.cangHW", module = "Service-DocumentBase")
+    }
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)
