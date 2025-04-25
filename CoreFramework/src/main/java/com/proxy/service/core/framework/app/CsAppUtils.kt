@@ -28,13 +28,16 @@ object CsAppUtils {
 
     /**
      * 重启应用
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun restartApp() {
-        val ctx = CsContextManager.getApplication()
-        val pm = ctx.packageManager
-        pm.getLaunchIntentForPackage(ctx.packageName)?.let {
+    fun restartApp(packageName: String? = null) {
+        val pkg = packageName ?: getPackageName()
+        val context = CsContextManager.getApplication()
+        val pm = context.packageManager
+        pm.getLaunchIntentForPackage(pkg)?.let {
             val mainIntent = Intent.makeRestartActivityTask(it.component)
-            ctx.startActivity(mainIntent)
+            context.startActivity(mainIntent)
         }
         Runtime.getRuntime().exit(0)
     }
@@ -74,19 +77,31 @@ object CsAppUtils {
 
     /**
      * 获取应用名称
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getAppName(): String {
-        val ctx = CsContextManager.getApplication()
-        return ctx.applicationInfo.loadLabel(ctx.packageManager).toString()
+    fun getAppName(packageName: String? = null): String {
+        val context = CsContextManager.getApplication()
+
+        if (packageName == null) {
+            return context.applicationInfo.loadLabel(context.packageManager).toString()
+        }
+
+        val pm = context.packageManager
+        val packageInfo = pm.getPackageInfo(getPackageName(), 0)
+        return packageInfo.applicationInfo.loadLabel(pm).toString()
     }
 
     /**
      * 获取应用版本号
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getVersionCode(): String {
+    fun getVersionCode(packageName: String? = null): String {
         try {
+            val pkg = packageName ?: getPackageName()
             val context = CsContextManager.getApplication()
-            val packageInfo = context.packageManager.getPackageInfo(getPackageName(), 0)
+            val packageInfo = context.packageManager.getPackageInfo(pkg, 0)
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode.toString()
             } else {
@@ -94,55 +109,60 @@ object CsAppUtils {
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            return "0"
         }
+        return "0"
     }
 
     /**
      * 获取当前应用的目标设备 SDK 版本
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getTargetSdkVersion(): Int {
-        var targetSdkVersion = -1
+    fun getTargetSdkVersion(packageName: String? = null): Int {
         try {
+            val pkg = packageName ?: getPackageName()
             val context = CsContextManager.getApplication()
-            val packageManager: PackageManager = context.packageManager
-            val info = packageManager.getPackageInfo(getPackageName(), 0)
-            targetSdkVersion = info.applicationInfo.targetSdkVersion
+            val packageInfo = context.packageManager.getPackageInfo(pkg, 0)
+            return packageInfo.applicationInfo.targetSdkVersion
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).d(throwable)
         }
-        return targetSdkVersion
+        return -1
     }
 
     /**
      * 获取应用版本名称
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getVersionName(): String {
+    fun getVersionName(packageName: String? = null): String {
         try {
+            val pkg = packageName ?: getPackageName()
             val context = CsContextManager.getApplication()
-            val packageInfo = context.packageManager.getPackageInfo(getPackageName(), 0)
+            val packageInfo = context.packageManager.getPackageInfo(pkg, 0)
             return packageInfo.versionName
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            return "0"
         }
+        return "0"
     }
 
     /**
      * 获取应用配置信息
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getMetaDataInApp(key: String): String {
-        val ctx = CsContextManager.getApplication()
-        var value = ""
-        val pm: PackageManager = ctx.packageManager
-        val packageName: String = ctx.packageName
+    fun getMetaDataInApp(key: String, packageName: String? = null): String {
+        val context = CsContextManager.getApplication()
+        val pkg = packageName ?: getPackageName()
         try {
-            val ai = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-            value = ai.metaData.getString(key, "")
+            val applicationInfo =
+                context.packageManager.getApplicationInfo(pkg, PackageManager.GET_META_DATA)
+            return applicationInfo.metaData.getString(key, "")
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
-        return value
+        return ""
     }
 
     /**

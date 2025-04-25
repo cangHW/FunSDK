@@ -35,6 +35,7 @@ android {
 dependencies {
     implementation(libs.cloud.api)
     implementation(libs.android.appcompat)
+    implementation(libs.android.kotlin)
     kapt(libs.cloud.compiler)
 
     implementation(project(":ApiHttpSDK:ApiHttpBase"))

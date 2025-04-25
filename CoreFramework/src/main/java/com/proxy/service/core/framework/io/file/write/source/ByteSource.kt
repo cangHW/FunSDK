@@ -46,7 +46,6 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)
@@ -63,7 +62,6 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)
@@ -98,13 +96,14 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
 
     private fun write(stream: OutputStream) {
         val outputStream = stream.buffered()
-        val buffer = ByteBuffer.wrap(bytes)
-        buffer.flip()
         val temp = ByteArray(IoConfig.IO_BUFFER_SIZE)
-        while (buffer.hasRemaining()) {
-            val length = Math.min(buffer.remaining(), temp.size)
-            buffer.get(temp, 0, length)
+        var offset = 0
+
+        while (offset < bytes.size) {
+            val length = Math.min(bytes.size - offset, temp.size)
+            System.arraycopy(bytes, offset, temp, 0, length)
             outputStream.write(temp, 0, length)
+            offset += length
         }
         outputStream.flush()
     }

@@ -28,8 +28,12 @@ class PathSource(private val path: Path) : IRead {
             return ""
         }
         try {
-            Files.lines(path, charset).use { lines ->
-                return lines.collect(Collectors.joining(System.lineSeparator()))
+            Files.lines(path, charset).let {
+                try {
+                    return it.collect(Collectors.joining(System.lineSeparator()))
+                }finally {
+                    it.close()
+                }
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)

@@ -42,7 +42,7 @@ class LogFileManager {
         config._cacheTime = logConfig.getCacheTime()
         config._type = logConfig.getLogType()
         config._maxFileSize = logConfig.getMaxFileSize()
-        config._maxFiles = logConfig.getMaxFiles()
+        config._maxFileCount = logConfig.getMaxFileCount()
         config._hour = logConfig.getDailyHour()
         config._minute = logConfig.getDailyMinute()
         if (initTask(config)) {

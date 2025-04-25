@@ -15,7 +15,7 @@ import com.proxy.service.core.framework.app.context.ContextInit
 class CoreFrameworkConfig : CsBaseConfig() {
 
     override fun priority(): Int {
-        return -999
+        return -990
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {

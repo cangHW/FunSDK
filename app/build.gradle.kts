@@ -58,7 +58,10 @@ dependencies {
     implementation(libs.service.webview.bridge)
     implementation(libs.service.permission)
     implementation(libs.service.logfile)
+//    implementation(libs.service.apm)
+    implementation(project(":ApmSDK:ApmInfo"))
 //    implementation(project(":LogFileSDK:LogFileInfo"))
+
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

@@ -45,7 +45,7 @@ interface IBuilderGet {
     /**
      * 获取缓存文件最大数量
      * */
-    fun getMaxFiles(): Int
+    fun getMaxFileCount(): Int
 
     /**
      * 获取新文件创建时间节点

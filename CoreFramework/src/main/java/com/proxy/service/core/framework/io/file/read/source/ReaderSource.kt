@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.BufferedReader
@@ -42,8 +43,12 @@ class ReaderSource(private val reader: Reader) : IRead {
     @RequiresApi(Build.VERSION_CODES.N)
     private fun readString26(): String {
         val bufferedReader = BufferedReader(reader)
-        bufferedReader.lines().use { lines ->
-            return lines.collect(Collectors.joining(System.lineSeparator()))
+        bufferedReader.lines().let {
+            try {
+                return it.collect(Collectors.joining(System.lineSeparator()))
+            } finally {
+                it.close()
+            }
         }
     }
 

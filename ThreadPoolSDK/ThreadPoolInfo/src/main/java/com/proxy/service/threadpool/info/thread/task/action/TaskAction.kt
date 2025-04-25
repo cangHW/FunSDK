@@ -28,11 +28,14 @@ abstract class TaskAction<T : Any>(private var taskInfo: TaskInfo<T>) :
     override fun <R : Any> flatMap(function: IFunction<T, ITaskOption<R>>): ITaskOption<R> {
         val task = TaskInfo<R>()
         task.copy(taskInfo)
-        if (function is IRealObserver<*>){
-            val observer = function as IRealObserver<R>
-            task.observable = taskInfo.observable?.flatMap { observer.getObserver() }
-        }else{
-            throw IllegalArgumentException("Invalid function : $function, it must be created using ThreadPoolService.")
+        task.observable = taskInfo.observable?.flatMap {
+            val iTaskOption = function.apply(it)
+            if (iTaskOption is IRealObserver<*>){
+                val observer = iTaskOption as IRealObserver<R>
+                observer.getObserver()
+            }else{
+                throw IllegalArgumentException("Invalid function : $function, it must be created using ThreadPoolService.")
+            }
         }
         return TaskOptionImpl(task)
     }

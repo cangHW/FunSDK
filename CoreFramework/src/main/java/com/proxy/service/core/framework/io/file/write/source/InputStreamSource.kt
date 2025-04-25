@@ -44,7 +44,6 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)
@@ -61,7 +60,6 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)

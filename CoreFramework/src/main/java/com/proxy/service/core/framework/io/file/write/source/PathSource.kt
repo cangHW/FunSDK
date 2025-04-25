@@ -55,7 +55,6 @@ class PathSource(private val path: Path) : AbstractWrite() {
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)
@@ -71,20 +70,19 @@ class PathSource(private val path: Path) : AbstractWrite() {
         start(tag, "OutputStream")
         try {
             Files.newInputStream(path).buffered().use { inputStream ->
-                stream.buffered().use { outputStream ->
-                    val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
-                    var bytesRead: Int
-                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                        outputStream.write(buffer, 0, bytesRead)
-                    }
+                val bos = stream.buffered()
+                val buffer = ByteArray(IoConfig.IO_BUFFER_SIZE)
+                var bytesRead: Int
+                while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                    bos.write(buffer, 0, bytesRead)
                 }
+                bos.flush()
             }
 
             success(tag, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)

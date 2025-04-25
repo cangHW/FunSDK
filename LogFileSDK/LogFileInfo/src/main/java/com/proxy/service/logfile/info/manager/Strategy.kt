@@ -22,7 +22,7 @@ class Strategy {
     var _type: Int = Constants.TYPE_NORMAL
 
     var _maxFileSize: Long = 0
-    var _maxFiles: Int = 0
+    var _maxFileCount: Int = 0
 
     var _hour: Int = 0
     var _minute: Int = 0
@@ -59,8 +59,8 @@ class Strategy {
         return _maxFileSize
     }
 
-    fun getMaxFiles(): Int {
-        return _maxFiles
+    fun getMaxFileCount(): Int {
+        return _maxFileCount
     }
 
     fun getHour(): Int {

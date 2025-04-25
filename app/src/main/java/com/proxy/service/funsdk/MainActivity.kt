@@ -39,9 +39,6 @@ class MainActivity : AppCompatActivity() {
     fun onClick(view: View) {
         when (view.id) {
             R.id.core_framework -> {
-
-                throw NullPointerException("ssssss")
-
                 FrameWorkActivity.launch(this)
             }
 

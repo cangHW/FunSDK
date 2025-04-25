@@ -14,9 +14,9 @@ object CsLogFile {
     private var config: LogConfig = LogConfig.builder().createNormalType()
 
     /**
-     * 初始化
+     * 设置配置
      * */
-    fun init(config: LogConfig) {
+    fun setConfig(config: LogConfig) {
         this.config = config
     }
 

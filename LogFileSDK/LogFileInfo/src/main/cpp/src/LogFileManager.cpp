@@ -40,7 +40,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileManager_initTask(
         basic_logger(isSync, path);
     } else if (type == 1) {
         jlong maxFileSize = callLongFrom(env, config, "getMaxFileSize", "()J");
-        jint maxFiles = callIntFrom(env, config, "getMaxFiles", "()I");
+        jint maxFiles = callIntFrom(env, config, "getMaxFileCount", "()I");
 
         rotating_logger(isSync, path, maxFileSize, maxFiles);
     } else if (type == 2) {

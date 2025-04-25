@@ -44,7 +44,9 @@ include(":WebViewSDK:WebViewDSBridge")
 include(":PermissionSDK:PermissionBase")
 include(":PermissionSDK:PermissionInfo")
 
-include(":LogFileSDK:LogFileInfo")
-
 include(":DocumentsSDK:DocumentBase")
 include(":DocumentsSDK:PdfInfo")
+
+include(":LogFileSDK:LogFileInfo")
+
+include(":ApmSDK:ApmInfo")

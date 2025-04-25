@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.android.kotlin)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 

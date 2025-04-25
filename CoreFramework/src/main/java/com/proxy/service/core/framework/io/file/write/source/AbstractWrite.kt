@@ -30,10 +30,9 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
     override fun writeAsync(
         file: String,
         callback: IoCallback?,
-        append: Boolean,
-        shouldThrow: Boolean
+        append: Boolean
     ) {
-        writeAsync(File(file), callback, append, shouldThrow)
+        writeAsync(File(file), callback, append)
     }
 
     /**
@@ -43,12 +42,11 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
     override fun writeAsync(
         file: File,
         callback: IoCallback?,
-        append: Boolean,
-        shouldThrow: Boolean
+        append: Boolean
     ) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (writeSync(file, append, shouldThrow)) {
+                if (writeSync(file, append, false)) {
                     callback?.onSuccess()
                 } else {
                     callback?.onFailed()
@@ -58,10 +56,10 @@ abstract class AbstractWrite : IWrite, IWriteStatusLog {
         })?.start()
     }
 
-    override fun writeAsync(stream: OutputStream, callback: IoCallback?, shouldThrow: Boolean) {
+    override fun writeAsync(stream: OutputStream, callback: IoCallback?) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (writeSync(stream, shouldThrow)) {
+                if (writeSync(stream, false)) {
                     callback?.onSuccess()
                 } else {
                     callback?.onFailed()

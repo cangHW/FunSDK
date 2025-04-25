@@ -40,8 +40,8 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.getMaxFileSize()
     }
 
-    override fun getMaxFiles(): Int {
-        return builder.getMaxFiles()
+    override fun getMaxFileCount(): Int {
+        return builder.getMaxFileCount()
     }
 
     override fun getDailyHour(): Int {
@@ -71,7 +71,7 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var type: Int = Constants.TYPE_NORMAL
 
         private var maxFileSize: Long = Constants.MAX_FILE_SIZE
-        private var maxFiles: Int = Constants.MAX_FILES
+        private var maxFileCount: Int = Constants.MAX_FILE_COUNT
 
         private var hour: Int = Constants.HOUR
         private var minute: Int = Constants.MINUTE
@@ -120,17 +120,17 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return LogConfig(this)
         }
 
-        override fun createRotatingType(maxFileSize: Long, maxFiles: Int): LogConfig {
+        override fun createRotatingType(maxFileSize: Long, maxFileCount: Int): LogConfig {
             this.type = Constants.TYPE_ROTATING
             this.maxFileSize = if (maxFileSize < 0) {
                 Constants.MAX_FILE_SIZE
             } else {
                 maxFileSize
             }
-            this.maxFiles = if (maxFiles < 0) {
-                Constants.MAX_FILES
+            this.maxFileCount = if (maxFileCount < 0) {
+                Constants.MAX_FILE_COUNT
             } else {
-                maxFiles
+                maxFileCount
             }
             return LogConfig(this)
         }
@@ -178,8 +178,8 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return maxFileSize
         }
 
-        override fun getMaxFiles(): Int {
-            return maxFiles
+        override fun getMaxFileCount(): Int {
+            return maxFileCount
         }
 
         override fun getDailyHour(): Int {

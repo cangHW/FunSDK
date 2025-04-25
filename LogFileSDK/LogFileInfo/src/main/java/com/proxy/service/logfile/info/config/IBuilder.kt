@@ -42,9 +42,9 @@ interface IBuilder {
     fun createNormalType(): LogConfig
 
     /**
-     * 创建一个按大小分割文件以及限制文件最大缓存数量配置, 默认: maxFileSize 5M, maxFiles 3
+     * 创建一个按大小分割文件以及限制文件最大缓存数量配置, 默认: maxFileSize 5M, maxFileCount 3
      * */
-    fun createRotatingType(maxFileSize: Long, maxFiles: Int): LogConfig
+    fun createRotatingType(maxFileSize: Long, maxFileCount: Int): LogConfig
 
     /**
      * 创建一个按天分割文件配置, 默认: hour 0, minute 0.

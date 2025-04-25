@@ -10,9 +10,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.io.Reader
-import java.nio.CharBuffer
-import java.nio.channels.Channels
-import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 
@@ -48,7 +46,6 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)
@@ -65,7 +62,6 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
-                CsLogger.tag(tag).d(throwable)
                 throw throwable
             } else {
                 CsLogger.tag(tag).e(throwable)
@@ -93,15 +89,14 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
     }
 
     private fun write(stream: OutputStream) {
-        Channels.newChannel(stream).use { channel ->
-            val encoder = Charset.defaultCharset().newEncoder()
-            val charBuffer = CharBuffer.allocate(IoConfig.IO_BUFFER_SIZE)
-            while (reader.read(charBuffer) != -1) {
-                charBuffer.flip()
-                val byteBuffer = encoder.encode(charBuffer)
-                channel.write(byteBuffer)
-                charBuffer.clear()
-            }
+        val bos = stream.buffered()
+        val buffer = CharArray(IoConfig.IO_BUFFER_SIZE)
+        var bytesRead: Int
+
+        while ((reader.read(buffer).also { bytesRead = it }) != -1) {
+            val byteBuffer = String(buffer, 0, bytesRead).toByteArray(StandardCharsets.UTF_8)
+            bos.write(byteBuffer)
         }
+        bos.flush()
     }
 }
