@@ -9,8 +9,11 @@ import com.proxy.service.core.framework.io.monitor.manager.IManager
  * @data: 2025/4/23 10:49
  * @desc:
  */
-object CsFileMonitor {
+object CsFileMonitorUtils {
 
+    /**
+     * 创建文件变动监听器
+     * */
     fun createMonitor(rootPath: String, callback: FileMonitorCallback): IManager {
         return FileManager.create(rootPath, callback)
     }

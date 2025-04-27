@@ -4,7 +4,7 @@ import com.proxy.service.apm.info.config.controller.Controller
 import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.core.framework.io.monitor.CsFileMonitor
+import com.proxy.service.core.framework.io.monitor.CsFileMonitorUtils
 import com.proxy.service.core.framework.io.monitor.callback.FileMonitorCallback
 import com.proxy.service.core.framework.io.monitor.info.FileInfo
 import com.proxy.service.core.framework.io.monitor.manager.IManager
@@ -36,13 +36,11 @@ class CacheManager {
         if (map.containsKey(path)) {
             return
         }
-        val manager = CsFileMonitor.createMonitor(
+        val manager = CsFileMonitorUtils.createMonitor(
             path,
             FileMonitorCallbackImpl(
-//                controller.getMaxFileCount(),
-                3,
-//                controller.getAllFilesMaxSize(),
-                100 * 1024,
+                controller.getMaxFileCount(),
+                controller.getAllFilesMaxSize(),
                 controller.getMaxCacheTime()
             )
         )
