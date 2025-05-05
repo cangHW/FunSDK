@@ -42,11 +42,11 @@ object CsFileWriteUtils : IWrite.Source {
     /**
      * 设置源数据
      *
-     * fileName 示例：asd/xxx.txt
+     * assetPath 示例：asd/xxx.txt
      * */
-    override fun setSourceAssetPath(fileName: String): IWrite {
+    override fun setSourceAssetPath(assetPath: String): IWrite {
         val context = CsContextManager.getApplication()
-        return AutoCloseInputStreamSource(context.assets.open(fileName))
+        return AutoCloseInputStreamSource(context.assets.open(assetPath))
     }
 
     /**

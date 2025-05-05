@@ -5,7 +5,7 @@ import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
-import com.proxy.service.logfile.info.manager.LogFileManager
+import com.proxy.service.logfile.info.manager.LogFileCore
 
 /**
  * @author: cangHX
@@ -24,8 +24,8 @@ class LogFileApplication : CsBaseApplication(), OnAppShowStatusChangedCallback {
     }
 
     override fun onAppBackground() {
-        if (LogFileManager.getInstance().isInitSuccess()) {
-            LogFileManager.getInstance().flush()
+        if (LogFileCore.getInstance().isInitSuccess()) {
+            LogFileCore.getInstance().flush()
         }
     }
 

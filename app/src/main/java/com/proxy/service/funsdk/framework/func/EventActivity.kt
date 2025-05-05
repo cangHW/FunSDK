@@ -38,7 +38,7 @@ class EventActivity : AppCompatActivity(), MessageReceiverListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event)
+        setContentView(R.layout.activity_framework_event)
     }
 
     fun onClick(view: View) {

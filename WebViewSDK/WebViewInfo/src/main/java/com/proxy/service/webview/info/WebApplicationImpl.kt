@@ -27,7 +27,7 @@ class WebApplicationImpl : CsBaseApplication() {
 
     override fun onCreate(application: Application, isDebug: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            WebView.setDataDirectorySuffix("_${CsAppUtils.getProcessName()}")
+            WebView.setDataDirectorySuffix(CsAppUtils.getProcessName())
             if (isDebug) {
                 CsTask.startWhenIdle {
                     if (CsAppUtils.isMainProcess()) {

@@ -7,7 +7,7 @@ import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.api.log.base.LogTree
 import com.proxy.service.core.application.base.CsBaseConfig
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.logfile.info.manager.LogFileManager
+import com.proxy.service.logfile.info.manager.LogFileCore
 import com.proxy.service.logfile.info.utils.Utils
 
 /**
@@ -30,7 +30,7 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
         this.application = application
         CsLogger.addLogCallback(logTree)
 
-        LogFileManager.getInstance().init(application, CsLogFile.getLogConfig())
+        LogFileCore.getInstance().init(application, CsLogFile.getLogConfig())
 
         uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(this)
@@ -38,38 +38,38 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
     private val logTree = object : LogTree() {
         override fun onLog(priority: Int, tag: String, message: String, throwable: Throwable?) {
-            if (!LogFileManager.getInstance().isInitSuccess()) {
+            if (!LogFileCore.getInstance().isInitSuccess()) {
                 return
             }
 
             when (priority) {
                 Log.VERBOSE -> {
-                    LogFileManager.getInstance().log("V", tag, message)
+                    LogFileCore.getInstance().log("V", tag, message)
                 }
 
                 Log.DEBUG -> {
-                    LogFileManager.getInstance().log("D", tag, message)
+                    LogFileCore.getInstance().log("D", tag, message)
                 }
 
                 Log.INFO -> {
-                    LogFileManager.getInstance().log("I", tag, message)
+                    LogFileCore.getInstance().log("I", tag, message)
                 }
 
                 Log.WARN -> {
-                    LogFileManager.getInstance().log("W", tag, message)
+                    LogFileCore.getInstance().log("W", tag, message)
                 }
 
                 Log.ERROR -> {
-                    LogFileManager.getInstance().log("E", tag, message)
-                    LogFileManager.getInstance().flush()
+                    LogFileCore.getInstance().log("E", tag, message)
+                    LogFileCore.getInstance().flush()
                 }
 
                 Log.ASSERT -> {
-                    LogFileManager.getInstance().log("A", tag, message)
+                    LogFileCore.getInstance().log("A", tag, message)
                 }
 
                 else -> {
-                    LogFileManager.getInstance().log("UNKNOWN", tag, message)
+                    LogFileCore.getInstance().log("UNKNOWN", tag, message)
                 }
             }
         }
@@ -81,14 +81,14 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
                     "Process: ${application?.packageName}, PID: ${Process.myPid()} \n" +
                     Utils.getStackTraceString(e)
 
-            if (LogFileManager.getInstance().isInitSuccess()) {
-                LogFileManager.getInstance().log("E", "AndroidRuntime", msg)
+            if (LogFileCore.getInstance().isInitSuccess()) {
+                LogFileCore.getInstance().log("E", "AndroidRuntime", msg)
             }
         } catch (throwable: Throwable) {
             CsLogger.e(throwable)
         } finally {
-            if (LogFileManager.getInstance().isInitSuccess()) {
-                LogFileManager.getInstance().flush()
+            if (LogFileCore.getInstance().isInitSuccess()) {
+                LogFileCore.getInstance().flush()
             }
         }
 

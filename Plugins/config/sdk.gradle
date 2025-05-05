@@ -15,7 +15,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.0.1",
+                    version           : "1.0.2",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -47,7 +47,7 @@ ext {
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.1.0",
+                    version           : "0.1.1",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -79,7 +79,7 @@ ext {
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview",
-                    version           : "0.1.0",
+                    version           : "0.1.1",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -111,7 +111,7 @@ ext {
             // 日志文件库
             LogFileInfo    : [
                     artifact          : "Service-LogFile-Spdlog",
-                    version           : "0.1.0",
+                    version           : "0.1.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -125,7 +125,7 @@ ext {
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
-            PdfInfo    : [
+            DocumentPdf    : [
                     artifact          : "Service-Document-Pdf",
                     version           : "0.0.1",
                     source            : false,

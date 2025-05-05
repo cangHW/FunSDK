@@ -22,9 +22,9 @@ import java.nio.file.Paths
  */
 abstract class AbstractSource<T> : AbstractMedia<T>(), ISource<T> {
 
-    override fun setSourceAssetPath(fileName: String): T {
+    override fun setSourceAssetPath(assetPath: String): T {
         val context = CsContextManager.getApplication()
-        store.setSource(AutoCloseInputStreamSource(context.assets.open(fileName)))
+        store.setSource(AutoCloseInputStreamSource(context.assets.open(assetPath)))
         return getT()
     }
 

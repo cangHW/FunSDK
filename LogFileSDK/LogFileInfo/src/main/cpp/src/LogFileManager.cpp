@@ -8,7 +8,7 @@
 #include "h/LogFileInit.h"
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_proxy_service_logfile_info_manager_LogFileManager_initTask(
+Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
         JNIEnv *env,
         jobject ojb,
         jobject config
@@ -66,7 +66,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileManager_initTask(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_proxy_service_logfile_info_manager_LogFileManager_log(
+Java_com_proxy_service_logfile_info_manager_LogFileCore_log(
         JNIEnv *env,
         jobject job,
         jstring level,
@@ -93,7 +93,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileManager_log(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_proxy_service_logfile_info_manager_LogFileManager_flush(
+Java_com_proxy_service_logfile_info_manager_LogFileCore_flush(
         JNIEnv *env,
         jobject job
 ) {

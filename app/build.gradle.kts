@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-//    implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)
 
     implementation(libs.android.view.flexbox)
@@ -58,8 +57,10 @@ dependencies {
     implementation(libs.service.webview.bridge)
     implementation(libs.service.permission)
     implementation(libs.service.logfile)
-//    implementation(libs.service.apm)
-    implementation(project(":ApmSDK:ApmInfo"))
+    implementation(libs.service.apm)
+    implementation(project(":DocumentsSDK:DocumentBase"))
+    implementation(project(":DocumentsSDK:DocumentPdf"))
+//    implementation(project(":ApmSDK:ApmInfo"))
 //    implementation(project(":LogFileSDK:LogFileInfo"))
 
 }

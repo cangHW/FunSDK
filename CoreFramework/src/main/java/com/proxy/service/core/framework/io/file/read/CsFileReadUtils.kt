@@ -27,11 +27,11 @@ object CsFileReadUtils : IRead.Source {
     /**
      * 设置源数据
      *
-     * fileName 示例：asd/xxx.txt
+     * assetPath 示例：asd/xxx.txt
      * */
-    override fun setSourceAssetPath(fileName: String): IRead {
+    override fun setSourceAssetPath(assetPath: String): IRead {
         val context = CsContextManager.getApplication()
-        return AutoCloseInputStreamSource(context.assets.open(fileName))
+        return AutoCloseInputStreamSource(context.assets.open(assetPath))
     }
 
     /**

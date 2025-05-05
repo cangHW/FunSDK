@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-//    implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)
     implementation(libs.android.kotlin)
     api(libs.cloud.api)

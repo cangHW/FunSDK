@@ -17,9 +17,9 @@ interface ISource<T> {
     /**
      * 设置源数据
      *
-     * fileName 示例：asd/xxx.txt
+     * assetPath 示例：asd/xxx.txt
      * */
-    fun setSourceAssetPath(fileName: String): T
+    fun setSourceAssetPath(assetPath: String): T
 
     /**
      * 设置源数据
