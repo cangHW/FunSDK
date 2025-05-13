@@ -44,4 +44,18 @@ open class BasePdf {
         }
         return false
     }
+
+    /**
+     * 通过页码找到对应文档对象
+     * */
+    protected fun findDocByPageIndex(pageIndex: Int): DocumentInfo? {
+        synchronized(lock){
+            for (doc in docs) {
+                if (doc.getPageStart() <= pageIndex && pageIndex <= doc.getPageEnd()) {
+                    return doc
+                }
+            }
+        }
+        return null
+    }
 }

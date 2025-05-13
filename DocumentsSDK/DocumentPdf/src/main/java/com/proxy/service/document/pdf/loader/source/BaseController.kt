@@ -6,6 +6,9 @@ import com.proxy.service.document.base.config.pdf.source.BaseSource
 import com.proxy.service.document.base.config.pdf.source.ByteArraySource
 import com.proxy.service.document.base.config.pdf.source.FilePathSource
 import com.proxy.service.document.base.config.pdf.source.FileSource
+import com.proxy.service.document.base.config.pdf.source.InputStreamSource
+import com.proxy.service.document.base.config.pdf.source.UriSource
+import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.pdf.loader.info.DocumentInfo
 
 /**
@@ -16,6 +19,8 @@ import com.proxy.service.document.pdf.loader.info.DocumentInfo
 abstract class BaseController {
 
     companion object {
+
+        const val TAG = "${Constants.LOG_TAG_PDF_START}Controller"
 
         fun findController(source: BaseSource): BaseController? {
             when (source) {
@@ -33,6 +38,14 @@ abstract class BaseController {
 
                 is ByteArraySource -> {
                     return ByteArraySourceController(source)
+                }
+
+                is InputStreamSource -> {
+                    return InputStreamSourceController(source)
+                }
+
+                is UriSource -> {
+                    return UriSourceController(source)
                 }
 
                 else -> return null

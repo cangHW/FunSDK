@@ -1,6 +1,8 @@
 package com.proxy.service.document.base.config.pdf.source
 
+import android.net.Uri
 import java.io.File
+import java.io.InputStream
 
 /**
  * @author: cangHX
@@ -30,5 +32,17 @@ class FileSource(val file: File, password: String?) : BaseSource(password) {
 class ByteArraySource(val byteArray: ByteArray, password: String?) : BaseSource(password) {
     override fun toString(): String {
         return "ByteArraySource(byteArray='${byteArray.size}', password='$password')"
+    }
+}
+
+class InputStreamSource(val inputStream: InputStream, password: String?) : BaseSource(password) {
+    override fun toString(): String {
+        return "InputStreamSource(inputStream='${inputStream.available()}', password='$password')"
+    }
+}
+
+class UriSource(val uri: Uri, password: String?) : BaseSource(password) {
+    override fun toString(): String {
+        return "UriSource(uri='$uri', password='$password')"
     }
 }

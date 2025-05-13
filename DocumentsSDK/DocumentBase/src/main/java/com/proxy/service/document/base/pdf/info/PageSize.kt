@@ -1,6 +1,6 @@
 package com.proxy.service.document.base.pdf.info
 
-class PageSize(val width: Int, val height: Int) {
+class PageSize(val widthPixel: Int, val heightPixel: Int) {
 
     override fun equals(obj: Any?): Boolean {
         if (obj == null) {
@@ -10,16 +10,16 @@ class PageSize(val width: Int, val height: Int) {
             return true
         }
         if (obj is PageSize) {
-            return width == obj.width && height == obj.height
+            return widthPixel == obj.widthPixel && heightPixel == obj.heightPixel
         }
         return false
     }
 
     override fun toString(): String {
-        return width.toString() + "x" + height
+        return widthPixel.toString() + "x" + heightPixel
     }
 
     override fun hashCode(): Int {
-        return height xor ((width shl (Integer.SIZE / 2)) or (width ushr (Integer.SIZE / 2)))
+        return heightPixel xor ((widthPixel shl (Integer.SIZE / 2)) or (widthPixel ushr (Integer.SIZE / 2)))
     }
 }

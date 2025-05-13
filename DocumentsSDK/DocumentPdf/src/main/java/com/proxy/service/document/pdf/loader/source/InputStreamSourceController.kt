@@ -4,23 +4,24 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
 import com.proxy.service.document.base.config.pdf.enums.LoadErrorEnum
-import com.proxy.service.document.base.config.pdf.source.AssetPathSource
+import com.proxy.service.document.base.config.pdf.source.InputStreamSource
 import com.proxy.service.document.pdf.core.OpenResult
 import com.proxy.service.document.pdf.core.PdfiumCore
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:48
+ * @data: 2025/5/6 20:04
  * @desc:
  */
-class AssetPathSourceController(private val source: AssetPathSource) : BaseController() {
+class InputStreamSourceController(private val source: InputStreamSource) : BaseController() {
 
     override fun getDocumentInfo(): Result {
         var result: OpenResult? = null
         try {
-            val filePath = fileFromAsset(source.assetPath)
+            val filePath = fileFromInputStream(source.inputStream)
             result = PdfiumCore.getInstance().nativeOpenDocumentByPath(filePath, source.password)
             if (result.hand != -1L) {
                 return Result.success(this, result.hand)
@@ -36,10 +37,10 @@ class AssetPathSourceController(private val source: AssetPathSource) : BaseContr
     }
 
     @Throws(IOException::class)
-    private fun fileFromAsset(assetPath: String): String {
+    private fun fileFromInputStream(inputStream: InputStream): String {
         val context = CsContextManager.getApplication()
-        val outFile = File(context.cacheDir, "${assetPath}-AssetPdf.pdf")
-        CsFileWriteUtils.setSourceAssetPath(assetPath).writeSync(outFile)
+        val outFile = File(context.cacheDir, "InputStreamPdf.pdf")
+        CsFileWriteUtils.setSourceStream(inputStream).writeSync(outFile)
         return outFile.absolutePath
     }
 }

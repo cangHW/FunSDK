@@ -15,6 +15,8 @@ import com.proxy.service.document.base.config.pdf.info.FailedResult
 import com.proxy.service.document.base.config.pdf.source.BaseSource
 import com.proxy.service.document.base.pdf.IPdfLoader
 import com.proxy.service.document.base.pdf.info.CatalogueData
+import com.proxy.service.document.pdf.view.TempSurfaceView
+import com.proxy.service.document.pdf.view.TempView
 import com.proxy.service.funsdk.R
 
 /**
@@ -36,20 +38,27 @@ class PdfActivity : AppCompatActivity() {
 
     private var loader: IPdfLoader? = null
 
+    private var tempSurfaceView: TempSurfaceView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_pdf)
+
+//        val tempView = findViewById<TempView>(R.id.temp)
+        tempSurfaceView = findViewById(R.id.temp_surface)
 
         val service = CloudSystem.getService(PdfService::class.java)
         loader = service?.createLoader(
             PdfConfig.builder()
                 .setSourceAssetPath("pdf/asd.pdf")
-                .setLoadCallback(object :LoadStateCallback{
+                .setLoadCallback(object : LoadStateCallback {
                     override fun onLoadComplete(
                         success: List<BaseSource>,
                         failed: List<FailedResult>
                     ) {
                         CsLogger.i("PDF 加载完成，success=${success} failed=${failed}")
+//                        tempView?.setLoader(loader)
+                        tempSurfaceView?.setLoader(loader)
                     }
                 }).build()
         )
@@ -62,6 +71,18 @@ class PdfActivity : AppCompatActivity() {
                 CsLogger.i("DocumentMeta = ${loader?.getDocumentMeta()}")
                 loader?.getDocumentCatalogue()?.forEach {
                     logCatalogue(it, "")
+                }
+            }
+
+            R.id.last_page -> {
+                tempSurfaceView?.let {
+                    it.showContent(it.getShowIndex() - 1)
+                }
+            }
+
+            R.id.next_page -> {
+                tempSurfaceView?.let {
+                    it.showContent(it.getShowIndex() + 1)
                 }
             }
         }

@@ -48,8 +48,8 @@ class LottieInfo : BaseInfo() {
             return
         }
 
-        val source = view.getTag(R.id.imageloader_lottie_view_target_tag) as? LottieInfo?
-        view.setTag(R.id.imageloader_lottie_view_target_tag, this)
+        val source = view.getTag(R.id.cs_image_load_lottie_view_tag) as? LottieInfo?
+        view.setTag(R.id.cs_image_load_lottie_view_tag, this)
 
         view.removeAnimatorListener(source?.listener)
         view.removeAnimatorPauseListener(source?.pauseListener)
@@ -77,7 +77,7 @@ class LottieInfo : BaseInfo() {
             }
 
             override fun onError(result: Throwable?) {
-                view.setTag(R.id.imageloader_lottie_view_target_tag, null)
+                view.setTag(R.id.cs_image_load_lottie_view_tag, null)
             }
         })
     }
@@ -86,7 +86,7 @@ class LottieInfo : BaseInfo() {
         if (view.composition == null) {
             return
         }
-        val source = view.getTag(R.id.imageloader_lottie_view_target_tag) as? LottieInfo? ?: return
+        val source = view.getTag(R.id.cs_image_load_lottie_view_tag) as? LottieInfo? ?: return
         view.repeatCount = source.count
         view.repeatMode = source.model.model
         checkPlay(view, controller)

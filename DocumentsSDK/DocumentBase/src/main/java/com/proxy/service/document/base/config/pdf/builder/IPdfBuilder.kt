@@ -1,8 +1,10 @@
 package com.proxy.service.document.base.config.pdf.builder
 
+import android.net.Uri
 import com.proxy.service.document.base.config.pdf.PdfConfig
 import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
 import java.io.File
+import java.io.InputStream
 
 /**
  * @author: cangHX
@@ -42,6 +44,20 @@ interface IPdfBuilder {
     fun setSourceByteArray(bytes: ByteArray, password: String? = null): IPdfBuilder
 
     /**
+     * 设置源数据
+     *
+     * @param password  密码
+     * */
+    fun setSourceInputStream(inputStream: InputStream, password: String? = null): IPdfBuilder
+
+    /**
+     * 设置源数据
+     *
+     * @param password  密码
+     * */
+    fun setSourceUri(uri: Uri, password: String? = null): IPdfBuilder
+
+    /**
      * 添加源数据
      *
      * assetPath 示例：asd/xxx.txt
@@ -70,6 +86,20 @@ interface IPdfBuilder {
      * @param password  密码
      * */
     fun addSourceByteArray(bytes: ByteArray, password: String? = null): IPdfBuilder
+
+    /**
+     * 设置源数据
+     *
+     * @param password  密码
+     * */
+    fun addSourceInputStream(inputStream: InputStream, password: String? = null): IPdfBuilder
+
+    /**
+     * 设置源数据
+     *
+     * @param password  密码
+     * */
+    fun addSourceUri(uri: Uri, password: String? = null): IPdfBuilder
 
     /**
      * 设置加载回调

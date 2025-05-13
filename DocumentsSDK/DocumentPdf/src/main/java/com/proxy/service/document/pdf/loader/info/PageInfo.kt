@@ -1,5 +1,7 @@
 package com.proxy.service.document.pdf.loader.info
 
+import android.graphics.Bitmap
+import android.view.Surface
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.document.base.pdf.info.LinkData
 import com.proxy.service.document.pdf.core.PdfiumCore
@@ -9,7 +11,7 @@ import com.proxy.service.document.pdf.core.PdfiumCore
  * @data: 2025/4/30 17:55
  * @desc:
  */
-class PageInfo(val doc_hand: Long, val page_hand: Long) {
+class PageInfo(private val doc_hand: Long, val page_hand: Long) {
 
     companion object {
         private var dpi = -1
@@ -96,5 +98,52 @@ class PageInfo(val doc_hand: Long, val page_hand: Long) {
         }
         return heightPoint
     }
+
+    /**
+     * 渲染页面内容到 bitmap
+     * */
+    fun renderPageToBitmap(
+        bitmap: Bitmap,
+        startX: Int,
+        startY: Int,
+        drawSizeHor: Int,
+        drawSizeVer: Int,
+        renderAnnot: Boolean
+    ) {
+        PdfiumCore.getInstance().nativeRenderPageToBitmap(
+            page_hand,
+            bitmap,
+            getDpi(),
+            startX,
+            startY,
+            drawSizeHor,
+            drawSizeVer,
+            renderAnnot
+        )
+    }
+
+    /**
+     * 渲染页面内容到 surface
+     * */
+    fun renderPageToSurface(
+        surface: Surface,
+        startX: Int,
+        startY: Int,
+        drawSizeHor: Int,
+        drawSizeVer: Int,
+        renderAnnot: Boolean
+    ) {
+        PdfiumCore.getInstance().nativeRenderPageToSurface(
+            page_hand,
+            surface,
+            getDpi(),
+            startX,
+            startY,
+            drawSizeHor,
+            drawSizeVer,
+            renderAnnot
+        )
+    }
+
 
 }

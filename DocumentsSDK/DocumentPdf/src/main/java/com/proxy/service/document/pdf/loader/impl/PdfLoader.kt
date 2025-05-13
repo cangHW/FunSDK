@@ -1,5 +1,6 @@
 package com.proxy.service.document.pdf.loader.impl
 
+import android.net.Uri
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.document.base.config.pdf.PdfConfig
 import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
@@ -10,10 +11,14 @@ import com.proxy.service.document.base.config.pdf.source.BaseSource
 import com.proxy.service.document.base.config.pdf.source.ByteArraySource
 import com.proxy.service.document.base.config.pdf.source.FilePathSource
 import com.proxy.service.document.base.config.pdf.source.FileSource
+import com.proxy.service.document.base.config.pdf.source.InputStreamSource
+import com.proxy.service.document.base.config.pdf.source.UriSource
 import com.proxy.service.document.base.pdf.IPdfLoader
 import com.proxy.service.document.pdf.constants.Constants
 import com.proxy.service.document.pdf.loader.source.BaseController
+import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.File
+import java.io.InputStream
 
 /**
  * @author: cangHX
@@ -29,7 +34,7 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
             val success = ArrayList<BaseSource>()
             val failed = ArrayList<FailedResult>()
             synchronized(lock) {
-                config.getLoadStateCallback()?.onLoadStart(ArrayList(list))
+                callStart(config.getLoadStateCallback(), ArrayList(list))
                 var pageStart = 0
                 list.forEach { source ->
                     val result = BaseController.findController(source)?.getDocumentInfo()
@@ -43,7 +48,7 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
                     }
                 }
             }
-            config.getLoadStateCallback()?.onLoadComplete(success, failed)
+            callComplete(config.getLoadStateCallback(), success, failed)
         }
     }
 
@@ -72,7 +77,7 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
-        addSourceFilePath(docs.size, filePath, password)
+        addSourceFilePath(docs.size, filePath, password, callback)
     }
 
     override fun addSourceFilePath(
@@ -88,7 +93,7 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
     }
 
     override fun addSourceFile(file: File, password: String?, callback: LoadStateCallback?) {
-        addSourceFile(docs.size, file, password)
+        addSourceFile(docs.size, file, password, callback)
     }
 
     override fun addSourceFile(
@@ -103,11 +108,15 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         }
     }
 
-    override fun addSourceData(bytes: ByteArray, password: String?, callback: LoadStateCallback?) {
-        addSourceData(docs.size, bytes, password)
+    override fun addSourceByteArray(
+        bytes: ByteArray,
+        password: String?,
+        callback: LoadStateCallback?
+    ) {
+        addSourceByteArray(docs.size, bytes, password, callback)
     }
 
-    override fun addSourceData(
+    override fun addSourceByteArray(
         index: Int,
         bytes: ByteArray,
         password: String?,
@@ -115,6 +124,42 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
     ) {
         handler?.start {
             val source = ByteArraySource(bytes, password)
+            addSource(index, source, callback)
+        }
+    }
+
+    override fun addSourceInputStream(
+        inputStream: InputStream,
+        password: String?,
+        callback: LoadStateCallback?
+    ) {
+        addSourceInputStream(docs.size, inputStream, password, callback)
+    }
+
+    override fun addSourceInputStream(
+        index: Int,
+        inputStream: InputStream,
+        password: String?,
+        callback: LoadStateCallback?
+    ) {
+        handler?.start {
+            val source = InputStreamSource(inputStream, password)
+            addSource(index, source, callback)
+        }
+    }
+
+    override fun addSourceUri(uri: Uri, password: String?, callback: LoadStateCallback?) {
+        addSourceUri(docs.size, uri, password, callback)
+    }
+
+    override fun addSourceUri(
+        index: Int,
+        uri: Uri,
+        password: String?,
+        callback: LoadStateCallback?
+    ) {
+        handler?.start {
+            val source = UriSource(uri, password)
             addSource(index, source, callback)
         }
     }
@@ -133,7 +178,7 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         var result: BaseController.Result?
 
         synchronized(lock) {
-            callback?.onLoadStart(listOf(source))
+            callStart(callback, listOf(source))
             result = BaseController.findController(source)?.getDocumentInfo()
             result?.document?.let { document ->
                 if (docs.size == index) {
@@ -158,13 +203,36 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         }
 
         if (result?.document != null) {
-            callback?.onLoadComplete(listOf(source), listOf())
+            callComplete(callback, listOf(source), listOf())
         } else {
-            callback?.onLoadComplete(
+            callComplete(
+                callback,
                 listOf(),
                 listOf(FailedResult(source, result?.error ?: LoadErrorEnum.UNKNOWN))
             )
         }
+    }
+
+    private fun callStart(callback: LoadStateCallback?, sources: List<BaseSource>) {
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                callback?.onLoadStart(sources)
+                return ""
+            }
+        })?.start()
+    }
+
+    private fun callComplete(
+        callback: LoadStateCallback?,
+        success: List<BaseSource>,
+        failed: List<FailedResult>
+    ) {
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                callback?.onLoadComplete(success, failed)
+                return ""
+            }
+        })?.start()
     }
 
 }

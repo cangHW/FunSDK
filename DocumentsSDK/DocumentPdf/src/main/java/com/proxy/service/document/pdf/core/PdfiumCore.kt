@@ -23,7 +23,7 @@ class PdfiumCore {
             System.loadLibrary("modpng");
             System.loadLibrary("modft2");
             System.loadLibrary("modpdfium");
-            System.loadLibrary("jniPdfium");
+            System.loadLibrary("csPdf");
         }
 
         private val core by lazy {
@@ -35,8 +35,11 @@ class PdfiumCore {
         }
     }
 
+
+    /*** *** *** *** *** *** *** 文档加载 *** *** *** *** *** *** ***/
+
     /**
-     * 打开文档
+     * 加载文档
      *
      * @param filePath  文件路径
      * @param password  密码
@@ -44,7 +47,7 @@ class PdfiumCore {
     external fun nativeOpenDocumentByPath(filePath: String, password: String?): OpenResult
 
     /**
-     * 打开文档
+     * 加载文档
      *
      * @param fd        文件描述符
      * @param password  密码
@@ -52,7 +55,7 @@ class PdfiumCore {
     external fun nativeOpenDocumentByFd(fd: Int, password: String?): OpenResult
 
     /**
-     * 打开文档
+     * 加载文档
      *
      * @param data      文件内容
      * @param password  密码
@@ -60,11 +63,14 @@ class PdfiumCore {
     external fun nativeOpenDocumentByMem(data: ByteArray, password: String?): OpenResult
 
     /**
-     * 关闭对应文档
+     * 释放对应文档
      *
      * @param doc_hand 文档指针
      */
     external fun nativeCloseDocument(doc_hand: Long)
+
+
+    /*** *** *** *** *** *** *** 文档基础信息 *** *** *** *** *** *** ***/
 
     /**
      * 获取对应文档内的页面数量
@@ -74,6 +80,51 @@ class PdfiumCore {
     external fun nativeGetPageCount(doc_hand: Long): Int
 
     /**
+     * 获取对应文档说明信息
+     *
+     * @param doc_hand 文档指针
+     * @param tag      标签
+     */
+    private external fun nativeGetDocumentMetaText(doc_hand: Long, tag: String): String
+
+
+    /*** *** *** *** *** *** *** 文档目录 *** *** *** *** *** *** ***/
+
+    /**
+     * 获取对应文档目录的第一个子目录指针
+     *
+     * @param doc_hand       文档指针
+     * @param catalogue_hand 文档目录指针
+     */
+    private external fun nativeGetFirstChildBookmark(doc_hand: Long, catalogue_hand: Long?): Long?
+
+    /**
+     * 获取对应文档目录的下一个目录指针
+     *
+     * @param doc_hand       文档指针
+     * @param catalogue_hand 文档目录指针
+     */
+    private external fun nativeGetNextChildBookmark(doc_hand: Long, catalogue_hand: Long): Long?
+
+    /**
+     * 获取对应文档目录标题
+     *
+     * @param catalogue_hand 文档目录指针
+     */
+    private external fun nativeGetBookmarkTitle(catalogue_hand: Long): String?
+
+    /**
+     * 获取文档目录对应的页码
+     *
+     * @param doc_hand       文档指针
+     * @param catalogue_hand 文档目录指针
+     */
+    private external fun nativeGetBookmarkDestIndex(doc_hand: Long, catalogue_hand: Long): Long
+
+
+    /*** *** *** *** *** *** *** 文档页面加载 *** *** *** *** *** *** ***/
+
+    /**
      * 加载对应文档页面, 并获取页面指针
      *
      * @param doc_hand  文档指针
@@ -81,7 +132,14 @@ class PdfiumCore {
      */
     external fun nativeLoadPage(doc_hand: Long, pageIndex: Int): Long
 
-    private external fun nativeLoadPages(doc_hand: Long, fromIndex: Int, toIndex: Int): LongArray
+    /**
+     * 批量加载对应文档页面, 并获取页面指针
+     *
+     * @param doc_hand  文档指针
+     * @param fromIndex 页面开始位置
+     * @param toIndex   页面结束位置
+     */
+    external fun nativeLoadPages(doc_hand: Long, fromIndex: Int, toIndex: Int): LongArray
 
     /**
      * 关闭文档对应页面
@@ -91,11 +149,14 @@ class PdfiumCore {
     external fun nativeClosePage(page_hand: Long)
 
     /**
-     * 关闭文档对应页面
+     * 批量关闭文档对应页面
      *
      * @param pages_hands 页面指针
      */
     external fun nativeClosePages(pages_hands: LongArray)
+
+
+    /*** *** *** *** *** *** *** 页面尺寸信息 *** *** *** *** *** *** ***/
 
     /**
      * 获取文档对应页面宽度, 单位: 像素
@@ -140,66 +201,8 @@ class PdfiumCore {
         dpi: Int
     ): PageSize
 
-    private external fun nativeRenderPage(
-        pagePtr: Long,
-        surface: Surface,
-        dpi: Int,
-        startX: Int,
-        startY: Int,
-        drawSizeHor: Int,
-        drawSizeVer: Int,
-        renderAnnot: Boolean
-    )
 
-    private external fun nativeRenderPageBitmap(
-        pagePtr: Long,
-        bitmap: Bitmap,
-        dpi: Int,
-        startX: Int,
-        startY: Int,
-        drawSizeHor: Int,
-        drawSizeVer: Int,
-        renderAnnot: Boolean
-    )
-
-    /**
-     * 获取对应文档说明信息
-     *
-     * @param doc_hand 文档指针
-     * @param tag      标签
-     */
-    private external fun nativeGetDocumentMetaText(doc_hand: Long, tag: String): String
-
-    /**
-     * 获取对应文档目录的第一个子目录指针
-     *
-     * @param doc_hand       文档指针
-     * @param catalogue_hand 文档目录指针
-     */
-    external fun nativeGetFirstChildBookmark(doc_hand: Long, catalogue_hand: Long?): Long?
-
-    /**
-     * 获取对应文档目录的下一个目录指针
-     *
-     * @param doc_hand       文档指针
-     * @param catalogue_hand 文档目录指针
-     */
-    external fun nativeGetSiblingBookmark(doc_hand: Long, catalogue_hand: Long): Long?
-
-    /**
-     * 获取对应文档目录标题
-     *
-     * @param catalogue_hand 文档目录指针
-     */
-    external fun nativeGetBookmarkTitle(catalogue_hand: Long): String?
-
-    /**
-     * 获取文档目录对应的页码
-     *
-     * @param doc_hand       文档指针
-     * @param catalogue_hand 文档目录指针
-     */
-    external fun nativeGetBookmarkDestIndex(doc_hand: Long, catalogue_hand: Long): Long
+    /*** *** *** *** *** *** *** 页面超链 *** *** *** *** *** *** ***/
 
     /**
      * 获取文档对应页面的全部超链接信息
@@ -231,6 +234,61 @@ class PdfiumCore {
      * */
     private external fun nativeGetLinkRectF(link_hand: Long): RectF?
 
+
+    /*** *** *** *** *** *** *** 页面渲染-整体渲染 *** *** *** *** *** *** ***/
+
+    /**
+     * 渲染页面内容到 surface
+     *
+     * @param page_hand     页面指针
+     * @param surface       surface
+     * @param dpi           像素密度
+     * @param startX        渲染区域的开始坐标, 相对于 bitmap 左上角的 x 轴位置
+     * @param startY        渲染区域的开始坐标, 相对于 bitmap 左上角的 y 轴位置
+     * @param width         渲染区域的宽度
+     * @param height        渲染内容的高度
+     * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
+     * */
+    external fun nativeRenderPageToSurface(
+        page_hand: Long,
+        surface: Surface,
+        dpi: Int,
+        startX: Int,
+        startY: Int,
+        width: Int,
+        height: Int,
+        renderAnnot: Boolean
+    )
+
+    /**
+     * 渲染页面内容到 bitmap
+     *
+     * @param page_hand     页面指针
+     * @param bitmap        bitmap
+     * @param dpi           像素密度
+     * @param startX        渲染区域的开始坐标, 相对于 bitmap 左上角的 x 轴位置
+     * @param startY        渲染区域的开始坐标, 相对于 bitmap 左上角的 y 轴位置
+     * @param width         渲染区域的宽度
+     * @param height        渲染内容的高度
+     * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
+     * */
+    external fun nativeRenderPageToBitmap(
+        page_hand: Long,
+        bitmap: Bitmap,
+        dpi: Int,
+        startX: Int,
+        startY: Int,
+        width: Int,
+        height: Int,
+        renderAnnot: Boolean
+    )
+
+
+    /*** *** *** *** *** *** *** 页面渲染-渐进式渲染 *** *** *** *** *** *** ***/
+
+
+    /*** *** *** *** *** *** *** 通用能力 *** *** *** *** *** *** ***/
+
     /**
      * 页面坐标映射为屏幕坐标
      *
@@ -255,7 +313,9 @@ class PdfiumCore {
         pageY: Double
     ): Point?
 
+
     /**************************************************/
+
 
     /**
      * 获取对应文档说明信息
@@ -285,13 +345,41 @@ class PdfiumCore {
         val list = ArrayList<CatalogueData>()
         val hand = core.nativeGetFirstChildBookmark(doc_hand, null)
         if (hand != null) {
-            CoreUtils.queryDocumentCatalogue(list, core, doc_hand, hand)
+            queryDocumentCatalogue(list, core, doc_hand, hand)
         }
         return list
     }
 
+    private fun queryDocumentCatalogue(
+        list: ArrayList<CatalogueData>,
+        core: PdfiumCore,
+        doc_hand: Long,
+        catalogue_hand: Long
+    ) {
+        val catalogueData = CatalogueData()
+        catalogueData.hand = catalogue_hand
+        catalogueData.title = core.nativeGetBookmarkTitle(catalogue_hand)
+        catalogueData.pageIndex = core.nativeGetBookmarkDestIndex(doc_hand, catalogue_hand)
+        list.add(catalogueData)
+
+        val child_catalogue_hand = core.nativeGetFirstChildBookmark(doc_hand, catalogue_hand)
+        if (child_catalogue_hand != null) {
+            queryDocumentCatalogue(
+                catalogueData.children,
+                core,
+                doc_hand,
+                child_catalogue_hand
+            )
+        }
+
+        val next_catalogue_hand = core.nativeGetNextChildBookmark(doc_hand, catalogue_hand)
+        if (next_catalogue_hand != null) {
+            queryDocumentCatalogue(list, core, doc_hand, next_catalogue_hand)
+        }
+    }
+
     /**
-     * 获取对应文档页面的超链接信息
+     * 获取对应页面的超链接信息
      *
      * @param doc_hand  文档指针
      * @param page_hand 页面指针

@@ -6,7 +6,6 @@ import com.proxy.service.document.base.pdf.info.LinkData
 import com.proxy.service.document.base.pdf.info.MetaData
 import com.proxy.service.document.base.pdf.info.PageSize
 import com.proxy.service.document.pdf.core.PdfiumCore
-import com.proxy.service.document.pdf.loader.utils.LoaderUtils
 
 /**
  * @author: cangHX
@@ -33,7 +32,7 @@ open class PdfAction : PdfEdit(), IPdfAction {
             return -1
         }
         synchronized(lock) {
-            val doc = LoaderUtils.findDocByPageIndex(docs, pageIndex)
+            val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
             return page?.getPageWidthPixel() ?: 0
         }
@@ -44,7 +43,7 @@ open class PdfAction : PdfEdit(), IPdfAction {
             return -1
         }
         synchronized(lock) {
-            val doc = LoaderUtils.findDocByPageIndex(docs, pageIndex)
+            val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
             return page?.getPageHeightPixel() ?: 0
         }
@@ -55,12 +54,12 @@ open class PdfAction : PdfEdit(), IPdfAction {
             return PageSize(-1, -1)
         }
         synchronized(lock) {
-            val doc = LoaderUtils.findDocByPageIndex(docs, pageIndex)
+            val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
 
             val size = PageSize(
-                width = page?.getPageWidthPixel() ?: 0,
-                height = page?.getPageHeightPixel() ?: 0
+                widthPixel = page?.getPageWidthPixel() ?: 0,
+                heightPixel = page?.getPageHeightPixel() ?: 0
             )
             return size
         }
@@ -102,7 +101,7 @@ open class PdfAction : PdfEdit(), IPdfAction {
         }
         val links = ArrayList<LinkData>()
         synchronized(lock) {
-            val doc = LoaderUtils.findDocByPageIndex(docs, pageIndex)
+            val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
             page?.getLinks()?.let {
                 links.addAll(it)

@@ -1,6 +1,8 @@
 package com.proxy.service.document.pdf.loader.utils
 
+import android.net.Uri
 import android.os.ParcelFileDescriptor
+import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.document.base.constants.Constants
@@ -34,6 +36,22 @@ object FileUtils {
                 fdField?.isAccessible = true
             }
             val fd = fdField?.getInt(pfd.fileDescriptor) ?: -1
+            return Pair(pfd, fd)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        return Pair(null, -1)
+    }
+
+    fun getNumFd(uri: Uri): Pair<ParcelFileDescriptor?, Int> {
+        try {
+            val context = CsContextManager.getApplication()
+            val pfd = context.contentResolver.openFileDescriptor(uri, "r")
+            if (fdField == null) {
+                fdField = FD_CLASS.getDeclaredField(FD_FIELD_NAME)
+                fdField?.isAccessible = true
+            }
+            val fd = fdField?.getInt(pfd?.fileDescriptor) ?: -1
             return Pair(pfd, fd)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)

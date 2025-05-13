@@ -1,5 +1,6 @@
 package com.proxy.service.document.base.config.pdf
 
+import android.net.Uri
 import com.proxy.service.document.base.config.pdf.builder.IPdfBuilder
 import com.proxy.service.document.base.config.pdf.builder.IPdfBuilderGet
 import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
@@ -8,7 +9,10 @@ import com.proxy.service.document.base.config.pdf.source.BaseSource
 import com.proxy.service.document.base.config.pdf.source.ByteArraySource
 import com.proxy.service.document.base.config.pdf.source.FilePathSource
 import com.proxy.service.document.base.config.pdf.source.FileSource
+import com.proxy.service.document.base.config.pdf.source.InputStreamSource
+import com.proxy.service.document.base.config.pdf.source.UriSource
 import java.io.File
+import java.io.InputStream
 
 /**
  * @author: cangHX
@@ -62,6 +66,21 @@ class PdfConfig private constructor(
             return this
         }
 
+        override fun setSourceInputStream(
+            inputStream: InputStream,
+            password: String?
+        ): IPdfBuilder {
+            sources.clear()
+            sources.add(InputStreamSource(inputStream, password))
+            return this
+        }
+
+        override fun setSourceUri(uri: Uri, password: String?): IPdfBuilder {
+            sources.clear()
+            sources.add(UriSource(uri, password))
+            return this
+        }
+
         override fun addSourceAssetPath(assetPath: String, password: String?): IPdfBuilder {
             sources.add(AssetPathSource(assetPath, password))
             return this
@@ -79,6 +98,19 @@ class PdfConfig private constructor(
 
         override fun addSourceByteArray(bytes: ByteArray, password: String?): IPdfBuilder {
             sources.add(ByteArraySource(bytes, password))
+            return this
+        }
+
+        override fun addSourceInputStream(
+            inputStream: InputStream,
+            password: String?
+        ): IPdfBuilder {
+            sources.add(InputStreamSource(inputStream, password))
+            return this
+        }
+
+        override fun addSourceUri(uri: Uri, password: String?): IPdfBuilder {
+            sources.add(UriSource(uri, password))
             return this
         }
 

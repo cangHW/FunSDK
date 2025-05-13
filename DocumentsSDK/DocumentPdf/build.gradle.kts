@@ -43,6 +43,8 @@ android {
             version = "3.22.1"
         }
     }
+
+    resourcePrefix = "cs_document_pdf_"
 }
 
 dependencies {
@@ -50,6 +52,8 @@ dependencies {
     implementation(libs.android.kotlin)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
+
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     implementation(project(":DocumentsSDK:DocumentBase"))
     implementation(libs.core.framework){
