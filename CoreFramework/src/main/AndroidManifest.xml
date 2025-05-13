@@ -9,7 +9,7 @@
         <provider
             android:name="com.proxy.service.core.framework.io.uri.ProxyProvider"
             android:authorities="${applicationId}.proxy_core_provider"
-            android:exported="false"
+            android:exported="true"
             android:grantUriPermissions="true"/>
 
         <receiver android:name=".framework.app.message.broadcast.BroadcastReceiverImpl"

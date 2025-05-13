@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info.download.controller.info.base
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
+import com.proxy.service.apihttp.info.common.cache.GroupCache
 
 /**
  * @author: cangHX
@@ -12,27 +13,38 @@ abstract class BaseGroup : Comparator<DownloadTask> {
 
     protected val tag = "${Constants.LOG_DOWNLOAD_TAG_START}GroupInfo"
 
-    protected val tasks = ArrayList<DownloadTask>()
+    protected val groupCache = GroupCache<DownloadTask> { o1, o2 ->
+        o1.getPriority().compareTo(o2.getPriority())
+    }
+//    protected val waitingTasks = ArrayList<DownloadTask>()
+//    protected val runningTasks = ArrayList<DownloadTask>()
 
     /**
      * 获取第一个任务
      * */
-    fun getFirstDownloadTask(): DownloadTask? {
-        return tasks.firstOrNull()
+    fun getFirstDownloadTaskOnWaiting(): DownloadTask? {
+        return groupCache.getFirstOrNullWaitingValue()
     }
 
     /**
-     * 获取任务数量
+     * 获取等待任务数量
      * */
-    fun getTaskNum(): Int {
-        return tasks.size
+    fun getWaitingTaskNum(): Int {
+        return groupCache.waitingSize()
+    }
+
+    /**
+     * 获取全部任务数量
+     * */
+    fun getAllTaskNum(): Int {
+        return groupCache.allSize()
     }
 
     /**
      * 获取全部任务
      * */
     fun getAllTask(): List<DownloadTask> {
-        return ArrayList<DownloadTask>(tasks)
+        return groupCache.getAllValue()
     }
 
     override fun compare(o1: DownloadTask?, o2: DownloadTask?): Int {

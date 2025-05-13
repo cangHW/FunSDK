@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.io.sp
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.tencent.mmkv.MMKV
 import java.util.concurrent.atomic.AtomicBoolean
@@ -12,12 +12,12 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object SpInit {
 
-    const val TAG = "${Constants.TAG}Sp"
+    const val TAG = "${CoreConfig.TAG}Sp"
 
     private val isInit = AtomicBoolean(false)
 
     private var rootPath: String = ""
-    private val SpMapper = HashMap<String, MMKV>()
+    private val spMapper = HashMap<String, MMKV>()
 
     private fun init() {
         if (isInit.compareAndSet(false, true)) {
@@ -33,15 +33,15 @@ object SpInit {
     fun getSp(spName: String?, mode: SpMode, secretKey: String?): MMKV {
         init()
 
-        val key = "name_${spName}_mode_${mode.mode}_secretKey_${secretKey}"
-        val value = SpMapper[key]
+        val key = "CoreFw_${spName}"
+        val value = spMapper[key]
 
         if (value != null) {
             return value
         }
 
-        synchronized(SpMapper) {
-            val doubleCheck = SpMapper[key]
+        synchronized(spMapper) {
+            val doubleCheck = spMapper[key]
 
             if (doubleCheck != null) {
                 return doubleCheck
@@ -52,20 +52,26 @@ object SpInit {
             } else {
                 MMKV.mmkvWithID(spName, mode.mode, secretKey)
             }
-            SpMapper[key] = sp
+            spMapper[key] = sp
             return sp
         }
     }
 
     fun getAllSp(): List<MMKV> {
-        synchronized(SpMapper) {
-            return SpMapper.values.toList()
+        synchronized(spMapper) {
+            return spMapper.values.toList()
         }
     }
 
     fun remove(sp: MMKV) {
-        synchronized(SpMapper) {
-            SpMapper.entries.removeIf { it.value == sp }
+        synchronized(spMapper) {
+            val iterator = spMapper.entries.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
+                if (entry.value == sp) {
+                    iterator.remove()
+                }
+            }
         }
     }
 }

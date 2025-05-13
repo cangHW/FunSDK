@@ -9,6 +9,4 @@ object Config {
 
     const val LOG_TAG_START = "WebView_"
 
-    var isDebug = false
-
 }

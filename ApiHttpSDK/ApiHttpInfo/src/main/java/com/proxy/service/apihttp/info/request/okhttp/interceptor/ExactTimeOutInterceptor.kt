@@ -2,7 +2,6 @@ package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.request.annotation.CsExactTimeOut
-import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
@@ -50,15 +49,14 @@ class ExactTimeOutInterceptor : Interceptor {
             CsLogger.tag(TAG).e(throwable)
         }
 
-        val rep = response
-        if (rep != null) {
-            return rep
+        if (response != null) {
+            return response!!
         }
 
-        if (error != null) {
-            throw SocketTimeoutException(error?.message ?: "timeout. url = ${request.url}")
+        error?.let {
+            throw it
         }
 
-        return chain.proceed(request)
+        throw SocketTimeoutException("timeout. url = ${request.url}")
     }
 }

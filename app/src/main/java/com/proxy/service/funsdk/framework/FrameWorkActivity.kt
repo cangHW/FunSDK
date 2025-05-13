@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.framework.func.AppConfigActivity
 import com.proxy.service.funsdk.framework.func.AppInfoActivity
 import com.proxy.service.funsdk.framework.func.AppInstallActivity
 import com.proxy.service.funsdk.framework.func.DeviceActivity
@@ -45,6 +46,10 @@ class FrameWorkActivity : AppCompatActivity() {
         when (view.id) {
             R.id.app_info -> {
                 AppInfoActivity.launch(this)
+            }
+
+            R.id.app_config -> {
+                AppConfigActivity.launch(this)
             }
 
             R.id.device_info -> {

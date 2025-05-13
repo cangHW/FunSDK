@@ -1,7 +1,7 @@
 package com.proxy.service.core.framework.system.device
 
 import android.os.Build
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.lang.reflect.Method
 import java.util.Properties
@@ -90,7 +90,7 @@ enum class RomType {
         }
     };
 
-    protected val TAG = "${Constants.TAG}Rom"
+    protected val TAG = "${CoreConfig.TAG}Rom"
 
     abstract fun check(properties: Properties): Boolean
 }

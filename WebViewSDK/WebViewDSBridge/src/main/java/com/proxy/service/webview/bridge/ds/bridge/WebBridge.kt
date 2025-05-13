@@ -2,6 +2,7 @@ package com.proxy.service.webview.bridge.ds.bridge
 
 import android.webkit.JavascriptInterface
 import androidx.annotation.Keep
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.bridge.ds.callback.CompletionHandler
@@ -53,7 +54,7 @@ class WebBridge {
 
     private fun printDebugInfo(error: String) {
         CsLogger.tag(Config.TAG).d(error)
-        if (Config.isDebug) {
+        if (CoreConfig.isDebug) {
             web?.evaluateJavascript(
                 String.format(
                     "alert('DEBUG ERR MSG: %s')",

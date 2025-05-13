@@ -7,7 +7,8 @@ import com.proxy.service.webview.base.web.dialog.JsResult
  * @data: 2024/8/5 11:30
  * @desc:
  */
-class JsResultImpl(private val jsResult: android.webkit.JsResult?): JsResult {
+class JsResultImpl(private val jsResult: android.webkit.JsResult?) : JsResult {
+
     override fun cancel() {
         jsResult?.cancel()
     }

@@ -18,6 +18,7 @@
 
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -61,8 +62,12 @@
         <activity android:name=".framework.func.SoundActivity" />
         <activity android:name=".framework.func.AppInfoActivity" />
         <activity android:name=".framework.func.WorkActivity" />
+        <activity android:name=".framework.func.AppConfigActivity" />
 
         <activity android:name=".permission.PermissionActivity" />
+
+        <activity android:name=".document.DocumentActivity"/>
+        <activity android:name=".document.pdf.PdfActivity"/>
 
     </application>
 

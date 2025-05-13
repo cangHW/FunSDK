@@ -16,11 +16,6 @@ interface IPermissionRequest : IPermissionCallback<IPermissionRequest>,
     IShouldShowRequestRationaleCallback<IPermissionRequest> {
 
     /**
-     * 添加要申请的权限
-     * */
-    fun addPermission(permission: String): IPermissionRequest
-
-    /**
      * 开始申请
      * */
     fun start(activity: FragmentActivity)

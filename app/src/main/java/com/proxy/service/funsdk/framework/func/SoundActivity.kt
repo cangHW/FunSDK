@@ -31,7 +31,7 @@ class SoundActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sound)
+        setContentView(R.layout.activity_framework_sound)
     }
 
     fun onClick(view: View) {

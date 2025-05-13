@@ -5,11 +5,11 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.log.base.LogTree
-import com.proxy.service.core.CsCore
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiActivity
+import com.proxy.service.funsdk.document.DocumentActivity
 import com.proxy.service.funsdk.framework.FrameWorkActivity
 import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
 import com.proxy.service.funsdk.permission.PermissionActivity
@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        CsCore.init(application, true)
 
         CsBarUtils.setStatusBarTransparent(this)
         CsBarUtils.setNavigationBarTransparent(this)
@@ -62,6 +61,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.permission -> {
                 PermissionActivity.launch(this)
+            }
+
+            R.id.document -> {
+                DocumentActivity.launch(this)
             }
         }
     }

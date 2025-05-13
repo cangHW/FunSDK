@@ -49,29 +49,15 @@ class PermissionServiceImpl : PermissionService {
         return PermissionRequestImpl()
     }
 
-    override fun createRationaleDialog(permissions: Array<String>): IRationaleDialog {
-        permissions.forEach {
-            if (!PermissionUtils.isPermissionDeclaredInManifest(it)) {
-                CsLogger.tag(tag)
-                    .e("The permission is not registered in the manifest. permission: $it")
-            }
-        }
-
-        val dialog = RationaleDialogImpl(permissions)
+    override fun createRationaleDialog(): IRationaleDialog {
+        val dialog = RationaleDialogImpl()
             .setLeftButton(text = "取消")
             .setRightButton(text = "允许")
         return dialog
     }
 
-    override fun createSettingDialog(permissions: Array<String>): ISettingDialog {
-        permissions.forEach {
-            if (!PermissionUtils.isPermissionDeclaredInManifest(it)) {
-                CsLogger.tag(tag)
-                    .e("The permission is not registered in the manifest. permission: $it")
-            }
-        }
-
-        val dialog = SettingDialogImpl(permissions)
+    override fun createSettingDialog(): ISettingDialog {
+        val dialog = SettingDialogImpl()
             .setLeftButton(text = "取消")
             .setRightButton(text = "去设置")
         return dialog

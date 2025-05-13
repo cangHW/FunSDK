@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.system.sound.config
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
@@ -9,7 +9,7 @@ import com.proxy.service.core.constants.Constants
  */
 object Config {
 
-    const val TAG = "${Constants.TAG}Sound"
+    const val TAG = "${CoreConfig.TAG}Sound"
 
     const val DEFAULT_POOL_NAME = "default_sound"
 

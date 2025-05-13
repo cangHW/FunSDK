@@ -10,7 +10,4 @@ object Config {
     const val TAG = "WebView_Bridge_Ds"
     const val BRIDGE_NAME: String = "_dsbridge"
 
-    @Volatile
-    var isDebug = false
-
 }

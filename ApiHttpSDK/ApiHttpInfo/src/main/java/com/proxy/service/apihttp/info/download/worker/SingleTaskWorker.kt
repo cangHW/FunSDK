@@ -1,5 +1,6 @@
 package com.proxy.service.apihttp.info.download.worker
 
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.utils.FileUtils
 import com.proxy.service.apihttp.info.download.worker.base.BaseWorker
@@ -12,6 +13,7 @@ import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.threadpool.base.thread.task.IConsumer
 import com.proxy.service.threadpool.base.thread.task.IFunction
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -66,7 +68,13 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                 CsLogger.tag(tag).i("创建临时文件. taskTag = ${task.getTaskTag()}")
                 if (!CsFileUtils.createFile(msg.filePath)) {
                     CsLogger.tag(tag).i("创建文件失败. taskTag = ${task.getTaskTag()}")
-                    callbackEnd(false, IllegalArgumentException("创建文件失败"))
+                    callbackEnd(
+                        false,
+                        DownloadException.create(
+                            DownloadException.CREATE_FILE_FAILURE,
+                            "创建文件失败"
+                        )
+                    )
                     return TASK_FINISH
                 }
                 return TASK_RUNNING
@@ -100,7 +108,14 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     return TASK_RUNNING
                 } catch (throwable: Throwable) {
                     //下载失败
-                    callbackEnd(false, throwable)
+                    if (throwable is DownloadException) {
+                        callbackEnd(false, throwable)
+                    } else {
+                        callbackEnd(
+                            false,
+                            DownloadException.createUnknownError(throwable.message ?: "未知异常")
+                        )
+                    }
                     return TASK_FINISH
                 }
             }
@@ -115,7 +130,14 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                     return TASK_RUNNING
                 } catch (throwable: Throwable) {
                     //文件有问题
-                    callbackEnd(false, throwable)
+                    if (throwable is DownloadException) {
+                        callbackEnd(false, throwable)
+                    } else {
+                        callbackEnd(
+                            false,
+                            DownloadException.createUnknownError(throwable.message ?: "未知异常")
+                        )
+                    }
                     return TASK_FINISH
                 }
             }
@@ -131,7 +153,10 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                         .i("文件重命名失败. srcPath = ${msg.filePath}, destPath = ${task.getFilePath()}")
                     callbackEnd(
                         false,
-                        IllegalArgumentException("文件重命名失败")
+                        DownloadException.create(
+                            DownloadException.FILE_RENAME_FAILURE,
+                            "文件重命名失败"
+                        )
                     )
                     return
                 }
@@ -143,7 +168,6 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
             override fun onCallback() {
                 //8.下载结束
                 disposable?.dispose()
-                finishTask()
                 CsLogger.tag(tag).i("下载结束. taskTag = ${task.getTaskTag()}")
             }
         })?.start()
@@ -170,9 +194,11 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                         }
                         callbackEnd(
                             false,
-                            IllegalArgumentException("未知异常, 文件丢失. taskTag = ${task.getTaskTag()}")
+                            DownloadException.create(
+                                DownloadException.FILE_NOT_FOUND,
+                                "未知异常, 文件丢失. taskTag = ${task.getTaskTag()}"
+                            )
                         )
-                        finishTask()
                         return
                     }
 

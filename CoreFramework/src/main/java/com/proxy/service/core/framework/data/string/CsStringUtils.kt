@@ -1,8 +1,8 @@
 package com.proxy.service.core.framework.data.string
 
-import com.proxy.service.core.constants.Constants
+import android.util.Base64
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
-import java.util.Base64
 
 /**
  * 字符串工具
@@ -13,7 +13,7 @@ import java.util.Base64
  */
 object CsStringUtils {
 
-    private const val TAG = "${Constants.TAG}String"
+    private const val TAG = "${CoreConfig.TAG}String"
 
     /**
      * byte 数组转为 16 进制字符串
@@ -55,9 +55,9 @@ object CsStringUtils {
     /**
      * byte 数组转为 base64 字符串
      * */
-    fun parseByte2Base64Str(byteArray: ByteArray): String? {
+    fun parseByte2Base64Str(byteArray: ByteArray, flags: Int = Base64.DEFAULT): String? {
         try {
-            return Base64.getEncoder().encodeToString(byteArray)
+            return Base64.encodeToString(byteArray, flags)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
@@ -67,9 +67,9 @@ object CsStringUtils {
     /**
      * base64 字符串转为 byte 数组
      * */
-    fun parseBase64Str2Byte(base64: String): ByteArray? {
+    fun parseBase64Str2Byte(base64: String, flags: Int = Base64.DEFAULT): ByteArray? {
         try {
-            return Base64.getDecoder().decode(base64)
+            return Base64.decode(base64, flags)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
@@ -79,9 +79,9 @@ object CsStringUtils {
     /**
      * byte 数组转为 base64 url 字符串
      * */
-    fun parseByte2Base64UrlStr(byteArray: ByteArray): String? {
+    fun parseByte2Base64UrlStr(byteArray: ByteArray, flags: Int = Base64.DEFAULT): String? {
         try {
-            return Base64.getUrlEncoder().encodeToString(byteArray)
+            return Base64.encodeToString(byteArray, flags)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
@@ -91,9 +91,9 @@ object CsStringUtils {
     /**
      * base64 url 字符串转为 byte 数组
      * */
-    fun parseBase64UrlStr2Byte(base64Url: String): ByteArray? {
+    fun parseBase64UrlStr2Byte(base64Url: String, flags: Int = Base64.DEFAULT): ByteArray? {
         try {
-            return Base64.getUrlDecoder().decode(base64Url)
+            return Base64.decode(base64Url, flags)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }

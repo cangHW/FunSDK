@@ -1,7 +1,7 @@
 package com.proxy.service.core.service.permission
 
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.PermissionService
 import com.proxy.service.permission.base.manager.DialogFactory
@@ -18,7 +18,7 @@ import com.proxy.service.permission.base.manager.base.ISettingDialog
  */
 object CsPermission {
 
-    private const val TAG = "${Constants.TAG}Permission"
+    private const val TAG = "${CoreConfig.TAG}Permission"
 
     private var service: PermissionService? = null
 
@@ -57,15 +57,15 @@ object CsPermission {
     /**
      * 创建一个用于展示所需权限理由的弹窗
      * */
-    fun createRationaleDialog(permissions: Array<String>): IRationaleDialog? {
-        return getService()?.createRationaleDialog(permissions)
+    fun createRationaleDialog(): IRationaleDialog? {
+        return getService()?.createRationaleDialog()
     }
 
     /**
      * 创建一个用于展示跳转 setting 的弹窗
      * */
-    fun createSettingDialog(permissions: Array<String>): ISettingDialog? {
-        return getService()?.createSettingDialog(permissions)
+    fun createSettingDialog(): ISettingDialog? {
+        return getService()?.createSettingDialog()
     }
 
 }

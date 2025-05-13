@@ -10,6 +10,11 @@ import android.os.Handler
 interface HandlerController {
 
     /**
+     * 获取线程名称
+     * */
+    fun getThreadName(): String
+
+    /**
      * 获取线程 ID
      * */
     fun getThreadId(): Long
@@ -18,6 +23,26 @@ interface HandlerController {
      * 获取真实 handler 对象
      * */
     fun getHandler(): Handler
+
+    /**
+     * 开始一个任务
+     * */
+    fun startTask(key: Any, value: TaskInfo)
+
+    /**
+     * 完成一个任务
+     * */
+    fun finishTask(key: Any)
+
+    /**
+     * 取消待运行任务
+     * */
+    fun cancelTaskByTag(tag: String)
+
+    /**
+     * 取消待运行任务
+     * */
+    fun cancelAllTask()
 
     /**
      * 当前 handler 是否可用

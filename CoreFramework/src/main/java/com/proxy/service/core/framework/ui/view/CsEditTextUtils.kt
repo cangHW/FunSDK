@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -20,7 +20,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 object CsEditTextUtils {
 
-    private const val TAG = "${Constants.TAG}EditText"
+    private const val TAG = "${CoreConfig.TAG}EditText"
 
     /**
      * 弹出键盘

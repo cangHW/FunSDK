@@ -8,8 +8,10 @@ import com.proxy.service.webview.base.web.permissions.GeolocationPermissionsCall
  * @data: 2024/8/5 11:44
  * @desc:
  */
-class GeolocationPermissionsCallbackImpl(private val callback: GeolocationPermissions.Callback?) :
-    GeolocationPermissionsCallback {
+class GeolocationPermissionsCallbackImpl(
+    private val callback: GeolocationPermissions.Callback?
+) : GeolocationPermissionsCallback {
+
     override fun invoke(origin: String, allow: Boolean, retain: Boolean) {
         callback?.invoke(origin, allow, retain)
     }

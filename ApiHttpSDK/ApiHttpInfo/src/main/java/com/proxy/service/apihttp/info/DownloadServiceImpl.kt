@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info
 
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.annotations.CloudApiService
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.download.DownloadService
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
@@ -12,9 +13,9 @@ import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
-import com.proxy.service.apihttp.info.download.manager.AppRelaunchManager
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.apihttp.info.download.manager.NetworkManager
+import com.proxy.service.apihttp.info.download.manager.impl.OkhttpConfigImpl
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.service.task.CsTask
@@ -31,6 +32,7 @@ class DownloadServiceImpl : DownloadService {
     private val tag = "${Constants.LOG_DOWNLOAD_TAG_START}Service"
 
     private val lock = Any()
+
     @Volatile
     private var isInit = false
 
@@ -38,9 +40,9 @@ class DownloadServiceImpl : DownloadService {
         if (!isInit) {
             synchronized(lock) {
                 if (!isInit) {
+                    OkhttpConfigImpl.instance.setDownloadConfig(config)
                     TaskController.addGroup(config.getGroups())
-                    Config.setMaxDownloadTask(config.getMaxTask())
-                    AppRelaunchManager.setAutoResumeOnAppRelaunchEnable(config.getAutoResumeOnAppRelaunch())
+                    Config.maxDownloadTaskCount = config.getMaxTask()
                     NetworkManager.reStartTask(config.getAutoRestartOnNetworkReconnect())
                     isInit = true
                 }
@@ -67,7 +69,10 @@ class DownloadServiceImpl : DownloadService {
                     callback?.onStart(task)
                     callback?.onFailed(
                         task,
-                        IllegalArgumentException("downloadUrl 不能为空. downloadUrl = ${task.getDownloadUrl()}")
+                        DownloadException.create(
+                            DownloadException.URL_IS_NULL,
+                            "downloadUrl 不能为空. downloadUrl = ${task.getDownloadUrl()}"
+                        )
                     )
                     return ""
                 }

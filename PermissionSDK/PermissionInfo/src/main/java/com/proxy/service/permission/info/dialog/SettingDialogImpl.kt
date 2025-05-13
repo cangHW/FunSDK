@@ -12,15 +12,18 @@ import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.ISettingDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.fragment.SettingFragment
+import com.proxy.service.permission.info.utils.PermissionUtils
 
 /**
  * @author: cangHX
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class SettingDialogImpl(private val permissions: Array<String>) : ISettingDialog {
+class SettingDialogImpl() : ISettingDialog {
 
     private val tag = "${Config.LOG_TAG_START}SettingDialog"
+
+    private val permissions = ArrayList<String>()
 
     private var grantedCallback: ActionCallback? = null
     private var deniedCallback: ActionCallback? = null
@@ -35,6 +38,15 @@ class SettingDialogImpl(private val permissions: Array<String>) : ISettingDialog
 
     private var dialogInterface: DialogInterface? = null
     private var dialogDismissCallback: DialogDismissCallback? = null
+
+    override fun addPermission(permission: String): ISettingDialog {
+        if (!PermissionUtils.isPermissionDeclaredInManifest(permission)) {
+            CsLogger.tag(tag)
+                .e("The permission is not registered in the manifest. permission: $permission")
+        }
+        permissions.add(permission)
+        return this
+    }
 
     /**
      * 允许的权限回调
@@ -172,7 +184,9 @@ class SettingDialogImpl(private val permissions: Array<String>) : ISettingDialog
 
     private fun startSetting(manager: FragmentManager) {
         val fragment = SettingFragment()
-        fragment.setPermission(permissions)
+        permissions.forEach {
+            fragment.addPermission(it)
+        }
         grantedCallback?.let {
             fragment.setGrantedCallback(it)
         }

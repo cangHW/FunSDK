@@ -1,7 +1,7 @@
 package com.proxy.service.core.service.task
 
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.ThreadPoolService
 import com.proxy.service.threadpool.base.handler.option.IHandlerOption
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
  */
 object CsTask {
 
-    private const val TAG = "${Constants.TAG}Task"
+    private const val TAG = "${CoreConfig.TAG}Task"
 
     private var service: ThreadPoolService? = null
 

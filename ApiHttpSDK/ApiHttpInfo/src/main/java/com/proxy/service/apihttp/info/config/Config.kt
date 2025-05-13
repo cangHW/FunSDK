@@ -7,34 +7,31 @@ package com.proxy.service.apihttp.info.config
  */
 object Config {
 
-    @Volatile
-    private var isDebug = true
-
-    /*********  request  *********/
-
-
-    /*********  download  *********/
     /**
-     * 最大同时下载数量
+     * 下载任务中消息分发事件所在线程名称
      * */
-    @Volatile
-    private var maxTask: Int = 3
+    const val DOWNLOAD_DISPATCHER_THREAD_NAME = "download-dispatcher-thread"
+
+    /**
+     * 下载任务中默认组名称
+     * */
+    const val DOWNLOAD_DEFAULT_GROUP_NAME = "download-group-name-default"
 
 
-    fun setIsDebug(isDebug: Boolean) {
-        Config.isDebug = isDebug
-    }
+    /**
+     * 上传任务中消息分发事件所在线程名称
+     * */
+    const val UPLOAD_DISPATCHER_THREAD_NAME = "upload-dispatcher-thread"
 
-    fun isDebug(): Boolean {
-        return isDebug
-    }
 
-    /*********  download  *********/
-    fun setMaxDownloadTask(maxTask: Int) {
-        this.maxTask = maxTask
-    }
+    /**
+     * 最大下载并发量
+     * */
+    var maxDownloadTaskCount = 3
 
-    fun getMaxDownloadTask(): Int {
-        return maxTask
-    }
+    /**
+     * 最大上传并发量
+     * */
+    var maxUploadTaskCount = 3
+
 }

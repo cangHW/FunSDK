@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class BroadcastReceiverImpl : BroadcastReceiver() {
 
     companion object {
-        private const val TAG = "${Constants.TAG}InstallReceiver"
+        private const val TAG = "${CoreConfig.TAG}InstallReceiver"
 
         private val isStart = AtomicBoolean(false)
         private val receiver = BroadcastReceiverImpl()

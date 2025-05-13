@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.app.message.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.WeakHashMap
 
@@ -15,7 +15,7 @@ import java.util.WeakHashMap
 class BroadcastReceiverImpl : BroadcastReceiver() {
 
     companion object {
-        private const val TAG = "${Constants.TAG}EventReceiver"
+        private const val TAG = "${CoreConfig.TAG}EventReceiver"
         const val ACTION = "com.proxy.service.core.framework.Event"
 
         private val any = Any()

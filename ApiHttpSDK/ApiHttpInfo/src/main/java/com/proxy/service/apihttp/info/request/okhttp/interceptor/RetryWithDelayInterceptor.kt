@@ -2,11 +2,9 @@ package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.request.annotation.CsRetryWithDelay
-import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.callback.MultiRunnableEmitter
-import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
 import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -27,70 +25,77 @@ class RetryWithDelayInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        var response: Response? = null
         var error: Throwable? = null
-        try {
-            request.tag(Invocation::class.java)?.method()
-                ?.getAnnotation(CsRetryWithDelay::class.java)?.let {
-                    response = CsTask.ioThread()?.call(object : IMultiRunnable<Response> {
-                        override fun accept(emitter: MultiRunnableEmitter<Response>) {
-                            var count = 0
-                            val maxCount = if (it.retryCount > 0) {
-                                it.retryCount + 1
-                            } else {
-                                1
-                            }
-                            val sleepTime = it.unit.toMillis(it.delay)
-                            var err: Throwable? = null
-
-                            while (count < maxCount) {
-                                try {
-                                    CsLogger.tag(TAG).d("retry = $count, max = $maxCount, url = ${request.url}")
-                                    val rep = chain.proceed(request)
-                                    if (rep.isSuccessful) {
-                                        emitter.onNext(rep)
-                                        emitter.onComplete()
-                                        return
-                                    }
-                                } catch (throwable: Throwable) {
-                                    err = throwable
-                                    CsLogger.e(throwable)
-                                }
-
-                                try {
-                                    Thread.sleep(sleepTime)
-                                } catch (throwable: Throwable) {
-                                    CsLogger.e(throwable)
-                                }
-
-                                count++
-                            }
-
-                            emitter.onError(
-                                err ?: IOException("The retry times are used up. url = ${request.url}")
-                            )
-                            emitter.onComplete()
-                        }
-                    })?.setOnFailedCallback(object : OnFailedCallback {
-                        override fun onCallback(throwable: Throwable) {
-                            error = throwable
-                        }
-                    })?.blockGetFirst()
-                }
+        var response: Response? = try {
+            chain.proceed(request)
         } catch (throwable: Throwable) {
             error = throwable
-            CsLogger.e(throwable)
+            CsLogger.tag(TAG).e(throwable)
+            null
         }
 
-        val rep = response
-        if (rep != null) {
-            return rep
+        if (response?.isSuccessful == true) {
+            return response
         }
 
-        if (error != null) {
-            throw IOException(error?.message ?: "The retry times are used up. url = ${request.url}")
+        try {
+            request.tag(Invocation::class.java)
+                ?.method()
+                ?.getAnnotation(CsRetryWithDelay::class.java)
+                ?.let {
+                    val result = CsTask.ioThread()
+                        ?.call(object : IMultiRunnable<Response> {
+                            override fun accept(emitter: MultiRunnableEmitter<Response>) {
+                                var count = 0
+                                val maxCount = Math.max(it.retryCount, 0)
+                                val sleepTime = it.unit.toMillis(it.delay)
+
+                                while (count < maxCount) {
+
+                                    try {
+                                        Thread.sleep(sleepTime)
+                                    } catch (throwable: Throwable) {
+                                        CsLogger.tag(TAG).d(throwable)
+                                    }
+
+                                    try {
+                                        CsLogger.tag(TAG)
+                                            .d("retry = ${count + 1}, max = $maxCount, url = ${request.url}")
+                                        val rep = chain.proceed(request)
+                                        if (rep.isSuccessful) {
+                                            emitter.onNext(rep)
+                                            emitter.onComplete()
+                                            return
+                                        }
+                                    } catch (throwable: Throwable) {
+                                        CsLogger.tag(TAG).d(throwable)
+                                    }
+
+                                    count++
+                                }
+
+                                emitter.onError(IOException("The retry times are used up. url = ${request.url}"))
+                                emitter.onComplete()
+                            }
+                        })
+                        ?.blockGetFirst()
+
+                    if (result != null) {
+                        response = result
+                    }
+                }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
         }
 
-        return chain.proceed(request)
+        if (response != null) {
+            return response!!
+        }
+
+        error?.let {
+            throw it
+        }
+
+        throw IOException("The retry times are used up. url = ${request.url}")
     }
 }

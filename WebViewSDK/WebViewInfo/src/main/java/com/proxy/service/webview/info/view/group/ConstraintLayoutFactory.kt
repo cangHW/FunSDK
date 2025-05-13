@@ -9,6 +9,7 @@ import com.proxy.service.webview.info.view.WebViewImpl
  * @desc:
  */
 object ConstraintLayoutFactory : IFactory<ConstraintLayout> {
+
     override fun loadWebView(viewGroup: ConstraintLayout, webView: WebViewImpl) {
         val params = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.MATCH_PARENT,

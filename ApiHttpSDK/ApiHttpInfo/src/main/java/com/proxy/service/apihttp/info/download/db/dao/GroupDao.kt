@@ -20,7 +20,7 @@ interface GroupDao {
     fun query(groupName: String): GroupBean?
 
     @Update
-    fun updateDownloadGroup(bean: GroupBean)
+    fun update(bean: GroupBean)
 
     @Insert()
     fun insert(bean: GroupBean)
@@ -52,7 +52,7 @@ interface GroupDao {
         if (query(task.groupName) == null) {
             insert(bean)
         } else {
-            updateDownloadGroup(bean)
+            update(bean)
         }
     }
 

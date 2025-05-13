@@ -42,11 +42,12 @@ android {
 }
 
 dependencies {
-//    implementation(libs.android.core.ktx)
     implementation(libs.android.appcompat)
 
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)
+
+    implementation(libs.cloud.api)
 
     implementation(libs.core.framework)
     implementation(libs.service.apihttp)
@@ -55,6 +56,13 @@ dependencies {
     implementation(libs.service.webview)
     implementation(libs.service.webview.bridge)
     implementation(libs.service.permission)
+    implementation(libs.service.logfile)
+    implementation(libs.service.apm)
+    implementation(project(":DocumentsSDK:DocumentBase"))
+    implementation(project(":DocumentsSDK:DocumentPdf"))
+//    implementation(project(":ApmSDK:ApmInfo"))
+//    implementation(project(":LogFileSDK:LogFileInfo"))
+
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

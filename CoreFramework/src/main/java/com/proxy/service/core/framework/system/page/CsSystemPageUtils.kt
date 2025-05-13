@@ -4,7 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.text.TextUtils
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -19,7 +19,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 object CsSystemPageUtils {
 
-    private const val TAG = "${Constants.TAG}SystemPage"
+    private const val TAG = "${CoreConfig.TAG}SystemPage"
 
     /**
      * 打开应用设置页面
@@ -45,18 +45,20 @@ object CsSystemPageUtils {
 
     /**
      * 打开应用通知设置页面
+     *
+     * @param packageName : 包名，为空默认打开当前 app 的设置页面
      */
-    fun openNotificationSetting() {
+    fun openNotificationSetting(packageName: String? = null) {
         CsLogger.tag(TAG).d("openNotificationSetting")
 
-        val packageName = CsAppUtils.getPackageName()
+        val pkg = packageName ?: CsAppUtils.getPackageName()
         val uid = CsAppUtils.getUid()
 
         val intent = Intent()
         intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-        intent.putExtra("app_package", packageName)
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, pkg)
+        intent.putExtra("app_package", pkg)
         intent.putExtra("app_uid", uid)
 
         try {

@@ -3,12 +3,11 @@ package com.proxy.service.core.framework.app.context.lifecycle
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
+import com.proxy.service.core.framework.app.context.cache.ICache
+import com.proxy.service.core.framework.app.context.cache.SynchronizedCache
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
 import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.callback.MultiRunnableEmitter
 import com.proxy.service.threadpool.base.thread.task.ICallable
-import com.proxy.service.threadpool.base.thread.task.IConsumer
-import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 
 /**
  * @author: cangHX
@@ -18,55 +17,46 @@ import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     companion object {
+        private val any = Any()
+
         private val mInstance by lazy { ActivityStatusLifecycleImpl() }
+
         fun getInstance(): ActivityStatusLifecycleImpl {
             return mInstance
         }
     }
 
-    private val activityLifecycleList = ArrayList<AbstractActivityLifecycle>()
-    private val activityLifecycleMap = HashMap<AbstractActivityLifecycle, Activity>()
+    private val globalLifecycleSync: ICache<AbstractActivityLifecycle, Any> = SynchronizedCache()
+    private val globalLifecycleAsync: ICache<AbstractActivityLifecycle, Any> = SynchronizedCache()
+
+    private val lifecycleSync: ICache<AbstractActivityLifecycle, Activity> = SynchronizedCache()
+    private val lifecycleAsync: ICache<AbstractActivityLifecycle, Activity> = SynchronizedCache()
 
     fun addAbstractActivityLifecycle(
         activity: Activity?,
+        isSync: Boolean,
         activityLifecycle: AbstractActivityLifecycle
     ) {
-        CsTask.computationThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                activity?.let {
-                    if (!activityLifecycleMap.containsKey(activityLifecycle)) {
-                        synchronized(activityLifecycleMap) {
-                            if (!activityLifecycleMap.containsKey(activityLifecycle)) {
-                                activityLifecycleMap[activityLifecycle] = it
-                            }
-                        }
-                    }
-                } ?: let {
-                    if (!activityLifecycleList.contains(activityLifecycle)) {
-                        synchronized(activityLifecycleList) {
-                            if (!activityLifecycleList.contains(activityLifecycle)) {
-                                activityLifecycleList.add(activityLifecycle)
-                            }
-                        }
-                    }
-                }
-                return ""
+        if (isSync) {
+            activity?.let {
+                lifecycleSync.putAsync(activityLifecycle, it)
+            } ?: let {
+                globalLifecycleSync.putAsync(activityLifecycle, any)
             }
-        })?.start()
+        } else {
+            activity?.let {
+                lifecycleAsync.putAsync(activityLifecycle, it)
+            } ?: let {
+                globalLifecycleAsync.putAsync(activityLifecycle, any)
+            }
+        }
     }
 
     fun removeAbstractActivityLifecycle(activityLifecycle: AbstractActivityLifecycle) {
-        CsTask.computationThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                synchronized(activityLifecycleList) {
-                    activityLifecycleList.remove(activityLifecycle)
-                }
-                synchronized(activityLifecycleMap) {
-                    activityLifecycleMap.remove(activityLifecycle)
-                }
-                return ""
-            }
-        })?.start()
+        globalLifecycleSync.removeAsync(activityLifecycle)
+        globalLifecycleAsync.removeAsync(activityLifecycle)
+        lifecycleSync.removeAsync(activityLifecycle)
+        lifecycleAsync.removeAsync(activityLifecycle)
     }
 
 
@@ -212,53 +202,42 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
 
     private fun forEach(activity: Activity, callback: (AbstractActivityLifecycle) -> Unit) {
-        if (activityLifecycleList.size <= 0 && activityLifecycleMap.size <= 0) {
-            return
+        globalLifecycleSync.forEachSync {
+            callback(it.key)
         }
 
-        CsTask.computationThread()?.call(object : IMultiRunnable<AbstractActivityLifecycle> {
-            override fun accept(emitter: MultiRunnableEmitter<AbstractActivityLifecycle>) {
-                synchronized(activityLifecycleList) {
-                    activityLifecycleList.forEach {
-                        emitter.onNext(it)
+        globalLifecycleAsync.forEachAsync {
+            CsTask.mainThread()
+                ?.call(object : ICallable<String> {
+                    override fun accept(): String {
+                        callback(it.key)
+                        return ""
                     }
-                }
-                synchronized(activityLifecycleMap) {
-                    activityLifecycleMap.filter {
-                        it.value == activity
-                    }.forEach {
-                        emitter.onNext(it.key)
-                    }
-                }
-                emitter.onComplete()
+                })?.start()
+        }
+
+        lifecycleSync.filterSync {
+            it.value == activity
+        }.forEach {
+            callback(it.key)
+        }
+
+        lifecycleAsync.filterAsync(
+            predicate = { it.value == activity },
+            observer = {
+                CsTask.mainThread()
+                    ?.call(object : ICallable<String> {
+                        override fun accept(): String {
+                            callback(it.key)
+                            return ""
+                        }
+                    })?.start()
             }
-        })?.mainThread()?.doOnNext(object : IConsumer<AbstractActivityLifecycle> {
-            override fun accept(value: AbstractActivityLifecycle) {
-                callback(value)
-            }
-        })?.start()
+        )
     }
 
     private fun removeByActivity(activity: Activity) {
-        if (activityLifecycleList.size <= 0 && activityLifecycleMap.size <= 0) {
-            return
-        }
-
-        CsTask.computationThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                synchronized(activityLifecycleMap) {
-                    val list = ArrayList<AbstractActivityLifecycle>()
-                    activityLifecycleMap.filter {
-                        it.value == activity
-                    }.forEach {
-                        list.add(it.key)
-                    }
-                    list.forEach {
-                        activityLifecycleMap.remove(it)
-                    }
-                }
-                return ""
-            }
-        })?.start()
+        lifecycleSync.removeAsync { it.value == activity }
+        lifecycleAsync.removeAsync { it.value == activity }
     }
 }

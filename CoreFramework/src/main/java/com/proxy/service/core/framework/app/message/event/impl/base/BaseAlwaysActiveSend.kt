@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.app.message.event.impl.base
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.message.event.base.BaseSend
 import com.proxy.service.core.framework.app.message.event.base.IEvent
 import com.proxy.service.core.service.task.CsTask
@@ -12,7 +12,7 @@ import com.proxy.service.core.service.task.CsTask
  */
 abstract class BaseAlwaysActiveSend<T : IEvent>(callback: T?):BaseSend<T>(callback) {
 
-    protected val handler = CsTask.launchTaskGroup("${Constants.TAG}EventAlwaysActive")
+    protected val handler = CsTask.launchTaskGroup("${CoreConfig.TAG}EventAlwaysActive")
 
     override fun checkState() {
         onActive()

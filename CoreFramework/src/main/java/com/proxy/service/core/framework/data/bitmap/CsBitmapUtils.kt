@@ -7,7 +7,7 @@ import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.annotation.WorkerThread
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -24,7 +24,7 @@ import kotlin.math.max
  */
 object CsBitmapUtils {
 
-    private const val TAG = "${Constants.TAG}Bitmap"
+    private const val TAG = "${CoreConfig.TAG}Bitmap"
 
     /**
      * drawable 转 bitmap

@@ -16,6 +16,11 @@ import com.proxy.service.base.BaseService
  */
 interface DownloadService : BaseService {
 
+    fun xx(){
+       val builder = DownloadConfig.builder().build()
+        init(builder)
+    }
+
     /**
      * 初始化
      * */
@@ -74,7 +79,7 @@ interface DownloadService : BaseService {
     fun getDownloadStatus(taskTag: String): StatusEnum
 
     /**
-     * 取消任务,
+     * 取消任务
      * */
     fun cancel(taskTag: String)
 

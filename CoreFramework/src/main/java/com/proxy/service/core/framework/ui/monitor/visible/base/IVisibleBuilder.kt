@@ -41,9 +41,9 @@ interface IVisibleBuilder {
     fun setDelayMillis(delayMillis: Long, unit: TimeUnit): IVisibleBuilder
 
     /**
-     * 设置标记对象
+     * 设置标记
      *
-     * @param tag   自定义标记对象
+     * @param tag   自定义对象
      * */
     fun setTag(tag: Any): IVisibleBuilder
 

@@ -19,15 +19,17 @@ import java.util.Collections
  * @data: 2024/11/1 10:12
  * @desc:
  */
-open class GroupInfo(val name: String, val priority: Int, val fileDir: String? = null) :
-    BaseGroup() {
+open class GroupInfo(
+    val name: String,
+    val priority: Int,
+    val fileDir: String? = null
+) : BaseGroup() {
 
     /**
      * 添加任务
      * */
     fun addTask(task: DownloadTask) {
-        tasks.add(task)
-        Collections.sort(tasks, this)
+        groupCache.add(task)
 
         val oldTask = DownloadRoom.INSTANCE.getTaskDao().query(task.getTaskTag())?.getDownloadTask()
         if (oldTask != null) {
@@ -54,7 +56,14 @@ open class GroupInfo(val name: String, val priority: Int, val fileDir: String? =
      * 移除任务
      * */
     fun removeTask(task: DownloadTask) {
-        tasks.removeAll { it.getTaskTag() == task.getTaskTag() }
+        groupCache.removeAll { it.getTaskTag() == task.getTaskTag() }
+    }
+
+    /**
+     * 设置任务开始运行
+     * */
+    fun setTaskStart(task: DownloadTask) {
+        groupCache.setWaitingToRunning(task)
     }
 
     /**
@@ -71,9 +80,10 @@ open class GroupInfo(val name: String, val priority: Int, val fileDir: String? =
 
         if (task.getFilePath().trim().isEmpty()) {
             CsLogger.tag(tag).d("下载路径为空, 开始配置默认路径. taskTag = ${task.getTaskTag()}")
-            if (task.getFileDir().trim().isNotEmpty()) {
-                task.builder().setFileName(FileUtils.getDefaultFileName())
-            } else if (task.getFileName().trim().isNotEmpty()) {
+            if (task.getFileName().trim().isEmpty()) {
+                task.builder().setFileName(FileUtils.getDefaultFileName(task.getDownloadUrl()))
+            }
+            if (task.getFileDir().trim().isEmpty()) {
                 if (fileDir?.trim()?.isNotEmpty() == true) {
                     task.builder().setFileDir(fileDir)
                 } else {

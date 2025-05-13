@@ -28,20 +28,6 @@ object Constants {
      * 下载相关常量
      * */
     object Download {
-        /**
-         * 下载任务中消息分发事件所在线程名称
-         * */
-        const val TASK_LOOP_THREAD_NAME = "download-dispatcher-thread"
-
-        /**
-         * 下载任务中默认组名称
-         * */
-        const val GROUP_DEFAULT_NAME = "download-group-name-default"
-
-        /**
-         * 配置文件名称
-         * */
-        const val CONFIG_FILE_NAME = ""
 
         /**
          * 每个分片的大小

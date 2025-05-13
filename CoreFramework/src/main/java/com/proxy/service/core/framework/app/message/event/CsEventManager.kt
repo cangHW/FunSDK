@@ -1,7 +1,7 @@
 package com.proxy.service.core.framework.app.message.event
 
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.message.event.base.IEvent
 import com.proxy.service.core.framework.app.message.event.base.ISend
 import com.proxy.service.core.framework.app.message.event.callback.MainThreadEventCallback
@@ -24,7 +24,7 @@ object CsEventManager {
 
     private val weakCallbackMap = WeakHashMap<IEvent, ISend>()
 
-    private val handler = CsTask.launchTaskGroup("${Constants.TAG}Event")
+    private val handler = CsTask.launchTaskGroup("${CoreConfig.TAG}Event")
 
     /**
      * 添加在主线程进行回调的监听, 弱引用

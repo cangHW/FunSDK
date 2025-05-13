@@ -7,7 +7,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
 import android.view.WindowManager
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.device.DeviceType
 import com.proxy.service.core.framework.system.device.CsDeviceUtils
@@ -21,7 +21,7 @@ import com.proxy.service.core.framework.system.device.CsDeviceUtils
  */
 object CsBarUtils {
 
-    private const val TAG = "${Constants.TAG}Bar"
+    private const val TAG = "${CoreConfig.TAG}Bar"
 
     internal interface IBarStatus {
 

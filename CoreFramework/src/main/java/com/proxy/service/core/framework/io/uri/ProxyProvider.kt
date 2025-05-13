@@ -12,7 +12,7 @@ import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.webkit.MimeTypeMap
 import androidx.annotation.GuardedBy
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.File
@@ -26,7 +26,7 @@ import java.io.FileNotFoundException
 class ProxyProvider : ContentProvider() {
 
     companion object {
-        private const val TAG = "${Constants.TAG}Provider"
+        private const val TAG = "${CoreConfig.TAG}Provider"
 
         private val COLUMNS: Array<String> = arrayOf(
             OpenableColumns.DISPLAY_NAME,
@@ -96,9 +96,6 @@ class ProxyProvider : ContentProvider() {
     override fun attachInfo(context: Context, info: ProviderInfo) {
         super.attachInfo(context, info)
 
-        if (info.exported) {
-            throw SecurityException("Provider must not be exported")
-        }
         if (!info.grantUriPermissions) {
             throw SecurityException("Provider must grant uri permissions")
         }
@@ -245,6 +242,7 @@ class ProxyProvider : ContentProvider() {
 
         override fun getFileForUri(uri: Uri): File? {
             val path = uri.encodedPath
+            CsLogger.tag(TAG).i("path = $path")
 
             if (TextUtils.isEmpty(path)) {
                 return null

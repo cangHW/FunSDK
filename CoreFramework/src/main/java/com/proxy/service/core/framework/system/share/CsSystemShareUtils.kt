@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.system.share
 
 import android.content.Intent
 import android.net.Uri
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.CsUriManager
@@ -16,7 +16,7 @@ import com.proxy.service.core.framework.io.uri.CsUriManager
  */
 object CsSystemShareUtils {
 
-    private const val TAG = "${Constants.TAG}SystemShare"
+    private const val TAG = "${CoreConfig.TAG}SystemShare"
 
     /**
      * 分享文字

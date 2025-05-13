@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.app.context
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
 import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
 import com.proxy.service.core.framework.app.context.lifecycle.ActivityStatusLifecycleImpl
@@ -25,16 +25,23 @@ import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 @SuppressLint("StaticFieldLeak")
 object CsContextManager {
 
-    private const val TAG = "${Constants.TAG}Context"
+    private const val TAG = "${CoreConfig.TAG}Context"
 
     /**
-     * 获取当前 ApplicationContext
+     * 获取 Application
      * */
     fun getApplication(): Application {
         if (ContextInit.application == null) {
             CsLogger.tag(TAG).e("CsCore is not init, or context is error.")
         }
         return ContextInit.application!!
+    }
+
+    /**
+     * 获取全部 activity
+     * */
+    fun getAllActivity(): List<Activity> {
+        return TopActivityLifecycleImpl.getInstance().getAllActivity()
     }
 
     /**
@@ -118,13 +125,19 @@ object CsContextManager {
      * 添加 activity 生命周期变化监听
      *
      * @param activity 准备监听的 activity, 如果为 null 则监听全部 activity
+     * @param isSync  是否同步模式, 同步模式可用于在某些生命周期节点修改 activity 状态
      * */
     fun addActivityLifecycleCallback(
         activity: Activity?,
+        isSync: Boolean = false,
         abstractActivityLifecycle: AbstractActivityLifecycle
     ) {
         ActivityStatusLifecycleImpl.getInstance()
-            .addAbstractActivityLifecycle(activity, abstractActivityLifecycle)
+            .addAbstractActivityLifecycle(
+                activity,
+                isSync,
+                abstractActivityLifecycle
+            )
     }
 
     /**

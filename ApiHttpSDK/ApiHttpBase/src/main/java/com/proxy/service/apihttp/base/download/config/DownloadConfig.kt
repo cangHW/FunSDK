@@ -1,25 +1,21 @@
 package com.proxy.service.apihttp.base.download.config
 
+import com.proxy.service.apihttp.base.common.config.BaseConfig
+import com.proxy.service.apihttp.base.common.config.BaseConfigGet
 import com.proxy.service.apihttp.base.constants.Constants
-import com.proxy.service.apihttp.base.download.config.base.IConfigBuilder
-import com.proxy.service.apihttp.base.download.config.base.IConfigBuilderGet
+import com.proxy.service.apihttp.base.download.config.builder.IDownloadConfigBuilder
+import com.proxy.service.apihttp.base.download.config.builder.IDownloadConfigBuilderGet
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
  * @data: 2024/10/30 18:40
  * @desc:
  */
-class DownloadConfig private constructor(private val builder: IConfigBuilderGet) :
-    IConfigBuilderGet {
-
-    companion object {
-        private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}DownloadConfig"
-
-        fun builder(): IConfigBuilder {
-            return Builder()
-        }
-    }
+class DownloadConfig private constructor(
+    private val builder: IDownloadConfigBuilderGet
+) : BaseConfigGet(builder), IDownloadConfigBuilderGet {
 
     /**
      * 获取组信息
@@ -42,24 +38,35 @@ class DownloadConfig private constructor(private val builder: IConfigBuilderGet)
         return builder.getAutoRestartOnNetworkReconnect()
     }
 
-    /**
-     * 获取是否允许应用重启时自动恢复未完成的下载任务
-     * */
-    override fun getAutoResumeOnAppRelaunch(): Boolean {
-        return builder.getAutoResumeOnAppRelaunch()
+    override fun getConnectTimeOut(): Long {
+        return builder.getConnectTimeOut()
     }
 
-    class Builder : IConfigBuilder, IConfigBuilderGet {
+    companion object {
+        private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}DownloadConfig"
+
+        fun builder(): IDownloadConfigBuilder {
+            return Builder()
+        }
+    }
+
+    class Builder : BaseConfig<IDownloadConfigBuilder>(), IDownloadConfigBuilder,
+        IDownloadConfigBuilderGet {
+
+        companion object {
+            private const val TIMEOUT_MIN: Long = 5 * 1000
+        }
 
         private val groups = ArrayList<DownloadGroup>()
         private var maxTask: Int = 3
         private var isAutoRestartOnNetworkReconnect = false
-        private var isAutoResumeOnAppRelaunch = false
+
+        private var connectTimeOut: Long = 10 * 1000
 
         /**
          * 添加组信息
          * */
-        override fun addGroup(group: DownloadGroup): Builder {
+        override fun addGroup(group: DownloadGroup): IDownloadConfigBuilder {
             if (group.groupName.trim().isEmpty()) {
                 CsLogger.tag(TAG)
                     .e("groupName cannot be empty or blank. groupName = ${group.groupName}")
@@ -72,12 +79,12 @@ class DownloadConfig private constructor(private val builder: IConfigBuilderGet)
         /**
          * 设置最大同时下载任务数量, 默认为：3
          * */
-        override fun setMaxTask(maxTask: Int): Builder {
-            if (maxTask <= 0 || maxTask > 5) {
+        override fun setMaxTask(maxTasks: Int): IDownloadConfigBuilder {
+            if (maxTasks <= 0 || maxTasks > 5) {
                 CsLogger.tag(TAG)
-                    .e("maxTask must be greater than 0 and less than or equal to 5. maxTask = $maxTask")
+                    .e("maxTasks must be greater than 0 and less than or equal to 5. maxTask = $maxTask")
             } else {
-                this.maxTask = maxTask
+                this.maxTask = maxTasks
             }
             return this
         }
@@ -85,16 +92,20 @@ class DownloadConfig private constructor(private val builder: IConfigBuilderGet)
         /**
          * 设置是否允许网络连接恢复时自动重新启动失败的下载任务
          * */
-        override fun setAutoRestartOnNetworkReconnect(enable: Boolean): IConfigBuilder {
+        override fun setAutoRestartOnNetworkReconnect(enable: Boolean): IDownloadConfigBuilder {
             this.isAutoRestartOnNetworkReconnect = enable
             return this
         }
 
-        /**
-         * 设置是否允许应用重启时自动恢复未完成的下载任务
-         * */
-        override fun setAutoResumeOnAppRelaunch(enable: Boolean): IConfigBuilder {
-            this.isAutoResumeOnAppRelaunch = enable
+        override fun setConnectTimeOut(timeout: Long, unit: TimeUnit): IDownloadConfigBuilder {
+            unit.toMillis(timeout).let {
+                connectTimeOut =
+                    if (it > TIMEOUT_MIN) {
+                        it
+                    } else {
+                        TIMEOUT_MIN
+                    }
+            }
             return this
         }
 
@@ -123,11 +134,12 @@ class DownloadConfig private constructor(private val builder: IConfigBuilderGet)
             return isAutoRestartOnNetworkReconnect
         }
 
-        /**
-         * 获取是否允许应用重启时自动恢复未完成的下载任务
-         * */
-        override fun getAutoResumeOnAppRelaunch(): Boolean {
-            return isAutoResumeOnAppRelaunch
+        override fun getConnectTimeOut(): Long {
+            return connectTimeOut
+        }
+
+        override fun getInstance(): IDownloadConfigBuilder {
+            return this
         }
 
     }

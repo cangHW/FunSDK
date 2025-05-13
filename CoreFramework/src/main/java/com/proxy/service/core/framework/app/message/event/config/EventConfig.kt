@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.app.message.event.config
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
@@ -9,6 +9,6 @@ import com.proxy.service.core.constants.Constants
  */
 object EventConfig {
 
-    const val TAG = "${Constants.TAG}Event"
+    const val TAG = "${CoreConfig.TAG}Event"
 
 }

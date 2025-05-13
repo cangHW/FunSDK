@@ -1,5 +1,6 @@
 package com.proxy.service.apihttp.info.download.worker.base
 
+import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.enums.StatusEnum
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.db.DownloadRoom
@@ -108,10 +109,11 @@ abstract class BaseCallbackWorker(task: DownloadTask) : BaseStatusWorker(task) {
     /**
      * 任务结束
      * */
-    protected fun callbackEnd(isSuccess: Boolean, throwable: Throwable?) {
+    protected fun callbackEnd(isSuccess: Boolean, exception: DownloadException?) {
         if (isCancel()) {
             return
         }
+        finishTask()
         if (isSuccess) {
             DownloadRoom.INSTANCE.getTaskDao().updateStatus(
                 task.getTaskTag(),
@@ -132,7 +134,10 @@ abstract class BaseCallbackWorker(task: DownloadTask) : BaseStatusWorker(task) {
                     if (isSuccess) {
                         it.onSuccess(task)
                     } else {
-                        it.onFailed(task, throwable ?: IllegalArgumentException("未知异常"))
+                        it.onFailed(
+                            task,
+                            exception ?: DownloadException.createUnknownError("未知异常")
+                        )
                     }
                 }
                 CallbackManager.removeTaskAllDownloadCallback(task.getTaskTag())

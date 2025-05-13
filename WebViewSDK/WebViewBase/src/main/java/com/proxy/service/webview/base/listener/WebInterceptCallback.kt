@@ -95,7 +95,7 @@ interface WebInterceptCallback {
     fun onGeolocationPermissionsShowPrompt(
         origin: String,
         callback: GeolocationPermissionsCallback
-    )
+    ){}
 
     /**
      * 处理地理位置权限请求的隐藏提示

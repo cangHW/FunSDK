@@ -2,8 +2,8 @@ package com.proxy.service.apihttp.info.request.retrofit
 
 import com.proxy.service.apihttp.base.constants.Constants
 import com.proxy.service.apihttp.base.request.config.RequestConfig
-import com.proxy.service.apihttp.info.config.Config
-import com.proxy.service.apihttp.info.request.okhttp.OkhttpManager
+import com.proxy.service.apihttp.info.common.okhttp.OkhttpFactory
+import com.proxy.service.apihttp.info.request.okhttp.OkhttpConfigImpl
 import com.proxy.service.apihttp.info.request.retrofit.converter.gson.GsonConverterFactory
 import com.proxy.service.apihttp.info.request.retrofit.converter.scalars.ScalarsConverterFactory
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -19,9 +19,11 @@ object RetrofitManager {
     private const val TAG = "${Constants.LOG_REQUEST_TAG_START}Init"
 
     fun getRetrofit(config: RequestConfig): Retrofit {
+        val client = OkhttpFactory.create(OkhttpConfigImpl(config))
+
         val builder = Retrofit.Builder()
             .baseUrl(config.getBaseUrl())
-            .client(OkhttpManager.create(config))
+            .client(client)
 
         config.getConverterFactory().forEach {
             builder.addConverterFactory(it)

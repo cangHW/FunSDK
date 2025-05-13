@@ -34,8 +34,19 @@ class SecurityActivity : AppCompatActivity() {
 
     private val test_txt = "测试数据"
 
-    private var key: SecretKey? = null
-    private var iv: IvParameterSpec? = null
+    private val key: SecretKey = CsAesUtils.createSecretKey()
+    private val iv: IvParameterSpec = CsAesUtils.createIvParameterSpec()
+    private val encryptLoader = CsAesUtils.cbc()
+        .pkcs5padding()
+        .setSecretKeySpec(key)
+        .setIvParameterSpec(iv)
+        .createEncryptLoader()
+    private val decryptLoader = CsAesUtils.cbc()
+        .pkcs5padding()
+        .setSecretKeySpec(key)
+        .setIvParameterSpec(iv)
+        .createDecryptLoader()
+
     private var value: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,36 +66,19 @@ class SecurityActivity : AppCompatActivity() {
             }
 
             R.id.aes_encrypt -> {
-                key = CsAesUtils.createSecretKey()
-                iv = CsAesUtils.createIvParameterSpec()
-                value = CsAesUtils.cbc()
-                    .pkcs5padding()
-                    .setSecretKeySpec(key!!)
-                    .setIvParameterSpec(iv!!)
-                    .createEncryptLoader()
-                    .setSourceString(test_txt)
+                encryptLoader.reset()
+                value = encryptLoader.setSourceString(test_txt)
                     .getBase64String()
                 CsLogger.d("value = $value")
             }
 
             R.id.aes_decrypt -> {
-                if (key == null) {
-                    return
+                value?.let {
+                    decryptLoader.reset()
+                    val content = decryptLoader.setSourceBase64String(it)
+                        .getString()
+                    CsLogger.d("content = $content")
                 }
-                if (iv == null) {
-                    return
-                }
-                if (value == null) {
-                    return
-                }
-                val content = CsAesUtils.cbc()
-                    .pkcs5padding()
-                    .setSecretKeySpec(key!!)
-                    .setIvParameterSpec(iv!!)
-                    .createDecryptLoader()
-                    .setSourceBase64String(value!!)
-                    .getString()
-                CsLogger.d("content = $content")
             }
         }
     }
