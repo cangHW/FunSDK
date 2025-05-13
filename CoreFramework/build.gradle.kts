@@ -54,6 +54,9 @@ dependencies {
     // 类似 SharedPreferences, 高性能键值对存储库
     implementation(libs.sp.mmkv)
 
+    // work 基于条件任务管理
+    implementation(libs.androidx.work.runtime)
+
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

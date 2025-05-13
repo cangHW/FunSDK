@@ -17,6 +17,8 @@ android-core-ktx = { group = "androidx.core", name = "core-ktx", version = "1.12
 android-appcompat = { group = "androidx.appcompat", name = "appcompat", version = "1.4.1" }
 android-webkit = {group = "androidx.webkit", name = "webkit", version = "1.4.0"}
 android-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version = "1.4.31" }
+# work 基于条件任务管理
+androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version = "2.7.1" }
 
 ##########################################  开发基础库  ############################################################################
 cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.14" }
@@ -65,11 +67,13 @@ sp-mmkv = { group = "com.tencent", name = "mmkv", version = "1.2.11" }
 
 ##########################################  Other  ############################################################################
 
+
+
 [plugins]
 android-application = { id = "com.android.application", version = "8.5.0" }
 android-library = { id = "com.android.library", version = "8.5.0" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.7.10" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "1.7.10" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "1.8.10" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "1.9.20" }
 
 [bundles]
 # 动态化
