@@ -16,7 +16,7 @@ enum class WorkPolicyEnum(
     /**
      * 替换
      * */
-    REPLACE(ExistingWorkPolicy.REPLACE, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE),
+    REPLACE(ExistingWorkPolicy.REPLACE, ExistingPeriodicWorkPolicy.REPLACE),
 
     /**
      * 保持

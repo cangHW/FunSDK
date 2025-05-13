@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.app.worker.config
 
-import com.proxy.service.core.constants.Constants
+import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
@@ -12,7 +12,7 @@ object WorkConfig {
     /**
      * task 相关日志 tag
      */
-    const val TAG: String = "${Constants.TAG}Worker"
+    const val TAG: String = "${CoreConfig.TAG}Worker"
 
     /**
      * task 临时数据缓存文件名称

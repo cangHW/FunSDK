@@ -130,7 +130,7 @@ class InitConfig private constructor(
 
     private class LoopTaskBuilder(
         type: WorkTypeEnum,
-        private val intervalTime: Long
+        intervalTime: Long
     ) : BaseBuilder(type), IInitLoopTaskConfigBuilder {
 
         init {

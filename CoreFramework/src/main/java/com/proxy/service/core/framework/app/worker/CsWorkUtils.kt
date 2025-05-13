@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.app.worker.work.AbstractTask
 import java.util.concurrent.TimeUnit
 
 /**
- * 定时任务以及轮训任务工具, 可提供在进程不存在时自动唤醒能力
+ * 定时任务以及轮训任务工具, 可提供在进程未创建时的自动唤醒能力
  *
  * @author: cangHX
  * @data: 2024/12/16 15:43
