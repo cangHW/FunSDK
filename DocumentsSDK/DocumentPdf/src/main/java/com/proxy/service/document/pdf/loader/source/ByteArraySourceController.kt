@@ -1,6 +1,6 @@
 package com.proxy.service.document.pdf.loader.source
 
-import com.proxy.service.document.base.config.pdf.source.ByteArraySource
+import com.proxy.service.document.base.pdf.config.source.ByteArraySource
 import com.proxy.service.document.pdf.core.PdfiumCore
 
 /**

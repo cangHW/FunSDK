@@ -1,13 +1,13 @@
 package com.proxy.service.document.pdf.loader.source
 
-import com.proxy.service.document.base.config.pdf.enums.LoadErrorEnum
-import com.proxy.service.document.base.config.pdf.source.AssetPathSource
-import com.proxy.service.document.base.config.pdf.source.BaseSource
-import com.proxy.service.document.base.config.pdf.source.ByteArraySource
-import com.proxy.service.document.base.config.pdf.source.FilePathSource
-import com.proxy.service.document.base.config.pdf.source.FileSource
-import com.proxy.service.document.base.config.pdf.source.InputStreamSource
-import com.proxy.service.document.base.config.pdf.source.UriSource
+import com.proxy.service.document.base.pdf.config.enums.LoadErrorEnum
+import com.proxy.service.document.base.pdf.config.source.AssetPathSource
+import com.proxy.service.document.base.pdf.config.source.BaseSource
+import com.proxy.service.document.base.pdf.config.source.ByteArraySource
+import com.proxy.service.document.base.pdf.config.source.FilePathSource
+import com.proxy.service.document.base.pdf.config.source.FileSource
+import com.proxy.service.document.base.pdf.config.source.InputStreamSource
+import com.proxy.service.document.base.pdf.config.source.UriSource
 import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.pdf.loader.info.DocumentInfo
 

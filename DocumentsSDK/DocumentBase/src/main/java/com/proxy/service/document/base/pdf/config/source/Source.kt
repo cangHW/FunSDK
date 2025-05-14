@@ -1,4 +1,4 @@
-package com.proxy.service.document.base.config.pdf.source
+package com.proxy.service.document.base.pdf.config.source
 
 import android.net.Uri
 import java.io.File

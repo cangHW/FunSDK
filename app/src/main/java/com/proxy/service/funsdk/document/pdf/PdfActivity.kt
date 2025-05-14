@@ -9,14 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.base.PdfService
-import com.proxy.service.document.base.config.pdf.PdfConfig
-import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
-import com.proxy.service.document.base.config.pdf.info.FailedResult
-import com.proxy.service.document.base.config.pdf.source.BaseSource
-import com.proxy.service.document.base.pdf.IPdfLoader
+import com.proxy.service.document.base.pdf.config.PdfConfig
+import com.proxy.service.document.base.pdf.config.callback.LoadStateCallback
+import com.proxy.service.document.base.pdf.config.info.FailedResult
+import com.proxy.service.document.base.pdf.config.source.BaseSource
+import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.base.pdf.info.CatalogueData
 import com.proxy.service.document.pdf.view.TempSurfaceView
-import com.proxy.service.document.pdf.view.TempView
 import com.proxy.service.funsdk.R
 
 /**

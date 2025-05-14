@@ -1,4 +1,4 @@
-package com.proxy.service.document.base.pdf
+package com.proxy.service.document.base.pdf.loader
 
 import com.proxy.service.document.base.pdf.info.CatalogueData
 import com.proxy.service.document.base.pdf.info.LinkData

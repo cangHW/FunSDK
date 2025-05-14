@@ -20,6 +20,8 @@ open class BasePdf {
         val lock = Any()
     }
 
+    protected val isDestroy = AtomicBoolean(false)
+
     /**
      * 文档
      * */
@@ -37,8 +39,12 @@ open class BasePdf {
     @Volatile
     protected var catalogue: ArrayList<CatalogueData>? = null
 
-    protected fun isNotReady():Boolean{
-        if (docs.isEmpty()){
+    protected fun isNotReady(): Boolean {
+        if (isDestroy.get()) {
+            CsLogger.tag(TAG).e("The document is destroy.")
+            return true
+        }
+        if (docs.isEmpty()) {
             CsLogger.tag(TAG).e("The document does not exist.")
             return true
         }
@@ -49,7 +55,7 @@ open class BasePdf {
      * 通过页码找到对应文档对象
      * */
     protected fun findDocByPageIndex(pageIndex: Int): DocumentInfo? {
-        synchronized(lock){
+        synchronized(lock) {
             for (doc in docs) {
                 if (doc.getPageStart() <= pageIndex && pageIndex <= doc.getPageEnd()) {
                     return doc

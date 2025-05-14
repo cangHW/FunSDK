@@ -2,8 +2,8 @@ package com.proxy.service.document.pdf.loader.source
 
 import android.os.ParcelFileDescriptor
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.document.base.config.pdf.enums.LoadErrorEnum
-import com.proxy.service.document.base.config.pdf.source.UriSource
+import com.proxy.service.document.base.pdf.config.enums.LoadErrorEnum
+import com.proxy.service.document.base.pdf.config.source.UriSource
 import com.proxy.service.document.pdf.core.PdfiumCore
 import com.proxy.service.document.pdf.loader.utils.FileUtils
 

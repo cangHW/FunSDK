@@ -1,6 +1,6 @@
 package com.proxy.service.document.pdf.loader.impl
 
-import com.proxy.service.document.base.pdf.IPdfEdit
+import com.proxy.service.document.base.pdf.loader.IPdfEdit
 
 /**
  * @author: cangHX

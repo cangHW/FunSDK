@@ -1,7 +1,7 @@
-package com.proxy.service.document.base.config.pdf.info
+package com.proxy.service.document.base.pdf.config.info
 
-import com.proxy.service.document.base.config.pdf.enums.LoadErrorEnum
-import com.proxy.service.document.base.config.pdf.source.BaseSource
+import com.proxy.service.document.base.pdf.config.enums.LoadErrorEnum
+import com.proxy.service.document.base.pdf.config.source.BaseSource
 
 /**
  * @author: cangHX

@@ -1,4 +1,4 @@
-package com.proxy.service.document.base.config.pdf.enums
+package com.proxy.service.document.base.pdf.config.enums
 
 /**
  * @author: cangHX

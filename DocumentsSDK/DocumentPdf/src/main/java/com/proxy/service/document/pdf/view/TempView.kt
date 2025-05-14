@@ -10,8 +10,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.base.pdf.IPdfLoader
+import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.pdf.R
 
 /**

@@ -3,8 +3,8 @@ package com.proxy.service.document.pdf.loader.source
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
-import com.proxy.service.document.base.config.pdf.enums.LoadErrorEnum
-import com.proxy.service.document.base.config.pdf.source.AssetPathSource
+import com.proxy.service.document.base.pdf.config.enums.LoadErrorEnum
+import com.proxy.service.document.base.pdf.config.source.AssetPathSource
 import com.proxy.service.document.pdf.core.OpenResult
 import com.proxy.service.document.pdf.core.PdfiumCore
 import java.io.File

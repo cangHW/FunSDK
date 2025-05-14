@@ -1,16 +1,17 @@
-package com.proxy.service.document.base.config.pdf
+package com.proxy.service.document.base.pdf.config
 
 import android.net.Uri
-import com.proxy.service.document.base.config.pdf.builder.IPdfBuilder
-import com.proxy.service.document.base.config.pdf.builder.IPdfBuilderGet
-import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
-import com.proxy.service.document.base.config.pdf.source.AssetPathSource
-import com.proxy.service.document.base.config.pdf.source.BaseSource
-import com.proxy.service.document.base.config.pdf.source.ByteArraySource
-import com.proxy.service.document.base.config.pdf.source.FilePathSource
-import com.proxy.service.document.base.config.pdf.source.FileSource
-import com.proxy.service.document.base.config.pdf.source.InputStreamSource
-import com.proxy.service.document.base.config.pdf.source.UriSource
+import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.document.base.pdf.config.builder.IPdfBuilder
+import com.proxy.service.document.base.pdf.config.builder.IPdfBuilderGet
+import com.proxy.service.document.base.pdf.config.callback.LoadStateCallback
+import com.proxy.service.document.base.pdf.config.source.AssetPathSource
+import com.proxy.service.document.base.pdf.config.source.BaseSource
+import com.proxy.service.document.base.pdf.config.source.ByteArraySource
+import com.proxy.service.document.base.pdf.config.source.FilePathSource
+import com.proxy.service.document.base.pdf.config.source.FileSource
+import com.proxy.service.document.base.pdf.config.source.InputStreamSource
+import com.proxy.service.document.base.pdf.config.source.UriSource
 import java.io.File
 import java.io.InputStream
 
@@ -31,6 +32,10 @@ class PdfConfig private constructor(
         return builder.getLoadStateCallback()
     }
 
+    override fun getLifecycleOwner(): LifecycleOwner? {
+        return builder.getLifecycleOwner()
+    }
+
     companion object {
         fun builder(): IPdfBuilder {
             return Builder()
@@ -39,6 +44,7 @@ class PdfConfig private constructor(
 
     private class Builder : IPdfBuilder, IPdfBuilderGet {
 
+        private var lifecycleOwner: LifecycleOwner? = null
         private var loadCallback: LoadStateCallback? = null
         private val sources = ArrayList<BaseSource>()
 
@@ -119,6 +125,11 @@ class PdfConfig private constructor(
             return this
         }
 
+        override fun setLifecycleOwner(owner: LifecycleOwner): IPdfBuilder {
+            this.lifecycleOwner = owner
+            return this
+        }
+
         override fun build(): PdfConfig {
             return PdfConfig(this)
         }
@@ -129,6 +140,10 @@ class PdfConfig private constructor(
 
         override fun getLoadStateCallback(): LoadStateCallback? {
             return loadCallback
+        }
+
+        override fun getLifecycleOwner(): LifecycleOwner? {
+            return lifecycleOwner
         }
     }
 

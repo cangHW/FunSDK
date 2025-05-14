@@ -7,7 +7,7 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.FrameLayout
-import com.proxy.service.document.base.pdf.IPdfLoader
+import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.pdf.R
 
 /**

@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.view.Surface
-import com.proxy.service.document.base.pdf.IPdfRender
+import com.proxy.service.document.base.pdf.loader.IPdfRender
 import kotlin.math.min
 
 

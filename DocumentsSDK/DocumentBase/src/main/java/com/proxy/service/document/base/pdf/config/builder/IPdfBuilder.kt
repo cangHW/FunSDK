@@ -1,8 +1,9 @@
-package com.proxy.service.document.base.config.pdf.builder
+package com.proxy.service.document.base.pdf.config.builder
 
 import android.net.Uri
-import com.proxy.service.document.base.config.pdf.PdfConfig
-import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
+import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.document.base.pdf.config.PdfConfig
+import com.proxy.service.document.base.pdf.config.callback.LoadStateCallback
 import java.io.File
 import java.io.InputStream
 
@@ -105,6 +106,11 @@ interface IPdfBuilder {
      * 设置加载回调
      * */
     fun setLoadCallback(callback: LoadStateCallback): IPdfBuilder
+
+    /**
+     * 绑定生命周期
+     * */
+    fun setLifecycleOwner(owner: LifecycleOwner): IPdfBuilder
 
     /**
      * 创建配置

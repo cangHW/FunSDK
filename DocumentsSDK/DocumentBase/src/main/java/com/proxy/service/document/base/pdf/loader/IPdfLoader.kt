@@ -1,7 +1,7 @@
-package com.proxy.service.document.base.pdf
+package com.proxy.service.document.base.pdf.loader
 
 import android.net.Uri
-import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
+import com.proxy.service.document.base.pdf.config.callback.LoadStateCallback
 import java.io.File
 import java.io.InputStream
 

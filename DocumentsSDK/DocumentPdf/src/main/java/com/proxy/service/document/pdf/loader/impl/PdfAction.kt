@@ -1,6 +1,6 @@
 package com.proxy.service.document.pdf.loader.impl
 
-import com.proxy.service.document.base.pdf.IPdfAction
+import com.proxy.service.document.base.pdf.loader.IPdfAction
 import com.proxy.service.document.base.pdf.info.CatalogueData
 import com.proxy.service.document.base.pdf.info.LinkData
 import com.proxy.service.document.base.pdf.info.MetaData
@@ -20,6 +20,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
         }
         var totalCount = 0
         synchronized(lock) {
+            if (isNotReady()) {
+                return -1
+            }
             docs.forEach {
                 totalCount += it.getPageCount()
             }
@@ -32,6 +35,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
             return -1
         }
         synchronized(lock) {
+            if (isNotReady()) {
+                return -1
+            }
             val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
             return page?.getPageWidthPixel() ?: 0
@@ -43,6 +49,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
             return -1
         }
         synchronized(lock) {
+            if (isNotReady()) {
+                return -1
+            }
             val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
             return page?.getPageHeightPixel() ?: 0
@@ -54,6 +63,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
             return PageSize(-1, -1)
         }
         synchronized(lock) {
+            if (isNotReady()) {
+                return PageSize(-1, -1)
+            }
             val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
 
@@ -71,6 +83,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
         }
         if (meta == null) {
             synchronized(lock) {
+                if (isNotReady()) {
+                    return MetaData()
+                }
                 if (meta == null) {
                     val doc = docs.get(0)
                     meta = PdfiumCore.getInstance().getDocumentMeta(doc.hand)
@@ -86,6 +101,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
         }
         if (catalogue == null) {
             synchronized(lock) {
+                if (isNotReady()) {
+                    return ArrayList()
+                }
                 if (catalogue == null) {
                     val doc = docs.get(0)
                     catalogue = PdfiumCore.getInstance().getDocumentCatalogue(doc.hand)
@@ -101,6 +119,9 @@ open class PdfAction : PdfEdit(), IPdfAction {
         }
         val links = ArrayList<LinkData>()
         synchronized(lock) {
+            if (isNotReady()) {
+                return ArrayList()
+            }
             val doc = findDocByPageIndex(pageIndex)
             val page = doc?.getPageInfo(pageIndex)
             page?.getLinks()?.let {

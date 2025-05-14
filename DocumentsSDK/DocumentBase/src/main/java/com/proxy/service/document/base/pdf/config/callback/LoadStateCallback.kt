@@ -1,7 +1,7 @@
-package com.proxy.service.document.base.config.pdf.callback
+package com.proxy.service.document.base.pdf.config.callback
 
-import com.proxy.service.document.base.config.pdf.info.FailedResult
-import com.proxy.service.document.base.config.pdf.source.BaseSource
+import com.proxy.service.document.base.pdf.config.info.FailedResult
+import com.proxy.service.document.base.pdf.config.source.BaseSource
 
 /**
  * @author: cangHX

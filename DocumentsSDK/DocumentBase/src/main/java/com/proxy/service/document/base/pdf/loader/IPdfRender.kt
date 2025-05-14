@@ -1,4 +1,4 @@
-package com.proxy.service.document.base.pdf
+package com.proxy.service.document.base.pdf.loader
 
 import android.graphics.Bitmap
 import android.view.Surface

@@ -2,18 +2,17 @@ package com.proxy.service.document.pdf.loader.impl
 
 import android.net.Uri
 import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.document.base.config.pdf.PdfConfig
-import com.proxy.service.document.base.config.pdf.callback.LoadStateCallback
-import com.proxy.service.document.base.config.pdf.enums.LoadErrorEnum
-import com.proxy.service.document.base.config.pdf.info.FailedResult
-import com.proxy.service.document.base.config.pdf.source.AssetPathSource
-import com.proxy.service.document.base.config.pdf.source.BaseSource
-import com.proxy.service.document.base.config.pdf.source.ByteArraySource
-import com.proxy.service.document.base.config.pdf.source.FilePathSource
-import com.proxy.service.document.base.config.pdf.source.FileSource
-import com.proxy.service.document.base.config.pdf.source.InputStreamSource
-import com.proxy.service.document.base.config.pdf.source.UriSource
-import com.proxy.service.document.base.pdf.IPdfLoader
+import com.proxy.service.document.base.pdf.config.callback.LoadStateCallback
+import com.proxy.service.document.base.pdf.config.enums.LoadErrorEnum
+import com.proxy.service.document.base.pdf.config.info.FailedResult
+import com.proxy.service.document.base.pdf.config.source.AssetPathSource
+import com.proxy.service.document.base.pdf.config.source.BaseSource
+import com.proxy.service.document.base.pdf.config.source.ByteArraySource
+import com.proxy.service.document.base.pdf.config.source.FilePathSource
+import com.proxy.service.document.base.pdf.config.source.FileSource
+import com.proxy.service.document.base.pdf.config.source.InputStreamSource
+import com.proxy.service.document.base.pdf.config.source.UriSource
+import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.pdf.constants.Constants
 import com.proxy.service.document.pdf.loader.source.BaseController
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -25,16 +24,16 @@ import java.io.InputStream
  * @data: 2025/4/30 14:56
  * @desc:
  */
-class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
+class PdfLoader : PdfRender(), IPdfLoader {
 
     private val handler = CsTask.launchTaskGroup(Constants.SOURCE_THREAD)
 
-    fun setSourceList(list: ArrayList<BaseSource>) {
+    fun setSourceList(list: ArrayList<BaseSource>, callback: LoadStateCallback?) {
         handler?.start {
             val success = ArrayList<BaseSource>()
             val failed = ArrayList<FailedResult>()
             synchronized(lock) {
-                callStart(config.getLoadStateCallback(), ArrayList(list))
+                callStart(callback, ArrayList(list))
                 var pageStart = 0
                 list.forEach { source ->
                     val result = BaseController.findController(source)?.getDocumentInfo()
@@ -48,7 +47,7 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
                     }
                 }
             }
-            callComplete(config.getLoadStateCallback(), success, failed)
+            callComplete(callback, success, failed)
         }
     }
 
@@ -66,6 +65,9 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
+        if (isNotReady()) {
+            return
+        }
         handler?.start {
             val source = AssetPathSource(assetPath, password)
             addSource(index, source, callback)
@@ -86,6 +88,9 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
+        if (isNotReady()) {
+            return
+        }
         handler?.start {
             val source = FilePathSource(filePath, password)
             addSource(index, source, callback)
@@ -102,6 +107,9 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
+        if (isNotReady()) {
+            return
+        }
         handler?.start {
             val source = FileSource(file, password)
             addSource(index, source, callback)
@@ -122,6 +130,9 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
+        if (isNotReady()) {
+            return
+        }
         handler?.start {
             val source = ByteArraySource(bytes, password)
             addSource(index, source, callback)
@@ -142,6 +153,9 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
+        if (isNotReady()) {
+            return
+        }
         handler?.start {
             val source = InputStreamSource(inputStream, password)
             addSource(index, source, callback)
@@ -158,6 +172,9 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         password: String?,
         callback: LoadStateCallback?
     ) {
+        if (isNotReady()) {
+            return
+        }
         handler?.start {
             val source = UriSource(uri, password)
             addSource(index, source, callback)
@@ -165,11 +182,13 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
     }
 
     override fun destroy() {
-        synchronized(lock) {
-            docs.forEach {
-                it.close()
+        if (isDestroy.compareAndSet(false, true)) {
+            synchronized(lock) {
+                docs.forEach {
+                    it.close()
+                }
+                docs.clear()
             }
-            docs.clear()
         }
     }
 
@@ -178,6 +197,10 @@ class PdfLoader(private val config: PdfConfig) : PdfRender(), IPdfLoader {
         var result: BaseController.Result?
 
         synchronized(lock) {
+            if (isNotReady()) {
+                return
+            }
+
             callStart(callback, listOf(source))
             result = BaseController.findController(source)?.getDocumentInfo()
             result?.document?.let { document ->

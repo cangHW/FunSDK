@@ -7,7 +7,7 @@ package com.proxy.service.document.pdf.constants
  */
 object Constants {
 
-    const val SOURCE_THREAD = "pdf-source-thread"
+    const val SOURCE_THREAD = "cs-pdf-source-thread"
 
     const val DOC_META_TITLE = "Title"
     const val DOC_META_AUTHOR = "Author"
