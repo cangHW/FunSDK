@@ -1,3 +1,0 @@
-/Users/canghaixiao/Documents/workspace/FunSDK/MediaSDK/MediaInfo/src/main/java/com/proxy/service/media/info/player/video/VideoPlayerControllerImpl.kt
-/Users/canghaixiao/Documents/workspace/FunSDK/MediaSDK/MediaInfo/src/main/java/com/proxy/service/media/info/MediaServiceImpl.kt
-/Users/canghaixiao/Documents/workspace/FunSDK/MediaSDK/MediaInfo/src/main/java/com/proxy/service/media/info/player/video/VideoPlayerLoaderImpl.kt
