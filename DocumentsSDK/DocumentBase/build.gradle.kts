@@ -30,7 +30,6 @@ dependencies {
     implementation(libs.android.kotlin)
 
     implementation(libs.cloud.api)
-    compileOnly(libs.core.framework)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

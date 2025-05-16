@@ -14,6 +14,4 @@ interface IPdfBuilderGet {
     fun getSources(): ArrayList<BaseSource>
 
     fun getLoadStateCallback(): LoadStateCallback?
-
-    fun getLifecycleOwner(): LifecycleOwner?
 }

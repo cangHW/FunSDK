@@ -69,7 +69,7 @@ class CipherController(
     }
 
     private fun mergeByteArrays(byteArrayList: List<ByteArray>): ByteArray {
-        val totalSize = byteArrayList.sumOf { it.size }
+        val totalSize = byteArrayList.map { it.size }.sum()
         val result = ByteArray(totalSize)
         var currentPosition = 0
         for (byteArray in byteArrayList) {

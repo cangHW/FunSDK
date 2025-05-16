@@ -1,4 +1,4 @@
-package com.proxy.service.document.pdf.view
+package com.proxy.service.document.pdf.view.view
 
 import android.content.Context
 import android.graphics.Bitmap

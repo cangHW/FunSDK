@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -15,7 +16,7 @@ import com.proxy.service.document.base.pdf.config.info.FailedResult
 import com.proxy.service.document.base.pdf.config.source.BaseSource
 import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.base.pdf.info.CatalogueData
-import com.proxy.service.document.pdf.view.TempSurfaceView
+import com.proxy.service.document.pdf.view.view.TempSurfaceView
 import com.proxy.service.funsdk.R
 
 /**
@@ -35,61 +36,41 @@ class PdfActivity : AppCompatActivity() {
         }
     }
 
-    private var loader: IPdfLoader? = null
-
-    private var tempSurfaceView: TempSurfaceView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_pdf)
 
-//        val tempView = findViewById<TempView>(R.id.temp)
-        tempSurfaceView = findViewById(R.id.temp_surface)
+        val group = findViewById<FrameLayout>(R.id.group)
 
         val service = CloudSystem.getService(PdfService::class.java)
-        loader = service?.createLoader(
-            PdfConfig.builder()
-                .setSourceAssetPath("pdf/asd.pdf")
-                .setLoadCallback(object : LoadStateCallback {
-                    override fun onLoadComplete(
-                        success: List<BaseSource>,
-                        failed: List<FailedResult>
-                    ) {
-                        CsLogger.i("PDF 加载完成，success=${success} failed=${failed}")
-//                        tempView?.setLoader(loader)
-                        tempSurfaceView?.setLoader(loader)
-                    }
-                }).build()
-        )
+
+        val config = PdfConfig.builder()
+            .setSourceAssetPath("pdf/asd.pdf")
+            .setLoadCallback(object : LoadStateCallback {
+                override fun onLoadComplete(
+                    success: List<BaseSource>,
+                    failed: List<FailedResult>
+                ) {
+                    CsLogger.i("PDF 加载完成，success=${success} failed=${failed}")
+                }
+            }).build()
+
+        service?.createViewFactory(config)
+            ?.setLifecycleOwner(this)
+            ?.into(group)
     }
 
     fun onClick(view: View) {
         when (view.id) {
             R.id.log_common_msg -> {
-                CsLogger.i("PageCount = ${loader?.getPageCount()}")
-                CsLogger.i("DocumentMeta = ${loader?.getDocumentMeta()}")
-                loader?.getDocumentCatalogue()?.forEach {
-                    logCatalogue(it, "")
-                }
+//                CsLogger.i("PageCount = ${loader?.getPageCount()}")
+//                CsLogger.i("DocumentMeta = ${loader?.getDocumentMeta()}")
+//                loader?.getDocumentCatalogue()?.forEach {
+//                    logCatalogue(it, "")
+//                }
             }
 
-            R.id.last_page -> {
-                tempSurfaceView?.let {
-                    it.showContent(it.getShowIndex() - 1)
-                }
-            }
-
-            R.id.next_page -> {
-                tempSurfaceView?.let {
-                    it.showContent(it.getShowIndex() + 1)
-                }
-            }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        loader?.destroy()
     }
 
     private fun logCatalogue(catalogue: CatalogueData, start: String) {

@@ -59,7 +59,7 @@ class ReaderSource(private val reader: Reader) : IRead {
             var charsRead: Int
 
             while (bufferedReader.read(buffer).also { charsRead = it } != -1) {
-                stringBuilder.appendRange(buffer, 0, charsRead)
+                stringBuilder.append(buffer, 0, charsRead)
             }
 
             return stringBuilder.toString()

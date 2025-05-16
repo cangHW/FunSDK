@@ -1,63 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/log_common_msg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="打印基础信息"
+        android:textSize="20dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/log_common_msg"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="打印基础信息"
-            android:textSize="20dp" />
+    <FrameLayout
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/last_page"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="上一页"
-            android:textSize="20dp" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/next_page"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="下一页"
-            android:textSize="20dp" />
-
-<!--        <com.proxy.service.document.pdf.view.TempView-->
-<!--            android:id="@+id/temp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"/>-->
-
-        <com.proxy.service.document.pdf.view.TempSurfaceView
-            android:id="@+id/temp_surface"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

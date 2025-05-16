@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
+    implementation(libs.android.view.constraintlayout)
+
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     implementation(project(":DocumentsSDK:DocumentBase"))

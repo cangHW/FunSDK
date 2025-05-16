@@ -5,6 +5,7 @@ import com.proxy.service.base.BaseService
 import com.proxy.service.document.base.pdf.config.PdfConfig
 import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.base.pdf.view.IPdfView
+import com.proxy.service.document.base.pdf.view.IViewFactory
 
 /**
  * @author: cangHX
@@ -21,10 +22,9 @@ interface PdfService : BaseService {
     fun createLoader(config: PdfConfig): IPdfLoader
 
     /**
-     * 加载 pdf 视图, 如果需要使用默认视图
+     * 创建 pdf 视图工厂, 如果需要使用默认视图
      *
      * @param config    pdf 配置
-     * @param viewGroup 视图展示的父 view
      * */
-    fun loadTo(config: PdfConfig, viewGroup: ViewGroup): IPdfView
+    fun createViewFactory(config: PdfConfig): IViewFactory
 }

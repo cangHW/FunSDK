@@ -32,10 +32,6 @@ class PdfConfig private constructor(
         return builder.getLoadStateCallback()
     }
 
-    override fun getLifecycleOwner(): LifecycleOwner? {
-        return builder.getLifecycleOwner()
-    }
-
     companion object {
         fun builder(): IPdfBuilder {
             return Builder()
@@ -44,7 +40,6 @@ class PdfConfig private constructor(
 
     private class Builder : IPdfBuilder, IPdfBuilderGet {
 
-        private var lifecycleOwner: LifecycleOwner? = null
         private var loadCallback: LoadStateCallback? = null
         private val sources = ArrayList<BaseSource>()
 
@@ -125,11 +120,6 @@ class PdfConfig private constructor(
             return this
         }
 
-        override fun setLifecycleOwner(owner: LifecycleOwner): IPdfBuilder {
-            this.lifecycleOwner = owner
-            return this
-        }
-
         override fun build(): PdfConfig {
             return PdfConfig(this)
         }
@@ -140,10 +130,6 @@ class PdfConfig private constructor(
 
         override fun getLoadStateCallback(): LoadStateCallback? {
             return loadCallback
-        }
-
-        override fun getLifecycleOwner(): LifecycleOwner? {
-            return lifecycleOwner
         }
     }
 

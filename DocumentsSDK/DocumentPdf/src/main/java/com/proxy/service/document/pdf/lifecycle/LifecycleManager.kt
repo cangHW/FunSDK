@@ -2,6 +2,7 @@ package com.proxy.service.document.pdf.lifecycle
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.document.base.pdf.loader.IPdfLoader
 import com.proxy.service.document.pdf.loader.impl.PdfLoader
 
 /**
@@ -15,13 +16,12 @@ class LifecycleManager private constructor() {
         val instance by lazy { LifecycleManager() }
     }
 
-    fun bindLifecycle(owner: LifecycleOwner?, loader: PdfLoader) {
-        owner?.lifecycle?.addObserver(LifecycleObserverImpl(owner, loader))
+    fun bindLifecycle(owner: LifecycleOwner?, loader: IPdfLoader) {
+        owner?.lifecycle?.addObserver(LifecycleObserverImpl(loader))
     }
 
     private class LifecycleObserverImpl(
-        private val owner: LifecycleOwner,
-        private val loader: PdfLoader
+        private val loader: IPdfLoader
     ) : DefaultLifecycleObserver {
 
         override fun onDestroy(owner: LifecycleOwner) {

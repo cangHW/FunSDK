@@ -108,11 +108,6 @@ interface IPdfBuilder {
     fun setLoadCallback(callback: LoadStateCallback): IPdfBuilder
 
     /**
-     * 绑定生命周期
-     * */
-    fun setLifecycleOwner(owner: LifecycleOwner): IPdfBuilder
-
-    /**
      * 创建配置
      * */
     fun build(): PdfConfig

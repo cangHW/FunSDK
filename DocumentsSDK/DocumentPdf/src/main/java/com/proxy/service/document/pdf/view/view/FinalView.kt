@@ -1,4 +1,4 @@
-package com.proxy.service.document.pdf.view
+package com.proxy.service.document.pdf.view.view
 
 import android.annotation.SuppressLint
 import android.content.Context

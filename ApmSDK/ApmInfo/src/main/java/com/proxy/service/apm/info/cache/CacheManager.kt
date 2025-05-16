@@ -84,8 +84,11 @@ class CacheManager {
                     // 校验文件数量
                     if (maxFileCount > 0) {
                         while (totalFileInfos.size > maxFileCount) {
-                            totalFileInfos.removeFirstOrNull()?.let {
-                                CsFileUtils.delete(it.filePath)
+                            try {
+                                val info = totalFileInfos.removeAt(0)
+                                CsFileUtils.delete(info.filePath)
+                            } catch (throwable: Throwable) {
+                                CsLogger.tag(TAG).e(throwable)
                             }
                         }
                     }
@@ -95,8 +98,13 @@ class CacheManager {
                         val lastTime = System.currentTimeMillis() - maxCacheTime
                         var firstFileLastModified = totalFileInfos.firstOrNull()?.lastModified
                         while ((firstFileLastModified ?: lastTime) < lastTime) {
-                            totalFileInfos.removeFirstOrNull()?.let {
-                                CsFileUtils.delete(it.filePath)
+                            try {
+                                if (totalFileInfos.size > 0) {
+                                    val info = totalFileInfos.removeAt(0)
+                                    CsFileUtils.delete(info.filePath)
+                                }
+                            } catch (throwable: Throwable) {
+                                CsLogger.tag(TAG).e(throwable)
                             }
                             firstFileLastModified = totalFileInfos.firstOrNull()?.lastModified
                         }
