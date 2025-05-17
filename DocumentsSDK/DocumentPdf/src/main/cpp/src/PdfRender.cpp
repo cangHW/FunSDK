@@ -60,7 +60,7 @@ Java_com_proxy_service_document_pdf_core_PdfiumCore_nativeRenderPageToSurface(
     );
 
     if (drawSizeHor < canvasHorSize || drawSizeVer < canvasVerSize) {
-        FPDFBitmap_FillRect(pdfBitmap, 0, 0, canvasHorSize, canvasVerSize, 0x848484FF); //Gray
+        FPDFBitmap_FillRect(pdfBitmap, 0, 0, canvasHorSize, canvasVerSize, 0xFFFFFFFF); //窗口背景色 White
     }
 
     int baseHorSize = (canvasHorSize < drawSizeHor) ? canvasHorSize : drawSizeHor;
@@ -73,7 +73,7 @@ Java_com_proxy_service_document_pdf_core_PdfiumCore_nativeRenderPageToSurface(
         flags |= FPDF_ANNOT;
     }
 
-    FPDFBitmap_FillRect(pdfBitmap, baseX, baseY, baseHorSize, baseVerSize, 0xFFFFFFFF); //White
+    FPDFBitmap_FillRect(pdfBitmap, baseX, baseY, baseHorSize, baseVerSize, 0xFFFFFFFF); //bitmap 背景色 White
 
     FPDF_RenderPageBitmap(
             pdfBitmap, page,

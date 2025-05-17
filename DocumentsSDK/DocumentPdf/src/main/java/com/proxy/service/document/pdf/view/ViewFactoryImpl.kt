@@ -38,9 +38,7 @@ class ViewFactoryImpl(private val config: PdfConfig) : IViewFactory {
         val context = viewGroup?.context ?: CsContextManager.getApplication()
         val pdfView = FinalView(context)
         addViewToGroup(pdfView, viewGroup)
-
         pdfView.setLoader(loader)
-
         return PdfViewImpl(pdfView)
     }
 

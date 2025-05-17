@@ -83,9 +83,9 @@ class TouchManager private constructor(
         if (event == null) {
             return false
         }
-        if (scaleGestureDetector?.onTouchEvent(event) == true) {
+        if (gestureDetector?.onTouchEvent(event) == true) {
             return true
         }
-        return gestureDetector?.onTouchEvent(event) == true
+        return scaleGestureDetector?.onTouchEvent(event) == true
     }
 }
