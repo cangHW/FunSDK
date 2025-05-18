@@ -43,6 +43,26 @@ class TouchManager private constructor(
          * 缩放
          * */
         fun onScale(scale: Float)
+
+        /**
+         * 滑动
+         * */
+        fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean
+
+        /**
+         * 惯性滑动
+         * */
+        fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean
     }
 
     private var scaleGestureDetector: ScaleGestureDetector? = null
@@ -57,6 +77,25 @@ class TouchManager private constructor(
     private var gestureDetector: GestureDetector? = null
 
     private val gestureDetectorListener = object : SimpleOnGestureListener() {
+
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
+            return callback.onScroll(e1, e2, distanceX, distanceY)
+        }
+
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            return callback.onFling(e1, e2, velocityX, velocityY)
+        }
+
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             callback.onSingleClick(e.x, e.y)
             return true

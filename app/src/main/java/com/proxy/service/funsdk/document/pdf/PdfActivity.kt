@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.document.pdf
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -56,6 +57,8 @@ class PdfActivity : AppCompatActivity() {
             }).build()
 
         service?.createViewFactory(config)
+            ?.setPageBackgroundColor(0xffff0000)
+            ?.setPageBackgroundColor(0xff00ff00)
             ?.setLifecycleOwner(this)
             ?.into(group)
     }

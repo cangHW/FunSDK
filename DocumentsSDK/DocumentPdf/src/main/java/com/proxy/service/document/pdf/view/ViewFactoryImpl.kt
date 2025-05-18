@@ -9,6 +9,7 @@ import com.proxy.service.document.base.pdf.view.IPdfView
 import com.proxy.service.document.base.pdf.view.IViewFactory
 import com.proxy.service.document.pdf.PdfServiceImpl
 import com.proxy.service.document.pdf.lifecycle.LifecycleManager
+import com.proxy.service.document.pdf.view.config.RenderConfig
 import com.proxy.service.document.pdf.view.group.IFactory
 import com.proxy.service.document.pdf.view.view.FinalView
 
@@ -20,6 +21,17 @@ import com.proxy.service.document.pdf.view.view.FinalView
 class ViewFactoryImpl(private val config: PdfConfig) : IViewFactory {
 
     private var owner: LifecycleOwner? = null
+    private val renderConfig = RenderConfig()
+
+    override fun setViewBackgroundColor(color: Long): IViewFactory {
+        renderConfig.viewBackgroundColor = color
+        return this
+    }
+
+    override fun setPageBackgroundColor(color: Long): IViewFactory {
+        renderConfig.viewBackgroundColor = color
+        return this
+    }
 
     override fun setLifecycleOwner(owner: LifecycleOwner): IViewFactory {
         this.owner = owner
@@ -38,7 +50,7 @@ class ViewFactoryImpl(private val config: PdfConfig) : IViewFactory {
         val context = viewGroup?.context ?: CsContextManager.getApplication()
         val pdfView = FinalView(context)
         addViewToGroup(pdfView, viewGroup)
-        pdfView.setLoader(loader)
+        pdfView.setLoader(renderConfig, loader)
         return PdfViewImpl(pdfView)
     }
 

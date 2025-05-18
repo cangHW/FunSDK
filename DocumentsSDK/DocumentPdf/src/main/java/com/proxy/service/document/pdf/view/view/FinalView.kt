@@ -10,6 +10,7 @@ import android.view.SurfaceView
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.base.pdf.loader.IPdfLoader
+import com.proxy.service.document.pdf.view.config.RenderConfig
 import com.proxy.service.document.pdf.view.touch.TouchManager
 
 /**
@@ -19,7 +20,7 @@ import com.proxy.service.document.pdf.view.touch.TouchManager
  */
 class FinalView : SurfaceView {
 
-    companion object{
+    companion object {
         private const val TAG = "${Constants.LOG_TAG_PDF_START}View"
     }
 
@@ -69,6 +70,26 @@ class FinalView : SurfaceView {
         override fun onScale(scale: Float) {
             CsLogger.tag(TAG).i("onScale scale=$scale")
         }
+
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
+            CsLogger.tag(TAG).i("onScroll distanceX=$distanceX, distanceY=$distanceY")
+            return true
+        }
+
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            CsLogger.tag(TAG).i("onFling velocityX=$velocityX, velocityY=$velocityY")
+            return true
+        }
     }
 
     private fun init(context: Context) {
@@ -76,9 +97,11 @@ class FinalView : SurfaceView {
         touchManager = TouchManager.create(context, touchCallback)
     }
 
+    private var config: RenderConfig? = null
     private var loader: IPdfLoader? = null
 
-    fun setLoader(loader: IPdfLoader?) {
+    fun setLoader(config: RenderConfig, loader: IPdfLoader?) {
+        this.config = config
         this.loader = loader
 
         tryShow()
@@ -90,7 +113,16 @@ class FinalView : SurfaceView {
 
 
 
-        ld.renderPageToSurface(0, sf, width, height, true, true)
+        ld.renderPageToSurface(
+            0,
+            sf,
+            width,
+            height,
+            true,
+            true,
+            config?.viewBackgroundColor ?: 0,
+            config?.pageBackgroundColor ?: 0
+        )
     }
 
     @SuppressLint("ClickableViewAccessibility")

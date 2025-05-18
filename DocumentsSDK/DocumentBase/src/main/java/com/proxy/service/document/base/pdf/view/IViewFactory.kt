@@ -1,6 +1,8 @@
 package com.proxy.service.document.base.pdf.view
 
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.lifecycle.LifecycleOwner
 
 /**
@@ -9,6 +11,16 @@ import androidx.lifecycle.LifecycleOwner
  * @desc:
  */
 interface IViewFactory {
+
+    /**
+     * 设置视图背景色, 默认白色, 格式为：0xAARRGGBB
+     * */
+    fun setViewBackgroundColor(color: Long): IViewFactory
+
+    /**
+     * 设置页面背景色, 默认白色, 格式为：0xAARRGGBB
+     * */
+    fun setPageBackgroundColor(color: Long): IViewFactory
 
     /**
      * 绑定生命周期

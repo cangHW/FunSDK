@@ -248,6 +248,8 @@ class PdfiumCore {
      * @param width         渲染区域的宽度
      * @param height        渲染内容的高度
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     external fun nativeRenderPageToSurface(
         page_hand: Long,
@@ -257,7 +259,9 @@ class PdfiumCore {
         startY: Int,
         width: Int,
         height: Int,
-        renderAnnot: Boolean
+        renderAnnot: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     )
 
     /**
@@ -271,6 +275,8 @@ class PdfiumCore {
      * @param width         渲染区域的宽度
      * @param height        渲染内容的高度
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     external fun nativeRenderPageToBitmap(
         page_hand: Long,
@@ -280,7 +286,9 @@ class PdfiumCore {
         startY: Int,
         width: Int,
         height: Int,
-        renderAnnot: Boolean
+        renderAnnot: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     )
 
 

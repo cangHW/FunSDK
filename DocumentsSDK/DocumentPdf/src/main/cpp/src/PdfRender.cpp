@@ -20,7 +20,7 @@ Java_com_proxy_service_document_pdf_core_PdfiumCore_nativeRenderPageToSurface(
         JNIEnv *env, jobject /*thiz*/, jlong pagePtr, jobject objSurface,
         jint dpi, jint startX, jint startY,
         jint drawSizeHor, jint drawSizeVer,
-        jboolean renderAnnot) {
+        jboolean renderAnnot, jlong viewBgColor, jlong pageBgColor) {
     ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, objSurface);
     if (nativeWindow == nullptr) {
         LOGE("native window pointer null");
@@ -60,7 +60,7 @@ Java_com_proxy_service_document_pdf_core_PdfiumCore_nativeRenderPageToSurface(
     );
 
     if (drawSizeHor < canvasHorSize || drawSizeVer < canvasVerSize) {
-        FPDFBitmap_FillRect(pdfBitmap, 0, 0, canvasHorSize, canvasVerSize, 0xFFFFFFFF); //窗口背景色 White
+        FPDFBitmap_FillRect(pdfBitmap, 0, 0, canvasHorSize, canvasVerSize, viewBgColor); //窗口背景色 White
     }
 
     int baseHorSize = (canvasHorSize < drawSizeHor) ? canvasHorSize : drawSizeHor;
@@ -73,7 +73,7 @@ Java_com_proxy_service_document_pdf_core_PdfiumCore_nativeRenderPageToSurface(
         flags |= FPDF_ANNOT;
     }
 
-    FPDFBitmap_FillRect(pdfBitmap, baseX, baseY, baseHorSize, baseVerSize, 0xFFFFFFFF); //bitmap 背景色 White
+    FPDFBitmap_FillRect(pdfBitmap, baseX, baseY, baseHorSize, baseVerSize, pageBgColor); //bitmap 背景色 White
 
     FPDF_RenderPageBitmap(
             pdfBitmap, page,
@@ -95,7 +95,7 @@ Java_com_proxy_service_document_pdf_core_PdfiumCore_nativeRenderPageToBitmap(
         JNIEnv *env, jobject /*thiz*/, jlong pagePtr, jobject bitmap,
         jint dpi, jint startX, jint startY,
         jint drawSizeHor, jint drawSizeVer,
-        jboolean renderAnnot) {
+        jboolean renderAnnot, jlong viewBgColor, jlong pageBgColor) {
     FPDF_PAGE page = reinterpret_cast<FPDF_PAGE>(pagePtr);
 
     if (page == NULL || bitmap == NULL) {

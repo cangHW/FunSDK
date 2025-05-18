@@ -2,6 +2,7 @@ package com.proxy.service.document.base.pdf.loader
 
 import android.graphics.Bitmap
 import android.view.Surface
+import com.proxy.service.document.base.constants.Constants
 
 /**
  * @author: cangHX
@@ -15,12 +16,16 @@ interface IPdfRender : IPdfAction {
      *
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
      * @param autoSize      渲染尺寸自适应, 用于自动调整渲染内容的宽高, 避免最终渲染效果形变
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     fun renderPageToBitmap(
         pageIndex: Int,
         bitmap: Bitmap,
         renderAnnot: Boolean,
-        autoSize: Boolean = false
+        autoSize: Boolean = false,
+        viewBgColor:Long = Constants.DEFAULT_COLOR,
+        pageBgColor:Long = Constants.DEFAULT_COLOR
     )
 
     /**
@@ -30,6 +35,8 @@ interface IPdfRender : IPdfAction {
      * @param height        渲染区域的高度
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
      * @param autoSize      渲染尺寸自适应, 用于自动调整渲染内容的宽高, 避免最终渲染效果形变
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     fun renderPageToBitmap(
         pageIndex: Int,
@@ -37,7 +44,9 @@ interface IPdfRender : IPdfAction {
         width: Int,
         height: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean = false
+        autoSize: Boolean = false,
+        viewBgColor:Long = Constants.DEFAULT_COLOR,
+        pageBgColor:Long = Constants.DEFAULT_COLOR
     )
 
     /**
@@ -49,6 +58,8 @@ interface IPdfRender : IPdfAction {
      * @param endY          渲染区域的结束坐标
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
      * @param autoSize      渲染尺寸自适应, 用于自动调整渲染内容的宽高, 避免最终渲染效果形变
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     fun renderPageToBitmap(
         pageIndex: Int,
@@ -58,7 +69,9 @@ interface IPdfRender : IPdfAction {
         endX: Int,
         endY: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean = false
+        autoSize: Boolean = false,
+        viewBgColor:Long = Constants.DEFAULT_COLOR,
+        pageBgColor:Long = Constants.DEFAULT_COLOR
     )
 
     /**
@@ -68,6 +81,8 @@ interface IPdfRender : IPdfAction {
      * @param height        渲染区域的高度
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
      * @param autoSize      渲染尺寸自适应, 用于自动调整渲染内容的宽高, 避免最终渲染效果形变
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     fun renderPageToSurface(
         pageIndex: Int,
@@ -75,7 +90,9 @@ interface IPdfRender : IPdfAction {
         width: Int,
         height: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean = false
+        autoSize: Boolean = false,
+        viewBgColor:Long = Constants.DEFAULT_COLOR,
+        pageBgColor:Long = Constants.DEFAULT_COLOR
     )
 
     /**
@@ -87,6 +104,8 @@ interface IPdfRender : IPdfAction {
      * @param endY          渲染区域的结束坐标
      * @param renderAnnot   是否渲染批注（高亮、下划线、便签等）
      * @param autoSize      渲染尺寸自适应, 用于自动调整渲染内容的宽高, 避免最终渲染效果形变
+     * @param viewBgColor   视图背景色, 格式为：0xAARRGGBB
+     * @param pageBgColor   页面背景色, 格式为：0xAARRGGBB
      * */
     fun renderPageToSurface(
         pageIndex: Int,
@@ -96,7 +115,9 @@ interface IPdfRender : IPdfAction {
         endX: Int,
         endY: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean = false
+        autoSize: Boolean = false,
+        viewBgColor:Long = Constants.DEFAULT_COLOR,
+        pageBgColor:Long = Constants.DEFAULT_COLOR
     )
 
 }

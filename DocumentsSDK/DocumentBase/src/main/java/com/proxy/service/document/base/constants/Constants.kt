@@ -11,4 +11,5 @@ object Constants {
 
     const val LOG_TAG_PDF_START = "${LOG_TAG_START}_Pdf_"
 
+    const val DEFAULT_COLOR = 0xFFFFFFFF
 }

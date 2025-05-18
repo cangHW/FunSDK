@@ -108,7 +108,9 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         startY: Int,
         drawSizeHor: Int,
         drawSizeVer: Int,
-        renderAnnot: Boolean
+        renderAnnot: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
         PdfiumCore.getInstance().nativeRenderPageToBitmap(
             page_hand,
@@ -118,7 +120,9 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
             startY,
             drawSizeHor,
             drawSizeVer,
-            renderAnnot
+            renderAnnot,
+            viewBgColor,
+            pageBgColor
         )
     }
 
@@ -131,7 +135,9 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         startY: Int,
         drawSizeHor: Int,
         drawSizeVer: Int,
-        renderAnnot: Boolean
+        renderAnnot: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
         PdfiumCore.getInstance().nativeRenderPageToSurface(
             page_hand,
@@ -141,7 +147,9 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
             startY,
             drawSizeHor,
             drawSizeVer,
-            renderAnnot
+            renderAnnot,
+            viewBgColor,
+            pageBgColor
         )
     }
 

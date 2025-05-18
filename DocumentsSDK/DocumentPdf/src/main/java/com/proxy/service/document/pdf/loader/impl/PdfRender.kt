@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.view.Surface
+import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.base.pdf.loader.IPdfRender
 import kotlin.math.min
 
@@ -19,7 +20,9 @@ open class PdfRender : PdfAction(), IPdfRender {
         pageIndex: Int,
         bitmap: Bitmap,
         renderAnnot: Boolean,
-        autoSize: Boolean
+        autoSize: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
         renderPageToBitmap(
             pageIndex,
@@ -27,7 +30,9 @@ open class PdfRender : PdfAction(), IPdfRender {
             bitmap.width,
             bitmap.height,
             renderAnnot,
-            autoSize
+            autoSize,
+            viewBgColor,
+            pageBgColor
         )
     }
 
@@ -37,7 +42,9 @@ open class PdfRender : PdfAction(), IPdfRender {
         width: Int,
         height: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean
+        autoSize: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
         renderPageToBitmap(
             pageIndex,
@@ -47,7 +54,9 @@ open class PdfRender : PdfAction(), IPdfRender {
             bitmap.width,
             bitmap.height,
             renderAnnot,
-            autoSize
+            autoSize,
+            viewBgColor,
+            pageBgColor
         )
     }
 
@@ -59,7 +68,9 @@ open class PdfRender : PdfAction(), IPdfRender {
         endX: Int,
         endY: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean
+        autoSize: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
         synchronized(lock) {
             val page = findDocByPageIndex(pageIndex)
@@ -70,7 +81,16 @@ open class PdfRender : PdfAction(), IPdfRender {
             val realHeight = endY - startY
 
             if (!autoSize) {
-                page.renderPageToBitmap(bitmap, startX, startY, realWidth, realHeight, renderAnnot)
+                page.renderPageToBitmap(
+                    bitmap,
+                    startX,
+                    startY,
+                    realWidth,
+                    realHeight,
+                    renderAnnot,
+                    viewBgColor,
+                    pageBgColor
+                )
                 return
             }
 
@@ -93,7 +113,9 @@ open class PdfRender : PdfAction(), IPdfRender {
                 rect.top.toInt(),
                 rect.width().toInt(),
                 rect.height().toInt(),
-                renderAnnot
+                renderAnnot,
+                viewBgColor,
+                pageBgColor
             )
         }
     }
@@ -104,9 +126,22 @@ open class PdfRender : PdfAction(), IPdfRender {
         width: Int,
         height: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean
+        autoSize: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
-        renderPageToSurface(pageIndex, surface, 0, 0, width, height, renderAnnot, autoSize)
+        renderPageToSurface(
+            pageIndex,
+            surface,
+            0,
+            0,
+            width,
+            height,
+            renderAnnot,
+            autoSize,
+            viewBgColor,
+            pageBgColor
+        )
     }
 
     override fun renderPageToSurface(
@@ -117,7 +152,9 @@ open class PdfRender : PdfAction(), IPdfRender {
         endX: Int,
         endY: Int,
         renderAnnot: Boolean,
-        autoSize: Boolean
+        autoSize: Boolean,
+        viewBgColor: Long,
+        pageBgColor: Long
     ) {
         synchronized(lock) {
             val page = findDocByPageIndex(pageIndex)
@@ -134,7 +171,9 @@ open class PdfRender : PdfAction(), IPdfRender {
                     startY,
                     realWidth,
                     realHeight,
-                    renderAnnot
+                    renderAnnot,
+                    viewBgColor,
+                    pageBgColor
                 )
                 return
             }
@@ -158,7 +197,9 @@ open class PdfRender : PdfAction(), IPdfRender {
                 rect.top.toInt(),
                 rect.width().toInt(),
                 rect.height().toInt(),
-                renderAnnot
+                renderAnnot,
+                viewBgColor,
+                pageBgColor
             )
         }
     }
