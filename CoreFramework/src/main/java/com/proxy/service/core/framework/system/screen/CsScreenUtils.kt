@@ -9,6 +9,10 @@ import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.WindowManager
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.system.screen.callback.ScreenOrientationCallback
+import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
+import com.proxy.service.core.framework.system.screen.enums.RotationEnum
+import com.proxy.service.core.framework.system.screen.factory.DisplayController
 import com.proxy.service.core.framework.system.screen.info.ScreenInfo
 
 
@@ -127,4 +131,65 @@ object CsScreenUtils {
 
         return info
     }
+
+    /**
+     * 是否是竖屏
+     * */
+    fun isPortrait(): Boolean {
+        val res = CsContextManager.getApplication().resources
+        return res.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    }
+
+    /**
+     * 是否是横屏
+     * */
+    fun isLandscape(): Boolean {
+        val res = CsContextManager.getApplication().resources
+        return res.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    }
+
+    /**
+     * 获取屏幕旋转角度
+     * */
+    fun getScreenRotation(): RotationEnum {
+        val context = CsContextManager.getApplication()
+
+        val degree = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.display?.rotation
+        } else {
+            val wm = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager?
+            wm?.defaultDisplay?.rotation
+        }
+
+        return RotationEnum.valueOf(degree) ?: RotationEnum.ROTATION_0
+    }
+
+    /**
+     * 添加屏幕旋转监听
+     * */
+    fun addScreenRotationCallback(callback: ScreenRotationCallback) {
+        DisplayController.instance.addCallback(callback)
+    }
+
+    /**
+     * 移除屏幕旋转监听
+     * */
+    fun removeScreenRotationCallback(callback: ScreenRotationCallback) {
+        DisplayController.instance.removeCallback(callback)
+    }
+
+    /**
+     * 添加横竖屏变化监听
+     * */
+    fun addScreenOrientationCallback(callback: ScreenOrientationCallback) {
+        DisplayController.instance.addCallback(callback)
+    }
+
+    /**
+     * 移除横竖屏变化监听
+     * */
+    fun removeScreenOrientationCallback(callback: ScreenOrientationCallback) {
+        DisplayController.instance.removeCallback(callback)
+    }
+
 }

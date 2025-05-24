@@ -3,12 +3,13 @@ package com.proxy.service.core.framework.app.context.lifecycle
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
+import com.proxy.service.core.framework.collections.base.IMap
+import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
+import com.proxy.service.core.framework.collections.CsExcellentSet
+import com.proxy.service.core.framework.collections.base.ISet
 import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.callback.MultiRunnableEmitter
 import com.proxy.service.threadpool.base.thread.task.ICallable
-import com.proxy.service.threadpool.base.thread.task.IConsumer
-import com.proxy.service.threadpool.base.thread.task.IMultiRunnable
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -25,30 +26,14 @@ class AppShowStatusLifecycleImpl : ActivityLifecycleCallbacks {
         }
     }
 
-    private val appShowStatusChangedCallbacks = ArrayList<OnAppShowStatusChangedCallback>()
+    private val appShowStatusChangedCallbacks: ISet<OnAppShowStatusChangedCallback> = CsExcellentSet()
 
     fun addAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        CsTask.computationThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                if (!appShowStatusChangedCallbacks.contains(callback)) {
-                    synchronized(appShowStatusChangedCallbacks) {
-                        appShowStatusChangedCallbacks.add(callback)
-                    }
-                }
-                return ""
-            }
-        })?.start()
+        appShowStatusChangedCallbacks.putSync(callback)
     }
 
     fun removeAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        CsTask.computationThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                synchronized(appShowStatusChangedCallbacks) {
-                    appShowStatusChangedCallbacks.remove(callback)
-                }
-                return ""
-            }
-        })?.start()
+        appShowStatusChangedCallbacks.removeSync(callback)
     }
 
     fun isInBackground(): Boolean {
@@ -108,25 +93,14 @@ class AppShowStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     private fun forEach(callback: (OnAppShowStatusChangedCallback) -> Unit) {
-        if (appShowStatusChangedCallbacks.size <= 0) {
-            return
-        }
-        CsTask.computationThread()?.call(object : IMultiRunnable<OnAppShowStatusChangedCallback> {
-            override fun accept(emitter: MultiRunnableEmitter<OnAppShowStatusChangedCallback>) {
-                if (appShowStatusChangedCallbacks.size > 0) {
-                    synchronized(appShowStatusChangedCallbacks) {
-                        appShowStatusChangedCallbacks.forEach {
-                            emitter.onNext(it)
-                        }
-                    }
+        appShowStatusChangedCallbacks.forEachAsync {
+            CsTask.mainThread()?.call(object : ICallable<String> {
+                override fun accept(): String {
+                    callback(it)
+                    return ""
                 }
-                emitter.onComplete()
-            }
-        })?.mainThread()?.doOnNext(object : IConsumer<OnAppShowStatusChangedCallback> {
-            override fun accept(value: OnAppShowStatusChangedCallback) {
-                callback(value)
-            }
-        })?.start()
+            })?.start()
+        }
     }
 
 }

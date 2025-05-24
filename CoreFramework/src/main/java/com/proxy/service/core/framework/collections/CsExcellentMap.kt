@@ -1,5 +1,6 @@
-package com.proxy.service.core.framework.app.context.cache
+package com.proxy.service.core.framework.collections
 
+import com.proxy.service.core.framework.collections.base.IMap
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -9,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
  * @data: 2024/12/27 14:45
  * @desc:
  */
-class SynchronizedCache<K, V> : ICache<K, V> {
+open class CsExcellentMap<K, V> : IMap<K, V> {
 
     private val lock = ReentrantReadWriteLock()
     private val read = lock.readLock()
@@ -21,17 +22,46 @@ class SynchronizedCache<K, V> : ICache<K, V> {
         return map.size
     }
 
+    override fun putSync(key: K, value: V) {
+        write.lock()
+        try {
+            if (!map.containsKey(key)) {
+                map.put(key, value)
+            }
+        } finally {
+            write.unlock()
+        }
+    }
+
+    override fun removeSync(predicate: (K, V) -> Boolean) {
+        val temp: Map<K, V>
+        write.lock()
+        try {
+            temp = map.filter {
+                predicate(it.key, it.value)
+            }
+        } finally {
+            write.unlock()
+        }
+
+        temp.forEach {
+            removeSync(it.key)
+        }
+    }
+
+    override fun removeSync(key: K) {
+        write.lock()
+        try {
+            map.remove(key)
+        } finally {
+            write.unlock()
+        }
+    }
+
     override fun putAsync(key: K, value: V) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                write.lock()
-                try {
-                    if (!map.containsKey(key)) {
-                        map.put(key, value)
-                    }
-                } finally {
-                    write.unlock()
-                }
+                putSync(key, value)
                 return ""
             }
         })?.start()
@@ -40,32 +70,16 @@ class SynchronizedCache<K, V> : ICache<K, V> {
     override fun removeAsync(key: K) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                write.lock()
-                try {
-                    map.remove(key)
-                } finally {
-                    write.unlock()
-                }
+                removeSync(key)
                 return ""
             }
         })?.start()
     }
 
-    override fun removeAsync(predicate: (Map.Entry<K, V>) -> Boolean) {
+    override fun removeAsync(predicate: (K, V) -> Boolean) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                val temp: Map<K, V>
-                write.lock()
-                try {
-                    temp = map.filter(predicate)
-                } finally {
-                    write.unlock()
-                }
-
-                temp.forEach {
-                    removeAsync(it.key)
-                }
-
+                removeSync(predicate)
                 return ""
             }
         })?.start()
@@ -80,7 +94,7 @@ class SynchronizedCache<K, V> : ICache<K, V> {
         }
     }
 
-    override fun forEachAsync(observer: (Map.Entry<K, V>) -> Unit) {
+    override fun forEachAsync(observer: (K, V) -> Unit) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 forEachSync(observer)
@@ -89,37 +103,31 @@ class SynchronizedCache<K, V> : ICache<K, V> {
         })?.start()
     }
 
-    override fun forEachSync(observer: (Map.Entry<K, V>) -> Unit) {
+    override fun forEachSync(observer: (K, V) -> Unit) {
         HashMap(map).forEach {
-            observer(it)
+            observer(it.key, it.value)
         }
     }
 
-    override fun filterSync(predicate: (Map.Entry<K, V>) -> Boolean): Map<K, V> {
+    override fun filterSync(predicate: (K, V) -> Boolean): Map<K, V> {
         read.lock()
         try {
-            return map.filter(predicate)
+            return map.filter {
+                predicate(it.key, it.value)
+            }
         } finally {
             read.unlock()
         }
     }
 
     override fun filterAsync(
-        predicate: (Map.Entry<K, V>) -> Boolean,
-        observer: (Map.Entry<K, V>) -> Unit
+        predicate: (K, V) -> Boolean,
+        observer: (K, V) -> Unit
     ) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                val temp: Map<K, V>
-                read.lock()
-                try {
-                    temp = map.filter(predicate)
-                } finally {
-                    read.unlock()
-                }
-
-                temp.forEach {
-                    observer(it)
+                filterSync(predicate).forEach {
+                    observer(it.key, it.value)
                 }
                 return ""
             }

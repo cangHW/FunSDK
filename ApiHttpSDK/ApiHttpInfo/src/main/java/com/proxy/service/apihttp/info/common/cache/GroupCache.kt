@@ -1,6 +1,5 @@
 package com.proxy.service.apihttp.info.common.cache
 
-import com.proxy.service.apihttp.base.download.task.DownloadTask
 import java.util.Collections
 
 /**

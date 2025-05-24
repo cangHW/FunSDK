@@ -3,9 +3,11 @@ package com.proxy.service.core.framework.app.context.lifecycle
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
-import com.proxy.service.core.framework.app.context.cache.ICache
-import com.proxy.service.core.framework.app.context.cache.SynchronizedCache
+import com.proxy.service.core.framework.collections.base.IMap
+import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
+import com.proxy.service.core.framework.collections.CsExcellentSet
+import com.proxy.service.core.framework.collections.base.ISet
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
@@ -17,8 +19,6 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     companion object {
-        private val any = Any()
-
         private val mInstance by lazy { ActivityStatusLifecycleImpl() }
 
         fun getInstance(): ActivityStatusLifecycleImpl {
@@ -26,11 +26,11 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
         }
     }
 
-    private val globalLifecycleSync: ICache<AbstractActivityLifecycle, Any> = SynchronizedCache()
-    private val globalLifecycleAsync: ICache<AbstractActivityLifecycle, Any> = SynchronizedCache()
+    private val globalLifecycleSync: ISet<AbstractActivityLifecycle> = CsExcellentSet()
+    private val globalLifecycleAsync: ISet<AbstractActivityLifecycle> = CsExcellentSet()
 
-    private val lifecycleSync: ICache<AbstractActivityLifecycle, Activity> = SynchronizedCache()
-    private val lifecycleAsync: ICache<AbstractActivityLifecycle, Activity> = SynchronizedCache()
+    private val lifecycleSync: IMap<AbstractActivityLifecycle, Activity> = CsExcellentMap()
+    private val lifecycleAsync: IMap<AbstractActivityLifecycle, Activity> = CsExcellentMap()
 
     fun addAbstractActivityLifecycle(
         activity: Activity?,
@@ -39,24 +39,24 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     ) {
         if (isSync) {
             activity?.let {
-                lifecycleSync.putAsync(activityLifecycle, it)
+                lifecycleSync.putSync(activityLifecycle, it)
             } ?: let {
-                globalLifecycleSync.putAsync(activityLifecycle, any)
+                globalLifecycleSync.putSync(activityLifecycle)
             }
         } else {
             activity?.let {
-                lifecycleAsync.putAsync(activityLifecycle, it)
+                lifecycleAsync.putSync(activityLifecycle, it)
             } ?: let {
-                globalLifecycleAsync.putAsync(activityLifecycle, any)
+                globalLifecycleAsync.putSync(activityLifecycle)
             }
         }
     }
 
     fun removeAbstractActivityLifecycle(activityLifecycle: AbstractActivityLifecycle) {
-        globalLifecycleSync.removeAsync(activityLifecycle)
-        globalLifecycleAsync.removeAsync(activityLifecycle)
-        lifecycleSync.removeAsync(activityLifecycle)
-        lifecycleAsync.removeAsync(activityLifecycle)
+        globalLifecycleSync.removeSync(activityLifecycle)
+        globalLifecycleAsync.removeSync(activityLifecycle)
+        lifecycleSync.removeSync(activityLifecycle)
+        lifecycleAsync.removeSync(activityLifecycle)
     }
 
 
@@ -203,32 +203,34 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     private fun forEach(activity: Activity, callback: (AbstractActivityLifecycle) -> Unit) {
         globalLifecycleSync.forEachSync {
-            callback(it.key)
+            callback(it)
         }
 
         globalLifecycleAsync.forEachAsync {
             CsTask.mainThread()
                 ?.call(object : ICallable<String> {
                     override fun accept(): String {
-                        callback(it.key)
+                        callback(it)
                         return ""
                     }
                 })?.start()
         }
 
-        lifecycleSync.filterSync {
-            it.value == activity
+        lifecycleSync.filterSync { _, value ->
+            value == activity
         }.forEach {
             callback(it.key)
         }
 
         lifecycleAsync.filterAsync(
-            predicate = { it.value == activity },
-            observer = {
+            predicate = { _, value ->
+                value == activity
+            },
+            observer = { key, _ ->
                 CsTask.mainThread()
                     ?.call(object : ICallable<String> {
                         override fun accept(): String {
-                            callback(it.key)
+                            callback(key)
                             return ""
                         }
                     })?.start()
@@ -237,7 +239,11 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     private fun removeByActivity(activity: Activity) {
-        lifecycleSync.removeAsync { it.value == activity }
-        lifecycleAsync.removeAsync { it.value == activity }
+        lifecycleSync.removeAsync { _, value ->
+            value == activity
+        }
+        lifecycleAsync.removeAsync { _, value ->
+            value == activity
+        }
     }
 }

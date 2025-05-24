@@ -78,6 +78,7 @@ class FinalView : SurfaceView {
             distanceY: Float
         ): Boolean {
             CsLogger.tag(TAG).i("onScroll distanceX=$distanceX, distanceY=$distanceY")
+            tryShow(distanceX.toInt())
             return true
         }
 
@@ -107,16 +108,46 @@ class FinalView : SurfaceView {
         tryShow()
     }
 
-    private fun tryShow() {
+    private var offsetX = 0
+
+    private fun tryShow(distanceX:Int = 0) {
         val sf = surface ?: return
         val ld = loader ?: return
 
+        offsetX -= distanceX
 
+//        ld.renderPageToSurface(
+//            0,
+//            sf,
+//            offsetX - width,
+//            0,
+//            offsetX,
+//            height,
+//            true,
+//            true,
+//            config?.viewBackgroundColor ?: 0,
+//            config?.pageBackgroundColor ?: 0
+//        )
 
         ld.renderPageToSurface(
-            0,
+            1,
             sf,
+            offsetX,
+            0,
+            width + offsetX,
+            height,
+            true,
+            true,
+            config?.viewBackgroundColor ?: 0,
+            config?.pageBackgroundColor ?: 0
+        )
+
+        ld.renderPageToSurface(
+            2,
+            sf,
+            offsetX,
             width,
+            width * 2 + offsetX,
             height,
             true,
             true,
