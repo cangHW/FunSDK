@@ -1,6 +1,7 @@
 package com.proxy.service.core.framework.system.screen
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Point
@@ -151,11 +152,11 @@ object CsScreenUtils {
     /**
      * 获取屏幕旋转角度
      * */
-    fun getScreenRotation(): RotationEnum {
+    fun getScreenRotation(activity: Activity? = null): RotationEnum {
         val context = CsContextManager.getApplication()
 
-        val degree = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.display?.rotation
+        val degree = if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            activity.display?.rotation
         } else {
             val wm = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager?
             wm?.defaultDisplay?.rotation
