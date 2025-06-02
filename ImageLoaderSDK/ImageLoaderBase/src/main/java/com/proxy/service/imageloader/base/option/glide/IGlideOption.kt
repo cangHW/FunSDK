@@ -29,6 +29,11 @@ interface IGlideOption<R> : IGlideLoader<R> {
     fun error(@DrawableRes errorId: Int): IGlideOption<R>
 
     /**
+     * 设置解码格式, 用于调整清晰度
+     * */
+    fun format(format: GlideDecodeFormat): IGlideOption<R>
+
+    /**
      * 裁剪模式
      */
     fun centerCrop(): IGlideOption<R>

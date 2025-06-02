@@ -66,8 +66,9 @@
 
         <activity android:name=".permission.PermissionActivity" />
 
-        <activity android:name=".document.DocumentActivity"/>
-        <activity android:name=".document.pdf.PdfActivity"/>
+        <activity android:name=".document.DocumentActivity" />
+        <activity android:name=".document.pdf.PdfActivity" />
+        <activity android:name=".document.image.ImageActivity" />
 
     </application>
 

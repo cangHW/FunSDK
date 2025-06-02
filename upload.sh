@@ -13,8 +13,8 @@ upArray=(
 #  ":ThreadPoolSDK:ThreadPoolInfo"
 
   # 图片库
-#  ":ImageLoaderSDK:ImageLoaderBase"
-#  ":ImageLoaderSDK:ImageLoaderInfo"
+  ":ImageLoaderSDK:ImageLoaderBase"
+  ":ImageLoaderSDK:ImageLoaderInfo"
 
   # web 容器库
 #  ":WebViewSDK:WebViewBase"

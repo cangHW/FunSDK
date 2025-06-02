@@ -42,7 +42,7 @@ class TouchManager private constructor(
         /**
          * 缩放
          * */
-        fun onScale(scale: Float)
+        fun onScale(scale: Float, centerX: Float, centerY: Float)
 
         /**
          * 滑动
@@ -69,7 +69,7 @@ class TouchManager private constructor(
 
     private val scaleGestureListener = object : SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
-            callback.onScale(detector.scaleFactor)
+            callback.onScale(detector.scaleFactor, detector.focusX, detector.focusY)
             return true
         }
     }
@@ -122,9 +122,8 @@ class TouchManager private constructor(
         if (event == null) {
             return false
         }
-        if (gestureDetector?.onTouchEvent(event) == true) {
-            return true
-        }
-        return scaleGestureDetector?.onTouchEvent(event) == true
+        scaleGestureDetector?.onTouchEvent(event)
+        gestureDetector?.onTouchEvent(event)
+        return true
     }
 }

@@ -1,6 +1,7 @@
 package com.proxy.service.imageloader.info.option.glide
 
 import android.annotation.SuppressLint
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -9,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.option.glide.BitmapTransformation
+import com.proxy.service.imageloader.base.option.glide.GlideDecodeFormat
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
 import com.proxy.service.imageloader.info.config.Config
 import com.proxy.service.imageloader.info.info.glide.GlideInfo
@@ -30,23 +32,34 @@ open class GlideOptionImpl<R>(private val info: GlideInfo<R>) :
     GlideLoaderImpl<R>(info),
     IGlideOption<R> {
 
-    private var requestOptions = info.requestOptions
-
     override fun size(width: Int, height: Int): IGlideOption<R> {
-        requestOptions = requestOptions.override(width.coerceAtLeast(0), height.coerceAtLeast(0))
-        info.requestOptions = requestOptions
+        info.requestOptions = info.requestOptions
+            .override(
+                width.coerceAtLeast(0),
+                height.coerceAtLeast(0)
+            )
         return this
     }
 
     override fun placeholder(placeholderId: Int): IGlideOption<R> {
-        requestOptions = requestOptions.placeholder(placeholderId)
-        info.requestOptions = requestOptions
+        info.requestOptions = info.requestOptions
+            .placeholder(placeholderId)
         return this
     }
 
     override fun error(errorId: Int): IGlideOption<R> {
-        requestOptions = requestOptions.error(errorId)
-        info.requestOptions = requestOptions
+        info.requestOptions = info.requestOptions.error(errorId)
+        return this
+    }
+
+    override fun format(format: GlideDecodeFormat): IGlideOption<R> {
+        if (format == GlideDecodeFormat.ARGB_8888) {
+            info.requestOptions = info.requestOptions
+                .format(DecodeFormat.PREFER_ARGB_8888)
+        } else if (format == GlideDecodeFormat.RGB_565) {
+            info.requestOptions = info.requestOptions
+                .format(DecodeFormat.PREFER_RGB_565)
+        }
         return this
     }
 

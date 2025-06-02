@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.document.image.ImageActivity
 import com.proxy.service.funsdk.document.pdf.PdfActivity
 
 /**
@@ -35,6 +36,10 @@ class DocumentActivity: AppCompatActivity() {
         when (view.id) {
             R.id.pdf -> {
                 PdfActivity.launch(this)
+            }
+
+            R.id.image -> {
+                ImageActivity.launch(this)
             }
         }
     }

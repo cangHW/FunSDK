@@ -42,7 +42,7 @@ dependencies {
 
     implementation(project(":ImageLoaderSDK:ImageLoaderBase"))
     implementation(libs.core.framework){
-        exclude(group = "io.github.cangHW", module = "Service-ImageLoaderBase")
+        exclude(group = "io.github.cangHW", module = "Service-ImageloaderBase")
     }
 
     implementation(libs.android.view.constraintlayout)

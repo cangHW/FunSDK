@@ -7,6 +7,11 @@ junit = "4.13.2"
 junit-version = "1.1.5"
 espresso-core = "3.5.1"
 material = "1.10.0"
+kotlin-bom-version = "1.8.0"
+junit-junit = "4.13.2"
+androidx-junit = "1.1.5"
+espresso-core-version = "3.5.1"
+material-version = "1.10.0"
 
 
 [libraries]
@@ -25,10 +30,10 @@ cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.16"
 cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.10" }
 cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.8" }
 
-core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="1.0.6"}
+core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="1.0.7"}
 service-apihttp = {group = "io.github.cangHW", name="Service-Apihttp", version="0.1.1"}
 service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.1.2"}
-service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", version="0.1.1"}
+service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", version="0.1.2"}
 service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.1.2"}
 service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds", version="0.1.1"}
 service-permission = {group = "io.github.cangHW", name="Service-Permission", version="0.1.1"}
@@ -64,6 +69,11 @@ json-gson = { group = "com.google.code.gson", name = "gson", version = "2.10.1" 
 
 # 类似 SharedPreferences, 高性能键值对存储库
 sp-mmkv = { group = "com.tencent", name = "mmkv", version = "1.2.11" }
+kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin-bom-version" }
+junit = { group = "junit", name = "junit", version.ref = "junit-junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core-version" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material-version" }
 
 ##########################################  Other  ############################################################################
 

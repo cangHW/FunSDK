@@ -58,11 +58,10 @@ dependencies {
     implementation(libs.service.permission)
     implementation(libs.service.logfile)
     implementation(libs.service.apm)
+
     implementation(project(":DocumentsSDK:DocumentBase"))
     implementation(project(":DocumentsSDK:DocumentPdf"))
-//    implementation(project(":ApmSDK:ApmInfo"))
-//    implementation(project(":LogFileSDK:LogFileInfo"))
-
+    implementation(project(":DocumentsSDK:DocumentImage"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

@@ -67,7 +67,7 @@ class FinalView : SurfaceView {
             CsLogger.tag(TAG).i("onLongClick x=$x, y=$y")
         }
 
-        override fun onScale(scale: Float) {
+        override fun onScale(scale: Float, centerX: Float, centerY: Float) {
             CsLogger.tag(TAG).i("onScale scale=$scale")
         }
 

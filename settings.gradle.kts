@@ -50,3 +50,4 @@ include(":DocumentsSDK:DocumentPdf")
 include(":LogFileSDK:LogFileInfo")
 
 include(":ApmSDK:ApmInfo")
+include(":DocumentsSDK:DocumentImage")
