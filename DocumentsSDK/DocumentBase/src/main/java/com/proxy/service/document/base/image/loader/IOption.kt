@@ -3,6 +3,7 @@ package com.proxy.service.document.base.image.loader
 import android.graphics.Rect
 import com.proxy.service.document.base.image.callback.loader.OnBoundChangedCallback
 import com.proxy.service.document.base.image.callback.loader.OnDragCallback
+import com.proxy.service.document.base.image.callback.loader.OnDrawCallback
 import com.proxy.service.document.base.image.callback.loader.OnScaleCallback
 
 /**
@@ -47,5 +48,10 @@ interface IOption : ILoader {
      * 设置缩放时回调
      * */
     fun setScaleCallback(callback: OnScaleCallback): IOption
+
+    /**
+     * 设置缩放时回调
+     * */
+    fun setDrawCallback(callback: OnDrawCallback): IOption
 
 }

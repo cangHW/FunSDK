@@ -22,12 +22,10 @@ open class ImageDrawable(
     protected val matrix = Matrix()
     protected val srcRectF = Rect(0, 0, bitmap.width, bitmap.height)
 
-    init {
+    override fun draw(canvas: Canvas) {
         paint.style = Paint.Style.FILL
         paint.isAntiAlias = true
-    }
 
-    override fun draw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, matrix, paint)
     }
 

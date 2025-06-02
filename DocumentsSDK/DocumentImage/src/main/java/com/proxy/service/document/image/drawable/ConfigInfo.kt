@@ -4,6 +4,7 @@ import android.graphics.Rect
 import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.base.image.callback.loader.OnBoundChangedCallback
 import com.proxy.service.document.base.image.callback.loader.OnDragCallback
+import com.proxy.service.document.base.image.callback.loader.OnDrawCallback
 import com.proxy.service.document.base.image.callback.loader.OnScaleCallback
 
 /**
@@ -21,4 +22,5 @@ class ConfigInfo {
     var boundChangedCallback: OnBoundChangedCallback? = null
     var dragCallback: OnDragCallback? = null
     var scaleCallback: OnScaleCallback? = null
+    var drawCallback: OnDrawCallback? = null
 }

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout
 import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.base.image.callback.loader.OnBoundChangedCallback
 import com.proxy.service.document.base.image.callback.loader.OnDragCallback
+import com.proxy.service.document.base.image.callback.loader.OnDrawCallback
 import com.proxy.service.document.base.image.callback.loader.OnScaleCallback
 import com.proxy.service.document.base.image.loader.IController
 import com.proxy.service.document.base.image.loader.ILoader
@@ -38,6 +39,7 @@ open class LoaderImpl(
     protected var boundChangedCallback: OnBoundChangedCallback? = null
     protected var dragCallback: OnDragCallback? = null
     protected var scaleCallback: OnScaleCallback? = null
+    protected var drawCallback: OnDrawCallback? = null
 
     override fun into(imageView: ImageView): IController {
         bindView(imageView)
@@ -80,6 +82,7 @@ open class LoaderImpl(
                     config.boundChangedCallback = boundChangedCallback
                     config.dragCallback = dragCallback
                     config.scaleCallback = scaleCallback
+                    config.drawCallback = drawCallback
 
                     val drawable = ActionDrawable(imageView.context, it, config)
                     imageView.setImageDrawable(drawable)

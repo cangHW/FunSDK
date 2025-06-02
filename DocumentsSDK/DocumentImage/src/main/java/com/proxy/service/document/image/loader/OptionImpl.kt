@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.base.constants.Constants
 import com.proxy.service.document.base.image.callback.loader.OnBoundChangedCallback
 import com.proxy.service.document.base.image.callback.loader.OnDragCallback
+import com.proxy.service.document.base.image.callback.loader.OnDrawCallback
 import com.proxy.service.document.base.image.callback.loader.OnScaleCallback
 import com.proxy.service.document.base.image.loader.IOption
 import com.proxy.service.imageloader.base.option.glide.GlideDecodeFormat
@@ -67,6 +68,11 @@ class OptionImpl(
 
     override fun setScaleCallback(callback: OnScaleCallback): IOption {
         this.scaleCallback = callback
+        return this
+    }
+
+    override fun setDrawCallback(callback: OnDrawCallback): IOption {
+        this.drawCallback = callback
         return this
     }
 }
