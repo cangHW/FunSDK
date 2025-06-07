@@ -45,23 +45,13 @@ class PermissionActivity : AppCompatActivity() {
         val ft = supportFragmentManager.beginTransaction()
         ft.add(R.id.container, PermissionFragment(), "test")
         ft.commit()
-
-//        val getResultLauncher = registerForActivityResult(
-//            ActivityResultContracts.StartActivityForResult()
-//        ) { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                val data: Intent? = result.data
-//                // Handle the Intent result here
-//            }
-//        }
-
     }
 
     fun onClick(view: View) {
         when (view.id) {
             R.id.check_permission -> {
-                CsPermission.isPermissionGranted(Manifest.permission.CAMERA).let {
-                    CsLogger.tag(tag).i("CAMERA = $it")
+                CsPermission.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE).let {
+                    CsLogger.tag(tag).i("READ_EXTERNAL_STORAGE = $it")
                 }
             }
 

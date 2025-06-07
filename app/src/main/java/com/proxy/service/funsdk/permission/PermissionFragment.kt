@@ -28,7 +28,7 @@ class PermissionFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         CsPermission.createRequest()
-            ?.addPermission(Manifest.permission.CAMERA)
+            ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
             ?.start()
     }
 

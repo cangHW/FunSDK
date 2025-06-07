@@ -40,6 +40,9 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
+    implementation(libs.service.imageloader)
+    implementation(libs.service.threadpool)
+
     implementation(libs.android.view.constraintlayout)
 
     implementation(project(":DocumentsSDK:DocumentBase"))

@@ -16,8 +16,13 @@ class TouchManager(
 ) {
 
     interface OnTouchCallback {
+        fun onTouchDown(event: MotionEvent)
+        fun onTouchUp(event: MotionEvent)
         fun onScale(scale: Float, focusX: Float, focusY: Float)
         fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float)
+        fun onSingleClick(event: MotionEvent)
+        fun onDoubleClick(event: MotionEvent)
+        fun onLongPress(event: MotionEvent)
     }
 
     private var scaleGestureDetector: ScaleGestureDetector? = null
@@ -41,6 +46,21 @@ class TouchManager(
             callback.onScroll(e1, e2, distanceX, distanceY)
             return true
         }
+
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+            callback.onSingleClick(e)
+            return super.onSingleTapConfirmed(e)
+        }
+
+        override fun onDoubleTap(e: MotionEvent): Boolean {
+            callback.onDoubleClick(e)
+            return super.onDoubleTap(e)
+        }
+
+        override fun onLongPress(e: MotionEvent) {
+            super.onLongPress(e)
+            callback.onLongPress(e)
+        }
     }
 
     init {
@@ -51,6 +71,16 @@ class TouchManager(
     fun onTouchEvent(event: MotionEvent) {
         scaleGestureDetector?.onTouchEvent(event)
         gestureDetector?.onTouchEvent(event)
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                callback.onTouchDown(event)
+            }
+
+            MotionEvent.ACTION_UP -> {
+                callback.onTouchUp(event)
+            }
+        }
     }
 
 }

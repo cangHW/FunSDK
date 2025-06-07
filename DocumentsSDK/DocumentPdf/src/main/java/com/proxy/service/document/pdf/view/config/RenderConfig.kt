@@ -9,7 +9,7 @@ import com.proxy.service.document.base.constants.Constants
  */
 class RenderConfig {
 
-    var viewBackgroundColor: Long = Constants.DEFAULT_COLOR
-    var pageBackgroundColor: Long = Constants.DEFAULT_COLOR
+    var viewBackgroundColor: Long = Constants.DEFAULT_BG_COLOR
+    var pageBackgroundColor: Long = Constants.DEFAULT_BG_COLOR
 
 }

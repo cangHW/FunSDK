@@ -1,4 +1,4 @@
-package com.proxy.service.document.image.loader.factory
+package com.proxy.service.document.image.func.preview.factory
 
 import android.view.Gravity
 import android.view.ViewGroup

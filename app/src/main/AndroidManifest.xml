@@ -10,12 +10,6 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
 
     <application
         android:name=".App"
@@ -69,6 +63,8 @@
         <activity android:name=".document.DocumentActivity" />
         <activity android:name=".document.pdf.PdfActivity" />
         <activity android:name=".document.image.ImageActivity" />
+        <activity android:name=".document.image.preview.ImagePreviewActivity" />
+        <activity android:name=".document.image.crop.ImageCropActivity" />
 
     </application>
 

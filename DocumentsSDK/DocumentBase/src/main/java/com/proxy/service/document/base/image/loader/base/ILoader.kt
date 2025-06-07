@@ -1,4 +1,4 @@
-package com.proxy.service.document.base.image.loader
+package com.proxy.service.document.base.image.loader.base
 
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -11,31 +11,31 @@ import android.widget.RelativeLayout
  * @data: 2025/5/30 10:14
  * @desc:
  */
-interface ILoader {
+interface ILoader<T> {
 
     /**
      * 加载资源到 imageview
      * */
-    fun into(imageView: ImageView): IController
+    fun into(imageView: ImageView): T
 
     /**
      * 加载资源到 LinearLayout
      * */
-    fun into(linearLayout: LinearLayout): IController
+    fun into(linearLayout: LinearLayout): T
 
     /**
      * 加载资源到 RelativeLayout
      * */
-    fun into(relativeLayout: RelativeLayout): IController
+    fun into(relativeLayout: RelativeLayout): T
 
     /**
      * 加载资源到 FrameLayout
      * */
-    fun into(frameLayout: FrameLayout): IController
+    fun into(frameLayout: FrameLayout): T
 
     /**
      * 加载资源到 ViewGroup
      * */
-    fun into(viewGroup: ViewGroup): IController
+    fun into(viewGroup: ViewGroup): T
 
 }

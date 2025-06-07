@@ -1,8 +1,8 @@
-package com.proxy.service.document.image.loader
+package com.proxy.service.document.image.func.preview
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -10,15 +10,19 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.proxy.service.document.base.constants.Constants
-import com.proxy.service.document.base.image.callback.loader.OnBoundChangedCallback
-import com.proxy.service.document.base.image.callback.loader.OnDragCallback
-import com.proxy.service.document.base.image.callback.loader.OnDrawCallback
-import com.proxy.service.document.base.image.callback.loader.OnScaleCallback
-import com.proxy.service.document.base.image.loader.IController
-import com.proxy.service.document.base.image.loader.ILoader
-import com.proxy.service.document.image.drawable.ConfigInfo
+import com.proxy.service.document.base.image.callback.base.OnBoundChangedCallback
+import com.proxy.service.document.base.image.callback.base.OnDoubleClickCallback
+import com.proxy.service.document.base.image.callback.base.OnDragCallback
+import com.proxy.service.document.base.image.callback.base.OnDrawCallback
+import com.proxy.service.document.base.image.callback.base.OnLongPressCallback
+import com.proxy.service.document.base.image.callback.base.OnScaleCallback
+import com.proxy.service.document.base.image.callback.base.OnSingleClickCallback
+import com.proxy.service.document.base.image.callback.base.OnTouchEventCallback
+import com.proxy.service.document.base.image.loader.base.IController
+import com.proxy.service.document.base.image.loader.base.ILoader
 import com.proxy.service.document.image.drawable.ActionDrawable
-import com.proxy.service.document.image.loader.factory.LayoutFactory
+import com.proxy.service.document.image.drawable.ConfigInfo
+import com.proxy.service.document.image.func.preview.factory.LayoutFactory
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
 import com.proxy.service.imageloader.base.target.ITarget
 
@@ -29,21 +33,27 @@ import com.proxy.service.imageloader.base.target.ITarget
  */
 open class LoaderImpl(
     private val glideOption: IGlideOption<Bitmap>?
-) : ILoader {
+) : ILoader<IController> {
 
     protected var minScale = Constants.DEFAULT_MIN_SCALE
     protected var maxScale = Constants.DEFAULT_MAX_SCALE
 
-    protected var lockRect: Rect? = null
+    protected var lockRect: RectF? = null
+    protected var canDragInLockRect: Boolean = false
 
     protected var boundChangedCallback: OnBoundChangedCallback? = null
+    protected var touchEventCallback: OnTouchEventCallback? = null
     protected var dragCallback: OnDragCallback? = null
     protected var scaleCallback: OnScaleCallback? = null
     protected var drawCallback: OnDrawCallback? = null
+    protected var singleClickCallback: OnSingleClickCallback? = null
+    protected var doubleClickCallback: OnDoubleClickCallback? = null
+    protected var longPressCallback: OnLongPressCallback? = null
 
     override fun into(imageView: ImageView): IController {
-        bindView(imageView)
-        return ControllerImpl()
+        val controller = ControllerImpl()
+        bindView(imageView, controller)
+        return controller
     }
 
     override fun into(linearLayout: LinearLayout): IController {
@@ -63,7 +73,7 @@ open class LoaderImpl(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun bindView(imageView: ImageView?) {
+    private fun bindView(imageView: ImageView?, controller: ControllerImpl) {
         if (imageView == null) {
             return
         }
@@ -78,13 +88,21 @@ open class LoaderImpl(
                     val config = ConfigInfo()
                     config.minScale = minScale
                     config.maxScale = maxScale
+
                     config.lockRect = lockRect
+                    config.canDragInLockRect = canDragInLockRect
+
                     config.boundChangedCallback = boundChangedCallback
+                    config.touchEventCallback = touchEventCallback
                     config.dragCallback = dragCallback
                     config.scaleCallback = scaleCallback
                     config.drawCallback = drawCallback
+                    config.singleClickCallback = singleClickCallback
+                    config.doubleClickCallback = doubleClickCallback
+                    config.longPressCallback = longPressCallback
 
                     val drawable = ActionDrawable(imageView.context, it, config)
+                    controller.setDrawable(drawable)
                     imageView.setImageDrawable(drawable)
                     imageView.setOnTouchListener { _, event ->
                         drawable.onTouchEvent(event)

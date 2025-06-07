@@ -1,7 +1,7 @@
-package com.proxy.service.document.base.image.callback.loader
+package com.proxy.service.document.base.image.callback.base
 
 import android.graphics.Matrix
-import android.graphics.Rect
+import android.graphics.RectF
 
 /**
  * @author: cangHX
@@ -23,12 +23,25 @@ interface OnBoundChangedCallback {
      * @return 为 true 表示已经自行处理这次变化, false 仍然会执行原定逻辑
      * */
     fun onBoundChanged(
-        bitmapRect: Rect,
+        bitmapRect: RectF,
         matrix: Matrix,
         left: Int,
         top: Int,
         right: Int,
         bottom: Int,
-    ): Boolean
+    ): Boolean {
+        return false
+    }
 
+    /**
+     * 显示区域变化结束
+     *
+     * @param bitmapRect    bitmap 原始信息
+     * @param matrix        矩阵
+     * */
+    fun onBoundChangedEnd(
+        bitmapRect: RectF,
+        matrix: Matrix
+    ) {
+    }
 }

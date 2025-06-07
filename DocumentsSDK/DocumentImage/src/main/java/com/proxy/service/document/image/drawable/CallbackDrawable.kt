@@ -24,20 +24,24 @@ open class CallbackDrawable(
                 bounds.height() * 1f,
                 null
             )
-            it.onDraw(srcRectF, matrix, canvas, paint)
+            it.onDraw(mSrcRectF, mMatrix, canvas, mPaint, bounds.width(), bounds.height())
             canvas.restoreToCount(saveCount)
         }
     }
 
     protected fun callBoundChanged(left: Int, top: Int, right: Int, bottom: Int): Boolean {
         return config.boundChangedCallback?.onBoundChanged(
-            srcRectF,
-            matrix,
+            mSrcRectF,
+            mMatrix,
             left,
             top,
             right,
             bottom
         ) == true
+    }
+
+    protected fun callBoundChangedEnd() {
+        config.boundChangedCallback?.onBoundChangedEnd(mSrcRectF, mMatrix)
     }
 
     protected fun callScale(
@@ -47,13 +51,17 @@ open class CallbackDrawable(
         focusY: Float
     ): Boolean {
         return config.scaleCallback?.onScale(
-            srcRectF,
-            matrix,
+            mSrcRectF,
+            mMatrix,
             currentScale,
             scale,
             focusX,
             focusY
         ) == true
+    }
+
+    protected fun callScaleEnd() {
+        config.scaleCallback?.onScaleEnd(mSrcRectF, mMatrix)
     }
 
     protected fun callDrag(
@@ -63,12 +71,29 @@ open class CallbackDrawable(
         distanceY: Float
     ): Boolean {
         return config.dragCallback?.onDragged(
-            srcRectF,
-            matrix,
+            mSrcRectF,
+            mMatrix,
             e1,
             e2,
             distanceX,
             distanceY
         ) == true
     }
+
+    protected fun callDragEnd() {
+        config.dragCallback?.onDraggedEnd(mSrcRectF, mMatrix)
+    }
+
+    protected fun callSingleClick(event: MotionEvent) {
+        config.singleClickCallback?.onSingleClick(event)
+    }
+
+    protected fun callDoubleClick(event: MotionEvent) {
+        config.doubleClickCallback?.onDoubleClick(event)
+    }
+
+    protected fun callLongPress(event: MotionEvent) {
+        config.longPressCallback?.onLongPress(event)
+    }
+
 }

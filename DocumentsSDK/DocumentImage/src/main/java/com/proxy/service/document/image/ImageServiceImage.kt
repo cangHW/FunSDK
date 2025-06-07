@@ -6,8 +6,11 @@ import androidx.fragment.app.FragmentActivity
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.document.base.ImageService
-import com.proxy.service.document.base.image.loader.IRequest
-import com.proxy.service.document.image.loader.RequestImpl
+import com.proxy.service.document.base.image.loader.base.IOption
+import com.proxy.service.document.base.image.loader.base.IRequest
+import com.proxy.service.document.base.image.loader.crop.ICropOption
+import com.proxy.service.document.image.func.preview.RequestImpl
+import com.proxy.service.document.image.func.crop.CropRequestImpl
 
 /**
  * @author: cangHX
@@ -17,18 +20,34 @@ import com.proxy.service.document.image.loader.RequestImpl
 @CloudApiService(serviceTag = "service/image")
 class ImageServiceImage : ImageService {
 
-    override fun createLoader(activity: FragmentActivity): IRequest {
+    override fun createPreviewLoader(activity: FragmentActivity): IRequest<IOption> {
         val glideRequest = CsImageLoader.with(activity)?.asBitmapModel()
         return RequestImpl(glideRequest)
     }
 
-    override fun createLoader(fragment: Fragment): IRequest {
+    override fun createPreviewLoader(fragment: Fragment): IRequest<IOption> {
         val glideRequest = CsImageLoader.with(fragment)?.asBitmapModel()
         return RequestImpl(glideRequest)
     }
 
-    override fun createLoader(context: Context): IRequest {
+    override fun createPreviewLoader(context: Context): IRequest<IOption> {
         val glideRequest = CsImageLoader.with(context)?.asBitmapModel()
         return RequestImpl(glideRequest)
+    }
+
+    override fun createCropLoader(request: IRequest<IOption>): IRequest<ICropOption> {
+        return CropRequestImpl(request)
+    }
+
+    override fun createCropLoader(activity: FragmentActivity): IRequest<ICropOption> {
+        return CropRequestImpl(createPreviewLoader(activity))
+    }
+
+    override fun createCropLoader(fragment: Fragment): IRequest<ICropOption> {
+        return CropRequestImpl(createPreviewLoader(fragment))
+    }
+
+    override fun createCropLoader(context: Context): IRequest<ICropOption> {
+        return CropRequestImpl(createPreviewLoader(context))
     }
 }

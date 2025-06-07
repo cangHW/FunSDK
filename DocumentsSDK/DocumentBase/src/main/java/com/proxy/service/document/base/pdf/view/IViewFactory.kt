@@ -1,8 +1,6 @@
 package com.proxy.service.document.base.pdf.view
 
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.lifecycle.LifecycleOwner
 
 /**

@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.proxy.service.base.BaseService
-import com.proxy.service.document.base.image.loader.IRequest
+import com.proxy.service.document.base.image.loader.base.IOption
+import com.proxy.service.document.base.image.loader.base.IRequest
+import com.proxy.service.document.base.image.loader.crop.ICropOption
 
 /**
  * @author: cangHX
@@ -13,23 +15,45 @@ import com.proxy.service.document.base.image.loader.IRequest
  */
 interface ImageService : BaseService {
 
-    /**
-     * 创建 image 加载器
-     *
-     * */
-    fun createLoader(activity: FragmentActivity): IRequest
+    /*** *** *** *** *** *** 预览 *** *** *** *** *** ***/
 
     /**
-     * 创建 image 加载器
-     *
+     * 创建预览加载器
      * */
-    fun createLoader(fragment: Fragment): IRequest
+    fun createPreviewLoader(activity: FragmentActivity): IRequest<IOption>
 
     /**
-     * 创建 image 加载器
+     * 创建预览加载器
+     * */
+    fun createPreviewLoader(fragment: Fragment): IRequest<IOption>
+
+    /**
+     * 创建预览加载器
+     * */
+    fun createPreviewLoader(context: Context): IRequest<IOption>
+
+    /*** *** *** *** *** *** 裁剪 *** *** *** *** *** ***/
+
+    /**
+     * 创建裁剪加载器, 该模式能配置更多参数, 但受限于不同裁剪模式效果
+     *
+     * @param request   预览加载器
      *
      * */
-    fun createLoader(context: Context): IRequest
+    fun createCropLoader(request: IRequest<IOption>): IRequest<ICropOption>
 
-//    fun
+    /**
+     * 创建裁剪加载器
+     * */
+    fun createCropLoader(activity: FragmentActivity): IRequest<ICropOption>
+
+    /**
+     * 创建裁剪加载器
+     * */
+    fun createCropLoader(fragment: Fragment): IRequest<ICropOption>
+
+    /**
+     * 创建裁剪加载器
+     * */
+    fun createCropLoader(context: Context): IRequest<ICropOption>
 }

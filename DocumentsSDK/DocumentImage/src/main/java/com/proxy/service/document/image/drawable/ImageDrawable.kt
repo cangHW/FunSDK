@@ -3,11 +3,8 @@ package com.proxy.service.document.image.drawable
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorFilter
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PixelFormat
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
 
 /**
  * @author: cangHX
@@ -16,25 +13,22 @@ import android.graphics.drawable.Drawable
  */
 open class ImageDrawable(
     private val bitmap: Bitmap
-) : Drawable() {
-
-    protected val paint = Paint()
-    protected val matrix = Matrix()
-    protected val srcRectF = Rect(0, 0, bitmap.width, bitmap.height)
+) : BaseDrawable(bitmap) {
 
     override fun draw(canvas: Canvas) {
-        paint.style = Paint.Style.FILL
-        paint.isAntiAlias = true
+        mPaint.reset()
+        mPaint.style = Paint.Style.FILL
+        mPaint.isAntiAlias = true
 
-        canvas.drawBitmap(bitmap, matrix, paint)
+        canvas.drawBitmap(bitmap, mMatrix, mPaint)
     }
 
     override fun setAlpha(alpha: Int) {
-        paint.alpha = alpha
+        mPaint.alpha = alpha
     }
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
-        paint.colorFilter = colorFilter
+        mPaint.colorFilter = colorFilter
     }
 
     @Deprecated(

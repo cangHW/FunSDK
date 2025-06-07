@@ -76,27 +76,4 @@ object CsStringUtils {
         return null
     }
 
-    /**
-     * byte 数组转为 base64 url 字符串
-     * */
-    fun parseByte2Base64UrlStr(byteArray: ByteArray, flags: Int = Base64.DEFAULT): String? {
-        try {
-            return Base64.encodeToString(byteArray, flags)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
-        }
-        return null
-    }
-
-    /**
-     * base64 url 字符串转为 byte 数组
-     * */
-    fun parseBase64UrlStr2Byte(base64Url: String, flags: Int = Base64.DEFAULT): ByteArray? {
-        try {
-            return Base64.decode(base64Url, flags)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
-        }
-        return null
-    }
 }
