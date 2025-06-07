@@ -44,6 +44,7 @@ dependencies {
     api(project(":ImageLoaderSDK:ImageLoaderBase"))
     api(project(":WebViewSDK:WebViewBase"))
     api(project(":PermissionSDK:PermissionBase"))
+    api(project(":DocumentsSDK:DocumentBase"))
 
     // 压缩库
     implementation(libs.file.zip)

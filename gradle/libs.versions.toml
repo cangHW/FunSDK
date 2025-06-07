@@ -39,6 +39,8 @@ service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds
 service-permission = {group = "io.github.cangHW", name="Service-Permission", version="0.1.1"}
 service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.1.2"}
 service-apm = {group = "io.github.cangHW", name="Service-Apm", version="0.0.4"}
+service-document-image = {group = "io.github.cangHW", name="Service-Document-Image", version="0.0.1"}
+service-document-pdf = {group = "io.github.cangHW", name="Service-Document-Pdf", version="0.0.1"}
 
 ##########################################  三方库  ############################################################################
 # 网络库

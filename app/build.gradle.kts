@@ -63,9 +63,12 @@ dependencies {
     implementation(libs.service.logfile)
     implementation(libs.service.apm)
 
-    implementation(project(":DocumentsSDK:DocumentBase"))
-    implementation(project(":DocumentsSDK:DocumentPdf"))
-    implementation(project(":DocumentsSDK:DocumentImage"))
+    implementation(libs.service.document.image)
+    implementation(libs.service.document.pdf)
+
+//    implementation(project(":DocumentsSDK:DocumentBase"))
+//    implementation(project(":DocumentsSDK:DocumentPdf"))
+//    implementation(project(":DocumentsSDK:DocumentImage"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

@@ -7,8 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.api.CloudSystem
-import com.proxy.service.document.base.ImageService
+import com.proxy.service.core.service.document.CsDocumentImage
 import com.proxy.service.document.base.image.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.base.image.loader.base.IController
 import com.proxy.service.funsdk.R
@@ -32,7 +31,6 @@ class ImagePreviewActivity : AppCompatActivity() {
     }
 
     private var binding: ActivityDocumentImagePreviewBinding? = null
-    private val service = CloudSystem.getService(ImageService::class.java)
 
     private var controller: IController? = null
 
@@ -42,7 +40,7 @@ class ImagePreviewActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         binding?.layout?.let {
-            controller = service?.createPreviewLoader(this)
+            controller = CsDocumentImage.createPreviewLoader(this)
                 ?.loadRes(R.drawable.crop)
                 ?.setDoubleClickCallback(doubleClickCallback)
                 ?.into(it)

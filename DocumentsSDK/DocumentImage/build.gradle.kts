@@ -50,3 +50,5 @@ dependencies {
         exclude(group = "io.github.cangHW", module = "Service-DocumentBase")
     }
 }
+
+apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

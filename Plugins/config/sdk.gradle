@@ -132,6 +132,13 @@ ext {
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
+            DocumentImage    : [
+                    artifact          : "Service-Document-Image",
+                    version           : "0.0.1",
+                    source            : false,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
+            ],
 
             // 异常监控库
             ApmInfo    : [

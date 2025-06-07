@@ -4,26 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.RectF
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.service.document.CsDocumentImage
 import com.proxy.service.core.service.imageloader.CsImageLoader
-import com.proxy.service.document.base.ImageService
-import com.proxy.service.document.base.image.callback.base.OnBoundChangedCallback
-import com.proxy.service.document.base.image.callback.base.OnDragCallback
-import com.proxy.service.document.base.image.callback.base.OnScaleCallback
 import com.proxy.service.document.base.image.callback.crop.OnCropCallback
-import com.proxy.service.document.base.image.callback.crop.OnDrawCropCallback
 import com.proxy.service.document.base.image.loader.crop.ICropController
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.databinding.ActivityDocumentImageCropBinding
@@ -46,7 +36,6 @@ class ImageCropActivity : AppCompatActivity() {
     }
 
     private var binding: ActivityDocumentImageCropBinding? = null
-    private val service = CloudSystem.getService(ImageService::class.java)
 
     private var controller: ICropController? = null
 
@@ -57,7 +46,7 @@ class ImageCropActivity : AppCompatActivity() {
 
         val layout = findViewById<FrameLayout>(R.id.layout)
 
-        controller = service?.createCropLoader(this)
+        controller = CsDocumentImage.createCropLoader(this)
             ?.loadRes(R.drawable.crop)
             ?.setCropSize(600, 600)
             ?.setCropLineColor(Color.RED)

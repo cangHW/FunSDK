@@ -30,6 +30,11 @@ upArray=(
 
     # 性能监控库
 #  ":ApmSDK:ApmInfo"
+
+  # 文档库
+  ":DocumentsSDK:DocumentBase"
+  ":DocumentsSDK:DocumentPdf"
+  ":DocumentsSDK:DocumentImage"
 )
 
 type_params="r"
