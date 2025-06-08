@@ -34,7 +34,7 @@ interface OnScaleCallback {
     }
 
     /**
-     * 缩放结束回调
+     * 缩放结束, 刷新之前回调
      *
      * @param bitmapRect    bitmap 原始信息
      * @param matrix        矩阵

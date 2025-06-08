@@ -9,9 +9,9 @@ object Constants {
 
     private const val LOG_TAG_START = "Document_"
 
-    const val LOG_TAG_PDF_START = "${LOG_TAG_START}_Pdf_"
+    const val LOG_TAG_PDF_START = "${LOG_TAG_START}Pdf_"
 
-    const val LOG_TAG_IMAGE_START = "${LOG_TAG_START}_Image_"
+    const val LOG_TAG_IMAGE_START = "${LOG_TAG_START}Image_"
 
     const val DEFAULT_BG_COLOR = 0xFFFFFFFF
 

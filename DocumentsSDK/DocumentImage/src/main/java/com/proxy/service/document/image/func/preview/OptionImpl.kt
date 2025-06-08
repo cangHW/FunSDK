@@ -77,7 +77,7 @@ class OptionImpl(
         return this
     }
 
-    override fun setLockRectF(lockRect: RectF, canDragInLockRect: Boolean): IOption {
+    override fun setLockRectWithMovable(lockRect: RectF, overScrollBounceEnabled: Boolean): IOption {
         if (lockRect.right < lockRect.left) {
             CsLogger.tag(TAG).e("The rect right cannot be less than rect left.")
             return this
@@ -87,7 +87,26 @@ class OptionImpl(
             return this
         }
         this.lockRect = lockRect
-        this.canDragInLockRect = canDragInLockRect
+        this.canDragInLockRect = true
+        this.overScrollBounceEnabled = overScrollBounceEnabled
+        return this
+    }
+
+    override fun setLockRectWithImmovable(
+        lockRect: RectF,
+        overScrollBounceEnabled: Boolean
+    ): IOption {
+        if (lockRect.right < lockRect.left) {
+            CsLogger.tag(TAG).e("The rect right cannot be less than rect left.")
+            return this
+        }
+        if (lockRect.bottom < lockRect.top) {
+            CsLogger.tag(TAG).e("The rect bottom cannot be less than rect top.")
+            return this
+        }
+        this.lockRect = lockRect
+        this.canDragInLockRect = false
+        this.overScrollBounceEnabled = overScrollBounceEnabled
         return this
     }
 

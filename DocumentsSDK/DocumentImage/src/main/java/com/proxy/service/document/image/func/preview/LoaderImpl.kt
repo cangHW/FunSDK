@@ -39,7 +39,8 @@ open class LoaderImpl(
     protected var maxScale = Constants.DEFAULT_MAX_SCALE
 
     protected var lockRect: RectF? = null
-    protected var canDragInLockRect: Boolean = false
+    protected var canDragInLockRect:Boolean = true
+    protected var overScrollBounceEnabled: Boolean = true
 
     protected var boundChangedCallback: OnBoundChangedCallback? = null
     protected var touchEventCallback: OnTouchEventCallback? = null
@@ -91,6 +92,7 @@ open class LoaderImpl(
 
                     config.lockRect = lockRect
                     config.canDragInLockRect = canDragInLockRect
+                    config.overScrollBounceEnabled = overScrollBounceEnabled
 
                     config.boundChangedCallback = boundChangedCallback
                     config.touchEventCallback = touchEventCallback

@@ -17,42 +17,34 @@ class ActionDrawable(
     private val config: ConfigInfo
 ) : CallbackDrawable(bitmap, config) {
 
+    companion object {
+        private const val DISTANCE_X = "distance_type_x"
+        private const val DISTANCE_Y = "distance_type_y"
+    }
+
     private val touchCallback = object : TouchManager.OnTouchCallback {
         override fun onTouchDown(event: MotionEvent) {
             animator.cancelAnim()
         }
 
         override fun onTouchUp(event: MotionEvent) {
-            val lockRect = config.lockRect ?: return
-
-            if (!mMatrix.mapRect(destRectF, mSrcRectF)) {
+            if (!config.overScrollBounceEnabled) {
                 return
             }
 
-            val dragInfo = if (config.canDragInLockRect) {
-                checkLockRectFByCanDrag(lockRect, destRectF)
-            } else {
-                checkLockRectFByNotDrag(lockRect, destRectF)
-            } ?: return
-
-            animator.startAnim {
-                val distanceX = if (destRectF.left < lockRect.left) {
-                    dragInfo.offsetX * it
-                } else {
-                    -1 * dragInfo.offsetX * it
+            getDistanceInfoByLockRect()?.let { info ->
+                animator.startAnim { ratio ->
+                    mMatrix.postTranslate(-info.distanceX * ratio, -info.distanceY * ratio)
+                    invalidateSelf()
                 }
-                val distanceY = if (destRectF.top < lockRect.top) {
-                    dragInfo.offsetY * it
-                } else {
-                    -1 * dragInfo.offsetY * it
-                }
-                mMatrix.postTranslate(distanceX, distanceY)
-                invalidateSelf()
             }
         }
 
         override fun onScale(scale: Float, focusX: Float, focusY: Float) {
-            if (!callScale(mCurrentScale, scale, focusX, focusY)) {
+            try {
+                if (callScale(mCurrentScale, scale, focusX, focusY)) {
+                    return
+                }
                 var realScale = scale
                 val newScale = mCurrentScale * realScale
 
@@ -66,9 +58,17 @@ class ActionDrawable(
                     mCurrentScale = newScale
                 }
                 mMatrix.postScale(realScale, realScale, focusX, focusY)
+
+                if (config.overScrollBounceEnabled) {
+                    return
+                }
+                getDistanceInfoByLockRect()?.let {
+                    mMatrix.postTranslate(-it.distanceX, -it.distanceY)
+                }
+            } finally {
+                callScaleEnd()
+                invalidateSelf()
             }
-            callScaleEnd()
-            invalidateSelf()
         }
 
         override fun onScroll(
@@ -77,11 +77,22 @@ class ActionDrawable(
             distanceX: Float,
             distanceY: Float
         ) {
-            if (!callDrag(e1, e2, distanceX, distanceY)) {
+            try {
+                if (callDrag(e1, e2, distanceX, distanceY)) {
+                    return
+                }
                 mMatrix.postTranslate(-distanceX, -distanceY)
+
+                if (config.overScrollBounceEnabled) {
+                    return
+                }
+                getDistanceInfoByLockRect()?.let {
+                    mMatrix.postTranslate(-it.distanceX, -it.distanceY)
+                }
+            } finally {
+                callDragEnd()
+                invalidateSelf()
             }
-            callDragEnd()
-            invalidateSelf()
         }
 
         override fun onSingleClick(event: MotionEvent) {
@@ -110,7 +121,10 @@ class ActionDrawable(
         mMatrix.reset()
         mCurrentScale = 1f
 
-        if (!callBoundChanged(left, top, right, bottom)) {
+        try {
+            if (callBoundChanged(left, top, right, bottom)) {
+                return
+            }
             val viewWidth = right - left
             val viewHeight = bottom - top
 
@@ -132,30 +146,12 @@ class ActionDrawable(
             val dy = (viewHeight - bitmapHeight) / 2f
             mMatrix.postTranslate(dx, dy)
 
-            config.lockRect?.let {
-                if (mMatrix.mapRect(destRectF, mSrcRectF)) {
-                    val dragInfo = if (config.canDragInLockRect) {
-                        checkLockRectFByCanDrag(it, destRectF)
-                    } else {
-                        checkLockRectFByNotDrag(it, destRectF)
-                    }
-                    if (dragInfo != null) {
-                        val distanceX = if (destRectF.left < it.left) {
-                            dragInfo.offsetX
-                        } else {
-                            -1 * dragInfo.offsetX
-                        }
-                        val distanceY = if (destRectF.top < it.top) {
-                            dragInfo.offsetY
-                        } else {
-                            -1 * dragInfo.offsetY
-                        }
-                        mMatrix.postTranslate(distanceX, distanceY)
-                    }
-                }
+            getDistanceInfoByLockRect()?.let {
+                mMatrix.postTranslate(-it.distanceX, -it.distanceY)
             }
+        } finally {
+            callBoundChangedEnd()
         }
-        callBoundChangedEnd()
     }
 
     fun onTouchEvent(event: MotionEvent) {
@@ -175,10 +171,98 @@ class ActionDrawable(
         touchCallback.onScale(offset, focusX, focusY)
     }
 
+    private data class DistanceInfo(val distanceX: Float, val distanceY: Float) {
+        override fun toString(): String {
+            return "DistanceInfo(distanceX=$distanceX, distanceY=$distanceY)"
+        }
+    }
 
-    private data class DragInfo(val offsetX: Float, val offsetY: Float)
+    /**
+     * 检查锁定区域并获取间距
+     * */
+    private fun getDistanceInfoByLockRect(): DistanceInfo? {
+        val lockRect = config.lockRect ?: return null
 
-    private fun checkLockRectFByCanDrag(lockRect: RectF, currentRectF: RectF): DragInfo? {
+        if (!mMatrix.mapRect(destRectF, mSrcRectF)) {
+            return null
+        }
+
+        val moveInfo = if (config.canDragInLockRect) {
+            getMoveInfoByLockRectWithMovable(lockRect, destRectF)
+        } else {
+            getMoveInfoByLockRectWithImmovable(lockRect, destRectF)
+        } ?: return null
+
+        val distanceX = getDistanceByMoveInfo(
+            moveInfo,
+            lockRect,
+            destRectF,
+            DISTANCE_X
+        )
+        val distanceY = getDistanceByMoveInfo(
+            moveInfo,
+            lockRect,
+            destRectF,
+            DISTANCE_Y
+        )
+
+        return DistanceInfo(distanceX, distanceY)
+    }
+
+    private data class MoveInfo(val offsetX: Float, val offsetY: Float) {
+        override fun toString(): String {
+            return "DragInfo(offsetX=$offsetX, offsetY=$offsetY)"
+        }
+    }
+
+    /**
+     * 通过移动信息获取距离
+     * */
+    private fun getDistanceByMoveInfo(
+        dragInfo: MoveInfo,
+        lockRect: RectF,
+        currentRectF: RectF,
+        distanceType: String
+    ): Float {
+        if (distanceType == DISTANCE_X) {
+            return if (config.canDragInLockRect) {
+                if (currentRectF.left < lockRect.left) {
+                    -1 * dragInfo.offsetX
+                } else {
+                    dragInfo.offsetX
+                }
+            } else {
+                if (currentRectF.centerX() < lockRect.centerX()) {
+                    -1 * dragInfo.offsetX
+                } else {
+                    dragInfo.offsetX
+                }
+            }
+        }
+
+        if (distanceType == DISTANCE_Y) {
+            return if (config.canDragInLockRect) {
+                if (currentRectF.top < lockRect.top) {
+                    -1 * dragInfo.offsetY
+                } else {
+                    dragInfo.offsetY
+                }
+            } else {
+                if (currentRectF.centerY() < lockRect.centerY()) {
+                    -1 * dragInfo.offsetY
+                } else {
+                    dragInfo.offsetY
+                }
+            }
+        }
+
+        return 0f
+    }
+
+    /**
+     * 通过锁定区域获取移动信息, 锁定区域内可移动
+     * */
+    private fun getMoveInfoByLockRectWithMovable(lockRect: RectF, currentRectF: RectF): MoveInfo? {
         if (lockRect.contains(currentRectF)) {
             return null
         }
@@ -236,10 +320,13 @@ class ActionDrawable(
             Math.abs(offsetBottom)
         }
 
-        return DragInfo(offsetX, offsetY)
+        return MoveInfo(offsetX, offsetY)
     }
 
-    private fun checkLockRectFByNotDrag(lockRect: RectF, currentRectF: RectF): DragInfo {
+    /**
+     * 通过锁定区域获取移动信息, 锁定区域内不可移动
+     * */
+    private fun getMoveInfoByLockRectWithImmovable(lockRect: RectF, currentRectF: RectF): MoveInfo {
         var offsetLeft = 0f
         var offsetTop = 0f
         var offsetRight = 0f
@@ -283,6 +370,6 @@ class ActionDrawable(
             Math.abs(offsetBottom)
         }
 
-        return DragInfo(offsetX, offsetY)
+        return MoveInfo(offsetX, offsetY)
     }
 }

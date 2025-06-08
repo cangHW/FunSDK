@@ -22,14 +22,14 @@ interface IOption : ILoader<IController> {
      *
      * @param minScale  最小缩放倍数, 默认: [com.proxy.service.document.base.constants.Constants.DEFAULT_MIN_SCALE]
      * */
-    fun setMinScale(minScale: Float):IOption
+    fun setMinScale(minScale: Float): IOption
 
     /**
      * 设置缩放倍数
      *
      * @param maxScale  最小缩放倍数, 默认: [com.proxy.service.document.base.constants.Constants.DEFAULT_MAX_SCALE]
      * */
-    fun setMaxScale(maxScale: Float):IOption
+    fun setMaxScale(maxScale: Float): IOption
 
     /**
      * 设置缩放倍数
@@ -40,26 +40,34 @@ interface IOption : ILoader<IController> {
     fun setScale(minScale: Float, maxScale: Float): IOption
 
     /**
-     * 设置锁定区域, 默认锁定区域为空
+     * 设置锁定区域, 锁定区域内允许移动, 默认锁定区域为空
      *
-     * @param lockRect          锁定区域
-     * @param canDragInLockRect 锁定区域内是否允许移动
-     * <br/>
-     * 举例：锁定区域为[100, 100, 200, 200], 图片大小位置为[130, 80, 180, 260], <br/>
-     * 若 canDragInLockRect 为 true 则，<br/>
-     * 1、图片向左最大滑动到[100, 80, 150, 260] <br/>
-     * 2、图片向右最大滑动到[150, 80, 200, 260] <br/>
-     * 3、图片向上最大滑动到[130, 20, 180, 200] <br/>
-     * 4、图片向下最大滑动到[130, 100, 180, 280]
-     * <br/>
+     * 举例: 锁定区域为[100, 100, 200, 200], 图片大小位置为[130, 80, 180, 260]
      *
-     * 若 canDragInLockRect 为 false 则, <br/>
-     * 1、图片向左不可拖动 <br/>
-     * 2、图片向右不可拖动 <br/>
-     * 3、图片向上最大滑动到[130, 20, 180, 200] <br/>
-     * 4、图片向下最大滑动到[130, 100, 180, 280]
+     * 1、图片向左最大移动到[100, 80, 150, 260]
+     * 2、图片向右最大移动到[150, 80, 200, 260]
+     * 3、图片向上最大移动到[130, 20, 180, 200]
+     * 4、图片向下最大移动到[130, 100, 180, 280]
+     *
+     * @param lockRect                  锁定区域
+     * @param overScrollBounceEnabled   是否使用越界回弹
      * */
-    fun setLockRectF(lockRect: RectF, canDragInLockRect: Boolean): IOption
+    fun setLockRectWithMovable(lockRect: RectF, overScrollBounceEnabled: Boolean): IOption
+
+    /**
+     * 设置锁定区域, 锁定区域内不允许移动, 默认锁定区域为空
+     *
+     * 举例：锁定区域为[100, 100, 200, 200], 图片大小位置为[130, 80, 180, 260]
+     *
+     * 1、图片向左不可移动
+     * 2、图片向右不可移动
+     * 3、图片向上最大移动到[130, 20, 180, 200]
+     * 4、图片向下最大移动到[130, 100, 180, 280]
+     *
+     * @param lockRect                  锁定区域
+     * @param overScrollBounceEnabled   是否使用越界回弹
+     * */
+    fun setLockRectWithImmovable(lockRect: RectF, overScrollBounceEnabled: Boolean): IOption
 
     /**
      * 设置显示区域大小位置变化时回调

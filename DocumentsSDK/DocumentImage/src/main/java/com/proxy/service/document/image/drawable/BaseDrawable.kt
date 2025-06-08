@@ -5,6 +5,7 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import com.proxy.service.document.base.constants.Constants
 
 /**
  * @author: cangHX
@@ -14,6 +15,10 @@ import android.graphics.drawable.Drawable
 abstract class BaseDrawable(
     private val bitmap: Bitmap
 ) : Drawable() {
+
+    companion object {
+        const val TAG = "${Constants.LOG_TAG_IMAGE_START}Drawable"
+    }
 
     protected val mPaint = Paint()
     protected val mMatrix = Matrix()

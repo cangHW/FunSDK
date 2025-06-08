@@ -22,7 +22,8 @@ class ConfigInfo {
     var maxScale: Float = Constants.DEFAULT_MAX_SCALE
 
     var lockRect: RectF? = null
-    var canDragInLockRect: Boolean = false
+    var canDragInLockRect: Boolean = true
+    var overScrollBounceEnabled: Boolean = false
 
     var boundChangedCallback: OnBoundChangedCallback? = null
     var touchEventCallback: OnTouchEventCallback? = null

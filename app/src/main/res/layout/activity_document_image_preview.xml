@@ -2,7 +2,96 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="普通" />
+
+        <RadioButton
+            android:id="@+id/view_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ViewPager" />
+    </RadioGroup>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+
+        <CheckBox
+            android:id="@+id/double_click_scale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="双击放大缩小" />
+
+        <CheckBox
+            android:id="@+id/lock_rect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="锁定区域" />
+
+        <CheckBox
+            android:id="@+id/lock_rect_is_can_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="锁定区域允许移动" />
+
+        <CheckBox
+            android:id="@+id/not_spring_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="取消越界回弹(需要先锁定区域)" />
+
+        <CheckBox
+            android:id="@+id/show_lock_rect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="显示锁定区域" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/load"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#330000ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="加载"
+        android:textSize="20dp" />
 
     <FrameLayout
         android:id="@+id/layout"
