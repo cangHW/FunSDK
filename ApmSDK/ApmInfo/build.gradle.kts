@@ -38,7 +38,8 @@ dependencies {
     implementation(libs.android.kotlin)
     kapt(libs.cloud.compiler)
 
-    implementation(libs.core.framework)
+    api(libs.core.framework)
+    implementation(libs.service.threadpool)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

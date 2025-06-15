@@ -38,13 +38,15 @@ dependencies {
     api(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
+    implementation(libs.service.threadpool)
+    implementation(libs.service.permission)
+
     // 协议库
-    api(project(":ThreadPoolSDK:ThreadPoolBase"))
-    api(project(":ApiHttpSDK:ApiHttpBase"))
-    api(project(":ImageLoaderSDK:ImageLoaderBase"))
-    api(project(":WebViewSDK:WebViewBase"))
-    api(project(":PermissionSDK:PermissionBase"))
-    api(project(":DocumentsSDK:DocumentBase"))
+    compileOnly(project(":ApiHttpSDK:ApiHttpBase"))
+    compileOnly(project(":ImageLoaderSDK:ImageLoaderBase"))
+    compileOnly(project(":WebViewSDK:WebViewBase"))
+    compileOnly(project(":DocumentsSDK:Image:DocumentImageBase"))
+    compileOnly(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
 
     // 压缩库
     implementation(libs.file.zip)
@@ -56,7 +58,7 @@ dependencies {
     implementation(libs.sp.mmkv)
 
     // work 基于条件任务管理
-    implementation(libs.androidx.work.runtime)
+    implementation(libs.android.work.runtime)
 
 }
 

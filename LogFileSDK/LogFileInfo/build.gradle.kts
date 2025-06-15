@@ -50,8 +50,7 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
-    implementation(libs.core.framework)
-
+    api(libs.core.framework)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

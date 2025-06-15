@@ -37,12 +37,10 @@ dependencies {
     implementation(libs.android.kotlin)
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
-    implementation(project(":ThreadPoolSDK:ThreadPoolBase"))
-    implementation(libs.core.framework){
-        exclude(group = "io.github.cangHW", module = "Service-ThreadPoolBase")
-    }
 
     implementation(libs.bundles.thread)
+
+    compileOnly(project(":ThreadPoolSDK:ThreadPoolBase"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

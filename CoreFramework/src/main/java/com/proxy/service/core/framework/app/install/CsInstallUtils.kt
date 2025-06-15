@@ -133,7 +133,7 @@ object CsInstallUtils {
 
         if (!CsPermission.isPermissionGranted(Manifest.permission.REQUEST_INSTALL_PACKAGES)) {
             CsLogger.tag(TAG)
-                .i("Please check permissions. permission: ${Manifest.permission.REQUEST_INSTALL_PACKAGES}")
+                .e("Please check permissions. permission: ${Manifest.permission.REQUEST_INSTALL_PACKAGES}")
         }
 
         val intent = Intent()
@@ -186,10 +186,10 @@ object CsInstallUtils {
         if (!CsPermission.isPermissionGranted(Manifest.permission.REQUEST_DELETE_PACKAGES)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 CsLogger.tag(TAG)
-                    .i("Please check permissions. permission: ${Manifest.permission.REQUEST_DELETE_PACKAGES}")
+                    .e("Please check permissions. permission: ${Manifest.permission.REQUEST_DELETE_PACKAGES}")
             } else {
                 CsLogger.tag(TAG)
-                    .i("Please check permissions. permission: android.permission.REQUEST_DELETE_PACKAGES")
+                    .e("Please check permissions. permission: android.permission.REQUEST_DELETE_PACKAGES")
             }
         }
 

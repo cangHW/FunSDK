@@ -29,6 +29,11 @@ dependencies {
     implementation(libs.android.appcompat)
     implementation(libs.android.kotlin)
     implementation(libs.cloud.api)
+
+    api(libs.core.framework)
+
+    runtimeOnly(project(":ThreadPoolSDK:ThreadPoolInfo"))
+
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

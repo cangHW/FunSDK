@@ -38,15 +38,11 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
-    implementation(project(":WebViewSDK:WebViewBase"))
-    implementation(libs.core.framework){
-        exclude(group = "io.github.cangHW", module = "Service-WebViewBase")
-    }
     implementation(libs.service.threadpool)
-
     implementation(libs.android.view.constraintlayout)
-
     implementation(libs.bundles.bytecode)
+
+    compileOnly(project(":WebViewSDK:WebViewBase"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

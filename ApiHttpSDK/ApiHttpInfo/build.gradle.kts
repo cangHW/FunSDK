@@ -38,17 +38,11 @@ dependencies {
     implementation(libs.android.kotlin)
     kapt(libs.cloud.compiler)
 
-    implementation(project(":ApiHttpSDK:ApiHttpBase"))
-
-    implementation(libs.core.framework) {
-        exclude(group = "io.github.cangHW", module = "Service-ApihttpBase")
-    }
     implementation(libs.service.threadpool)
-
-    api(libs.bundles.http)
-
     implementation(libs.room.api)
     kapt(libs.room.compiler)
+
+    compileOnly(project(":ApiHttpSDK:ApiHttpBase"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

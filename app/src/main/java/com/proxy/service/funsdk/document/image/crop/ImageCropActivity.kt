@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.document.CsDocumentImage
 import com.proxy.service.core.service.imageloader.CsImageLoader
-import com.proxy.service.document.base.image.callback.crop.OnCropCallback
-import com.proxy.service.document.base.image.loader.crop.ICropController
+import com.proxy.service.document.image.base.callback.crop.OnCropCallback
+import com.proxy.service.document.image.base.loader.crop.ICropController
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.databinding.ActivityDocumentImageCropBinding
 
@@ -48,7 +48,7 @@ class ImageCropActivity : AppCompatActivity() {
 
         controller = CsDocumentImage.createCropLoader(this)
             ?.loadRes(R.drawable.crop)
-            ?.setCropSize(600, 600)
+            ?.setCropSize(600f, 600f)
             ?.setCropLineColor(Color.RED)
             ?.into(layout)
     }

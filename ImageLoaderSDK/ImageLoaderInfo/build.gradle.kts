@@ -40,14 +40,10 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
-    implementation(project(":ImageLoaderSDK:ImageLoaderBase"))
-    implementation(libs.core.framework){
-        exclude(group = "io.github.cangHW", module = "Service-ImageloaderBase")
-    }
-
     implementation(libs.android.view.constraintlayout)
-
     implementation(libs.bundles.image)
+
+    compileOnly(project(":ImageLoaderSDK:ImageLoaderBase"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

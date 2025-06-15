@@ -6,10 +6,10 @@ import androidx.fragment.app.FragmentActivity
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.base.ImageService
-import com.proxy.service.document.base.image.loader.base.IOption
-import com.proxy.service.document.base.image.loader.base.IRequest
-import com.proxy.service.document.base.image.loader.crop.ICropOption
+import com.proxy.service.document.image.base.ImageService
+import com.proxy.service.document.image.base.loader.base.IOption
+import com.proxy.service.document.image.base.loader.base.IRequest
+import com.proxy.service.document.image.base.loader.crop.ICropOption
 
 /**
  * 文档-图片 加载框架入口

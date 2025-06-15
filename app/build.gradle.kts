@@ -50,6 +50,7 @@ dependencies {
 
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)
+    implementation(libs.android.view.viewpager)
 
     implementation(libs.cloud.api)
 
@@ -65,10 +66,6 @@ dependencies {
 
     implementation(libs.service.document.image)
     implementation(libs.service.document.pdf)
-
-//    implementation(project(":DocumentsSDK:DocumentBase"))
-//    implementation(project(":DocumentsSDK:DocumentPdf"))
-//    implementation(project(":DocumentsSDK:DocumentImage"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

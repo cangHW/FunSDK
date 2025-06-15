@@ -29,9 +29,11 @@ dependencies {
     implementation(libs.android.appcompat)
     implementation(libs.android.kotlin)
     implementation(libs.cloud.api)
-    compileOnly(libs.core.framework)
 
-    compileOnly(libs.bundles.http)
+    api(libs.core.framework)
+    api(libs.bundles.http)
+
+    runtimeOnly(project(":ApiHttpSDK:ApiHttpInfo"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

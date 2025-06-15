@@ -12,14 +12,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.widget.FrameLayout
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.proxy.service.core.service.document.CsDocumentImage
-import com.proxy.service.document.base.image.callback.base.OnDoubleClickCallback
-import com.proxy.service.document.base.image.callback.base.OnDrawCallback
-import com.proxy.service.document.base.image.loader.base.IController
+import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
+import com.proxy.service.document.image.base.callback.base.OnDrawCallback
+import com.proxy.service.document.image.base.loader.base.IController
+import com.proxy.service.document.image.base.loader.base.IOption
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.databinding.ActivityDocumentImagePreviewBinding
+import com.proxy.service.funsdk.databinding.ActivityDocumentImagePreviewItemBinding
 
 /**
  * @author: cangHX
@@ -52,10 +57,20 @@ class ImagePreviewActivity : AppCompatActivity() {
     fun onClick(view: View) {
         when (view.id) {
             R.id.load -> {
-                binding?.layout?.let {
-                    it.post {
-                        if (binding?.normal?.isChecked == true) {
+                if (binding?.normal?.isChecked == true) {
+                    binding?.imageView?.visibility = View.VISIBLE
+                    binding?.pagerView?.visibility = View.GONE
+                    binding?.imageView?.let {
+                        it.post {
                             normalLoad(it, it.width.toFloat(), it.height.toFloat())
+                        }
+                    }
+                } else if (binding?.viewPager?.isChecked == true) {
+                    binding?.pagerView?.visibility = View.VISIBLE
+                    binding?.imageView?.visibility = View.GONE
+                    binding?.pagerView?.let {
+                        it.post {
+                            pagerLoad(it, it.width.toFloat(), it.height.toFloat())
                         }
                     }
                 }
@@ -63,7 +78,16 @@ class ImagePreviewActivity : AppCompatActivity() {
         }
     }
 
-    private fun normalLoad(layout: FrameLayout, width: Float, height: Float) {
+    private fun normalLoad(layout: AppCompatImageView, width: Float, height: Float) {
+        controller = createPreviewOption(width, height)?.into(layout)
+    }
+
+    private fun pagerLoad(view: ViewPager2, width: Float, height: Float) {
+        val adapter = PreviewAdapter(this, width, height)
+        view.adapter = adapter
+    }
+
+    private fun createPreviewOption(width: Float, height: Float): IOption? {
         val option = CsDocumentImage.createPreviewLoader(this)
             ?.loadRes(R.drawable.crop)
 
@@ -76,8 +100,10 @@ class ImagePreviewActivity : AppCompatActivity() {
             lockRectF.set(0f, 0f, width, height)
 //            lockRectF.set(300f, 300f, 800f, 800f)
             if (binding?.lockRectIsCanMove?.isChecked == true) {
+//                option?.setLockSizeWithMovable(width, height, springBack)
                 option?.setLockRectWithMovable(lockRectF, springBack)
             } else {
+//                option?.setLockSizeWithImmovable(width, height, springBack)
                 option?.setLockRectWithImmovable(lockRectF, springBack)
             }
         }
@@ -85,8 +111,7 @@ class ImagePreviewActivity : AppCompatActivity() {
         if (binding?.showLockRect?.isChecked == true) {
             option?.setDrawCallback(drawCallback)
         }
-
-        controller = option?.into(layout)
+        return option
     }
 
     private val doubleClickCallback = object : OnDoubleClickCallback {
@@ -114,6 +139,48 @@ class ImagePreviewActivity : AppCompatActivity() {
             paint.strokeWidth = 10f
             paint.style = Paint.Style.STROKE
             canvas.drawRect(lockRectF, paint)
+        }
+    }
+
+
+    private class PreviewViewHolder(
+        itemView: View,
+        private val activity: ImagePreviewActivity,
+        private val width: Float,
+        private val height: Float
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        private var binding: ActivityDocumentImagePreviewItemBinding? = null
+
+        init {
+            binding = ActivityDocumentImagePreviewItemBinding.bind(itemView)
+        }
+
+        fun bind() {
+            binding?.layout?.let {
+                activity.controller = activity.createPreviewOption(width, height)?.into(it)
+            }
+        }
+    }
+
+    private class PreviewAdapter(
+        private val activity: ImagePreviewActivity,
+        private val width: Float,
+        private val height: Float
+    ) : RecyclerView.Adapter<PreviewViewHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviewViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.activity_document_image_preview_item, parent, false)
+            return PreviewViewHolder(view, activity, width, height)
+        }
+
+        override fun getItemCount(): Int {
+            return 5
+        }
+
+        override fun onBindViewHolder(holder: PreviewViewHolder, position: Int) {
+            holder.bind()
         }
     }
 }

@@ -40,11 +40,7 @@ dependencies {
 
     implementation(libs.service.threadpool)
 
-    implementation(libs.core.framework){
-        exclude(group = "io.github.cangHW", module = "Service-PermissionBase")
-    }
-
-    implementation(project(":PermissionSDK:PermissionBase"))
+    compileOnly(project(":PermissionSDK:PermissionBase"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

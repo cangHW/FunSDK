@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.cloud.api)
     kapt(libs.cloud.compiler)
 
+    implementation(project(":WebViewSDK:WebViewBase"))
     implementation(project(":WebViewSDK:WebViewInfo"))
     implementation(libs.core.framework)
     implementation(libs.service.threadpool)

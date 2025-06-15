@@ -2,28 +2,28 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-  ":CoreFramework"
+#  ":CoreFramework"
 
   # 网络库
-#  ":ApiHttpSDK:ApiHttpBase"
 #  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpBase"
 
   # 线程库
-#  ":ThreadPoolSDK:ThreadPoolBase"
 #  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
-#  ":ImageLoaderSDK:ImageLoaderBase"
 #  ":ImageLoaderSDK:ImageLoaderInfo"
+#  ":ImageLoaderSDK:ImageLoaderBase"
 
   # web 容器库
-#  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
 
     # 权限库
-#  ":Permission:PermissionBase"
 #  ":Permission:PermissionInfo"
+#  ":Permission:PermissionBase"
 
     # 日志文件库
 #  ":LogFileSDK:LogFileInfo"
@@ -32,9 +32,10 @@ upArray=(
 #  ":ApmSDK:ApmInfo"
 
   # 文档库
-  ":DocumentsSDK:DocumentBase"
-#  ":DocumentsSDK:DocumentPdf"
-  ":DocumentsSDK:DocumentImage"
+  ":DocumentsSDK:Image:DocumentImageInfo"
+  ":DocumentsSDK:Image:DocumentImageBase"
+  ":DocumentsSDK:Pdf:DocumentPdfInfo"
+  ":DocumentsSDK:Pdf:DocumentPdfBase"
 )
 
 type_params="r"

@@ -3,21 +3,18 @@ package com.proxy.service.funsdk.document.pdf
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.base.PdfService
-import com.proxy.service.document.base.pdf.config.PdfConfig
-import com.proxy.service.document.base.pdf.config.callback.LoadStateCallback
-import com.proxy.service.document.base.pdf.config.info.FailedResult
-import com.proxy.service.document.base.pdf.config.source.BaseSource
-import com.proxy.service.document.base.pdf.loader.IPdfLoader
-import com.proxy.service.document.base.pdf.info.CatalogueData
-import com.proxy.service.document.pdf.view.view.TempSurfaceView
+import com.proxy.service.document.pdf.base.PdfService
+import com.proxy.service.document.pdf.base.bean.CatalogueData
+import com.proxy.service.document.pdf.base.config.PdfConfig
+import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
+import com.proxy.service.document.pdf.base.config.info.FailedResult
+import com.proxy.service.document.pdf.base.config.source.BaseSource
 import com.proxy.service.funsdk.R
 
 /**

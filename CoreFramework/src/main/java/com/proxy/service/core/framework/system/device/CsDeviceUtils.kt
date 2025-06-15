@@ -9,13 +9,14 @@ import android.os.Environment
 import android.os.Process
 import android.os.StatFs
 import android.os.storage.StorageManager
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.util.Properties
 import java.util.UUID
 
@@ -313,4 +314,55 @@ object CsDeviceUtils {
         return availableBlocks * blockSize
     }
 
+
+    @Volatile
+    private var isRootStateChecked: Boolean = false
+
+    @Volatile
+    private var rooted: Boolean = false
+
+    /**
+     * 判断当前设备是否是 root 状态
+     * */
+    @Synchronized
+    fun isRoot(): Boolean {
+        if (isRootStateChecked) {
+            return rooted
+        }
+        isRootStateChecked = true
+        rooted = checkRootTags() || checkRootFile() || checkRootLog()
+        return rooted
+    }
+
+    private fun checkRootTags(): Boolean {
+        val buildTags = Build.TAGS
+        return buildTags != null && buildTags.contains("test-keys")
+    }
+
+    private fun checkRootFile(): Boolean {
+        val paths = arrayOf(
+            "/system/app/Superuser.apk", "/sbin/su", "/system/bin/su", "/system/xbin/su",
+            "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
+            "/system/bin/failsafe/su", "/data/local/su", "/su/bin/su"
+        )
+        for (path in paths) {
+            if (File(path).exists()) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun checkRootLog(): Boolean {
+        var process: java.lang.Process? = null
+        try {
+            process = Runtime.getRuntime().exec(arrayOf("/system/xbin/which", "su"))
+            val br = BufferedReader(InputStreamReader(process.inputStream))
+            return br.readLine() != null
+        } catch (throwable: Throwable) {
+            return false
+        } finally {
+            process?.destroy()
+        }
+    }
 }

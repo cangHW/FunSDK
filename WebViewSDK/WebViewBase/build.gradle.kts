@@ -31,6 +31,9 @@ dependencies {
     implementation(libs.cloud.api)
 
     api(libs.android.webkit)
+    api(libs.core.framework)
+
+    runtimeOnly(project(":WebViewSDK:WebViewInfo"))
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)
