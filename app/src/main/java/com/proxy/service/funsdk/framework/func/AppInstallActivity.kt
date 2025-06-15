@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.CsUriManager
 import com.proxy.service.funsdk.AssetUtils
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.databinding.ActivityFrameworkAppinstallBinding
+import java.lang.StringBuilder
 
 /**
  * @author: cangHX
@@ -37,12 +40,17 @@ class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
     private var apkDir: String =
         "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files/apk"
 
+    private var binding: ActivityFrameworkAppinstallBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_appinstall)
+        binding = ActivityFrameworkAppinstallBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding?.root)
 
         AssetUtils.copyFolderFromAssets(this, "apk", apkDir) {}
         CsUriManager.addProviderResourcePath(apkDir)
+
+        binding?.content?.setSaveFileName("CsInstallUtils")
     }
 
     private var pkg = ""
@@ -51,23 +59,25 @@ class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
         when (view.id) {
             R.id.get_pkg_from_apk -> {
                 pkg = CsInstallUtils.getPackageNameByApk("$apkDir/temp.apk") ?: ""
-                Toast.makeText(this, pkg, Toast.LENGTH_SHORT).show()
+                binding?.content?.addData("应用信息", "pkg = $pkg")
             }
 
             R.id.get_all_installed -> {
+                val builder = StringBuilder("\n")
+
                 CsInstallUtils.getAllInstallAppsInfo().forEach {
-                    CsLogger.d(it.toString())
+                    builder.append(it.toString()).append("\n")
                 }
+                binding?.content?.addData("应用信息", "已安装 $builder")
             }
 
             R.id.check_is_installed -> {
                 if (TextUtils.isEmpty(pkg)) {
-                    Toast.makeText(this, "未设置包名", Toast.LENGTH_SHORT).show()
+                    binding?.content?.addData("应用信息", "先点击 “从Apk获取对应包名”")
                     return
                 }
-                CsInstallUtils.isInstallApp(pkg).let {
-                    Toast.makeText(this, "目标应用是否安装：$it", Toast.LENGTH_SHORT).show()
-                }
+                val flag = CsInstallUtils.isInstallApp(pkg)
+                binding?.content?.addData("应用信息", "目标应用是否安装：$flag")
             }
 
             R.id.receiver_apk_install_status -> {
@@ -75,16 +85,26 @@ class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
             }
 
             R.id.install_app -> {
-                CsInstallUtils.installApp("$apkDir/temp.apk")
+                val apkPath = "$apkDir/temp.apk"
+                CsInstallUtils.installApp(apkPath)
+                binding?.content?.addData("应用信息", "安装应用 $apkPath")
             }
 
             R.id.uninstall_app -> {
-                CsInstallUtils.unInstallApp(pkg)
+                if (CsInstallUtils.isInstallApp(pkg)) {
+                    CsInstallUtils.unInstallApp(pkg)
+                    binding?.content?.addData("应用信息", "卸载应用 $pkg")
+                }else{
+                    binding?.content?.addData("应用信息", "应用未安装 $pkg")
+                }
             }
 
             R.id.open_installed_app -> {
                 if (CsInstallUtils.isInstallApp(pkg)) {
                     CsInstallUtils.openApp(pkg)
+                    binding?.content?.addData("应用信息", "打开应用 $pkg")
+                }else{
+                    binding?.content?.addData("应用信息", "应用未安装 $pkg")
                 }
             }
         }
@@ -96,9 +116,9 @@ class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
         packageName: String
     ) {
         if (installStatusEnum == InstallStatusEnum.PACKAGE_ADDED) {
-            Toast.makeText(context, "安装：$packageName", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("应用信息", "应用安装完成 $packageName")
         } else if (installStatusEnum == InstallStatusEnum.PACKAGE_REMOVED) {
-            Toast.makeText(context, "卸载：$packageName", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("应用信息", "应用卸载完成 $packageName")
         }
     }
 

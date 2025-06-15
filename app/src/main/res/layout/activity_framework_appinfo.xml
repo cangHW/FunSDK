@@ -1,20 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/app_night_mode"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="是否处于暗夜模式"
-        android:textSize="20dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/restart_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="重启应用"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_app_pkg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="获取应用包名"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_process_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="获取进程名称"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="获取应用名称"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_app_version_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="获取应用版本号"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_app_version_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="获取应用版本名称"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_app_target_sdk_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="获取应用TargetSdk"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/app_night_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="是否处于暗夜模式"
+                android:textSize="20dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/app_main_process"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#330000ff"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onClick"
+                android:padding="10dp"
+                android:text="是否处于主进程"
+                android:textSize="20dp" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.proxy.service.testview.DemoTestView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="500dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

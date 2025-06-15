@@ -28,11 +28,9 @@ object CsAppUtils {
 
     /**
      * 重启应用
-     *
-     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun restartApp(packageName: String? = null) {
-        val pkg = packageName ?: getPackageName()
+    fun restartApp() {
+        val pkg = getPackageName()
         val context = CsContextManager.getApplication()
         val pm = context.packageManager
         pm.getLaunchIntentForPackage(pkg)?.let {
@@ -82,13 +80,13 @@ object CsAppUtils {
      * */
     fun getAppName(packageName: String? = null): String {
         val context = CsContextManager.getApplication()
+        val pm = context.packageManager
 
         if (packageName == null) {
-            return context.applicationInfo.loadLabel(context.packageManager).toString()
+            return context.applicationInfo.loadLabel(pm).toString()
         }
 
-        val pm = context.packageManager
-        val packageInfo = pm.getPackageInfo(getPackageName(), 0)
+        val packageInfo = pm.getPackageInfo(packageName, 0)
         return packageInfo.applicationInfo.loadLabel(pm).toString()
     }
 

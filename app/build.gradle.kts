@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)
     implementation(libs.android.view.viewpager)
+    implementation(libs.test.demo.view)
 
     implementation(libs.cloud.api)
 
