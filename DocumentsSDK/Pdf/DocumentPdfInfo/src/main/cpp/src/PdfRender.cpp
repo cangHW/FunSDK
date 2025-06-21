@@ -86,7 +86,7 @@ Java_com_proxy_service_document_pdf_info_core_PdfiumCore_nativeRenderPageToSurfa
     ANativeWindow_unlockAndPost(nativeWindow);
     ANativeWindow_release(nativeWindow);
 
-//    FPDFBitmap_Destroy(pdfBitmap);
+    FPDFBitmap_Destroy(pdfBitmap);
 }
 
 // 渲染到 Bitmap

@@ -1,10 +1,8 @@
 package com.proxy.service.document.pdf.base.config
 
 import android.net.Uri
-import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.document.pdf.base.config.builder.IPdfBuilder
 import com.proxy.service.document.pdf.base.config.builder.IPdfBuilderGet
-import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 import com.proxy.service.document.pdf.base.config.source.AssetPathSource
 import com.proxy.service.document.pdf.base.config.source.BaseSource
 import com.proxy.service.document.pdf.base.config.source.ByteArraySource
@@ -28,10 +26,6 @@ class PdfConfig private constructor(
         return builder.getSources()
     }
 
-    override fun getLoadStateCallback(): LoadStateCallback? {
-        return builder.getLoadStateCallback()
-    }
-
     companion object {
         fun builder(): IPdfBuilder {
             return Builder()
@@ -40,7 +34,6 @@ class PdfConfig private constructor(
 
     private class Builder : IPdfBuilder, IPdfBuilderGet {
 
-        private var loadCallback: LoadStateCallback? = null
         private val sources = ArrayList<BaseSource>()
 
         override fun setSourceAssetPath(assetPath: String, password: String?): IPdfBuilder {
@@ -115,21 +108,12 @@ class PdfConfig private constructor(
             return this
         }
 
-        override fun setLoadCallback(callback: LoadStateCallback): IPdfBuilder {
-            this.loadCallback = callback
-            return this
-        }
-
         override fun build(): PdfConfig {
             return PdfConfig(this)
         }
 
         override fun getSources(): ArrayList<BaseSource> {
             return sources
-        }
-
-        override fun getLoadStateCallback(): LoadStateCallback? {
-            return loadCallback
         }
     }
 

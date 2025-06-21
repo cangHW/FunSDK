@@ -3,23 +3,19 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.convert.CsStorageUnit
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.device.CsDeviceUtils
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkDeviceBinding
-import java.lang.StringBuilder
 
 /**
  * @author: cangHX
  * @data: 2024/11/11 14:18
  * @desc:
  */
-class DeviceActivity : AppCompatActivity() {
+class DeviceActivity : BaseActivity<ActivityFrameworkDeviceBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -32,17 +28,8 @@ class DeviceActivity : AppCompatActivity() {
     }
 
     private val unit = CsStorageUnit.B_UNIT_1000
-    private var binding: ActivityFrameworkDeviceBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityFrameworkDeviceBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding?.root)
-
-        binding?.content?.setSaveFileName("CsDeviceUtils")
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.device_mode -> {
                 binding?.content?.addData(

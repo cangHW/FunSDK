@@ -22,20 +22,20 @@ android-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", versi
 android-work-runtime = { group = "androidx.work", name = "work-runtime", version = "2.7.1" }
 
 ##########################################  开发基础库  ############################################################################
-test-demo-view = { group = "io.github.cangHW", name = "Test-DemoView", version = "0.0.3" }
+test-demo-view = { group = "io.github.cangHW", name = "Test-DemoView", version = "0.0.4" }
 
 cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.16" }
 cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.10" }
 cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.8" }
 
-core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="1.1.0"}
+core-framework = {group = "io.github.cangHW", name="Service-CoreFramework", version="1.1.1"}
 service-apihttp = {group = "io.github.cangHW", name="Service-Apihttp", version="0.2.0"}
-service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.2.0"}
+service-threadpool = {group = "io.github.cangHW", name="Service-Threadpool", version="0.2.1"}
 service-imageloader = {group = "io.github.cangHW", name="Service-Imageloader", version="0.2.0"}
 service-webview = {group = "io.github.cangHW", name="Service-Webview", version="0.2.0"}
 service-webview-bridge = {group = "io.github.cangHW", name="Service-WebBridge-Ds", version="0.2.0"}
 service-permission = {group = "io.github.cangHW", name="Service-Permission", version="0.2.0"}
-service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.2.0"}
+service-logfile = {group = "io.github.cangHW", name="Service-LogFile-Spdlog", version="0.2.1"}
 service-apm = {group = "io.github.cangHW", name="Service-Apm", version="0.2.0"}
 service-document-image = {group = "io.github.cangHW", name="Service-Document-Image", version="0.2.0"}
 service-document-pdf = {group = "io.github.cangHW", name="Service-Document-Pdf", version="0.2.0"}

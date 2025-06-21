@@ -3,13 +3,11 @@ package com.proxy.service.funsdk.webview
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.web.CsWeb
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityWebViewBinding
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.base.web.IWeb
@@ -19,7 +17,7 @@ import com.proxy.service.webview.base.web.IWeb
  * @data: 2024/8/3 18:28
  * @desc:
  */
-class WebViewActivity : AppCompatActivity() {
+class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -31,14 +29,9 @@ class WebViewActivity : AppCompatActivity() {
         }
     }
 
-    private var viewGroup: FrameLayout? = null
     private var webView: IWeb? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view)
-        viewGroup = findViewById(R.id.content)
-
+    override fun initView() {
         webView = CsWeb.createWebLoader(WebConfig.builder().build())
             ?.setLifecycleOwner(this)
             ?.loadUrl("https://www.baidu.com")
@@ -49,22 +42,33 @@ class WebViewActivity : AppCompatActivity() {
                     isHttpError: Boolean
                 ) {
                     super.onPageError(url, isMainFrameError, isHttpError)
-                    CsLogger.d("onPageError isMainFrameError = $isMainFrameError, isHttpError = $isHttpError")
+                    if (isMainFrameError) {
+                        binding?.content?.addData(
+                            "预加载",
+                            "主框架加载出错，无法进行上屏操作"
+                        )
+                    }else{
+                        binding?.content?.addData(
+                            "预加载",
+                            "部分内容加载出错 isHttpError = $isHttpError"
+                        )
+                    }
                 }
 
                 override fun onPageFinished(url: String) {
                     super.onPageFinished(url)
-                    CsLogger.d("onPageFinished url = $url")
+                    binding?.content?.addData("预加载", "预加载完成, 等待执行上屏操作 url = $url")
                 }
             })
             ?.load()
     }
 
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.load_baidu -> {
-                viewGroup?.removeAllViews()
-                val web = CsWeb.createWebLoader(WebConfig.builder().build())
+                binding?.content?.addData("加载", "加载页面")
+                binding?.group?.removeAllViews()
+                CsWeb.createWebLoader(WebConfig.builder().build())
                     ?.setLifecycleOwner(this)
                     ?.loadUrl("https://www.baidu.com")
                     ?.setWebLoadCallback(object : WebLoadCallback {
@@ -74,21 +78,31 @@ class WebViewActivity : AppCompatActivity() {
                             isHttpError: Boolean
                         ) {
                             super.onPageError(url, isMainFrameError, isHttpError)
-                            CsLogger.d("onPageError isMainFrameError = $isMainFrameError, isHttpError = $isHttpError")
+                            if (isMainFrameError) {
+                                binding?.content?.addData(
+                                    "加载",
+                                    "主框架加载出错，页面无法展示"
+                                )
+                            }else{
+                                binding?.content?.addData(
+                                    "加载",
+                                    "部分内容加载出错 isHttpError = $isHttpError"
+                                )
+                            }
                         }
 
                         override fun onPageFinished(url: String) {
                             super.onPageFinished(url)
-                            CsLogger.d("onPageFinished url = $url")
+                            binding?.content?.addData("加载", "加载完成 url = $url")
                         }
                     })
-                    ?.loadTo(viewGroup)
-//                web?.setBackgroundColor(Color.TRANSPARENT)
+                    ?.loadTo(binding?.group)
             }
 
             R.id.show_baidu -> {
-                viewGroup?.removeAllViews()
-                webView?.changeParentView(viewGroup)
+                binding?.group?.removeAllViews()
+                webView?.changeParentView(binding?.group)
+                binding?.content?.addData("上屏", "页面上屏")
             }
         }
     }

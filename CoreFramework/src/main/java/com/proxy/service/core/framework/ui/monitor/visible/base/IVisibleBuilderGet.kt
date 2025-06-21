@@ -41,9 +41,4 @@ interface IVisibleBuilderGet {
      * */
     fun getTag(): Any?
 
-    /**
-     * 获取监控的回调接口
-     */
-    fun getViewVisibleMonitorCallback(): VisibleMonitorCallback?
-
 }

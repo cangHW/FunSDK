@@ -3,12 +3,11 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.worker.CsWorkUtils
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkWorkBinding
 import com.proxy.service.funsdk.framework.func.work.TestWork
 
 /**
@@ -16,7 +15,7 @@ import com.proxy.service.funsdk.framework.func.work.TestWork
  * @data: 2024/12/16 17:24
  * @desc:
  */
-class WorkActivity : AppCompatActivity() {
+class WorkActivity : BaseActivity<ActivityFrameworkWorkBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -28,13 +27,7 @@ class WorkActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_work)
-        CsLogger.d("sssssssssss")
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.start_work_task -> {
                 CsWorkUtils.start(TestWork::class.java)

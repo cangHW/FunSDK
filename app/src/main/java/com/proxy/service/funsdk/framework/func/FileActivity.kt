@@ -3,15 +3,9 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.Environment
 import android.view.View
-import android.webkit.MimeTypeMap
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.core.framework.io.file.callback.IoCallback
 import com.proxy.service.core.framework.io.file.media.CsFileMediaUtils
 import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
 import com.proxy.service.core.framework.io.file.media.callback.QueryCallback
@@ -19,19 +13,16 @@ import com.proxy.service.core.framework.io.file.media.config.DataInfo
 import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.read.CsFileReadUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
-import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
-import com.proxy.service.threadpool.base.thread.task.ICallable
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileReader
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkFileBinding
 
 /**
  * @author: cangHX
  * @data: 2024/9/25 14:28
  * @desc:
  */
-class FileActivity : AppCompatActivity() {
+class FileActivity : BaseActivity<ActivityFrameworkFileBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -46,85 +37,77 @@ class FileActivity : AppCompatActivity() {
     private var fileDir = "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files"
     private var filePath = "$fileDir/text/test.txt"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_file)
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.write_file -> {
-                CsFileWriteUtils.setSourceString("测试数据 ${System.currentTimeMillis()} \n")
-                    .writeSync(filePath, true)
+                val data = "测试数据 ${System.currentTimeMillis()} \n"
+                CsFileWriteUtils.setSourceString(data).writeSync(filePath, true)
+                binding?.content?.addData("写入数据", "写入成功 data = $data")
             }
 
             R.id.read_file -> {
-//                val content = CsFileReadUtils.setSourcePath(filePath).read()
+                val content = CsFileReadUtils.setSourcePath(filePath).readString()
 
 //                val content = CsFileReadUtils.setSourceFile(File(filePath)).read()
 
 //                val stream = FileInputStream(File(filePath))
 //                val content = CsFileReadUtils.setSourceStream(stream).read()
 
-                val reader = BufferedReader(FileReader(File(filePath)))
-                val content = CsFileReadUtils.setSourceReader(reader).readString()
+//                val reader = BufferedReader(FileReader(File(filePath)))
+//                val content = CsFileReadUtils.setSourceReader(reader).readString()
 
-                CsLogger.d(content)
+                binding?.content?.addData("读取数据", "读取成功 data = $content")
             }
 
             R.id.file_merge -> {
                 val srcPath = "$fileDir/merge/test1.txt"
                 CsFileUtils.delete(srcPath)
-                CsFileWriteUtils.setSourceString("源文件内容").writeSync(srcPath)
-                CsLogger.d(CsFileReadUtils.setSourcePath(srcPath).readString())
+
+                val srcData = "源文件:aaaaaaaa"
+                CsFileWriteUtils.setSourceString(srcData).writeSync(srcPath)
+                binding?.content?.addData("文件合并", "源文件内容 data = $srcData")
 
                 val destPath = "$fileDir/merge/test2.txt"
                 CsFileUtils.delete(destPath)
-                CsFileWriteUtils.setSourceString("目标文件内容").writeSync(destPath)
-                CsLogger.d(CsFileReadUtils.setSourcePath(destPath).readString())
+
+                val destData = "目标文件：bbbbbbb"
+                CsFileWriteUtils.setSourceString(destData).writeSync(destPath)
+                binding?.content?.addData("文件合并", "目标文件内容 data = $destData")
 
                 CsFileWriteUtils.setSourcePath(srcPath).writeSync(destPath, true)
-                CsLogger.d(CsFileReadUtils.setSourcePath(destPath).readString())
+                val totalData = CsFileReadUtils.setSourcePath(destPath).readString()
+                binding?.content?.addData("文件合并", "最终文件内容 data = $totalData")
             }
 
             R.id.save_album -> {
+                binding?.content?.addData("相册", "准备存入相册")
                 CsFileMediaUtils.getImageManager()
                     .setDisplayName("测试图片")
                     .setMimeType(MimeType.IMAGE_PNG)
                     .setSourceAssetPath("image/asd.png")
                     .insert(object : InsertCallback {
                         override fun onFailed() {
-                            CsLogger.i("insert onFailed")
+                            binding?.content?.addData("相册", "存入相册失败")
                         }
 
                         override fun onSuccess(path: String) {
-                            CsLogger.i("insert onSuccess path = $path")
+                            binding?.content?.addData("相册", "存入相册成功. path = $path")
                         }
                     })
             }
 
             R.id.query_file -> {
+                val mimeType = "image/*"
+                binding?.content?.addData("查询", "准备查询设备中的文件, type = $mimeType")
                 CsFileMediaUtils.getQueryManager()
-                    .setMimeType(MimeType.create("image/*"))
+                    .setMimeType(MimeType.create(mimeType))
                     .query(object : QueryCallback {
                         override fun onFailed() {
-
+                            binding?.content?.addData("查询", "查询失败")
                         }
 
                         override fun onSuccess(list: ArrayList<DataInfo>) {
-                            list.forEach { info ->
-                                CsTask.ioThread()?.call(object : ICallable<String> {
-                                    override fun accept(): String {
-                                        CsFileWriteUtils.setSourcePath(info.path)
-                                            .writeAsync(
-                                                Environment.getExternalStoragePublicDirectory(
-                                                    Environment.DIRECTORY_DOWNLOADS
-                                                ).absolutePath + File.separator + "asd.jpg"
-                                            )
-                                        return ""
-                                    }
-                                })?.start()
-                            }
+                            binding?.content?.addData("查询", "查询成功 \n $list")
                         }
                     })
             }

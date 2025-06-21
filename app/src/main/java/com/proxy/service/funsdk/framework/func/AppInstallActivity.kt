@@ -5,27 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.install.CsInstallUtils
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
 import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.CsUriManager
 import com.proxy.service.funsdk.AssetUtils
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkAppinstallBinding
-import java.lang.StringBuilder
 
 /**
  * @author: cangHX
  * @data: 2024/9/23 10:15
  * @desc:
  */
-class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
+class AppInstallActivity : BaseActivity<ActivityFrameworkAppinstallBinding>(), InstallReceiverListener {
 
     companion object {
         fun launch(context: Context) {
@@ -40,22 +36,16 @@ class AppInstallActivity : AppCompatActivity(), InstallReceiverListener {
     private var apkDir: String =
         "/storage/emulated/0/Android/data/${CsAppUtils.getPackageName()}/files/apk"
 
-    private var binding: ActivityFrameworkAppinstallBinding? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFrameworkAppinstallBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding?.root)
 
         AssetUtils.copyFolderFromAssets(this, "apk", apkDir) {}
         CsUriManager.addProviderResourcePath(apkDir)
-
-        binding?.content?.setSaveFileName("CsInstallUtils")
     }
 
     private var pkg = ""
 
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.get_pkg_from_apk -> {
                 pkg = CsInstallUtils.getPackageNameByApk("$apkDir/temp.apk") ?: ""

@@ -6,25 +6,22 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.message.broadcast.CsBroadcastManager
 import com.proxy.service.core.framework.app.message.broadcast.MessageReceiverListener
 import com.proxy.service.core.framework.app.message.event.CsEventManager
 import com.proxy.service.core.framework.app.message.event.callback.MainThreadEventCallback
 import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEventCallback
-import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
-import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkEventBinding
 
 /**
  * @author: cangHX
  * @data: 2024/10/29 11:37
  * @desc:
  */
-class EventActivity : AppCompatActivity(), MessageReceiverListener {
+class EventActivity : BaseActivity<ActivityFrameworkEventBinding>(), MessageReceiverListener {
 
     companion object {
         fun launch(context: Context) {
@@ -36,32 +33,50 @@ class EventActivity : AppCompatActivity(), MessageReceiverListener {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_event)
-    }
-
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.set_callback -> {
+    override fun initView() {
+        binding?.checkBroadcast?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
                 CsBroadcastManager.addWeakReceiverListener(this)
+            } else {
+                CsBroadcastManager.removeReceiverListener(this)
+            }
+        }
+
+        binding?.checkEvent?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
                 CsEventManager.addWeakCallback(mainThreadEventCallback, this)
                 CsEventManager.addWeakCallback(workThreadEventCallback, this)
+            } else {
+                CsEventManager.remove(mainThreadEventCallback)
+                CsEventManager.remove(workThreadEventCallback)
             }
+        }
 
+        binding?.checkBroadcast?.isChecked = true
+        binding?.checkEvent?.isChecked = true
+    }
+
+    override fun onClick(view: View) {
+        when (view.id) {
             R.id.send_broadcast_msg -> {
                 val bundle = Bundle()
                 bundle.putString("ss", "sss")
+
+                binding?.content?.addData("broadcast", "发送广播 bundle = $bundle")
                 CsBroadcastManager.sendBroadcast(CsAppUtils.getPackageName(), null, bundle)
             }
 
             R.id.send_main_event_msg -> {
+                binding?.content?.addData("event", "发送 main event")
+
                 for (index in 0..600) {
                     CsEventManager.sendEventValue(MainBean("$index"))
                 }
             }
 
             R.id.send_thread_event_msg -> {
+                binding?.content?.addData("event", "发送 work event")
+
                 for (index in 0..10) {
                     CsEventManager.sendEventValue(WorkBean("$index"))
                 }
@@ -70,10 +85,10 @@ class EventActivity : AppCompatActivity(), MessageReceiverListener {
     }
 
     override fun onReceive(context: Context, data: Uri?, extras: Bundle?) {
-        Toast.makeText(context, "Broadcast = $extras", Toast.LENGTH_SHORT).show()
+        binding?.content?.addData("broadcast", "接收广播 data = $data, extras = $extras")
     }
 
-    private class MainBean(val tag:String){
+    private class MainBean(val tag: String) {
         override fun toString(): String {
             return "[tag = $tag]"
         }
@@ -90,12 +105,11 @@ class EventActivity : AppCompatActivity(), MessageReceiverListener {
         }
 
         override fun onMainEvent(any: Any) {
-            CsLogger.tag("event").d("onMainEvent, any = $any")
-            Toast.makeText(this@EventActivity, "MainEvent", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("event", "接收 MainEvent, any = $any")
         }
     }
 
-    private class WorkBean(val tag:String){
+    private class WorkBean(val tag: String) {
         override fun toString(): String {
             return "[tag = $tag]"
         }
@@ -107,13 +121,7 @@ class EventActivity : AppCompatActivity(), MessageReceiverListener {
         }
 
         override fun onWorkEvent(any: Any) {
-            CsLogger.tag("event").d("onWorkEvent, any = $any")
-            CsTask.mainThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    Toast.makeText(this@EventActivity, "WorkEvent", Toast.LENGTH_SHORT).show()
-                    return ""
-                }
-            })?.start()
+            binding?.content?.addData("event", "接收 WorkEvent, any = $any")
         }
     }
 

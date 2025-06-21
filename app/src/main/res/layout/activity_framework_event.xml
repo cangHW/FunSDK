@@ -1,59 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/set_callback"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="配置回调"
-        android:textSize="20dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/send_broadcast_msg"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="发送广播消息"
-        android:textSize="20dp" />
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/send_main_event_msg"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="发送主线程 event 消息"
-        android:textSize="20dp" />
+            <CheckBox
+                android:id="@+id/check_broadcast"
+                style="@style/checkbox_style"
+                android:text="配置广播回调" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/send_thread_event_msg"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="发送子线程 event 消息"
-        android:textSize="20dp" />
+            <CheckBox
+                android:id="@+id/check_event"
+                style="@style/checkbox_style"
+                android:text="配置event消息回调" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_broadcast_msg"
+                style="@style/button_style"
+                android:text="发送广播消息" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_main_event_msg"
+                style="@style/button_style"
+                android:text="发送主线程 event 消息" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_thread_event_msg"
+                style="@style/button_style"
+                android:text="发送子线程 event 消息" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.proxy.service.testview.DemoTestView
+            android:id="@+id/content"
+            style="@style/content_style" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

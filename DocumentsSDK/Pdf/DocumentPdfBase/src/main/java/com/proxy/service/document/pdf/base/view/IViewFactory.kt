@@ -2,6 +2,7 @@ package com.proxy.service.document.pdf.base.view
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 
 /**
  * @author: cangHX
@@ -24,6 +25,11 @@ interface IViewFactory {
      * 绑定生命周期
      * */
     fun setLifecycleOwner(owner: LifecycleOwner): IViewFactory
+
+    /**
+     * 设置加载回调
+     * */
+    fun setLoadStateCallback(callback: LoadStateCallback):IViewFactory
 
     /**
      * 创建控制器并加载到父视图

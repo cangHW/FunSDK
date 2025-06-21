@@ -48,13 +48,6 @@ interface IVisibleBuilder {
     fun setTag(tag: Any): IVisibleBuilder
 
     /**
-     * 设置监控的回调接口
-     *
-     * @param callback  监控的回调接口
-     */
-    fun setCallback(callback: VisibleMonitorCallback): IVisibleBuilder
-
-    /**
      * 创建配置
      */
     fun build(): VisibleMonitorConfig

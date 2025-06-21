@@ -3,13 +3,10 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkAppinfoBinding
 
 /**
@@ -17,7 +14,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkAppinfoBinding
  * @data: 2024/12/11 10:15
  * @desc:
  */
-class AppInfoActivity : AppCompatActivity() {
+class AppInfoActivity : BaseActivity<ActivityFrameworkAppinfoBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -29,17 +26,7 @@ class AppInfoActivity : AppCompatActivity() {
         }
     }
 
-    private var binding: ActivityFrameworkAppinfoBinding? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityFrameworkAppinfoBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding?.root)
-
-        binding?.content?.setSaveFileName("CsAppUtils")
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.restart_app -> {
                 binding?.content?.addData(

@@ -1,150 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_init"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="初始化"
-        android:textSize="20dp" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/set_global_callback"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="设置全局下载监听"
-        android:textSize="20dp" />
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/remove_global_callback"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="移除全局下载监听"
-        android:textSize="20dp" />
+            <CheckBox
+                android:id="@+id/global_callback"
+                style="@style/checkbox_style"
+                android:text="全局下载监听" />
+        </com.google.android.flexbox.FlexboxLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_start_normal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="开始普通下载"
-        android:textSize="20dp" />
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_start_part"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="开始分片下载"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_init"
+                style="@style/button_style"
+                android:text="初始化" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_restart"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="重新开始下载"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_start_normal"
+                style="@style/button_style"
+                android:text="开始普通下载" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="取消下载"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_start_part"
+                style="@style/button_style"
+                android:text="开始分片下载" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_cancel_group"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="取消组 test 下载"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_restart"
+                style="@style/button_style"
+                android:text="重新开始下载" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_cancel_all"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="取消全部下载"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_cancel"
+                style="@style/button_style"
+                android:text="取消下载" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/get_download_type"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="获取下载状态"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_cancel_group"
+                style="@style/button_style"
+                android:text="取消组 test 下载" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/download_reset"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="#330000ff"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:onClick="onClick"
-        android:text="重置下载，立刻执行高优先级任务"
-        android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_cancel_all"
+                style="@style/button_style"
+                android:text="取消全部下载" />
 
-</LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/get_download_type"
+                style="@style/button_style"
+                android:text="获取下载状态" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/download_reset"
+                style="@style/button_style"
+                android:text="重置下载，立刻执行高优先级任务" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.proxy.service.testview.DemoTestView
+            android:id="@+id/content"
+            style="@style/content_style" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

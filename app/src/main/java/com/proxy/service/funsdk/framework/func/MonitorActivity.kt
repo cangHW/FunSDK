@@ -3,20 +3,22 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.ui.monitor.CsViewMonitorUtils
 import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorHelper
+import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
 import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkMonitorBinding
 
 /**
  * @author: cangHX
  * @data: 2024/12/5 16:36
  * @desc:
  */
-class MonitorActivity : AppCompatActivity() {
+class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -29,55 +31,56 @@ class MonitorActivity : AppCompatActivity() {
     }
 
     private var helper: IVisibleMonitorHelper? = null
-    private var checkView: View? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_monitor)
-
-        checkView = findViewById(R.id.view)
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.monitor_start -> {
                 if (helper == null) {
-                    val config = VisibleMonitorConfig.builder(checkView!!)
+                    val config = VisibleMonitorConfig.builder(binding?.checkView!!)
                         .setTag("222")
                         .setLifecycle(this)
                         .build()
 
-                    helper = CsViewMonitorUtils.createVisibleMonitor(config)
+                    helper = CsViewMonitorUtils.createVisibleMonitor(config, monitorCallback)
                 }
                 helper?.start()
+                binding?.content?.addData("Monitor", "开始监控")
             }
 
             R.id.monitor_reset -> {
                 helper?.reset()
+                binding?.content?.addData("Monitor", "重置监控状态")
             }
 
             R.id.monitor_stop -> {
                 helper?.stop()
+                binding?.content?.addData("Monitor", "暂停监控")
             }
 
             R.id.monitor_destroy -> {
                 helper?.destroy()
                 helper = null
+                binding?.content?.addData("Monitor", "关闭监控")
             }
 
             R.id.view_visible -> {
-                checkView?.visibility = View.VISIBLE
+                binding?.checkView?.visibility = View.VISIBLE
             }
 
             R.id.view_gone -> {
-                checkView?.visibility = View.GONE
+                binding?.checkView?.visibility = View.GONE
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        System.gc()
+    private val monitorCallback = object : VisibleMonitorCallback{
+        override fun onGone(tag: Any?) {
+            binding?.content?.addData("Monitor", "view 隐藏, tag = $tag")
+        }
+
+        override fun onShow(tag: Any?) {
+            binding?.content?.addData("Monitor", "view 显示, tag = $tag")
+        }
     }
 
 }

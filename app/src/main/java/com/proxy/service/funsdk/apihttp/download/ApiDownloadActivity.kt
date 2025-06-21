@@ -3,24 +3,23 @@ package com.proxy.service.funsdk.apihttp.download
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.config.DownloadConfig
 import com.proxy.service.apihttp.base.download.config.DownloadGroup
 import com.proxy.service.apihttp.base.download.task.DownloadTask
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.apihttp.CsApiDownload
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityApiDownloadBinding
 
 /**
  * @author: cangHX
  * @data: 2024/11/5 13:30
  * @desc:
  */
-class ApiDownloadActivity : AppCompatActivity() {
+class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -32,14 +31,20 @@ class ApiDownloadActivity : AppCompatActivity() {
         }
     }
 
-    private val test_url_BaiduNetdisk = "https://ad986c-1905179982.antpcdn.com:19001/b/pkg-ant.baidu.com/issue/netdisk/MACguanjia/4.38.0/BaiduNetdisk_mac_4.38.0_x64.dmg"
+    private val test_url_BaiduNetdisk =
+        "https://ad986c-1905179982.antpcdn.com:19001/b/pkg-ant.baidu.com/issue/netdisk/MACguanjia/4.38.0/BaiduNetdisk_mac_4.38.0_x64.dmg"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_api_download)
+    override fun initView() {
+        binding?.globalCallback?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                CsApiDownload.registerGlobalDownloadCallback(globalCallback)
+            } else {
+                CsApiDownload.unregisterGlobalDownloadCallback(globalCallback)
+            }
+        }
     }
 
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.download_init -> {
                 CsApiDownload.init(
@@ -51,14 +56,7 @@ class ApiDownloadActivity : AppCompatActivity() {
                         .setAutoRestartOnNetworkReconnect(true)
                         .build()
                 )
-            }
-
-            R.id.set_global_callback ->{
-                CsApiDownload.registerGlobalDownloadCallback(globalCallback)
-            }
-
-            R.id.remove_global_callback ->{
-                CsApiDownload.unregisterGlobalDownloadCallback(globalCallback)
+                binding?.content?.addData("初始化", "下载初始化")
             }
 
             R.id.download_start_normal -> {
@@ -72,6 +70,7 @@ class ApiDownloadActivity : AppCompatActivity() {
                         .build(),
                     callback
                 )
+                binding?.content?.addData("Task", "添加一个普通下载任务")
             }
 
             R.id.download_start_part -> {
@@ -85,44 +84,56 @@ class ApiDownloadActivity : AppCompatActivity() {
                         .build(),
                     callback
                 )
+                binding?.content?.addData("Task", "添加一个分片下载任务")
             }
 
             R.id.download_restart -> {
                 CsApiDownload.reStartTask("222")
+                binding?.content?.addData("Task", "重新开始一个下载任务")
             }
 
             R.id.download_cancel_group -> {
                 CsApiDownload.cancelGroup("test")
+                binding?.content?.addData("Task", "取消一个下载任务组")
             }
 
             R.id.download_cancel_all -> {
                 CsApiDownload.cancelAllTask()
+                binding?.content?.addData("Task", "取消全部下载任务")
             }
 
             R.id.download_cancel -> {
                 CsApiDownload.cancel("111")
 //                CsApiDownload.reStartTask("111")
                 CsApiDownload.cancel("222")
+                binding?.content?.addData("Task", "取消下载任务")
             }
 
             R.id.get_download_type -> {
-                CsLogger.d("任务 111 下载状态 = ${CsApiDownload.getDownloadStatus("111").status}")
-                CsLogger.d("任务 222 下载状态 = ${CsApiDownload.getDownloadStatus("222").status}")
+                val builder = StringBuilder("\n")
+                builder.append("任务 111 下载状态 = ")
+                    .append(CsApiDownload.getDownloadStatus("111").status)
+                    .append("\n")
+                builder.append("任务 222 下载状态 = ")
+                    .append(CsApiDownload.getDownloadStatus("222").status)
+                    .append("\n")
+                binding?.content?.addData("Task", "下载任务状态. $builder")
             }
 
             R.id.download_reset -> {
                 CsApiDownload.resetRunningTask()
+                binding?.content?.addData("Task", "刷新下载任务, 基于优先级执行任务")
             }
         }
     }
 
     private val callback = object : DownloadCallback {
         override fun onWaiting(task: DownloadTask) {
-            CsLogger.d("onWaiting, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("DownloadCallback", "onWaiting, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onStart(task: DownloadTask) {
-            CsLogger.d("onStart, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("DownloadCallback", "onStart, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onProgress(
@@ -131,29 +142,29 @@ class ApiDownloadActivity : AppCompatActivity() {
             progress: Float,
             speed: Long
         ) {
-            CsLogger.d("onProgress, currentSize = $currentSize, progress = $progress, speed = $speed, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("DownloadCallback", "onProgress, currentSize = $currentSize, progress = $progress, speed = $speed, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onSuccess(task: DownloadTask) {
-            CsLogger.d("onSuccess, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("DownloadCallback", "onSuccess, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onCancel(task: DownloadTask) {
-            CsLogger.d("onCancel, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("DownloadCallback", "onCancel, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onFailed(task: DownloadTask, exception: DownloadException) {
-            CsLogger.d("onFailed, DownloadTask = ${task.getTaskTag()}, throwable = $exception")
+            binding?.content?.addData("DownloadCallback", "onFailed, DownloadTask = ${task.getTaskTag()}, throwable = $exception")
         }
     }
 
-    private val globalCallback = object :DownloadCallback{
+    private val globalCallback = object : DownloadCallback {
         override fun onWaiting(task: DownloadTask) {
-            CsLogger.d("global onWaiting, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("GlobalDownloadCallback", "onWaiting, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onStart(task: DownloadTask) {
-            CsLogger.d("global onStart, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("GlobalDownloadCallback", "onStart, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onProgress(
@@ -162,19 +173,19 @@ class ApiDownloadActivity : AppCompatActivity() {
             progress: Float,
             speed: Long
         ) {
-            CsLogger.d("global onProgress, currentSize = $currentSize, progress = $progress, speed = $speed, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("GlobalDownloadCallback", "onProgress, currentSize = $currentSize, progress = $progress, speed = $speed, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onSuccess(task: DownloadTask) {
-            CsLogger.d("global onSuccess, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("GlobalDownloadCallback", "onSuccess, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onCancel(task: DownloadTask) {
-            CsLogger.d("global onCancel, DownloadTask = ${task.getTaskTag()}")
+            binding?.content?.addData("GlobalDownloadCallback", "onCancel, DownloadTask = ${task.getTaskTag()}")
         }
 
         override fun onFailed(task: DownloadTask, exception: DownloadException) {
-            CsLogger.d("global onFailed, DownloadTask = ${task.getTaskTag()}, throwable = $exception")
+            binding?.content?.addData("GlobalDownloadCallback", "onFailed, DownloadTask = ${task.getTaskTag()}, throwable = $exception")
         }
     }
 }

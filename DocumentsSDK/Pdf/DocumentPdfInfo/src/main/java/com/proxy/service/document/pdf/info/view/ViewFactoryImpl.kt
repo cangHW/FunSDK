@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.document.pdf.base.config.PdfConfig
+import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
+import com.proxy.service.document.pdf.base.config.info.FailedResult
+import com.proxy.service.document.pdf.base.config.source.BaseSource
 import com.proxy.service.document.pdf.base.view.IPdfView
 import com.proxy.service.document.pdf.base.view.IViewFactory
 import com.proxy.service.document.pdf.info.PdfServiceImpl
@@ -22,6 +25,11 @@ class ViewFactoryImpl(private val config: PdfConfig) : IViewFactory {
 
     private var owner: LifecycleOwner? = null
     private val renderConfig = RenderConfig()
+    private var loadStateCallback: LoadStateCallback = object : LoadStateCallback {
+        override fun onLoadComplete(success: List<BaseSource>, failed: List<FailedResult>) {
+            // nothing
+        }
+    }
 
     override fun setViewBackgroundColor(color: Long): IViewFactory {
         renderConfig.viewBackgroundColor = color
@@ -38,13 +46,18 @@ class ViewFactoryImpl(private val config: PdfConfig) : IViewFactory {
         return this
     }
 
+    override fun setLoadStateCallback(callback: LoadStateCallback): IViewFactory {
+        this.loadStateCallback = callback
+        return this
+    }
+
     override fun into(viewGroup: ViewGroup): IPdfView {
         return createPdfView(viewGroup)
     }
 
     private fun createPdfView(viewGroup: ViewGroup?): IPdfView {
         val service = PdfServiceImpl()
-        val loader = service.createLoader(config)
+        val loader = service.createLoader(config, loadStateCallback)
         LifecycleManager.instance.bindLifecycle(owner, loader)
 
         val context = viewGroup?.context ?: CsContextManager.getApplication()

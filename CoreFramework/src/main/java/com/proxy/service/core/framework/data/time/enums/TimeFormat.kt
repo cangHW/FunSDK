@@ -33,7 +33,7 @@ enum class TimeFormat(val pattern: String) {
      *
      * 示例: 2023-10-05 14:30:00.231
      * */
-    TYPE_Y_M_D_H_M_S_S("yyyy-MM-dd HH:mm:ss.SSS"),
+    TYPE_Y_M_D_H_M_S_MS("yyyy-MM-dd HH:mm:ss.SSS"),
 
     /**
      * 年-月-日 时:分:秒 时区
@@ -110,5 +110,5 @@ enum class TimeFormat(val pattern: String) {
      *
      * 示例: 14:30:00.231
      * */
-    TYPE_H_M_S_S("HH:mm:ss.SSS");
+    TYPE_H_M_S_MS("HH:mm:ss.SSS");
 }

@@ -103,11 +103,6 @@ interface IPdfBuilder {
     fun addSourceUri(uri: Uri, password: String? = null): IPdfBuilder
 
     /**
-     * 设置加载回调
-     * */
-    fun setLoadCallback(callback: LoadStateCallback): IPdfBuilder
-
-    /**
      * 创建配置
      * */
     fun build(): PdfConfig

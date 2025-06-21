@@ -128,6 +128,9 @@ open class IntervalRunImpl : IIntervalRun {
 
         for (i in sorts.indices) {
             val type: TimeIndexType = sorts.get(i)
+            if (type.index < 0) {
+                continue
+            }
             if (i == sorts.size - 1) {
                 setTypeNameToInfo(
                     intervalInfo,

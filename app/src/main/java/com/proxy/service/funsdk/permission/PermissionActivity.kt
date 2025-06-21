@@ -5,14 +5,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityPermissionBinding
 import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
@@ -24,7 +22,7 @@ import com.proxy.service.permission.base.manager.DialogFactory
  * @data: 2024/11/18 16:40
  * @desc:
  */
-class PermissionActivity : AppCompatActivity() {
+class PermissionActivity : BaseActivity<ActivityPermissionBinding>() {
 
     private val tag = "PermissionActivity"
 
@@ -38,24 +36,23 @@ class PermissionActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_permission)
-
+    override fun initView() {
+        super.initView()
         val ft = supportFragmentManager.beginTransaction()
         ft.add(R.id.container, PermissionFragment(), "test")
         ft.commit()
     }
 
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.check_permission -> {
                 CsPermission.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE).let {
-                    CsLogger.tag(tag).i("READ_EXTERNAL_STORAGE = $it")
+                    binding?.content?.addData("Permission", "READ_EXTERNAL_STORAGE = $it")
                 }
             }
 
             R.id.set_dialog_factory -> {
+                binding?.content?.addData("Permission", "设置弹窗工厂，用于自定义弹窗")
                 CsPermission.setDialogFactory(object : DialogFactory {
                     override fun showDialog(
                         mode: String,
@@ -97,6 +94,7 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission -> {
+                binding?.content?.addData("Permission", "开始申请权限")
                 CsPermission.createRequest()
                     ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     ?.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -107,6 +105,7 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission_with_rationale_dialog -> {
+                binding?.content?.addData("Permission", "开始展示申请权限弹窗")
                 CsPermission.createRationaleDialog()
                     ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     ?.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -120,6 +119,7 @@ class PermissionActivity : AppCompatActivity() {
             }
 
             R.id.request_permission_with_setting_dialog -> {
+                binding?.content?.addData("Permission", "开始展示跳转设置申请权限弹窗")
                 CsPermission.createSettingDialog()
                     ?.addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     ?.addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -135,42 +135,42 @@ class PermissionActivity : AppCompatActivity() {
 
     private val grantedCallback = object : ActionCallback {
         override fun onAction(list: Array<String>) {
-            CsLogger.tag(tag).i("onGrantedCallback = ${list.joinToString(", ")}")
-            Toast.makeText(this@PermissionActivity, "onGrantedCallback", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("Permission", "权限同意 list=${list.joinToString(", ")}")
         }
     }
 
     private val deniedCallback = object : ActionCallback {
         override fun onAction(list: Array<String>) {
-            CsLogger.tag(tag).i("onDeniedCallback = ${list.joinToString(", ")}")
-            Toast.makeText(this@PermissionActivity, "onDeniedCallback", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("Permission", "权限拒绝 list=${list.joinToString(", ")}")
         }
     }
 
     private val noPromptCallback = object : ActionCallback {
         override fun onAction(list: Array<String>) {
-            CsLogger.tag(tag).i("onNoPromptCallback = ${list.joinToString(", ")}")
-            Toast.makeText(this@PermissionActivity, "onNoPromptCallback", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData(
+                "Permission",
+                "权限拒绝并不再提示 list=${list.joinToString(", ")}"
+            )
         }
     }
 
     private val leftButtonClick = object : ButtonClick {
         override fun onClick(dialog: DialogInterface): Boolean {
-            Toast.makeText(this@PermissionActivity, "LeftButton click", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("Permission", "弹窗左侧按钮点击")
             return false
         }
     }
 
     private val rightButtonClick = object : ButtonClick {
         override fun onClick(dialog: DialogInterface): Boolean {
-            Toast.makeText(this@PermissionActivity, "RightButton click", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("Permission", "弹窗右侧按钮点击")
             return false
         }
     }
 
     private val dialogDismissCallback = object : DialogDismissCallback {
         override fun onDismiss() {
-            Toast.makeText(this@PermissionActivity, "dialog dismiss", Toast.LENGTH_SHORT).show()
+            binding?.content?.addData("Permission", "弹窗消失")
         }
     }
 }

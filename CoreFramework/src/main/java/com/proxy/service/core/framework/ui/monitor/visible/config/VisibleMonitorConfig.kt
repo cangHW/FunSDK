@@ -40,10 +40,6 @@ class VisibleMonitorConfig private constructor(
         return builder.getTag()
     }
 
-    override fun getViewVisibleMonitorCallback(): VisibleMonitorCallback? {
-        return builder.getViewVisibleMonitorCallback()
-    }
-
     companion object {
         fun builder(view: View): IVisibleBuilder {
             return Builder(view)
@@ -58,7 +54,6 @@ class VisibleMonitorConfig private constructor(
 
         private var lifecycleOwner: LifecycleOwner?=null
         private var tag: Any? = null
-        private var callback: VisibleMonitorCallback? = null
 
 
         override fun setLifecycle(lifecycleOwner: LifecycleOwner): IVisibleBuilder {
@@ -96,11 +91,6 @@ class VisibleMonitorConfig private constructor(
             return this
         }
 
-        override fun setCallback(callback: VisibleMonitorCallback): IVisibleBuilder {
-            this.callback = callback
-            return this
-        }
-
         override fun build(): VisibleMonitorConfig {
             return VisibleMonitorConfig(this)
         }
@@ -127,10 +117,6 @@ class VisibleMonitorConfig private constructor(
 
         override fun getTag(): Any? {
             return this.tag
-        }
-
-        override fun getViewVisibleMonitorCallback(): VisibleMonitorCallback? {
-            return this.callback
         }
     }
 

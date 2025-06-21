@@ -40,7 +40,7 @@ interface IBuilderGet {
     /**
      * 获取文件最大长度
      * */
-    fun getMaxFileSize(): Long
+    fun getSingleFileMaxSize(): Long
 
     /**
      * 获取缓存文件最大数量

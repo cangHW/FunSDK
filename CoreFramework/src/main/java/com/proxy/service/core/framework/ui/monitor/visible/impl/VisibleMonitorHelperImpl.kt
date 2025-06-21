@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorHelper
+import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
 import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleConfig
 import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.core.service.task.CsTask
@@ -19,7 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @desc:
  */
 class VisibleMonitorHelperImpl(
-    private var config: VisibleMonitorConfig?
+    private var config: VisibleMonitorConfig?,
+    private var callback: VisibleMonitorCallback?
 ) : IVisibleMonitorHelper, VisibleControl.ControlCallback, LifecycleEventObserver {
 
     private val isShow = AtomicBoolean(false)
@@ -53,6 +55,7 @@ class VisibleMonitorHelperImpl(
 
     override fun destroy() {
         CsLogger.tag(VisibleConfig.TAG).d("monitor destroy. view: ${config?.getBindView()}")
+        callback = null
         config?.getLifecycleOwner()?.lifecycle?.removeObserver(this)
         config = null
         control?.destroy()
@@ -74,7 +77,7 @@ class VisibleMonitorHelperImpl(
         pool?.start {
             if (isShow.compareAndSet(true, false)) {
                 try {
-                    config?.getViewVisibleMonitorCallback()?.onGone(config?.getTag())
+                    callback?.onGone(config?.getTag())
                 } catch (throwable: Throwable) {
                     CsLogger.tag(VisibleConfig.TAG).e(throwable)
                 }
@@ -100,16 +103,12 @@ class VisibleMonitorHelperImpl(
             val helper = weak.get() ?: return
             val config = helper.config ?: return
 
-            val isShow = helper.isShow
-            val tag = config.getTag()
-            val callback = config.getViewVisibleMonitorCallback()
-
-            if (isShow.compareAndSet(false, true)) {
+            if (helper.isShow.compareAndSet(false, true)) {
                 CsLogger.tag(VisibleConfig.TAG)
                     .d("callback view show. view: ${config.getBindView()}")
 
                 try {
-                    callback?.onShow(tag)
+                    helper.callback?.onShow(config.getTag())
                 } catch (throwable: Throwable) {
                     CsLogger.tag(VisibleConfig.TAG).e(throwable)
                 }

@@ -31,7 +31,7 @@ class AppConfigActivity : AppCompatActivity() {
         }
     }
 
-    var uiModeManager:UiModeManager? = null
+    private var uiModeManager:UiModeManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

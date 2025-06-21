@@ -3,15 +3,15 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.security.aes.CsAesUtils
 import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkSecurityBinding
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.io.File
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
@@ -20,7 +20,7 @@ import javax.crypto.spec.IvParameterSpec
  * @data: 2024/11/14 15:13
  * @desc:
  */
-class SecurityActivity : AppCompatActivity() {
+class SecurityActivity : BaseActivity<ActivityFrameworkSecurityBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -36,12 +36,12 @@ class SecurityActivity : AppCompatActivity() {
 
     private val key: SecretKey = CsAesUtils.createSecretKey()
     private val iv: IvParameterSpec = CsAesUtils.createIvParameterSpec()
-    private val encryptLoader = CsAesUtils.cbc()
+    private var encryptLoader = CsAesUtils.cbc()
         .pkcs5padding()
         .setSecretKeySpec(key)
         .setIvParameterSpec(iv)
         .createEncryptLoader()
-    private val decryptLoader = CsAesUtils.cbc()
+    private var decryptLoader = CsAesUtils.cbc()
         .pkcs5padding()
         .setSecretKeySpec(key)
         .setIvParameterSpec(iv)
@@ -49,35 +49,89 @@ class SecurityActivity : AppCompatActivity() {
 
     private var value: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_security)
+    override fun initView() {
+        binding?.aesModeSelect?.setOnCheckedChangeListener { _, checkedId ->
+            value = null
+
+            val loader = when (checkedId) {
+                R.id.aes_cbc -> {
+                    CsAesUtils.cbc().pkcs5padding().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+
+                R.id.aes_cfb -> {
+                    CsAesUtils.cfb().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+
+                R.id.aes_ofb -> {
+                    CsAesUtils.ofb().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+
+                R.id.aes_ctr -> {
+                    CsAesUtils.ctr().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+
+                R.id.aes_ecb -> {
+                    CsAesUtils.ecb().pkcs5padding().setSecretKeySpec(key)
+                }
+
+                R.id.aes_gcm -> {
+                    CsAesUtils.gcm().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+
+                R.id.aes_ccm -> {
+                    CsAesUtils.ccm().pkcs5padding().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+
+                else -> {
+                    CsAesUtils.cbc().pkcs5padding().setSecretKeySpec(key).setIvParameterSpec(iv)
+                }
+            }
+            encryptLoader = loader.createEncryptLoader()
+            decryptLoader = loader.createDecryptLoader()
+        }
     }
 
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.md5 -> {
-                CsTask.ioThread()?.call(object : ICallable<String> {
-                    override fun accept(): String {
-                        CsLogger.d(CsMd5Utils.getMD5(resources.openRawResource(R.raw.test_loading)))
-                        return ""
-                    }
-                })?.start()
+                binding?.content?.addData("md5", "开始处理 md5")
+
+                if (binding?.md5String?.isChecked == true) {
+                    val result = CsMd5Utils.getMD5(test_txt)
+                    binding?.content?.addData("md5", "src=$test_txt, md5=$result")
+                } else if (binding?.md5File?.isChecked == true) {
+                    val file = File(getExternalFilesDir(null), "test_md5.file")
+                    file.createNewFile()
+
+                    val result = CsMd5Utils.getMD5(file)
+                    binding?.content?.addData("md5", "src=${file.absolutePath}, md5=$result")
+                } else if (binding?.md5Stream?.isChecked == true) {
+                    CsTask.ioThread()?.call(object : ICallable<String> {
+                        override fun accept(): String {
+                            val result =
+                                CsMd5Utils.getMD5(resources.openRawResource(R.raw.test_loading))
+                            binding?.content?.addData("md5", "src=R.raw.test_loading, md5=$result")
+                            return ""
+                        }
+                    })?.start()
+                }
             }
 
             R.id.aes_encrypt -> {
                 encryptLoader.reset()
-                value = encryptLoader.setSourceString(test_txt)
-                    .getBase64String()
-                CsLogger.d("value = $value")
+                value = encryptLoader.setSourceString(test_txt).getString()
+                binding?.content?.addData("aes", "加密 src=$test_txt, dest=$value")
             }
 
             R.id.aes_decrypt -> {
+                if (value == null) {
+                    binding?.content?.addData("aes", "待解密数据为空")
+                    return
+                }
                 value?.let {
                     decryptLoader.reset()
-                    val content = decryptLoader.setSourceBase64String(it)
-                        .getString()
-                    CsLogger.d("content = $content")
+                    val content = decryptLoader.setSourceString(it).getString()
+                    binding?.content?.addData("aes", "解密 src=$it, dest=$content")
                 }
             }
         }

@@ -39,7 +39,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
     if (type == 0) {
         basic_logger(isSync, path);
     } else if (type == 1) {
-        jlong maxFileSize = callLongFrom(env, config, "getMaxFileSize", "()J");
+        jlong maxFileSize = callLongFrom(env, config, "getSingleFileMaxSize", "()J");
         jint maxFiles = callIntFrom(env, config, "getMaxFileCount", "()I");
 
         rotating_logger(isSync, path, maxFileSize, maxFiles);

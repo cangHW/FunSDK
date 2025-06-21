@@ -3,13 +3,12 @@ package com.proxy.service.funsdk.threadpool
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.os.Looper
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
-import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityThreadPoolBinding
 import com.proxy.service.threadpool.base.thread.callback.OnCompleteCallback
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/5/27 17:30
  * @desc:
  */
-class ThreadPoolActivity : AppCompatActivity() {
+class ThreadPoolActivity : BaseActivity<ActivityThreadPoolBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -33,124 +32,151 @@ class ThreadPoolActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_thread_pool)
-    }
+    private var intervalDisposable: ITaskDisposable? = null
 
-    private var disposable: ITaskDisposable? = null
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.run_normal_task -> {
+                val time = System.currentTimeMillis()
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} start 普通任务. StartTime=$time"
+                )
                 CsTask.call(object : ICallable<String> {
                     override fun accept(): String {
-                        CsLogger.i("accept")
+                        binding?.content?.addData(
+                            "task",
+                            "${getThreadIdInfo()} 普通任务 accept. StartTime=$time"
+                        )
                         return "sssss"
                     }
                 })?.mainThread()
                     ?.doOnNext(object : IConsumer<String> {
                         override fun accept(value: String) {
-                            CsLogger.i("value = $value \n ")
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 普通任务 value=$value. StartTime=$time"
+                            )
                         }
                     })?.setOnCompleteCallback(object : OnCompleteCallback {
                         override fun onCallback() {
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 普通任务 OnComplete. StartTime=$time"
+                            )
                         }
                     })
                     ?.start()
             }
 
             R.id.run_block_task -> {
-                CsLogger.i("start")
+                val time = System.currentTimeMillis()
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} start 阻塞任务. StartTime=$time"
+                )
                 val response = CsTask.ioThread()
                     ?.call(object : ICallable<String> {
                         override fun accept(): String {
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 阻塞任务 accept. StartTime=$time"
+                            )
                             return "ssss"
                         }
-                    })?.delay(2000, TimeUnit.MILLISECONDS)
-                    ?.doOnNext(object : IConsumer<String> {
+                    })?.doOnNext(object : IConsumer<String> {
                         override fun accept(value: String) {
-                            CsLogger.i("accept value = $value")
-                            throw NullPointerException("sssss")
-                        }
-                    })
-                    ?.timeout(1000, TimeUnit.MILLISECONDS)
-                    ?.setOnFailedCallback(object : OnFailedCallback {
-                        override fun onCallback(throwable: Throwable) {
-                            CsLogger.e(throwable)
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 阻塞任务 value=$value. StartTime=$time"
+                            )
                         }
                     })
                     ?.blockGetLast()
-                CsLogger.i("end response = $response")
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} 阻塞任务 response=$response. StartTime=$time"
+                )
             }
 
             R.id.run_delay_task -> {
-                CsLogger.i("start")
-                val response = CsTask.delay(2, TimeUnit.SECONDS)?.doOnNext(object :
+                val time = System.currentTimeMillis()
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} start 延迟任务. StartTime=$time"
+                )
+                CsTask.delay(2, TimeUnit.SECONDS)?.doOnNext(object :
                     IConsumer<Long> {
                     override fun accept(value: Long) {
-                        CsLogger.i("accept value = $value")
+                        binding?.content?.addData(
+                            "task",
+                            "${getThreadIdInfo()} 延迟任务 value=$value. StartTime=$time"
+                        )
                     }
-                })?.blockGetLast()
-                CsLogger.i("end response = $response")
+                })?.start()
             }
 
             R.id.run_interval_task -> {
-                CsTask.interval(0, 1000, TimeUnit.MILLISECONDS)
+                val time = System.currentTimeMillis()
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} start 循环任务. StartTime=$time"
+                )
+                intervalDisposable?.dispose()
+                intervalDisposable = CsTask.interval(0, 1000, TimeUnit.MILLISECONDS)
                     ?.doOnNext(object : IConsumer<Long> {
                         override fun accept(value: Long) {
-                            CsLogger.i("accept value = $value, time = ${System.currentTimeMillis()}")
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 循环任务 value=$value. StartTime=$time"
+                            )
                         }
                     })?.start()
             }
 
+            R.id.cancel_interval_task -> {
+                intervalDisposable?.dispose()
+                binding?.content?.addData("task", "${getThreadIdInfo()} 取消循环任务")
+            }
+
             R.id.run_repeat_task -> {
-                disposable?.dispose()
-                disposable = CsTask.call(object : ICallable<String> {
+                val time = System.currentTimeMillis()
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} start 重复 3 次任务. StartTime=$time"
+                )
+                CsTask.call(object : ICallable<String> {
                     override fun accept(): String {
+                        binding?.content?.addData(
+                            "task",
+                            "${getThreadIdInfo()} 重复任务 accept. StartTime=$time"
+                        )
                         return "sss"
                     }
-                })?.doOnNext(object : IConsumer<String> {
-                    override fun accept(value: String) {
-                        throw NullPointerException("qqqqqqqq")
-                    }
-                })
-                    ?.repeat(3)
-                    ?.setOnFailedCallback(object : OnFailedCallback {
-                        override fun onCallback(throwable: Throwable) {
-                            CsLogger.i(throwable)
-                        }
-                    })
+                })?.repeat(3)
                     ?.start()
             }
 
             R.id.run_handler_task -> {
-                CsLogger.i("开始执行")
+                val time = System.currentTimeMillis()
+                binding?.content?.addData(
+                    "task",
+                    "${getThreadIdInfo()} start 单线程任务. StartTime=$time"
+                )
                 val taskGroup = CsTask.launchTaskGroup("asd")
 
-                for (index in 0..10000){
-                    taskGroup?.start("xxx", object :Runnable{
-                        override fun run() {
-                            Thread.sleep(2)
-                            CsLogger.i("$index 运行完成")
-                        }
-                    })
+                taskGroup?.start {
+                    binding?.content?.addData(
+                        "task",
+                        "${getThreadIdInfo()} 单线程任务 run. StartTime=$time"
+                    )
                 }
-
-                CsTask.delay(5, TimeUnit.SECONDS)?.doOnNext(object :IConsumer<Long>{
-                    override fun accept(value: Long) {
-                        taskGroup?.clearAllTaskWithTag("xxx")
-                        taskGroup?.start("xxx", object :Runnable{
-                            override fun run() {
-                                CsLogger.i("测试最终任务")
-                            }
-                        })
-                    }
-                })?.start()
-
-                CsLogger.i("执行结束")
             }
         }
+    }
+
+    private fun getThreadIdInfo(): String {
+        return "${Looper.getMainLooper().thread.id}-${Thread.currentThread().id}"
     }
 
 }

@@ -3,13 +3,11 @@ package com.proxy.service.funsdk.imageloader
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
 import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityImageLoaderBinding
 import com.proxy.service.imageloader.base.option.lottie.LottieRepeatModel
 
 /**
@@ -17,7 +15,7 @@ import com.proxy.service.imageloader.base.option.lottie.LottieRepeatModel
  * @data: 2024/5/16 15:03
  * @desc:
  */
-class ImageLoaderActivity : AppCompatActivity() {
+class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -29,17 +27,7 @@ class ImageLoaderActivity : AppCompatActivity() {
         }
     }
 
-    private var image: AppCompatImageView? = null
-    private var layout: ViewGroup? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_loader)
-        image = findViewById(R.id.image)
-        layout = findViewById(R.id.layout)
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.load_net -> {
                 val url =
@@ -52,21 +40,23 @@ class ImageLoaderActivity : AppCompatActivity() {
                     ?.grayscale()
                     ?.fitXY()
                     ?.alpha(255)
-                    ?.into(image)
+                    ?.into(binding?.image)
             }
 
             R.id.load_res -> {
                 CsImageLoader.with(this)
                     ?.loadRes(R.drawable.test)
-                    ?.grayscale()?.into(image)
+                    ?.grayscale()
+                    ?.into(binding?.image)
             }
 
             R.id.load_lottie -> {
-                CsImageLoader.with(this)?.asLottieModel()
+                CsImageLoader.with(this)
+                    ?.asLottieModel()
                     ?.loadRes(R.raw.test_loading)
                     ?.setRepeatCount(3)
                     ?.setRepeatModel(LottieRepeatModel.REVERSE)
-                    ?.into(layout)
+                    ?.into(binding?.layout)
             }
         }
     }

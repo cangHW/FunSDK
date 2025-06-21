@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.service.document.CsDocumentImage
 import com.proxy.service.document.pdf.base.PdfService
 import com.proxy.service.document.pdf.base.bean.CatalogueData
 import com.proxy.service.document.pdf.base.config.PdfConfig
@@ -44,19 +45,20 @@ class PdfActivity : AppCompatActivity() {
 
         val config = PdfConfig.builder()
             .setSourceAssetPath("pdf/asd.pdf")
-            .setLoadCallback(object : LoadStateCallback {
+            .build()
+
+        service?.createViewFactory(config)
+            ?.setPageBackgroundColor(0xffff0000)
+            ?.setPageBackgroundColor(0xff00ff00)
+            ?.setLifecycleOwner(this)
+            ?.setLoadStateCallback(object : LoadStateCallback {
                 override fun onLoadComplete(
                     success: List<BaseSource>,
                     failed: List<FailedResult>
                 ) {
                     CsLogger.i("PDF 加载完成，success=${success} failed=${failed}")
                 }
-            }).build()
-
-        service?.createViewFactory(config)
-            ?.setPageBackgroundColor(0xffff0000)
-            ?.setPageBackgroundColor(0xff00ff00)
-            ?.setLifecycleOwner(this)
+            })
             ?.into(group)
     }
 

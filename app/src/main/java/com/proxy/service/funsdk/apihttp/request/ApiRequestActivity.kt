@@ -11,6 +11,8 @@ import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.apihttp.CsApi
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityApiRequestBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +22,7 @@ import retrofit2.Response
  * @data: 2024/6/18 15:07
  * @desc:
  */
-class ApiRequestActivity : AppCompatActivity() {
+class ApiRequestActivity : BaseActivity<ActivityApiRequestBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -32,30 +34,34 @@ class ApiRequestActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_api_request)
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.run_http_init -> {
                 CsApi.init(
                     RequestConfig.builder("https://www.baidu.com")
                         .build()
                 )
+                binding?.content?.addData("API", "初始化")
             }
 
             R.id.run_normal_http -> {
-                CsApi.getService(Api::class.java)?.request()?.enqueue(object : Callback<ApiResponse> {
-                    override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                        CsLogger.i("response = ${CsJsonUtils.toJson(response.body() ?: "")}")
-                    }
+                binding?.content?.addData("API", "普通请求")
+                CsApi.getService(Api::class.java)?.request()
+                    ?.enqueue(object : Callback<ApiResponse> {
+                        override fun onResponse(
+                            call: Call<ApiResponse>,
+                            response: Response<ApiResponse>
+                        ) {
+                            binding?.content?.addData(
+                                "API",
+                                "onResponse response = ${CsJsonUtils.toJson(response.body() ?: "")}"
+                            )
+                        }
 
-                    override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                        CsLogger.e(t)
-                    }
-                })
+                        override fun onFailure(call: Call<ApiResponse>, throwable: Throwable) {
+                            binding?.content?.addData("API", "onFailure throwable = $throwable")
+                        }
+                    })
             }
         }
     }

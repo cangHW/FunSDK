@@ -24,7 +24,7 @@ object Constants {
 
     const val CACHE_TIME = 7 * 24 * 60 * 60 * 1000L
 
-    const val MAX_FILE_SIZE = 5 * 1024 * 1024L
+    const val SINGLE_FILE_MAX_SIZE = 5 * 1024 * 1024L
     const val MAX_FILE_COUNT = 3
 
     const val HOUR = 0

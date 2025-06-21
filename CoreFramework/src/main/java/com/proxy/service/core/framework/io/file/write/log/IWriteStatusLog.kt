@@ -23,7 +23,7 @@ interface IWriteStatusLog {
     fun success(tag: String, path: String) {
         localTime.get()?.let {
             val time = CsTimeManager.createIntervalFactory(System.currentTimeMillis() - it)
-                .get(TimeIntervalFormat.TYPE_F_1_D_H_M_S_S_2)
+                .get(TimeIntervalFormat.TYPE_F_1_D_H_M_S_MS_2)
             CsLogger.tag(tag).d("write success. time : $time, path : $path")
         }
     }

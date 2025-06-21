@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,84 +9,67 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/screen_width"
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="屏幕宽度"
-            android:textSize="20dp" />
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/screen_height"
+            <CheckBox
+                android:id="@+id/check_screen_mode"
+                style="@style/checkbox_style"
+                android:text="监听横竖屏变化" />
+
+            <CheckBox
+                android:id="@+id/check_screen_rotation"
+                style="@style/checkbox_style"
+                android:text="监听屏幕旋转" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="屏幕高度"
-            android:textSize="20dp" />
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/screen_real_size"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="屏幕真实信息"
-            android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/screen_width"
+                style="@style/button_style"
+                android:text="屏幕宽高" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/status_bar_height"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="状态栏高度"
-            android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/screen_real_size"
+                style="@style/button_style"
+                android:text="屏幕真实信息" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/navigation_bar_height"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="导航栏高度"
-            android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/status_bar_height"
+                style="@style/button_style"
+                android:text="状态栏高度" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/action_bar_height"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="#330000ff"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="标题栏高度"
-            android:textSize="20dp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/navigation_bar_height"
+                style="@style/button_style"
+                android:text="导航栏高度" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/action_bar_height"
+                style="@style/button_style"
+                android:text="标题栏高度" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/screen_mode"
+                style="@style/button_style"
+                android:text="横竖屏状态" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/screen_rotation"
+                style="@style/button_style"
+                android:text="屏幕旋转角度" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.proxy.service.testview.DemoTestView
+            android:id="@+id/content"
+            style="@style/content_style" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </ScrollView>

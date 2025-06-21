@@ -70,7 +70,6 @@ class TaskDisposableImpl(
 
     override fun run() {
         if (taskStatus.compareAndSet(STATUS_DEFAULT, STATUS_COMPLETED)) {
-            CsLogger.tag(TAG).d("The current task is ready to run. task: $task")
             try {
                 handlerController.finishTask(this)
                 task.run()

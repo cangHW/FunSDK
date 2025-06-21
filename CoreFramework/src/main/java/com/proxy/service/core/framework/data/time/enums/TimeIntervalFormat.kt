@@ -14,7 +14,7 @@ enum class TimeIntervalFormat(val pattern: String) {
      *
      * 示例: 10天14小时30分钟0秒钟231毫秒
      * */
-    TYPE_D_H_M_S_S("dd天HH小时mm分钟ss秒SSS毫秒"),
+    TYPE_D_H_M_S_MS("dd天HH小时mm分钟ss秒SSS毫秒"),
 
     /**
      * 时:分
@@ -35,27 +35,27 @@ enum class TimeIntervalFormat(val pattern: String) {
      *
      * 示例: 14:30:00.231
      * */
-    TYPE_H_M_S_S("HH:mm:ss.SSS"),
+    TYPE_H_M_S_MS("HH:mm:ss.SSS"),
 
     /**
      * 分分钟秒秒毫秒毫秒
      *
      * 示例: 30分钟0秒钟231毫秒
      * */
-    TYPE_M_S_S("mm分钟ss秒SSS毫秒"),
+    TYPE_M_S_MS("mm分钟ss秒SSS毫秒"),
 
     /**
      * 不确定性格式
      * */
-    TYPE_F_D_H_M_S_S_1("F-dd天HH小时mm分钟ss秒SSS毫秒"),
+    TYPE_F_D_H_M_S_MS_1("F-dd天HH小时mm分钟ss秒SSS毫秒"),
 
     /**
      * 不确定性格式
      * */
-    TYPE_F_D_H_M_S_S_2("F-dddHHhmmmsssSSSms"),
+    TYPE_F_D_H_M_S_MS_2("F-dddHHhmmmsssSSSms"),
 
     /**
      * 不确定性格式
      * */
-    TYPE_F_1_D_H_M_S_S_2("F-+dddHHhmmmsssSSSms");
+    TYPE_F_1_D_H_M_S_MS_2("F-+dddHHhmmmsssSSSms");
 }

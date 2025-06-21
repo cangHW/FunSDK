@@ -1,6 +1,7 @@
 package com.proxy.service.core.framework.ui.monitor
 
 import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorHelper
+import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
 import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.core.framework.ui.monitor.visible.impl.VisibleMonitorHelperImpl
 
@@ -14,8 +15,8 @@ object CsViewMonitorUtils {
     /**
      * 创建 view 显示状态监听器
      * */
-    fun createVisibleMonitor(config: VisibleMonitorConfig): IVisibleMonitorHelper {
-        return VisibleMonitorHelperImpl(config)
+    fun createVisibleMonitor(config: VisibleMonitorConfig, callback: VisibleMonitorCallback): IVisibleMonitorHelper {
+        return VisibleMonitorHelperImpl(config, callback)
     }
 
 }
