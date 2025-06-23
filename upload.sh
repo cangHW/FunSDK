@@ -35,7 +35,7 @@ upArray=(
 #  ":DocumentsSDK:Image:DocumentImageInfo"
 #  ":DocumentsSDK:Image:DocumentImageBase"
 #  ":DocumentsSDK:Pdf:DocumentPdfInfo"
-#  ":DocumentsSDK:Pdf:DocumentPdfBase"
+  ":DocumentsSDK:Pdf:DocumentPdfBase"
 )
 
 type_params="r"

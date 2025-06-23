@@ -1,5 +1,9 @@
 pluginManagement {
     repositories {
+        maven {
+            name = "Repo"
+            setUrl("file://${rootDir}/Repo")
+        }
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
