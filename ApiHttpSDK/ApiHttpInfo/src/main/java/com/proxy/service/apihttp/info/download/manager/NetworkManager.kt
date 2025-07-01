@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.download.manager
 
 import com.proxy.service.apihttp.base.common.DownloadException
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.controller.TaskController
@@ -18,7 +18,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  */
 object NetworkManager {
 
-    private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}Network"
+    private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}Network"
 
     private val lock = Any()
     private val failedTaskMap = ArrayList<DownloadTask>()

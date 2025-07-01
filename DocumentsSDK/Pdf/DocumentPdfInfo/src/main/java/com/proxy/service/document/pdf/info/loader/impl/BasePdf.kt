@@ -3,7 +3,7 @@ package com.proxy.service.document.pdf.info.loader.impl
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.pdf.base.bean.CatalogueData
 import com.proxy.service.document.pdf.base.bean.MetaData
-import com.proxy.service.document.pdf.base.constants.Constants
+import com.proxy.service.document.pdf.base.constants.PdfConstants
 import com.proxy.service.document.pdf.info.loader.info.DocumentInfo
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 open class BasePdf {
 
     companion object {
-        const val TAG = "${Constants.LOG_TAG_PDF_START}Loader"
+        const val TAG = "${PdfConstants.LOG_TAG_PDF_START}Loader"
 
         val lock = Any()
     }

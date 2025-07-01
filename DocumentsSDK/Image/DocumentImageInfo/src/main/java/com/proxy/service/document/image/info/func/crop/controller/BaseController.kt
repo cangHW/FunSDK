@@ -28,11 +28,11 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 open class BaseController(
     private val option: IOption,
     private val info: CropInfo
-) : ICropController, OnBoundChangedCallback,
-    OnDrawCallback {
+) : ICropController, OnBoundChangedCallback, OnDrawCallback {
 
+    protected val offset = info.cropFrameLineWidth
     protected val cropRect = RectF(0f, 0f, 0f, 0f)
-    protected val cropPath = Path()
+    private val cropPath = Path()
 
     protected var previewController: IController? = null
 
@@ -53,14 +53,20 @@ open class BaseController(
         right: Int,
         bottom: Int
     ): Boolean {
-        info.boundsChangedToCheckCropRect(cropRect, left, top, right, bottom)
-
-        cropPath.moveTo(cropRect.left, cropRect.top)
-        cropPath.lineTo(cropRect.right, cropRect.top)
-        cropPath.lineTo(cropRect.right, cropRect.bottom)
-        cropPath.lineTo(cropRect.left, cropRect.bottom)
-        cropPath.lineTo(cropRect.left, cropRect.top)
+        info.boundsChangedToCheckCropRect(cropRect, bitmapRect, left, top, right, bottom)
+        refreshCropPath()
         return super.onBoundChanged(bitmapRect, matrix, left, top, right, bottom)
+    }
+
+    protected fun refreshCropPath(){
+        val half = offset / 2
+        cropPath.rewind()
+        cropPath.moveTo(cropRect.left - half, cropRect.top - half)
+        cropPath.lineTo(cropRect.right + half, cropRect.top - half)
+        cropPath.lineTo(cropRect.right + half, cropRect.bottom + half)
+        cropPath.lineTo(cropRect.left - half, cropRect.bottom + half)
+        cropPath.lineTo(cropRect.left - half, cropRect.top - half)
+        cropPath.close()
     }
 
     override fun onDraw(
@@ -80,20 +86,19 @@ open class BaseController(
             height,
             info.maskColor,
             cropRect,
-            info.cropLineWidth,
-            info.cropLineColor
+            info.cropFrameLineWidth,
+            info.cropFrameLineColor
         )
         if (flag != true) {
             paint.color = info.maskColor
             canvas.drawRect(0f, 0f, width * 1f, height * 1f, paint)
-
             paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.CLEAR))
             canvas.drawRect(cropRect, paint)
-
             paint.setXfermode(null)
+
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = info.cropLineWidth
-            paint.color = info.cropLineColor
+            paint.strokeWidth = info.cropFrameLineWidth
+            paint.color = info.cropFrameLineColor
             canvas.drawPath(cropPath, paint)
         }
     }
@@ -107,13 +112,7 @@ open class BaseController(
     }
 
     override fun startCrop(width: Int, height: Int, callback: OnCropCallback) {
-        realCrop(callback) {
-            val scaledBitmap = Bitmap.createScaledBitmap(it, width, height, true)
-            it.recycle()
-            runMainThread {
-                callback.onCropResult(OnCropCallback.CROP_STATUS_OK, scaledBitmap)
-            }
-        }
+        startCrop(width, height, false, callback)
     }
 
     override fun startCrop(
@@ -122,11 +121,32 @@ open class BaseController(
         keepAspectRatio: Boolean,
         callback: OnCropCallback
     ) {
-        if (!keepAspectRatio) {
-            startCrop(width, height, callback)
-            return
-        }
+        realCrop(callback) {
+            if (width == it.width && height == it.height) {
+                runMainThread {
+                    callback.onCropResult(OnCropCallback.CROP_STATUS_OK, it)
+                }
+                return@realCrop
+            }
 
+            var endWidth = width
+            var endHeight = height
+
+            if (keepAspectRatio) {
+                val scaleW = width * 1.0f / it.width
+                val scaleH = height * 1.0f / it.height
+                val scale = Math.min(scaleW, scaleH)
+
+                endWidth = (it.width * scale).toInt()
+                endHeight = (it.height * scale).toInt()
+            }
+
+            val scaledBitmap = Bitmap.createScaledBitmap(it, endWidth, endHeight, true)
+            it.recycle()
+            runMainThread {
+                callback.onCropResult(OnCropCallback.CROP_STATUS_OK, scaledBitmap)
+            }
+        }
     }
 
     private fun realCrop(callback: OnCropCallback, crop: (Bitmap) -> Unit) {

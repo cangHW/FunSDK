@@ -35,10 +35,6 @@ class ImageServiceImage : ImageService {
         return RequestImpl(glideRequest)
     }
 
-    override fun createCropLoader(request: IRequest<IOption>): IRequest<ICropOption> {
-        return CropRequestImpl(request)
-    }
-
     override fun createCropLoader(activity: FragmentActivity): IRequest<ICropOption> {
         return CropRequestImpl(createPreviewLoader(activity))
     }

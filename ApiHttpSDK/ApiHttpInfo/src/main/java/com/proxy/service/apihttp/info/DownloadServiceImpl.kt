@@ -3,7 +3,7 @@ package com.proxy.service.apihttp.info
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apihttp.base.common.DownloadException
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.DownloadService
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.base.download.config.DownloadConfig
@@ -29,7 +29,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 @CloudApiService(serviceTag = "service/http_download")
 class DownloadServiceImpl : DownloadService {
 
-    private val tag = "${Constants.LOG_DOWNLOAD_TAG_START}Service"
+    private val tag = "${ApiConstants.LOG_DOWNLOAD_TAG_START}Service"
 
     private val lock = Any()
 

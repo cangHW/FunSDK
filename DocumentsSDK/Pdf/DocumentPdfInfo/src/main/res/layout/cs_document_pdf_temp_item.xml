@@ -7,8 +7,8 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv"
         android:background="#3A00ff00"
-        android:layout_width="500dp"
-        android:layout_margin="20dp"
-        android:layout_height="800dp"/>
+        android:scaleType="matrix"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

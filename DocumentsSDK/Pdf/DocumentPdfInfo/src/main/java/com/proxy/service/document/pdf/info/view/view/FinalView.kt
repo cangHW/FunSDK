@@ -8,7 +8,7 @@ import android.view.Surface
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.pdf.base.constants.Constants
+import com.proxy.service.document.pdf.base.constants.PdfConstants
 import com.proxy.service.document.pdf.base.loader.IPdfLoader
 import com.proxy.service.document.pdf.info.view.config.RenderConfig
 import com.proxy.service.document.pdf.info.view.touch.TouchManager
@@ -21,7 +21,7 @@ import com.proxy.service.document.pdf.info.view.touch.TouchManager
 class FinalView : SurfaceView {
 
     companion object {
-        private const val TAG = "${Constants.LOG_TAG_PDF_START}View"
+        private const val TAG = "${PdfConstants.LOG_TAG_PDF_START}View"
     }
 
     constructor(context: Context) : this(context, null)

@@ -1,9 +1,11 @@
 package com.proxy.service.document.image.info.func.crop
 
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.RectF
-import com.proxy.service.document.image.base.constants.Constants
+import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.callback.crop.OnDrawCropCallback
+import com.proxy.service.document.image.info.utils.RectUtils
 
 /**
  * @author: cangHX
@@ -12,40 +14,46 @@ import com.proxy.service.document.image.base.callback.crop.OnDrawCropCallback
  */
 class CropInfo {
 
-    var cropRect: RectF? = null
-    var cropWidthPx: Float? = null
-    var cropHeightPx: Float? = null
+    var cropFrameFitBitmap: Boolean = false
+    var cropFrameRect: RectF? = null
+    var cropFrameWidthPx: Float? = null
+    var cropFrameHeightPx: Float? = null
+    var cropFrameLineColor: Int = Color.parseColor(ImageConstants.DEFAULT_CROP_FRAME_LINE_COLOR)
+    var cropFrameLineWidth: Float = ImageConstants.DEFAULT_CROP_FRAME_LINE_WIDTH
 
-    var maskColor: Int = Color.parseColor(Constants.DEFAULT_CROP_MASK_COLOR)
-
-    var cropLineColor: Int = Color.parseColor(Constants.DEFAULT_CROP_LINE_COLOR)
-
-    var cropLineWidth: Float = Constants.DEFAULT_CROP_LINE_WIDTH
+    var maskColor: Int = Color.parseColor(ImageConstants.DEFAULT_CROP_MASK_COLOR)
 
     var drawCropCallback: OnDrawCropCallback? = null
 
     fun boundsChangedToCheckCropRect(
         destRect: RectF,
+        bitmapRect: RectF,
         left: Int,
         top: Int,
         right: Int,
         bottom: Int
     ) {
-        if (cropRect != null) {
-            destRect.set(cropRect!!)
+        if (cropFrameRect != null) {
+            destRect.set(cropFrameRect!!)
             return
         }
 
-        if (cropWidthPx == null) {
-            return
-        }
-        if (cropHeightPx == null) {
+        if (cropFrameFitBitmap) {
+            val matrix = Matrix()
+            RectUtils.fitRect(bitmapRect, destRect, matrix, cropFrameLineWidth, left, top, right, bottom)
             return
         }
 
-        val x = ((right - left) - cropWidthPx!!) / 2f
-        val y = ((bottom - top) - cropHeightPx!!) / 2f
+        if (cropFrameWidthPx == null) {
+            return
+        }
+        if (cropFrameHeightPx == null) {
+            return
+        }
 
-        destRect.set(x, y, x + cropWidthPx!!, y + cropHeightPx!!)
+        val x = ((right - left) - cropFrameWidthPx!!) / 2f
+        val y = ((bottom - top) - cropFrameHeightPx!!) / 2f
+
+        destRect.set(x, y, x + cropFrameWidthPx!!, y + cropFrameHeightPx!!)
     }
 }

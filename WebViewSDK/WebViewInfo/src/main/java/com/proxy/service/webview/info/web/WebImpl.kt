@@ -8,9 +8,9 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.base.web.callback.ValueCallback
-import com.proxy.service.webview.info.config.Config
 import com.proxy.service.webview.info.view.WebViewImpl
 import com.proxy.service.webview.info.view.group.IFactory
 import com.proxy.service.webview.info.web.callback.ValueCallbackImpl
@@ -27,7 +27,7 @@ class WebImpl(
     private val lifecycleOwner: LifecycleOwner?
 ) : IWeb {
 
-    private val tag = "${Config.LOG_TAG_START}IWeb"
+    private val tag = "${WebViewConstants.LOG_TAG_START}IWeb"
 
     private val isDestroy = AtomicBoolean(false)
     private val lifecycleObserver = LifecycleObserverImpl(this)

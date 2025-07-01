@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.base.download.task
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.builder.IBuilder
 import com.proxy.service.apihttp.base.download.task.builder.IBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
@@ -75,7 +75,7 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
     }
 
     companion object {
-        private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}DownloadTask"
+        private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}DownloadTask"
 
         fun builder(downloadUrl: String): IBuilder {
             return Builder(downloadUrl)
@@ -189,7 +189,7 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
             }
             if (multiPartEnable) {
                 val minSizeForMultiPart =
-                    Constants.Download.FILE_PART_SIZE * (Constants.Download.MIN_PART_NUM - 1)
+                    ApiConstants.Download.FILE_PART_SIZE * (ApiConstants.Download.MIN_PART_NUM - 1)
                 if (fileSize <= minSizeForMultiPart) {
                     CsLogger.tag(TAG).i(
                         "启动分片下载, 需要文件长度大于: ${

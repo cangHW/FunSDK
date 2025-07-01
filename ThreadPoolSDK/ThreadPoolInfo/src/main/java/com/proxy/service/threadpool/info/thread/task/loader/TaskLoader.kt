@@ -7,7 +7,7 @@ import com.proxy.service.threadpool.base.thread.callback.OnStartCallback
 import com.proxy.service.threadpool.base.thread.callback.OnCompleteCallback
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.loader.ILoader
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import com.proxy.service.threadpool.info.thread.info.TaskDisposableImpl
 import com.proxy.service.threadpool.info.thread.info.TaskInfo
 import io.reactivex.Observer
@@ -57,7 +57,7 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
             }
 
             override fun onError(e: Throwable) {
-                CsLogger.tag(Constants.TAG).d(e, "task has error.")
+                CsLogger.tag(ThreadConstants.TAG).d(e, "task has error.")
             }
 
             override fun onComplete() {
@@ -75,7 +75,7 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
         try {
             return taskInfo.observable?.blockingFirst()
         }catch (throwable:Throwable){
-            CsLogger.tag(Constants.TAG).d(throwable)
+            CsLogger.tag(ThreadConstants.TAG).d(throwable)
         }
         return null
     }
@@ -86,7 +86,7 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
         try {
             return taskInfo.observable?.blockingLast()
         }catch (throwable:Throwable){
-            CsLogger.tag(Constants.TAG).d(throwable)
+            CsLogger.tag(ThreadConstants.TAG).d(throwable)
         }
         return null
     }

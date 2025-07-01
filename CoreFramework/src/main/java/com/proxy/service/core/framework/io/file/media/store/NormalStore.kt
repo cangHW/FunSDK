@@ -22,7 +22,7 @@ import java.io.File
 class NormalStore : BaseStore() {
 
     init {
-        CsLogger.tag(tag).d("NormalStore start")
+        CsLogger.tag(TAG).d("NormalStore start")
     }
 
     override fun insert(callback: InsertCallback?) {
@@ -30,7 +30,7 @@ class NormalStore : BaseStore() {
             override fun accept(): String {
                 val finalSource = source
                 if (finalSource == null) {
-                    CsLogger.tag(tag).e("source is null")
+                    CsLogger.tag(TAG).e("source is null")
                     callInsertFailed(callback)
                     return ""
                 }
@@ -40,14 +40,14 @@ class NormalStore : BaseStore() {
                     val sourceDestFile = File(getRootPath(), "$dirPath${File.separator}$sourceName")
 
                     if (finalSource.write(sourceDestFile)) {
-                        CsLogger.tag(tag).d("insert success")
+                        CsLogger.tag(TAG).d("insert success")
                         callInsertSuccess(callback, sourceDestFile.absolutePath)
                     } else {
-                        CsLogger.tag(tag).e("write error")
+                        CsLogger.tag(TAG).e("write error")
                         callInsertFailed(callback)
                     }
                 } catch (throwable: Throwable) {
-                    CsLogger.tag(tag).e(throwable)
+                    CsLogger.tag(TAG).e(throwable)
                     callInsertFailed(callback)
                 }
                 return ""
@@ -60,7 +60,7 @@ class NormalStore : BaseStore() {
             override fun accept(): String {
                 val finalUri = getUri()
                 if (finalUri == null) {
-                    CsLogger.tag(tag).e("uri is null")
+                    CsLogger.tag(TAG).e("uri is null")
                     callQueryFailed(callback)
                     return ""
                 }
@@ -99,7 +99,7 @@ class NormalStore : BaseStore() {
                 )
 
                 if (cursor == null) {
-                    CsLogger.tag(tag).e("cursor is null")
+                    CsLogger.tag(TAG).e("cursor is null")
                     callQueryFailed(callback)
                     return ""
                 }
@@ -128,7 +128,7 @@ class NormalStore : BaseStore() {
                             1
                         }
 
-                        CsLogger.tag(tag).d(data.toString())
+                        CsLogger.tag(TAG).d(data.toString())
                         list.add(data)
                     }
                 }

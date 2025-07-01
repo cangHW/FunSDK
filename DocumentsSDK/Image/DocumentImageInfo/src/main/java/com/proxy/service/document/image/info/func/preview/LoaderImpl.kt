@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import com.proxy.service.document.image.base.constants.Constants
+import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.callback.base.OnBoundChangedCallback
 import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnDragCallback
@@ -35,12 +35,13 @@ open class LoaderImpl(
     private val glideOption: IGlideOption<Bitmap>?
 ) : ILoader<IController> {
 
-    protected var minScale = Constants.DEFAULT_MIN_SCALE
-    protected var maxScale = Constants.DEFAULT_MAX_SCALE
+    protected var minScale = ImageConstants.DEFAULT_MIN_SCALE
+    protected var maxScale = ImageConstants.DEFAULT_MAX_SCALE
 
     protected var lockSizeWidthPx: Float? = null
     protected var lockSizeHeightPx: Float? = null
     protected var lockRect: RectF? = null
+    protected var lockView: Boolean = false
     protected var canMoveInLockRect: Boolean = true
     protected var overScrollBounceEnabled: Boolean = true
 
@@ -95,6 +96,7 @@ open class LoaderImpl(
                     config.lockSizeWidthPx = lockSizeWidthPx
                     config.lockSizeHeightPx = lockSizeHeightPx
                     config.lockRect = lockRect
+                    config.lockView = lockView
                     config.canMoveInLockRect = canMoveInLockRect
                     config.overScrollBounceEnabled = overScrollBounceEnabled
 

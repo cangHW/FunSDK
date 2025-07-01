@@ -1,7 +1,6 @@
 package com.proxy.service.document.pdf.info.view.view
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.proxy.service.document.pdf.base.loader.IPdfLoader
 import com.proxy.service.document.pdf.info.R
+import com.proxy.service.document.pdf.info.view.cache.PartCache
 
 /**
  * @author: cangHX
@@ -36,7 +36,7 @@ class TempView : FrameLayout {
 
     private fun init(context: Context) {
         val rootView =
-            LayoutInflater.from(context).inflate(R.layout.cs_document_pdf_temp_layout, null, false)
+            LayoutInflater.from(context).inflate(R.layout.cs_document_pdf_temp_layout, this, false)
         val vp = rootView.findViewById<ViewPager2>(R.id.vp2)
         adapter = TempAdapter()
         vp.adapter = adapter
@@ -44,16 +44,18 @@ class TempView : FrameLayout {
         addView(rootView)
     }
 
-    fun setLoader(loader: IPdfLoader?) {
-        adapter?.setLoader(loader)
+    fun setLoader(loader: IPdfLoader?, cache: PartCache) {
+        adapter?.setLoader(loader, cache)
     }
 
     private class TempAdapter : RecyclerView.Adapter<TempViewHolder>() {
 
         private var loader: IPdfLoader? = null
+        private var cache: PartCache? = null
 
-        fun setLoader(loader: IPdfLoader?) {
+        fun setLoader(loader: IPdfLoader?, cache: PartCache) {
             this.loader = loader
+            this.cache = cache
             notifyDataSetChanged()
         }
 
@@ -68,38 +70,19 @@ class TempView : FrameLayout {
         }
 
         override fun onBindViewHolder(holder: TempViewHolder, position: Int) {
-            holder.render(loader, position)
+            holder.render(cache, position)
         }
     }
 
     private class TempViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        companion object {
-            private val map = HashMap<Int, Bitmap>()
-        }
+        private var iv: AppCompatImageView = itemView.findViewById(R.id.iv)
 
-        private var iv: AppCompatImageView? = null
-
-        init {
-            iv = itemView.findViewById(R.id.iv)
-        }
-
-        fun render(loader: IPdfLoader?, position: Int) {
-            iv?.post {
-                var bitmap = map.get(position)
-                if (bitmap == null) {
-                    val width = iv?.width ?: 100
-                    val height = iv?.height ?: 100
-                    bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                    loader?.renderPageToBitmap(position, bitmap, 0, 0, width, height, false)
-//                    map.put(position, bitmap)
-                    bitmap.recycle()
+        fun render(cache: PartCache?, position: Int) {
+            iv.post {
+                cache?.getPart(position, iv.width, iv.height)?.bitmap?.let {
+                    iv.setImageBitmap(it)
                 }
-
-//                iv?.setImageBitmap(bitmap)
-//                loader?.getPageSizePixel(position)?.let {
-//                    CsLogger.tag("asd").i("position = $position, width = ${it.width}, height = ${it.height}")
-//                }
             }
         }
 

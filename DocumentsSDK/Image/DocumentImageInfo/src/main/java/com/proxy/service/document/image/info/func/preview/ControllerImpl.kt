@@ -18,6 +18,10 @@ class ControllerImpl : IController {
         this.drawable = drawable
     }
 
+    override fun invalidate() {
+        drawable?.invalidateSelf()
+    }
+
     override fun getBitmap(): Bitmap? {
         return drawable?.getBitmap()
     }

@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.upload.dispatcher.base
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.upload.task.UploadTask
 import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.config.Config
@@ -14,7 +14,7 @@ import com.proxy.service.core.service.task.CsTask
  */
 abstract class BaseDispatcher {
 
-    protected val tag = "${Constants.LOG_UPLOAD_TAG_START}TaskDispatcher"
+    protected val tag = "${ApiConstants.LOG_UPLOAD_TAG_START}TaskDispatcher"
 
     interface OnWorkerIdleCallback {
         fun onWorkerIdle()

@@ -1,7 +1,7 @@
 package com.proxy.service.document.image.info.drawable
 
 import android.graphics.RectF
-import com.proxy.service.document.image.base.constants.Constants
+import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.callback.base.OnBoundChangedCallback
 import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnDragCallback
@@ -18,12 +18,13 @@ import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
  */
 class ConfigInfo {
 
-    var minScale: Float = Constants.DEFAULT_MIN_SCALE
-    var maxScale: Float = Constants.DEFAULT_MAX_SCALE
+    var minScale: Float = ImageConstants.DEFAULT_MIN_SCALE
+    var maxScale: Float = ImageConstants.DEFAULT_MAX_SCALE
 
     var lockSizeWidthPx: Float? = null
     var lockSizeHeightPx: Float? = null
     var lockRect: RectF? = null
+    var lockView: Boolean = false
     var canMoveInLockRect: Boolean = true
     var overScrollBounceEnabled: Boolean = false
 
@@ -37,6 +38,15 @@ class ConfigInfo {
     var longPressCallback: OnLongPressCallback? = null
 
     fun boundsChangedToCheckLockRect(left: Int, top: Int, right: Int, bottom: Int) {
+        if (lockRect != null) {
+            return
+        }
+
+        if (lockView) {
+            lockRect = RectF(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
+            return
+        }
+
         if (lockSizeWidthPx == null) {
             return
         }
@@ -45,15 +55,6 @@ class ConfigInfo {
         }
         val offsetX = ((right - left) - lockSizeWidthPx!!) / 2f
         val offsetY = ((bottom - top) - lockSizeHeightPx!!) / 2f
-
-        if (lockRect == null) {
-            lockRect = RectF(0f, 0f, 0f, 0f)
-        }
-        lockRect?.set(
-            left + offsetX,
-            top + offsetY,
-            right - offsetX,
-            bottom - offsetY
-        )
+        lockRect = RectF(left + offsetX, top + offsetY, right - offsetX, bottom - offsetY)
     }
 }

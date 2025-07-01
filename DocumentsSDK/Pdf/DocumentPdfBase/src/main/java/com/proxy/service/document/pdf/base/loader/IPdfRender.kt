@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.base.loader
 
 import android.graphics.Bitmap
 import android.view.Surface
-import com.proxy.service.document.pdf.base.constants.Constants
+import com.proxy.service.document.pdf.base.constants.PdfConstants
 
 /**
  * @author: cangHX
@@ -24,8 +24,8 @@ interface IPdfRender : IPdfAction {
         bitmap: Bitmap,
         renderAnnot: Boolean,
         autoSize: Boolean = false,
-        viewBgColor:Long = Constants.DEFAULT_BG_COLOR,
-        pageBgColor:Long = Constants.DEFAULT_BG_COLOR
+        viewBgColor:Long = PdfConstants.DEFAULT_BG_COLOR,
+        pageBgColor:Long = PdfConstants.DEFAULT_BG_COLOR
     )
 
     /**
@@ -45,8 +45,8 @@ interface IPdfRender : IPdfAction {
         height: Int,
         renderAnnot: Boolean,
         autoSize: Boolean = false,
-        viewBgColor:Long = Constants.DEFAULT_BG_COLOR,
-        pageBgColor:Long = Constants.DEFAULT_BG_COLOR
+        viewBgColor:Long = PdfConstants.DEFAULT_BG_COLOR,
+        pageBgColor:Long = PdfConstants.DEFAULT_BG_COLOR
     )
 
     /**
@@ -70,8 +70,8 @@ interface IPdfRender : IPdfAction {
         endY: Int,
         renderAnnot: Boolean,
         autoSize: Boolean = false,
-        viewBgColor:Long = Constants.DEFAULT_BG_COLOR,
-        pageBgColor:Long = Constants.DEFAULT_BG_COLOR
+        viewBgColor:Long = PdfConstants.DEFAULT_BG_COLOR,
+        pageBgColor:Long = PdfConstants.DEFAULT_BG_COLOR
     )
 
     /**
@@ -91,8 +91,8 @@ interface IPdfRender : IPdfAction {
         height: Int,
         renderAnnot: Boolean,
         autoSize: Boolean = false,
-        viewBgColor:Long = Constants.DEFAULT_BG_COLOR,
-        pageBgColor:Long = Constants.DEFAULT_BG_COLOR
+        viewBgColor:Long = PdfConstants.DEFAULT_BG_COLOR,
+        pageBgColor:Long = PdfConstants.DEFAULT_BG_COLOR
     )
 
     /**
@@ -116,8 +116,8 @@ interface IPdfRender : IPdfAction {
         endY: Int,
         renderAnnot: Boolean,
         autoSize: Boolean = false,
-        viewBgColor:Long = Constants.DEFAULT_BG_COLOR,
-        pageBgColor:Long = Constants.DEFAULT_BG_COLOR
+        viewBgColor:Long = PdfConstants.DEFAULT_BG_COLOR,
+        pageBgColor:Long = PdfConstants.DEFAULT_BG_COLOR
     )
 
 }

@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.core.framework.data.log.CsLogger
 import okhttp3.Headers
 import okhttp3.Interceptor
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 class HttpLoggingInterceptor : Interceptor {
     companion object {
-        private const val TAG = "${Constants.LOG_REQUEST_TAG_START}HttpLogging"
+        private const val TAG = "${ApiConstants.LOG_REQUEST_TAG_START}HttpLogging"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

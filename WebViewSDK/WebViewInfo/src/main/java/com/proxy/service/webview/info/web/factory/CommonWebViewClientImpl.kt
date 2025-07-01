@@ -18,9 +18,9 @@ import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
-import com.proxy.service.webview.info.config.Config
 import com.proxy.service.webview.info.web.error.SslErrorHandlerImpl
 import com.proxy.service.webview.info.web.error.SslErrorImpl
 import com.proxy.service.webview.info.web.intercept.WebResourceRequestImpl
@@ -36,7 +36,7 @@ class CommonWebViewClientImpl(
     private val interceptCallback: WebInterceptCallback?
 ) : WebViewClient() {
 
-    private val tag = "${Config.LOG_TAG_START}Client"
+    private val tag = "${WebViewConstants.LOG_TAG_START}Client"
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         CsLogger.tag(tag).d("shouldOverrideUrlLoading(view: WebView, url: String) url = $url")

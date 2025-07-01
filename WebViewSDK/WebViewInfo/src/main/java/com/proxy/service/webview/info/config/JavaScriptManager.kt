@@ -1,6 +1,7 @@
 package com.proxy.service.webview.info.config
 
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.info.utils.WebUtils
 
 /**
@@ -10,7 +11,7 @@ import com.proxy.service.webview.info.utils.WebUtils
  */
 object JavaScriptManager {
 
-    private const val TAG = "${Config.LOG_TAG_START}JSManager"
+    private const val TAG = "${WebViewConstants.LOG_TAG_START}JSManager"
 
     const val GLOBAL_BRIDGE_NAME = "_mBridge"
 

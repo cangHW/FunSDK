@@ -5,9 +5,9 @@ import com.proxy.service.document.pdf.base.PdfService
 import com.proxy.service.document.pdf.base.config.PdfConfig
 import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 import com.proxy.service.document.pdf.base.loader.IPdfLoader
-import com.proxy.service.document.pdf.base.view.IViewFactory
+import com.proxy.service.document.pdf.base.view.IViewLoader
 import com.proxy.service.document.pdf.info.loader.impl.PdfLoader
-import com.proxy.service.document.pdf.info.view.ViewFactoryImpl
+import com.proxy.service.document.pdf.info.view.ViewLoaderImpl
 
 /**
  * @author: cangHX
@@ -23,7 +23,7 @@ class PdfServiceImpl : PdfService {
         return loader
     }
 
-    override fun createViewFactory(config: PdfConfig): IViewFactory {
-        return ViewFactoryImpl(config)
+    override fun createViewFactory(config: PdfConfig): IViewLoader {
+        return ViewLoaderImpl(config)
     }
 }

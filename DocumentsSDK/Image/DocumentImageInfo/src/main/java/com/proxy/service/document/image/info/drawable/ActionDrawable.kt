@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.view.MotionEvent
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.image.info.utils.AnimatorManager
 
 /**
@@ -118,6 +119,8 @@ class ActionDrawable(
 
     override fun setBounds(left: Int, top: Int, right: Int, bottom: Int) {
         super.setBounds(left, top, right, bottom)
+        CsLogger.tag(TAG).i("Bound($left, $top, $right, $bottom)")
+
         mMatrix.reset()
         mCurrentScale = 1f
 

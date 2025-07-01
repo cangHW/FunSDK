@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.download.worker.base
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.atomic.AtomicBoolean
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 abstract class BaseStatusWorker(val task: DownloadTask) : IWorker {
 
-    protected val tag = "${Constants.LOG_DOWNLOAD_TAG_START}TaskWorker"
+    protected val tag = "${ApiConstants.LOG_DOWNLOAD_TAG_START}TaskWorker"
 
     private val isCancel = AtomicBoolean(false)
     private val isFinish = AtomicBoolean(false)

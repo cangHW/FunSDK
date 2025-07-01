@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ActionCallback
+import com.proxy.service.permission.base.constants.PermConstants
 import com.proxy.service.permission.base.manager.IPermissionRequest
-import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.fragment.RequestFragment
 import com.proxy.service.permission.info.utils.PermissionUtils
 
@@ -18,7 +18,7 @@ import com.proxy.service.permission.info.utils.PermissionUtils
  */
 class PermissionRequestImpl : IPermissionRequest {
 
-    private val tag = "${Config.LOG_TAG_START}IRequest"
+    private val tag = "${PermConstants.LOG_TAG_START}IRequest"
 
     private val permissions = ArrayList<String>()
     private var grantedCallback: ActionCallback? = null

@@ -6,8 +6,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
 import com.proxy.service.permission.base.callback.DialogDismissCallback
+import com.proxy.service.permission.base.constants.PermConstants
 import com.proxy.service.permission.base.manager.DialogFactory
-import com.proxy.service.permission.info.config.Config
 
 /**
  * @author: cangHX
@@ -16,7 +16,7 @@ import com.proxy.service.permission.info.config.Config
  */
 class DialogFactoryImpl : DialogFactory {
 
-    private val tag = "${Config.LOG_TAG_START}DialogFactory"
+    private val tag = "${PermConstants.LOG_TAG_START}DialogFactory"
 
     companion object {
         private const val TITLE: String = "权限申请"

@@ -20,7 +20,9 @@ import java.nio.file.StandardOpenOption
 @RequiresApi(Build.VERSION_CODES.O)
 class PathSource(private val path: Path) : AbstractWrite() {
 
-    private val tag = "${CoreConfig.TAG}FileWrite_Path"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}FileWrite_Path"
+    }
 
     /**
      * 同步写入文件
@@ -30,7 +32,7 @@ class PathSource(private val path: Path) : AbstractWrite() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return false
         }
-        start(tag, file.absolutePath)
+        start(TAG, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
@@ -51,13 +53,13 @@ class PathSource(private val path: Path) : AbstractWrite() {
                 }
             }
 
-            success(tag, file.absolutePath)
+            success(TAG, file.absolutePath)
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
                 throw throwable
             } else {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
         return false
@@ -67,7 +69,7 @@ class PathSource(private val path: Path) : AbstractWrite() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return false
         }
-        start(tag, "OutputStream")
+        start(TAG, "OutputStream")
         try {
             Files.newInputStream(path).buffered().use { inputStream ->
                 val bos = stream.buffered()
@@ -79,13 +81,13 @@ class PathSource(private val path: Path) : AbstractWrite() {
                 bos.flush()
             }
 
-            success(tag, "OutputStream")
+            success(TAG, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
                 throw throwable
             } else {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
         return false

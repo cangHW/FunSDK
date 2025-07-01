@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.base.download.config
 
 import com.proxy.service.apihttp.base.common.config.BaseConfig
 import com.proxy.service.apihttp.base.common.config.BaseConfigGet
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.config.builder.IDownloadConfigBuilder
 import com.proxy.service.apihttp.base.download.config.builder.IDownloadConfigBuilderGet
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -43,7 +43,7 @@ class DownloadConfig private constructor(
     }
 
     companion object {
-        private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}DownloadConfig"
+        private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}DownloadConfig"
 
         fun builder(): IDownloadConfigBuilder {
             return Builder()

@@ -8,8 +8,8 @@ import android.webkit.WebView
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
-import com.proxy.service.webview.info.config.Config
 
 /**
  * @author: cangHX
@@ -26,7 +26,7 @@ class WebViewImpl : WebView {
         defStyleAttr
     )
 
-    private val tag = "${Config.LOG_TAG_START}View"
+    private val tag = "${WebViewConstants.LOG_TAG_START}View"
 
     private var webLifecycleCallback: WebLifecycleCallback? = null
 

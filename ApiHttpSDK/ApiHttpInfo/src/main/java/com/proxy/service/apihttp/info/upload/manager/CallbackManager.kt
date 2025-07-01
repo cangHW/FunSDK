@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.upload.manager
 
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.upload.callback.UploadCallback
 import com.proxy.service.apihttp.info.upload.manager.impl.BoundLifecycleUploadCallbackImpl
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -14,7 +14,7 @@ import java.util.WeakHashMap
  */
 object CallbackManager {
 
-    private const val TAG = "${Constants.LOG_UPLOAD_TAG_START}CallbackManager"
+    private const val TAG = "${ApiConstants.LOG_UPLOAD_TAG_START}CallbackManager"
 
     /**
      * 全局下载监听

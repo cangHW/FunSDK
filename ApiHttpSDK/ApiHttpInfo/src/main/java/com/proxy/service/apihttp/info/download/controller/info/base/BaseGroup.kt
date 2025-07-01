@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.download.controller.info.base
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.common.cache.GroupCache
 
@@ -11,7 +11,7 @@ import com.proxy.service.apihttp.info.common.cache.GroupCache
  */
 abstract class BaseGroup : Comparator<DownloadTask> {
 
-    protected val tag = "${Constants.LOG_DOWNLOAD_TAG_START}GroupInfo"
+    protected val tag = "${ApiConstants.LOG_DOWNLOAD_TAG_START}GroupInfo"
 
     protected val groupCache = GroupCache<DownloadTask> { o1, o2 ->
         o1.getPriority().compareTo(o2.getPriority())

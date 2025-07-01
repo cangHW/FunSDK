@@ -3,8 +3,8 @@ package com.proxy.service.webview.info.web.lifecycle
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.web.IWeb
-import com.proxy.service.webview.info.config.Config
 
 /**
  * @author: cangHX
@@ -12,7 +12,7 @@ import com.proxy.service.webview.info.config.Config
  * @desc:
  */
 class LifecycleObserverImpl(private val web: IWeb) : DefaultLifecycleObserver {
-    private val tag = "${Config.LOG_TAG_START}Lifecycle"
+    private val tag = "${WebViewConstants.LOG_TAG_START}Lifecycle"
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)

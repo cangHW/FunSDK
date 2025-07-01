@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.info.thread.info
 
 import android.os.Looper
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,7 +41,7 @@ class TaskInfo<T> {
 
     fun checkBlockIsReady() {
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            CsLogger.tag(Constants.TAG).d("It is not recommended to use the blocking task in the main thread, which may cause a stalling.")
+            CsLogger.tag(ThreadConstants.TAG).d("It is not recommended to use the blocking task in the main thread, which may cause a stalling.")
         }
         if (hasMainTask && Looper.myLooper() == Looper.getMainLooper()) {
             throw IllegalArgumentException("The current task has a main thread node, so the blocking task cannot be executed on the main thread.")

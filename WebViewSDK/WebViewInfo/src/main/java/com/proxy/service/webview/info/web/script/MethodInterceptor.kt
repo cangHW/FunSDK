@@ -1,7 +1,7 @@
 package com.proxy.service.webview.info.web.script
 
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.webview.info.config.Config
+import com.proxy.service.webview.base.constants.WebViewConstants
 import net.bytebuddy.implementation.bind.annotation.AllArguments
 import net.bytebuddy.implementation.bind.annotation.RuntimeType
 import java.lang.reflect.Method
@@ -13,7 +13,7 @@ import java.lang.reflect.Method
  */
 class MethodInterceptor(private val method: Method, private val obj: Any) {
 
-    private val tag = "${Config.LOG_TAG_START}Interceptor"
+    private val tag = "${WebViewConstants.LOG_TAG_START}Interceptor"
 
     @RuntimeType
     fun invoke(@AllArguments params: Array<Any>) {

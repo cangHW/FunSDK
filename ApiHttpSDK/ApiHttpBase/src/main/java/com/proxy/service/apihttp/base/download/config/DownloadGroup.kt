@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.base.download.config
 
-import com.proxy.service.core.constants.CoreConfig
+import com.proxy.service.apihttp.base.constants.ApiConstants
 
 /**
  * @author: cangHX
@@ -10,7 +10,7 @@ import com.proxy.service.core.constants.CoreConfig
 class DownloadGroup private constructor(val groupName: String, val priority: Int, val fileDir: String) {
 
     companion object {
-        private const val TAG = "${CoreConfig.TAG}DownloadGroup"
+        private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}DownloadGroup"
 
         fun builder(groupName: String): Builder {
             return Builder(groupName)

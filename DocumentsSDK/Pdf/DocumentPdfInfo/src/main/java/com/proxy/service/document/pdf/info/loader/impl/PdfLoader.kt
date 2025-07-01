@@ -183,11 +183,13 @@ class PdfLoader : PdfRender(), IPdfLoader {
 
     override fun destroy() {
         if (isDestroy.compareAndSet(false, true)) {
-            synchronized(lock) {
-                docs.forEach {
-                    it.close()
+            handler?.start {
+                synchronized(lock) {
+                    docs.forEach {
+                        it.close()
+                    }
+                    docs.clear()
                 }
-                docs.clear()
             }
         }
     }

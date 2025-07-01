@@ -22,7 +22,7 @@ import java.io.OutputStream
 class SupportV29Store : BaseStore() {
 
     init {
-        CsLogger.tag(tag).d("SupportV29Store start")
+        CsLogger.tag(TAG).d("SupportV29Store start")
     }
 
     override fun insert(callback: InsertCallback?) {
@@ -30,14 +30,14 @@ class SupportV29Store : BaseStore() {
             override fun accept(): String {
                 val finalSource = source
                 if (finalSource == null) {
-                    CsLogger.tag(tag).e("source is null")
+                    CsLogger.tag(TAG).e("source is null")
                     callInsertFailed(callback)
                     return ""
                 }
 
                 val finalUri = getUri()
                 if (finalUri == null) {
-                    CsLogger.tag(tag).e("uri is null")
+                    CsLogger.tag(TAG).e("uri is null")
                     callInsertFailed(callback)
                     return ""
                 }
@@ -46,7 +46,7 @@ class SupportV29Store : BaseStore() {
                 val cr = CsContextManager.getApplication().contentResolver
                 val uri: Uri? = cr.insert(finalUri, values)
                 if (uri == null) {
-                    CsLogger.tag(tag).e("insert error")
+                    CsLogger.tag(TAG).e("insert error")
                     callInsertFailed(callback)
                     return ""
                 }
@@ -55,12 +55,12 @@ class SupportV29Store : BaseStore() {
                 try {
                     stream = cr.openOutputStream(uri)
                     if (stream == null) {
-                        CsLogger.tag(tag).e("open outputStream error")
+                        CsLogger.tag(TAG).e("open outputStream error")
                         callInsertFailed(callback)
                         return ""
                     }
                     if (finalSource.write(stream)) {
-                        CsLogger.tag(tag).d("insert success")
+                        CsLogger.tag(TAG).d("insert success")
 
                         values.clear()
                         values.put(IS_PENDING, 0)
@@ -77,12 +77,12 @@ class SupportV29Store : BaseStore() {
 
                         callInsertSuccess(callback, path)
                     } else {
-                        CsLogger.tag(tag).e("write error")
+                        CsLogger.tag(TAG).e("write error")
                         callInsertFailed(callback)
                     }
                 } catch (throwable: Throwable) {
                     cr.delete(uri, null, null)
-                    CsLogger.tag(tag).e(throwable)
+                    CsLogger.tag(TAG).e(throwable)
                     callInsertFailed(callback)
                 } finally {
                     CsFileUtils.close(stream)
@@ -97,7 +97,7 @@ class SupportV29Store : BaseStore() {
             override fun accept(): String {
                 val finalUri = getUri()
                 if (finalUri == null) {
-                    CsLogger.tag(tag).e("uri is null")
+                    CsLogger.tag(TAG).e("uri is null")
                     callQueryFailed(callback)
                     return ""
                 }
@@ -139,7 +139,7 @@ class SupportV29Store : BaseStore() {
                 )
 
                 if (cursor == null) {
-                    CsLogger.tag(tag).e("cursor is null")
+                    CsLogger.tag(TAG).e("cursor is null")
                     callQueryFailed(callback)
                     return ""
                 }
@@ -167,7 +167,7 @@ class SupportV29Store : BaseStore() {
                         data.isPending = CursorUtils.getValueFromCursor(cursor, IS_PENDING, 0)
                         data.isTrashed = CursorUtils.getValueFromCursor(cursor, IS_TRASHED, 0)
 
-                        CsLogger.tag(tag).d(data.toString())
+                        CsLogger.tag(TAG).d(data.toString())
                         list.add(data)
                     }
                 }

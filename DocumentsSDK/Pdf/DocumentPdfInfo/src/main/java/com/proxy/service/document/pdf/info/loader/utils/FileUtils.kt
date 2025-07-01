@@ -5,7 +5,7 @@ import android.os.ParcelFileDescriptor
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.document.pdf.base.constants.Constants
+import com.proxy.service.document.pdf.base.constants.PdfConstants
 import java.io.File
 import java.io.FileDescriptor
 import java.lang.reflect.Field
@@ -17,7 +17,7 @@ import java.lang.reflect.Field
  */
 object FileUtils {
 
-    private const val TAG = "${Constants.LOG_TAG_PDF_START}file"
+    private const val TAG = "${PdfConstants.LOG_TAG_PDF_START}file"
 
     private val FD_CLASS: Class<*> = FileDescriptor::class.java
     private const val FD_FIELD_NAME: String = "descriptor"

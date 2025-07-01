@@ -20,14 +20,16 @@ import java.nio.file.StandardOpenOption
  */
 open class InputStreamSource(protected val stream: InputStream) : AbstractWrite() {
 
-    private val tag = "${CoreConfig.TAG}FileWrite_InputStream"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}FileWrite_InputStream"
+    }
 
     /**
      * 同步写入文件
      * @param append    是否追加写入
      * */
     override fun writeSync(file: File, append: Boolean, shouldThrow: Boolean): Boolean {
-        start(tag, file.absolutePath)
+        start(TAG, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
@@ -40,29 +42,29 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
                 }
             }
 
-            success(tag, file.absolutePath)
+            success(TAG, file.absolutePath)
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
                 throw throwable
             } else {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
         return false
     }
 
     override fun writeSync(stream: OutputStream, shouldThrow: Boolean): Boolean {
-        start(tag, "OutputStream")
+        start(TAG, "OutputStream")
         try {
             write(stream)
-            success(tag, "OutputStream")
+            success(TAG, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
                 throw throwable
             } else {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
         return false

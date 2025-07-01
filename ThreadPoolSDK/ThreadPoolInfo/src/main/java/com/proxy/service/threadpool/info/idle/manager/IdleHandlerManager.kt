@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.info.idle.manager
 
 import android.os.Looper
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import java.util.concurrent.Callable
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.atomic.AtomicBoolean
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object IdleHandlerManager {
 
-    private const val TAG = "${Constants.TAG}_Idle"
+    private const val TAG = "${ThreadConstants.TAG}_Idle"
 
     /**
      * 最大查找数量

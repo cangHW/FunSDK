@@ -11,6 +11,11 @@ import android.graphics.Matrix
 interface IController {
 
     /**
+     * 重绘
+     * */
+    fun invalidate()
+
+    /**
      * 获取原图
      * */
     fun getBitmap(): Bitmap?
@@ -36,8 +41,8 @@ interface IController {
      * 设置缩放倍数
      *
      * @param scale     目标缩放倍数
-     * @param focusX    缩放 X 轴位置
-     * @param focusY    缩放 Y 轴位置
+     * @param focusX    缩放中心点 X 轴位置
+     * @param focusY    缩放中心点 Y 轴位置
      * */
     fun setScale(scale: Float, focusX: Float, focusY: Float)
 

@@ -3,7 +3,7 @@ package com.proxy.service.threadpool.info.handler.option
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.handler.loader.IHandlerLoader
 import com.proxy.service.threadpool.base.handler.option.IHandlerOption
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import com.proxy.service.threadpool.info.handler.loader.HandlerLoaderImpl
 import com.proxy.service.threadpool.info.handler.manager.HandlerController
 import java.util.concurrent.TimeUnit
@@ -18,7 +18,7 @@ class HandlerOptionImpl(
 ) : HandlerLoaderImpl(handlerController), IHandlerOption {
 
     companion object {
-        private const val TAG = "${Constants.TAG}_HandlerOption"
+        private const val TAG = "${ThreadConstants.TAG}_HandlerOption"
     }
 
     override fun setDelay(timeout: Long, unit: TimeUnit): IHandlerLoader {

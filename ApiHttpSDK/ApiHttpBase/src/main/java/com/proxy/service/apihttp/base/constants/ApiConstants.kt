@@ -5,7 +5,7 @@ package com.proxy.service.apihttp.base.constants
  * @data: 2024/11/1 11:43
  * @desc:
  */
-object Constants {
+object ApiConstants {
 
     private const val LOG_TAG_START = "ApiHttp_"
 

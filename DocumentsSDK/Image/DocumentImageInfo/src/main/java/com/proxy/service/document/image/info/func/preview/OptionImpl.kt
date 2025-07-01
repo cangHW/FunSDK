@@ -3,7 +3,7 @@ package com.proxy.service.document.image.info.func.preview
 import android.graphics.Bitmap
 import android.graphics.RectF
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.image.base.constants.Constants
+import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.callback.base.OnBoundChangedCallback
 import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnDragCallback
@@ -13,7 +13,6 @@ import com.proxy.service.document.image.base.callback.base.OnScaleCallback
 import com.proxy.service.document.image.base.callback.base.OnSingleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
 import com.proxy.service.document.image.base.loader.base.IOption
-import com.proxy.service.document.image.info.constants.ImageConstants
 import com.proxy.service.imageloader.base.option.glide.GlideDecodeFormat
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
 
@@ -26,19 +25,21 @@ class OptionImpl(
     glideOption: IGlideOption<Bitmap>?
 ) : LoaderImpl(glideOption), IOption {
 
+    companion object {
+        private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}Option"
+    }
+
     init {
         glideOption?.format(GlideDecodeFormat.ARGB_8888)
     }
 
     override fun setMinScale(minScale: Float): IOption {
         if (minScale <= 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The minScale cannot be less than or equal to 0.")
+            CsLogger.tag(TAG).e("The minScale cannot be less than or equal to 0.")
             return this
         }
         if (minScale > maxScale) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The minScale cannot be more than maxScale.")
+            CsLogger.tag(TAG).e("The minScale cannot be more than maxScale.")
             return this
         }
         this.minScale = minScale
@@ -47,12 +48,11 @@ class OptionImpl(
 
     override fun setMaxScale(maxScale: Float): IOption {
         if (maxScale < 1) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW).e("The maxScale cannot be less than 1.")
+            CsLogger.tag(TAG).e("The maxScale cannot be less than 1.")
             return this
         }
         if (maxScale < minScale) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The maxScale cannot be less than minScale.")
+            CsLogger.tag(TAG).e("The maxScale cannot be less than minScale.")
             return this
         }
         this.maxScale = maxScale
@@ -61,21 +61,29 @@ class OptionImpl(
 
     override fun setScale(minScale: Float, maxScale: Float): IOption {
         if (minScale <= 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The minScale cannot be less than or equal to 0.")
+            CsLogger.tag(TAG).e("The minScale cannot be less than or equal to 0.")
             return this
         }
         if (maxScale < 1) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW).e("The maxScale cannot be less than 1.")
+            CsLogger.tag(TAG).e("The maxScale cannot be less than 1.")
             return this
         }
         if (maxScale < minScale) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The maxScale cannot be less than minScale.")
+            CsLogger.tag(TAG).e("The maxScale cannot be less than minScale.")
             return this
         }
         this.minScale = minScale
         this.maxScale = maxScale
+        return this
+    }
+
+    override fun setLockViewWithMovable(overScrollBounceEnabled: Boolean): IOption {
+        this.lockRect = null
+        this.lockView = true
+        this.lockSizeWidthPx = null
+        this.lockSizeHeightPx = null
+        this.canMoveInLockRect = true
+        this.overScrollBounceEnabled = overScrollBounceEnabled
         return this
     }
 
@@ -85,16 +93,15 @@ class OptionImpl(
         overScrollBounceEnabled: Boolean
     ): IOption {
         if (widthPx < 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The widthPx in the locked size cannot be less than 0.")
+            CsLogger.tag(TAG).e("The widthPx in the locked size cannot be less than 0.")
             return this
         }
         if (heightPx < 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The heightPx in the locked size cannot be less than 0.")
+            CsLogger.tag(TAG).e("The heightPx in the locked size cannot be less than 0.")
             return this
         }
         this.lockRect = null
+        this.lockView = false
         this.lockSizeWidthPx = widthPx
         this.lockSizeHeightPx = heightPx
         this.canMoveInLockRect = true
@@ -107,19 +114,28 @@ class OptionImpl(
         overScrollBounceEnabled: Boolean
     ): IOption {
         if (lockRect.right < lockRect.left) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The rect right cannot be less than rect left.")
+            CsLogger.tag(TAG).e("The rect right cannot be less than rect left.")
             return this
         }
         if (lockRect.bottom < lockRect.top) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The rect bottom cannot be less than rect top.")
+            CsLogger.tag(TAG).e("The rect bottom cannot be less than rect top.")
             return this
         }
         this.lockRect = lockRect
+        this.lockView = false
         this.lockSizeWidthPx = null
         this.lockSizeHeightPx = null
         this.canMoveInLockRect = true
+        this.overScrollBounceEnabled = overScrollBounceEnabled
+        return this
+    }
+
+    override fun setLockViewWithImmovable(overScrollBounceEnabled: Boolean): IOption {
+        this.lockRect = null
+        this.lockView = true
+        this.lockSizeWidthPx = null
+        this.lockSizeHeightPx = null
+        this.canMoveInLockRect = false
         this.overScrollBounceEnabled = overScrollBounceEnabled
         return this
     }
@@ -130,16 +146,15 @@ class OptionImpl(
         overScrollBounceEnabled: Boolean
     ): IOption {
         if (widthPx < 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The widthPx in the locked size cannot be less than 0.")
+            CsLogger.tag(TAG).e("The widthPx in the locked size cannot be less than 0.")
             return this
         }
         if (heightPx < 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The heightPx in the locked size cannot be less than 0.")
+            CsLogger.tag(TAG).e("The heightPx in the locked size cannot be less than 0.")
             return this
         }
         this.lockRect = null
+        this.lockView = false
         this.lockSizeWidthPx = widthPx
         this.lockSizeHeightPx = heightPx
         this.canMoveInLockRect = false
@@ -152,16 +167,15 @@ class OptionImpl(
         overScrollBounceEnabled: Boolean
     ): IOption {
         if (lockRect.right < lockRect.left) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The rect right cannot be less than rect left.")
+            CsLogger.tag(TAG).e("The rect right cannot be less than rect left.")
             return this
         }
         if (lockRect.bottom < lockRect.top) {
-            CsLogger.tag(ImageConstants.LOG_TAG_PREVIEW)
-                .e("The rect bottom cannot be less than rect top.")
+            CsLogger.tag(TAG).e("The rect bottom cannot be less than rect top.")
             return this
         }
         this.lockRect = lockRect
+        this.lockView = false
         this.lockSizeWidthPx = null
         this.lockSizeHeightPx = null
         this.canMoveInLockRect = false

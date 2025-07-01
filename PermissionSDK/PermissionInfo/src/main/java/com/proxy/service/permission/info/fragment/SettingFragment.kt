@@ -12,6 +12,7 @@ import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
+import com.proxy.service.permission.base.constants.PermConstants
 import com.proxy.service.permission.base.manager.base.IPermissionCallback
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.utils.PermissionUtils
@@ -24,7 +25,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  */
 class SettingFragment : Fragment(), IPermissionCallback<Unit> {
 
-    private val tag = "${Config.LOG_TAG_START}Setting"
+    private val tag = "${PermConstants.LOG_TAG_START}Setting"
 
     private val requestCode: Int by lazy {
         Config.REQUEST_CODE.incrementAndGet()

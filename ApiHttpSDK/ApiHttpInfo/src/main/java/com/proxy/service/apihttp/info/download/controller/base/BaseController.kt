@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.download.controller.base
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.config.DownloadGroup
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.common.cache.SortCache
@@ -21,7 +21,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 abstract class BaseController {
 
-    protected val tag = "${Constants.LOG_DOWNLOAD_TAG_START}TaskController"
+    protected val tag = "${ApiConstants.LOG_DOWNLOAD_TAG_START}TaskController"
 
     protected val groupCache = SortCache<String, GroupInfo> { o1, o2 ->
         o1.priority.compareTo(o2.priority)

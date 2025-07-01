@@ -17,7 +17,7 @@ open class CallbackDrawable(
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         config.drawCallback?.let {
-            val saveCount = canvas.saveLayer(
+            val count = canvas.saveLayer(
                 0f,
                 0f,
                 bounds.width() * 1f,
@@ -25,7 +25,7 @@ open class CallbackDrawable(
                 null
             )
             it.onDraw(mSrcRectF, mMatrix, canvas, mPaint, bounds.width(), bounds.height())
-            canvas.restoreToCount(saveCount)
+            canvas.restoreToCount(count)
         }
     }
 

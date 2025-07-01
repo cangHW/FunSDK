@@ -5,7 +5,7 @@ import android.webkit.JavascriptInterface
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.webview.info.config.Config
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.info.config.JavascriptInterfaceInfo
 import net.bytebuddy.ByteBuddy
 import net.bytebuddy.android.AndroidClassLoadingStrategy
@@ -23,7 +23,7 @@ import java.lang.reflect.Modifier
  */
 object ScriptFactory {
 
-    private const val TAG = "${Config.LOG_TAG_START}Script"
+    private const val TAG = "${WebViewConstants.LOG_TAG_START}Script"
 
     fun getJavaScript(list: ArrayList<JavascriptInterfaceInfo>): Any? {
         if (list.size ==0){

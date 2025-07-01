@@ -9,10 +9,10 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.option.glide.BitmapTransformation
 import com.proxy.service.imageloader.base.option.glide.GlideDecodeFormat
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
-import com.proxy.service.imageloader.info.config.Config
 import com.proxy.service.imageloader.info.info.glide.GlideInfo
 import com.proxy.service.imageloader.info.loader.glide.GlideLoaderImpl
 import com.proxy.service.imageloader.info.option.glide.transform.AlphaTransformation
@@ -98,7 +98,7 @@ open class GlideOptionImpl<R>(private val info: GlideInfo<R>) :
             val transform = RoundedCorners(roundingRadiusPx)
             info.transformList.add(transform)
         } else {
-            CsLogger.tag(Config.TAG).e("roundingRadiusPx must be greater than 0.")
+            CsLogger.tag(ImageLoaderConstants.TAG).e("roundingRadiusPx must be greater than 0.")
         }
         return this
     }

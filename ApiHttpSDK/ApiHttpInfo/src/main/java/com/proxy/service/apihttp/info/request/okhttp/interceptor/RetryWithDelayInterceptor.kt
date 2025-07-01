@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.request.annotation.CsRetryWithDelay
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
@@ -19,7 +19,7 @@ import java.io.IOException
 class RetryWithDelayInterceptor : Interceptor {
 
     companion object {
-        private const val TAG = "${Constants.LOG_REQUEST_TAG_START}RetryWithDelay"
+        private const val TAG = "${ApiConstants.LOG_REQUEST_TAG_START}RetryWithDelay"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

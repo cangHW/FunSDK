@@ -35,14 +35,6 @@ interface ImageService : BaseService {
     /*** *** *** *** *** *** 裁剪 *** *** *** *** *** ***/
 
     /**
-     * 创建裁剪加载器, 该模式能配置更多参数, 但受限于不同裁剪模式效果
-     *
-     * @param request   预览加载器
-     *
-     * */
-    fun createCropLoader(request: IRequest<IOption>): IRequest<ICropOption>
-
-    /**
      * 创建裁剪加载器
      * */
     fun createCropLoader(activity: FragmentActivity): IRequest<ICropOption>

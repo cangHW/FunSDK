@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.download.manager
 
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
 import com.proxy.service.apihttp.info.download.manager.impl.BoundLifecycleDownloadCallbackImpl
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -14,7 +14,7 @@ import java.util.WeakHashMap
  */
 object CallbackManager {
 
-    private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}CallbackManager"
+    private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}CallbackManager"
 
     /**
      * 全局下载监听

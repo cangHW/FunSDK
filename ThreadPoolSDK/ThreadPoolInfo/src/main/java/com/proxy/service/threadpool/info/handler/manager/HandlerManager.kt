@@ -3,9 +3,8 @@ package com.proxy.service.threadpool.info.handler.manager
 import android.os.Handler
 import android.os.HandlerThread
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import java.util.WeakHashMap
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -38,7 +37,7 @@ object HandlerManager {
     private class ThreadHandlerInfo(private val threadName: String) : HandlerController {
 
         companion object {
-            private const val TAG = "${Constants.TAG}_Handler"
+            private const val TAG = "${ThreadConstants.TAG}_Handler"
         }
 
         private val cacheTaskMap = WeakHashMap<Any, TaskInfo>()
@@ -104,7 +103,7 @@ object HandlerManager {
                     cancelAllTask()
                     handlerThread.quit()
                 } catch (throwable: Throwable) {
-                    CsLogger.tag(Constants.TAG).e(throwable)
+                    CsLogger.tag(ThreadConstants.TAG).e(throwable)
                 }
                 return
             }
@@ -118,7 +117,7 @@ object HandlerManager {
                 try {
                     handlerThread.quitSafely()
                 } catch (throwable: Throwable) {
-                    CsLogger.tag(Constants.TAG).e(throwable)
+                    CsLogger.tag(ThreadConstants.TAG).e(throwable)
                 }
                 return
             }

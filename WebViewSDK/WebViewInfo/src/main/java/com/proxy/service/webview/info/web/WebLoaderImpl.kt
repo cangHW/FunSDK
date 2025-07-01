@@ -3,15 +3,14 @@ package com.proxy.service.webview.info.web
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.config.WebConfig
+import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.base.web.IWebLoader
-import com.proxy.service.webview.info.config.Config
 import com.proxy.service.webview.info.config.JavaScriptManager
 import com.proxy.service.webview.info.utils.WebUtils
 import com.proxy.service.webview.info.view.WebViewImpl
@@ -26,7 +25,7 @@ import com.proxy.service.webview.info.web.script.ScriptFactory
  */
 class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
 
-    private val tag = "${Config.LOG_TAG_START}Loader"
+    private val tag = "${WebViewConstants.LOG_TAG_START}Loader"
 
     private var url: String = ""
     private var lifecycleOwner: LifecycleOwner? = null

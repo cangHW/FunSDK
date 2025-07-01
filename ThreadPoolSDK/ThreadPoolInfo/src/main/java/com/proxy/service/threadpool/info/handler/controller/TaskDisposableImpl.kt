@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.info.handler.controller
 
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import com.proxy.service.threadpool.info.handler.manager.HandlerController
 import com.proxy.service.threadpool.info.handler.manager.TaskInfo
 import java.util.concurrent.atomic.AtomicInteger
@@ -21,7 +21,7 @@ class TaskDisposableImpl(
 ) : ITaskDisposable, Runnable {
 
     companion object {
-        private const val TAG = "${Constants.TAG}_HandlerTask"
+        private const val TAG = "${ThreadConstants.TAG}_HandlerTask"
         private const val STATUS_DEFAULT = 0
         private const val STATUS_COMPLETED = 1
         private const val STATUS_DISPOSED = 0

@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.info.download.worker.task
 
 import androidx.annotation.WorkerThread
 import com.proxy.service.apihttp.base.common.DownloadException
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.manager.OkhttpManager
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -22,7 +22,7 @@ import java.net.UnknownHostException
  */
 object Task {
 
-    private const val TAG = "${Constants.LOG_DOWNLOAD_TAG_START}Task"
+    private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}Task"
 
     /**
      * 下载文件, 分片下载
@@ -36,7 +36,7 @@ object Task {
         partSize: Long,
         callback: (InputStream) -> Unit
     ) {
-        val range = if (partSize < Constants.Download.FILE_PART_SIZE) {
+        val range = if (partSize < ApiConstants.Download.FILE_PART_SIZE) {
             "bytes=${startIndex + CsFileUtils.length(tempPath)}-"
         } else {
             "bytes=${startIndex + CsFileUtils.length(tempPath)}-${startIndex + partSize - 1}"

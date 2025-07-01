@@ -3,9 +3,9 @@ package com.proxy.service.core.framework.app.message.event.impl.base
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.message.event.base.BaseSend
 import com.proxy.service.core.framework.app.message.event.base.IEvent
+import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.service.task.CsTask
 
 /**
@@ -18,7 +18,7 @@ abstract class BaseLifecycleActiveSend<T : IEvent>(
     private var lifecycleOwner: LifecycleOwner?
 ) : BaseSend<T>(callback), LifecycleEventObserver {
 
-    protected val handler = CsTask.launchTaskGroup("${CoreConfig.TAG}EventLifecycleActive")
+    protected val handler = CsTask.launchTaskGroup(EventConfig.THREAD_EVENT_LIFECYCLE_ACTIVE)
 
     fun initLifecycle() {
         lifecycleOwner?.lifecycle?.addObserver(this)

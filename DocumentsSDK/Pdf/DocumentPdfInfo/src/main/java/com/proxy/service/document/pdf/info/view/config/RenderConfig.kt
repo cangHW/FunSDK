@@ -1,6 +1,7 @@
 package com.proxy.service.document.pdf.info.view.config
 
-import com.proxy.service.document.pdf.base.constants.Constants
+import com.proxy.service.document.pdf.base.constants.PdfConstants
+import com.proxy.service.document.pdf.base.enums.PagePixelFormat
 
 /**
  * @author cangHX
@@ -9,7 +10,9 @@ import com.proxy.service.document.pdf.base.constants.Constants
  */
 class RenderConfig {
 
-    var viewBackgroundColor: Long = Constants.DEFAULT_BG_COLOR
-    var pageBackgroundColor: Long = Constants.DEFAULT_BG_COLOR
+    var viewBackgroundColor: Long = PdfConstants.DEFAULT_BG_COLOR
+    var pageBackgroundColor: Long = PdfConstants.DEFAULT_BG_COLOR
+
+    var format: PagePixelFormat = PagePixelFormat.ARGB_8888
 
 }

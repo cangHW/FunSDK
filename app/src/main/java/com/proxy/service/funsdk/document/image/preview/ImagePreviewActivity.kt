@@ -17,7 +17,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.service.document.CsDocumentImage
+import com.proxy.service.document.image.base.ImageService
 import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnDrawCallback
 import com.proxy.service.document.image.base.loader.base.IController
@@ -46,12 +48,15 @@ class ImagePreviewActivity : AppCompatActivity() {
     private val lockRectF = RectF(0f, 0f, 0f, 0f)
     private var binding: ActivityDocumentImagePreviewBinding? = null
 
+    private var service: ImageService? = null
     private var controller: IController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDocumentImagePreviewBinding.inflate(LayoutInflater.from(this))
         setContentView(binding?.root)
+
+        service = CloudSystem.getService(ImageService::class.java)
     }
 
     fun onClick(view: View) {
@@ -88,7 +93,7 @@ class ImagePreviewActivity : AppCompatActivity() {
     }
 
     private fun createPreviewOption(width: Float, height: Float): IOption? {
-        val option = CsDocumentImage.createPreviewLoader(this)
+        val option = service?.createPreviewLoader(this)
             ?.loadRes(R.drawable.crop)
 
         if (binding?.doubleClickScale?.isChecked == true) {

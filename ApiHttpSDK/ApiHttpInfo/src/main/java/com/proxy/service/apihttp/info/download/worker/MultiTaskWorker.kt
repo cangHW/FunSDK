@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.download.worker
 
 import com.proxy.service.apihttp.base.common.DownloadException
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.download.utils.FileUtils
 import com.proxy.service.apihttp.info.download.worker.base.BaseWorker
@@ -65,15 +65,15 @@ class MultiTaskWorker(task: DownloadTask) : BaseWorker(task) {
             msg.filePath = "$partDir${File.separator}${task.getTaskTag()}.part${index}"
             msg.partStartIndex = start
             msg.partSize = (task.getFileSize() - start).let {
-                if (it > Constants.Download.FILE_PART_SIZE) {
-                    Constants.Download.FILE_PART_SIZE
+                if (it > ApiConstants.Download.FILE_PART_SIZE) {
+                    ApiConstants.Download.FILE_PART_SIZE
                 } else {
                     it
                 }
             }
             addTaskMsg(msg)
 
-            start += Constants.Download.FILE_PART_SIZE
+            start += ApiConstants.Download.FILE_PART_SIZE
             index++
         }
 

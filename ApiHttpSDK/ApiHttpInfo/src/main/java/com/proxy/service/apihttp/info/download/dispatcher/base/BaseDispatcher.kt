@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.download.dispatcher.base
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.config.Config
@@ -14,7 +14,7 @@ import com.proxy.service.apihttp.info.download.worker.base.IWorker
  */
 abstract class BaseDispatcher {
 
-    protected val tag = "${Constants.LOG_DOWNLOAD_TAG_START}TaskDispatcher"
+    protected val tag = "${ApiConstants.LOG_DOWNLOAD_TAG_START}TaskDispatcher"
 
     interface OnWorkerIdleCallback {
         fun onWorkerIdle(task: DownloadTask?)

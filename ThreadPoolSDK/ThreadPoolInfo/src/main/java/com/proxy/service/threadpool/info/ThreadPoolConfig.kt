@@ -4,7 +4,7 @@ import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseConfig
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import io.reactivex.plugins.RxJavaPlugins
 
 /**
@@ -21,7 +21,7 @@ class ThreadPoolConfig : CsBaseConfig() {
 
     override fun onCreate(application: Application, isDebug: Boolean) {
         RxJavaPlugins.setErrorHandler { throwable ->
-            CsLogger.tag(Constants.TAG).e(throwable)
+            CsLogger.tag(ThreadConstants.TAG).e(throwable)
         }
     }
 

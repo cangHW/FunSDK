@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.BufferedReader
@@ -20,13 +19,15 @@ import java.util.stream.Collectors
  */
 class ReaderSource(private val reader: Reader) : IRead {
 
-    private val tag = "${CoreConfig.TAG}FileRead_Reader"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}FileRead_Reader"
+    }
 
     /**
      * 读取全部数据
      * */
     override fun readString(charset: Charset): String {
-        CsLogger.tag(tag)
+        CsLogger.tag(TAG)
             .e("Since the resource comes from the Reader, modifying the Charset again is not supported.")
         try {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -35,7 +36,7 @@ class ReaderSource(private val reader: Reader) : IRead {
                 readString23()
             }
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            CsLogger.tag(TAG).e(throwable)
         }
         return ""
     }

@@ -18,7 +18,9 @@ import java.util.stream.Collectors
 @RequiresApi(Build.VERSION_CODES.O)
 class PathSource(private val path: Path) : IRead {
 
-    private val tag = "${CoreConfig.TAG}FileRead_Path"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}FileRead_Path"
+    }
 
     /**
      * 读取全部数据
@@ -36,7 +38,7 @@ class PathSource(private val path: Path) : IRead {
                 }
             }
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            CsLogger.tag(TAG).e(throwable)
         }
         return ""
     }

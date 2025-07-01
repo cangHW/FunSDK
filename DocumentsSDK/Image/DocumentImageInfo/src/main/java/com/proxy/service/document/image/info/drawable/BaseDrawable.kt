@@ -5,7 +5,7 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import com.proxy.service.document.image.base.constants.Constants
+import com.proxy.service.document.image.base.constants.ImageConstants
 
 /**
  * @author: cangHX
@@ -17,7 +17,7 @@ abstract class BaseDrawable(
 ) : Drawable() {
 
     companion object {
-        const val TAG = "${Constants.LOG_TAG_IMAGE_START}Drawable"
+        const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}Drawable"
     }
 
     protected val mPaint = Paint()

@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.info.idle.controller
 
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.threadpool.base.idle.controller.IIdleTaskController
-import com.proxy.service.threadpool.info.constants.Constants
+import com.proxy.service.threadpool.base.constants.ThreadConstants
 import java.util.concurrent.Callable
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -15,7 +15,7 @@ class IdleTaskControllerImpl(private var task: Runnable?) : IIdleTaskController,
     Callable<Boolean> {
 
     companion object {
-        private const val TAG = "${Constants.TAG}_IdleTask"
+        private const val TAG = "${ThreadConstants.TAG}_IdleTask"
     }
 
     private val isCompleted = AtomicBoolean(false)

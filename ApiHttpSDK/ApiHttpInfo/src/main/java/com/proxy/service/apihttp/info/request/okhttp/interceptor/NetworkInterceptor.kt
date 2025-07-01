@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.CsNetManager
 import okhttp3.Interceptor
@@ -15,7 +15,7 @@ import java.net.SocketTimeoutException
 class NetworkInterceptor: Interceptor {
 
     companion object {
-        private const val TAG = "${Constants.LOG_REQUEST_TAG_START}Network"
+        private const val TAG = "${ApiConstants.LOG_REQUEST_TAG_START}Network"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

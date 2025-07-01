@@ -16,7 +16,9 @@ import java.nio.charset.Charset
  */
 open class InputStreamSource(protected val stream: InputStream) : IRead {
 
-    private val tag = "${CoreConfig.TAG}FileRead_InputStream"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}FileRead_InputStream"
+    }
 
     /**
      * 读取全部数据
@@ -35,7 +37,7 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
             }
             return content.toString()
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            CsLogger.tag(TAG).e(throwable)
         }
         return ""
     }

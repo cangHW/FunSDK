@@ -12,7 +12,6 @@ import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.media.store.NormalStore
 import com.proxy.service.core.framework.io.file.media.store.SupportV29Store
 
-
 /**
  * @author: cangHX
  * @data: 2025/1/2 10:11
@@ -21,7 +20,9 @@ import com.proxy.service.core.framework.io.file.media.store.SupportV29Store
 abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,
     IMediaStore.IQueryAction {
 
-    protected val tag = "${CoreConfig.TAG}MediaStore_Media"
+    companion object {
+        private const val TAG = "${CoreConfig.TAG}MediaStore_Media"
+    }
 
     protected var store: BaseStore = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         SupportV29Store()
@@ -30,9 +31,9 @@ abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,
     }
 
     override fun setDisplayName(displayName: String): T {
-        if (displayName.trim().isEmpty()){
-            CsLogger.tag(tag).d("displayName can not be null or empty.")
-        }else {
+        if (displayName.trim().isEmpty()) {
+            CsLogger.tag(TAG).d("displayName can not be null or empty.")
+        } else {
             store.setDisplayName(displayName)
         }
         return getT()

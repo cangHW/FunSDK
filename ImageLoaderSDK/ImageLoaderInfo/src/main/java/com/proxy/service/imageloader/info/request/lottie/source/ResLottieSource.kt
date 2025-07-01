@@ -8,7 +8,7 @@ import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieListener
 import com.airbnb.lottie.LottieTask
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.imageloader.info.config.Config
+import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.info.loader.lottie.ILottieLoadCallback
 
 /**
@@ -38,7 +38,7 @@ class ResLottieSource(@RawRes @DrawableRes private val resourceId: Int) : BaseLo
             lottieTask.addListener(successListener)
             lottieTask.addFailureListener(errorListener)
         } catch (throwable: Throwable) {
-            CsLogger.tag(Config.TAG).d(throwable)
+            CsLogger.tag(ImageLoaderConstants.TAG).d(throwable)
             listener?.onError(throwable)
             removeLottieListener(lottieTask, successListener, errorListener)
         }

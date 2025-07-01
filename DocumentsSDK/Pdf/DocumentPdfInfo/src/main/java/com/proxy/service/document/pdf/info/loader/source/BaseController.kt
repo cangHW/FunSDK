@@ -8,7 +8,7 @@ import com.proxy.service.document.pdf.base.config.source.FilePathSource
 import com.proxy.service.document.pdf.base.config.source.FileSource
 import com.proxy.service.document.pdf.base.config.source.InputStreamSource
 import com.proxy.service.document.pdf.base.config.source.UriSource
-import com.proxy.service.document.pdf.base.constants.Constants
+import com.proxy.service.document.pdf.base.constants.PdfConstants
 import com.proxy.service.document.pdf.info.loader.info.DocumentInfo
 
 /**
@@ -20,7 +20,7 @@ abstract class BaseController {
 
     companion object {
 
-        const val TAG = "${Constants.LOG_TAG_PDF_START}Controller"
+        const val TAG = "${PdfConstants.LOG_TAG_PDF_START}Controller"
 
         fun findController(source: BaseSource): BaseController? {
             when (source) {

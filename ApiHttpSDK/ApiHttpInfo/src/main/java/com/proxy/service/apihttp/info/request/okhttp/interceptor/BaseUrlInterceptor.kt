@@ -1,6 +1,6 @@
 package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
-import com.proxy.service.apihttp.base.constants.Constants
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.request.annotation.CsBaseUrl
 import com.proxy.service.core.framework.data.log.CsLogger
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -17,7 +17,7 @@ import retrofit2.Invocation
 class BaseUrlInterceptor(private val baseUrl: String) : Interceptor {
 
     companion object {
-        private const val TAG = "${Constants.LOG_REQUEST_TAG_START}BaseUrl"
+        private const val TAG = "${ApiConstants.LOG_REQUEST_TAG_START}BaseUrl"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

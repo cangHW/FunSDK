@@ -8,7 +8,7 @@ import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.webview.info.config.Config
+import com.proxy.service.webview.base.constants.WebViewConstants
 
 
 /**
@@ -19,7 +19,7 @@ import com.proxy.service.webview.info.config.Config
 @CloudApiService(serviceTag = "application/web")
 class WebApplicationImpl : CsBaseApplication() {
 
-    private val webTag = "${Config.LOG_TAG_START}Application"
+    private val webTag = "${WebViewConstants.LOG_TAG_START}Application"
 
     override fun priority(): Int {
         return -100

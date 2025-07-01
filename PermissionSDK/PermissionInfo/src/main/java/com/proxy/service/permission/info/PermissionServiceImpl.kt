@@ -3,6 +3,7 @@ package com.proxy.service.permission.info
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.PermissionService
+import com.proxy.service.permission.base.constants.PermConstants
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.IPermissionRequest
 import com.proxy.service.permission.base.manager.base.IRationaleDialog
@@ -22,7 +23,7 @@ import com.proxy.service.permission.info.utils.PermissionUtils
 @CloudApiService(serviceTag = "service/permission")
 class PermissionServiceImpl : PermissionService {
 
-    private val tag = "${Config.LOG_TAG_START}Service"
+    private val tag = "${PermConstants.LOG_TAG_START}Service"
 
     /**
      * 是否具有对应权限

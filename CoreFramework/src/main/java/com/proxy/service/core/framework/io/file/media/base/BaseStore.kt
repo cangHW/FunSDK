@@ -23,6 +23,8 @@ abstract class BaseStore : IMediaStore<BaseStore>, IMediaStore.IInsertAction,
     IMediaStore.IQueryAction {
 
     companion object {
+        const val TAG = "${CoreConfig.TAG}MediaStore_Store"
+
         const val ID = MediaStore.MediaColumns._ID
         const val DISPLAY_NAME = MediaStore.MediaColumns.DISPLAY_NAME
         const val MIME_TYPE = MediaStore.MediaColumns.MIME_TYPE
@@ -34,8 +36,6 @@ abstract class BaseStore : IMediaStore<BaseStore>, IMediaStore.IInsertAction,
         const val IS_PENDING = MediaStore.MediaColumns.IS_PENDING
         const val IS_TRASHED = MediaStore.MediaColumns.IS_TRASHED
     }
-
-    protected val tag = "${CoreConfig.TAG}MediaStore_Store"
 
     private var storeType: StoreType? = null
     protected var dirPath: String = ""

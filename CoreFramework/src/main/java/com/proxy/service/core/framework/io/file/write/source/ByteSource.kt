@@ -6,7 +6,6 @@ import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.config.IoConfig
-import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -22,14 +21,16 @@ import java.nio.file.StandardOpenOption
  */
 class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
 
-    private val tag = "${CoreConfig.TAG}FileWrite_Byte"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}FileWrite_Byte"
+    }
 
     /**
      * 同步写入文件
      * @param append    是否追加写入
      * */
     override fun writeSync(file: File, append: Boolean, shouldThrow: Boolean): Boolean {
-        start(tag, file.absolutePath)
+        start(TAG, file.absolutePath)
         try {
             CsFileUtils.createDir(file.getParent())
             CsFileUtils.createFile(file)
@@ -42,29 +43,29 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
                 }
             }
 
-            success(tag, file.absolutePath)
+            success(TAG, file.absolutePath)
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
                 throw throwable
             } else {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
         return false
     }
 
     override fun writeSync(stream: OutputStream, shouldThrow: Boolean): Boolean {
-        start(tag, "OutputStream")
+        start(TAG, "OutputStream")
         try {
             write(stream)
-            success(tag, "OutputStream")
+            success(TAG, "OutputStream")
             return true
         } catch (throwable: Throwable) {
             if (shouldThrow) {
                 throw throwable
             } else {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
         return false

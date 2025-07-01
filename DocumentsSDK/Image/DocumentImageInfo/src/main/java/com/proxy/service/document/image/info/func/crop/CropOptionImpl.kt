@@ -7,7 +7,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.image.base.callback.crop.OnDrawCropCallback
 import com.proxy.service.document.image.base.loader.base.IOption
 import com.proxy.service.document.image.base.loader.crop.ICropOption
-import com.proxy.service.document.image.info.constants.ImageConstants
+import com.proxy.service.document.image.base.constants.ImageConstants
+import com.proxy.service.document.image.base.mode.CropMode
 
 /**
  * @author: cangHX
@@ -16,27 +17,45 @@ import com.proxy.service.document.image.info.constants.ImageConstants
  */
 class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {
 
-    override fun setCropSize(widthPx: Float, heightPx: Float): ICropOption {
-        if (widthPx < 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_CROP)
-                .e("The widthPx in the crop size cannot be less than 0.")
-            return this
-        }
-        if (heightPx < 0) {
-            CsLogger.tag(ImageConstants.LOG_TAG_CROP)
-                .e("The heightPx in the crop size cannot be less than 0.")
-            return this
-        }
-        this.cropRect = null
-        this.cropWidthPx = widthPx
-        this.cropHeightPx = heightPx
+    companion object {
+        private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}CropOption"
+    }
+
+    override fun setCropFrameRectToFitBitmap(): ICropOption {
+        this.cropFrameFitBitmap = true
+        this.cropFrameRect = null
+        this.cropFrameWidthPx = null
+        this.cropFrameHeightPx = null
         return this
     }
 
-    override fun setCropRect(rect: RectF): ICropOption {
-        this.cropRect = rect
-        this.cropWidthPx = null
-        this.cropHeightPx = null
+    override fun setCropFrameSize(widthPx: Float, heightPx: Float): ICropOption {
+        if (widthPx < 0) {
+            CsLogger.tag(TAG)
+                .e("The widthPx in the crop size cannot be less than 0. widthPx = $widthPx")
+            return this
+        }
+        if (heightPx < 0) {
+            CsLogger.tag(TAG)
+                .e("The heightPx in the crop size cannot be less than 0. heightPx = $heightPx")
+            return this
+        }
+        this.cropFrameFitBitmap = false
+        this.cropFrameRect = null
+        this.cropFrameWidthPx = widthPx
+        this.cropFrameHeightPx = heightPx
+        return this
+    }
+
+    override fun setCropFrameRect(rect: RectF): ICropOption {
+        if (rect.right <= rect.left || rect.bottom <= rect.top) {
+            CsLogger.tag(TAG).e("RectF is illegal. rect = $rect")
+            return this
+        }
+        this.cropFrameFitBitmap = false
+        this.cropFrameRect = rect
+        this.cropFrameWidthPx = null
+        this.cropFrameHeightPx = null
         return this
     }
 
@@ -55,23 +74,28 @@ class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {
         return this
     }
 
-    override fun setCropLineColor(color: Int): ICropOption {
-        this.cropLineColor = color
+    override fun setCropFrameLineColor(color: Int): ICropOption {
+        this.cropFrameLineColor = color
         return this
     }
 
-    override fun setCropLineColorString(colorString: String): ICropOption {
-        this.cropLineColor = Color.parseColor(colorString)
+    override fun setCropFrameLineColorString(colorString: String): ICropOption {
+        this.cropFrameLineColor = Color.parseColor(colorString)
         return this
     }
 
-    override fun setCropLineColorRes(id: Int): ICropOption {
-        this.cropLineColor = CsContextManager.getApplication().getColor(id)
+    override fun setCropFrameLineColorRes(id: Int): ICropOption {
+        this.cropFrameLineColor = CsContextManager.getApplication().getColor(id)
         return this
     }
 
-    override fun setCropLineWidth(width: Float): ICropOption {
-        this.cropLineWidth = width
+    override fun setCropFrameLineWidth(width: Float): ICropOption {
+        this.cropFrameLineWidth = width
+        return this
+    }
+
+    override fun setCropMode(mode: CropMode): ICropOption {
+        this.mode = mode
         return this
     }
 

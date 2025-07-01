@@ -13,10 +13,12 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 abstract class CsBaseConfig : BaseCoreFw() {
 
-    protected val tag = "${CoreConfig.TAG}Config"
+    companion object{
+        private const val TAG = "${CoreConfig.TAG}Config"
+    }
 
     override fun create(application: Application, isDebug: Boolean) {
         onCreate(application, isDebug)
-        CsLogger.tag(tag).d("${this.javaClass.simpleName} onCreate isDebug = $isDebug")
+        CsLogger.tag(TAG).d("${this.javaClass.simpleName} onCreate isDebug = $isDebug")
     }
 }

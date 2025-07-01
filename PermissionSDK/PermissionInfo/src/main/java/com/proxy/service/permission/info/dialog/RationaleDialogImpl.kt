@@ -7,6 +7,7 @@ import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.permission.base.callback.ButtonClick
 import com.proxy.service.permission.base.callback.ButtonClick.DialogInterface
 import com.proxy.service.permission.base.callback.DialogDismissCallback
+import com.proxy.service.permission.base.constants.PermConstants
 import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.IRationaleDialog
 import com.proxy.service.permission.info.config.Config
@@ -17,9 +18,9 @@ import com.proxy.service.permission.info.request.PermissionRequestImpl
  * @data: 2024/11/19 10:25
  * @desc:
  */
-class RationaleDialogImpl() : IRationaleDialog {
+class RationaleDialogImpl : IRationaleDialog {
 
-    private val tag = "${Config.LOG_TAG_START}RationaleDialog"
+    private val tag = "${PermConstants.LOG_TAG_START}RationaleDialog"
 
     private val permissionRequest = PermissionRequestImpl()
 

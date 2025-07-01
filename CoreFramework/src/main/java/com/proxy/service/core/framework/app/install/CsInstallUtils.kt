@@ -16,7 +16,6 @@ import com.proxy.service.core.framework.app.install.broadcast.BroadcastReceiverI
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.CsUriManager
-import com.proxy.service.core.framework.io.uri.ProxyProvider
 import com.proxy.service.core.service.permission.CsPermission
 import java.io.File
 
