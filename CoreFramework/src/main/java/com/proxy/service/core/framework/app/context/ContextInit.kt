@@ -15,6 +15,7 @@ import com.proxy.service.core.framework.app.context.lifecycle.TopActivityLifecyc
  */
 object ContextInit {
 
+    @Volatile
     var application: Application? = null
 
     fun init(context: Context) {

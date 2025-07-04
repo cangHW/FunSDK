@@ -1,10 +1,13 @@
 package com.proxy.service.core.framework.app.config.locale
 
 import android.content.Context
+import com.proxy.service.core.framework.app.config.base.AppConfigConstants
 import com.proxy.service.core.framework.app.config.base.BaseAction
 import com.proxy.service.core.framework.app.config.base.ILocale
+import com.proxy.service.core.framework.app.config.controller.AppConfigInit
 import com.proxy.service.core.framework.app.config.controller.ConfigurationManager
 import com.proxy.service.core.framework.app.config.controller.RefreshManager
+import com.proxy.service.core.framework.io.sp.CsSpManager
 import java.util.Locale
 
 /**
@@ -45,5 +48,9 @@ object LocaleImpl : BaseAction(), ILocale {
 
         ConfigurationManager.applyConfiguration(context)
         RefreshManager.refreshNow()
+
+        CsSpManager.name(AppConfigConstants.APP_CONFIG_SP_NAME)
+            .put(AppConfigConstants.APP_CONFIG_LOCALE, false)
+        AppConfigInit.finish()
     }
 }

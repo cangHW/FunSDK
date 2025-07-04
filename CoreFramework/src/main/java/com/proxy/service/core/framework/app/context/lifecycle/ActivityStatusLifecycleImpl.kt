@@ -3,13 +3,16 @@ package com.proxy.service.core.framework.app.context.lifecycle
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.collections.base.IMap
 import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
 import com.proxy.service.core.framework.collections.CsExcellentSet
 import com.proxy.service.core.framework.collections.base.ISet
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.util.WeakHashMap
 
 /**
  * @author: cangHX
@@ -19,12 +22,15 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     companion object {
+        private const val TAG = "${CoreConfig.TAG}Activity"
         private val mInstance by lazy { ActivityStatusLifecycleImpl() }
 
         fun getInstance(): ActivityStatusLifecycleImpl {
             return mInstance
         }
     }
+
+    private val timeMap = WeakHashMap<Any, Long>()
 
     private val globalLifecycleSync: ISet<AbstractActivityLifecycle> = CsExcellentSet()
     private val globalLifecycleAsync: ISet<AbstractActivityLifecycle> = CsExcellentSet()
@@ -62,6 +68,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnCreate  ************************
     override fun onActivityPreCreated(activity: Activity, savedInstanceState: Bundle?) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onCreated start $activity, $savedInstanceState")
         forEach(activity) {
             it.onActivityPreCreated(activity, savedInstanceState)
         }
@@ -74,6 +82,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostCreated(activity: Activity, savedInstanceState: Bundle?) {
+        val elapsedTime = timeMap.get(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onCreated end. $elapsedTime, $activity, $savedInstanceState")
         forEach(activity) {
             it.onActivityPostCreated(activity, savedInstanceState)
         }
@@ -82,6 +94,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnStart  ************************
     override fun onActivityPreStarted(activity: Activity) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onStarted start $activity")
         forEach(activity) {
             it.onActivityPreStarted(activity)
         }
@@ -94,6 +108,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostStarted(activity: Activity) {
+        val elapsedTime = timeMap.get(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onStarted end. $elapsedTime, $activity")
         forEach(activity) {
             it.onActivityPostStarted(activity)
         }
@@ -102,6 +120,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnResume  ************************
     override fun onActivityPreResumed(activity: Activity) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onResumed start $activity")
         forEach(activity) {
             it.onActivityPreResumed(activity)
         }
@@ -114,6 +134,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostResumed(activity: Activity) {
+        val elapsedTime = timeMap.get(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onResumed end. $elapsedTime, $activity")
         forEach(activity) {
             it.onActivityPostResumed(activity)
         }
@@ -122,6 +146,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnPause  ************************
     override fun onActivityPrePaused(activity: Activity) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onPaused start $activity")
         forEach(activity) {
             it.onActivityPrePaused(activity)
         }
@@ -134,6 +160,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostPaused(activity: Activity) {
+        val elapsedTime = timeMap.get(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onPaused end. $elapsedTime, $activity")
         forEach(activity) {
             it.onActivityPostPaused(activity)
         }
@@ -142,6 +172,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnStop  ************************
     override fun onActivityPreStopped(activity: Activity) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onStopped start $activity")
         forEach(activity) {
             it.onActivityPreStopped(activity)
         }
@@ -154,6 +186,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostStopped(activity: Activity) {
+        val elapsedTime = timeMap.get(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onStopped end. $elapsedTime, $activity")
         forEach(activity) {
             it.onActivityPostStopped(activity)
         }
@@ -162,6 +198,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnSaveInstanceState  ************************
     override fun onActivityPreSaveInstanceState(activity: Activity, outState: Bundle) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onSaveInstanceState start $activity, $outState")
         forEach(activity) {
             it.onActivityPreSaveInstanceState(activity, outState)
         }
@@ -174,6 +212,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostSaveInstanceState(activity: Activity, outState: Bundle) {
+        val elapsedTime = timeMap.remove(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onSaveInstanceState end. $elapsedTime, $activity, $outState")
         forEach(activity) {
             it.onActivityPostSaveInstanceState(activity, outState)
         }
@@ -182,6 +224,8 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     // *****************  OnDestroy  ************************
     override fun onActivityPreDestroyed(activity: Activity) {
+        timeMap.set(activity, System.currentTimeMillis())
+        CsLogger.tag(TAG).d("onDestroyed start $activity")
         forEach(activity) {
             it.onActivityPreDestroyed(activity)
         }
@@ -194,6 +238,10 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPostDestroyed(activity: Activity) {
+        val elapsedTime = timeMap.remove(activity)?.let {
+            "耗时: ${System.currentTimeMillis() - it}ms"
+        }
+        CsLogger.tag(TAG).d("onDestroyed end. $elapsedTime, $activity")
         forEach(activity) {
             it.onActivityPostDestroyed(activity)
         }

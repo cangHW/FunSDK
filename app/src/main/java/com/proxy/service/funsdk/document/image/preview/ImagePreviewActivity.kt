@@ -45,7 +45,6 @@ class ImagePreviewActivity : AppCompatActivity() {
         }
     }
 
-    private val lockRectF = RectF(0f, 0f, 0f, 0f)
     private var binding: ActivityDocumentImagePreviewBinding? = null
 
     private var service: ImageService? = null
@@ -66,33 +65,29 @@ class ImagePreviewActivity : AppCompatActivity() {
                     binding?.imageView?.visibility = View.VISIBLE
                     binding?.pagerView?.visibility = View.GONE
                     binding?.imageView?.let {
-                        it.post {
-                            normalLoad(it, it.width.toFloat(), it.height.toFloat())
-                        }
+                        normalLoad(it)
                     }
                 } else if (binding?.viewPager?.isChecked == true) {
                     binding?.pagerView?.visibility = View.VISIBLE
                     binding?.imageView?.visibility = View.GONE
                     binding?.pagerView?.let {
-                        it.post {
-                            pagerLoad(it, it.width.toFloat(), it.height.toFloat())
-                        }
+                        pagerLoad(it)
                     }
                 }
             }
         }
     }
 
-    private fun normalLoad(layout: AppCompatImageView, width: Float, height: Float) {
-        controller = createPreviewOption(width, height)?.into(layout)
+    private fun normalLoad(layout: AppCompatImageView) {
+        controller = createPreviewOption()?.into(layout)
     }
 
-    private fun pagerLoad(view: ViewPager2, width: Float, height: Float) {
-        val adapter = PreviewAdapter(this, width, height)
+    private fun pagerLoad(view: ViewPager2) {
+        val adapter = PreviewAdapter(this)
         view.adapter = adapter
     }
 
-    private fun createPreviewOption(width: Float, height: Float): IOption? {
+    private fun createPreviewOption(): IOption? {
         val option = service?.createPreviewLoader(this)
             ?.loadRes(R.drawable.crop)
 
@@ -102,14 +97,10 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         if (binding?.lockRect?.isChecked == true) {
             val springBack = binding?.notSpringBack?.isChecked != true
-            lockRectF.set(0f, 0f, width, height)
-//            lockRectF.set(300f, 300f, 800f, 800f)
             if (binding?.lockRectIsCanMove?.isChecked == true) {
-//                option?.setLockSizeWithMovable(width, height, springBack)
-                option?.setLockRectWithMovable(lockRectF, springBack)
+                option?.setLockViewWithMovable(springBack)
             } else {
-//                option?.setLockSizeWithImmovable(width, height, springBack)
-                option?.setLockRectWithImmovable(lockRectF, springBack)
+                option?.setLockViewWithImmovable(springBack)
             }
         }
 
@@ -143,16 +134,14 @@ class ImagePreviewActivity : AppCompatActivity() {
             paint.color = Color.RED
             paint.strokeWidth = 10f
             paint.style = Paint.Style.STROKE
-            canvas.drawRect(lockRectF, paint)
+            canvas.drawRect(RectF(0f, 0f, width.toFloat(), height.toFloat()), paint)
         }
     }
 
 
     private class PreviewViewHolder(
         itemView: View,
-        private val activity: ImagePreviewActivity,
-        private val width: Float,
-        private val height: Float
+        private val activity: ImagePreviewActivity
     ) : RecyclerView.ViewHolder(itemView) {
 
         private var binding: ActivityDocumentImagePreviewItemBinding? = null
@@ -163,21 +152,19 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         fun bind() {
             binding?.layout?.let {
-                activity.controller = activity.createPreviewOption(width, height)?.into(it)
+                activity.controller = activity.createPreviewOption()?.into(it)
             }
         }
     }
 
     private class PreviewAdapter(
-        private val activity: ImagePreviewActivity,
-        private val width: Float,
-        private val height: Float
+        private val activity: ImagePreviewActivity
     ) : RecyclerView.Adapter<PreviewViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviewViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.activity_document_image_preview_item, parent, false)
-            return PreviewViewHolder(view, activity, width, height)
+            return PreviewViewHolder(view, activity)
         }
 
         override fun getItemCount(): Int {

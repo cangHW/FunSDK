@@ -65,9 +65,9 @@ dependencies {
     implementation(libs.service.logfile)
     implementation(libs.service.apm)
 
-//    implementation(libs.service.document.image)
+    implementation(libs.service.document.image)
 //    implementation(libs.service.document.pdf)
-    implementation(project(":DocumentsSDK:Image:DocumentImageBase"))
+//    implementation(project(":DocumentsSDK:Image:DocumentImageBase"))
     implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
 }
 

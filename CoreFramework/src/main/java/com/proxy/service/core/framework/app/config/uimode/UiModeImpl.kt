@@ -2,10 +2,13 @@ package com.proxy.service.core.framework.app.config.uimode
 
 import android.content.Context
 import android.content.res.Configuration
+import com.proxy.service.core.framework.app.config.base.AppConfigConstants
 import com.proxy.service.core.framework.app.config.base.BaseAction
 import com.proxy.service.core.framework.app.config.base.IUiMode
+import com.proxy.service.core.framework.app.config.controller.AppConfigInit
 import com.proxy.service.core.framework.app.config.controller.ConfigurationManager
 import com.proxy.service.core.framework.app.config.controller.RefreshManager
+import com.proxy.service.core.framework.io.sp.CsSpManager
 
 /**
  * @author: cangHX
@@ -26,6 +29,10 @@ object UiModeImpl : BaseAction(), IUiMode {
 
         ConfigurationManager.applyConfiguration(context)
         RefreshManager.refreshNow()
+
+        CsSpManager.name(AppConfigConstants.APP_CONFIG_SP_NAME)
+            .put(AppConfigConstants.APP_CONFIG_UI_MODE, false)
+        AppConfigInit.finish()
     }
 
     override fun openNightMode(context: Context) {
