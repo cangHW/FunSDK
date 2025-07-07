@@ -7,7 +7,7 @@ import android.animation.ValueAnimator
  * @data: 2024/6/4 18:56
  * @desc:
  */
-enum class LottieRepeatModel constructor(val model: Int) {
+enum class LottieLoopModel(val model: Int) {
 
     /**
      * 播放完成后下次播放会正序播放

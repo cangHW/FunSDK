@@ -3,8 +3,8 @@ package com.proxy.service.imageloader.info.option.glide.transform
 import android.content.Context
 import android.graphics.Bitmap
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
-import com.proxy.service.imageloader.base.option.glide.BitmapPoolCallback
-import com.proxy.service.imageloader.base.option.glide.BitmapTransformation
+import com.proxy.service.imageloader.base.option.glide.format.BitmapPoolCallback
+import com.proxy.service.imageloader.base.option.glide.format.BitmapTransformation
 import java.security.MessageDigest
 
 /**
@@ -12,9 +12,9 @@ import java.security.MessageDigest
  * @data: 2024/5/18 14:01
  * @desc:
  */
-class OutTransformation(private val transform: BitmapTransformation) :
-    BaseBitmapTransformation(),
-    BitmapPoolCallback {
+class OutTransformation(
+    private val transform: BitmapTransformation
+) : BaseBitmapTransformation(), BitmapPoolCallback {
 
     private var pool: BitmapPool? = null
 
@@ -38,7 +38,7 @@ class OutTransformation(private val transform: BitmapTransformation) :
         transform.updateDiskCacheKey(messageDigest)
     }
 
-    override fun getBit(width: Int, height: Int, config: Bitmap.Config): Bitmap {
+    override fun getBitmap(width: Int, height: Int, config: Bitmap.Config): Bitmap {
         return pool!!.get(width, height, config)
     }
 

@@ -8,17 +8,21 @@ import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import java.security.MessageDigest
 
-
 /**
+ * 透明度转换器
+ *
  * @author: cangHX
  * @data: 2024/5/18 13:34
  * @desc:
  */
-class AlphaTransformation(private val alpha: Int) : BaseBitmapTransformation() {
+class AlphaTransformation(
+    private val alpha: Int
+) : BaseBitmapTransformation() {
 
     companion object {
         private const val VERSION = 1
-        private const val ID = "com.proxy.service.imageloader.info.option.glide.transform.AlphaTransformation.$VERSION"
+        private const val ID =
+            "com.proxy.service.imageloader.info.option.glide.transform.AlphaTransformation.$VERSION"
     }
 
     override fun transform(
@@ -28,8 +32,11 @@ class AlphaTransformation(private val alpha: Int) : BaseBitmapTransformation() {
         outWidth: Int,
         outHeight: Int
     ): Bitmap {
-        val result =
-            Bitmap.createBitmap(toTransform.width, toTransform.height, Bitmap.Config.ARGB_8888)
+        val result = Bitmap.createBitmap(
+            toTransform.width,
+            toTransform.height,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(result)
         val paint = Paint()
         paint.alpha = alpha

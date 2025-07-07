@@ -15,7 +15,7 @@ import com.proxy.service.imageloader.info.type.type.BaseSourceType
  * @data: 2024/5/16 11:13
  * @desc:
  */
-class GlideInfo<R> : BaseInfo() {
+open class GlideInfo<R> : BaseInfo() {
 
     var sourceType: BaseSourceType<R>? = null
     var sourceData: BaseGlideSourceData? = null
@@ -23,7 +23,7 @@ class GlideInfo<R> : BaseInfo() {
     var requestOptions: RequestOptions = RequestOptions()
     var transformList: ArrayList<Transformation<Bitmap>> = ArrayList()
 
-    fun getRequestBuilder(): RequestBuilder<R>? {
+    open fun getRequestBuilder(): RequestBuilder<R>? {
         var builder = sourceType?.load(getRequestManager())
         builder = sourceData?.load(builder)
 
@@ -35,7 +35,7 @@ class GlideInfo<R> : BaseInfo() {
         return builder
     }
 
-    private fun getRequestManager(): RequestManager? {
+    protected fun getRequestManager(): RequestManager? {
         activity?.let {
             return Glide.with(it)
         }

@@ -58,14 +58,14 @@ ext {
             // 图片库
             ImageLoaderBase: [
                     artifact          : "Service-Imageloader",
-                    version           : "0.2.2",
+                    version           : "0.2.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ImageLoaderInfo: [
                     artifact          : "Service-Imageloader-Info",
-                    version           : "0.2.2",
+                    version           : "0.2.3",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

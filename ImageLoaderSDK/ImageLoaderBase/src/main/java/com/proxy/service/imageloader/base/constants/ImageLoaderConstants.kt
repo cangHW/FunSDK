@@ -7,4 +7,7 @@ package com.proxy.service.imageloader.base.constants
  */
 object ImageLoaderConstants {
     const val TAG = "ImageLoader"
+
+    const val IS_AUTO_PLAY = true
+
 }

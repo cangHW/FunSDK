@@ -18,7 +18,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.proxy.service.api.CloudSystem
-import com.proxy.service.core.service.document.CsDocumentImage
 import com.proxy.service.document.image.base.ImageService
 import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnDrawCallback
@@ -89,7 +88,7 @@ class ImagePreviewActivity : AppCompatActivity() {
 
     private fun createPreviewOption(): IOption? {
         val option = service?.createPreviewLoader(this)
-            ?.loadRes(R.drawable.crop)
+            ?.loadRes(R.drawable.jpg)
 
         if (binding?.doubleClickScale?.isChecked == true) {
             option?.setDoubleClickCallback(doubleClickCallback)

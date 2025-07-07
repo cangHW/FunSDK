@@ -8,40 +8,129 @@
     <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:flexWrap="wrap">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/load_net"
-            style="@style/button_style"
-            android:text="加载网络图片" />
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_from_net_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="网络图片" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/load_res"
-            style="@style/button_style"
-            android:text="加载 res 图片" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/load_lottie"
-            style="@style/button_style"
-            android:text="加载 lottie 图片" />
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_from_res"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="资源图片" />
 
     </com.google.android.flexbox.FlexboxLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:flexWrap="wrap">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_jpg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="jpg" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_gif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="gif" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_png1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="png 静图" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_webp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="webp 静图" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_webp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="webp 动图" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/is_lottie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="lottie" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/load"
+        style="@style/button_style"
+        android:layout_width="match_parent"
+        android:text="加载图片" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true" />
 
         <FrameLayout
             android:id="@+id/layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>

@@ -1,8 +1,7 @@
-package com.proxy.service.imageloader.base.option.glide
+package com.proxy.service.imageloader.base.option.glide.format
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.proxy.service.imageloader.base.option.glide.BitmapPoolCallback
 import java.security.MessageDigest
 
 /**
@@ -26,7 +25,7 @@ abstract class BitmapTransformation {
     }
 
     protected fun getBitmapFromPool(width: Int, height: Int, config: Bitmap.Config): Bitmap {
-        return callback!!.getBit(width, height, config)
+        return callback!!.getBitmap(width, height, config)
     }
 
     abstract fun updateDiskCacheKey(messageDigest: MessageDigest)

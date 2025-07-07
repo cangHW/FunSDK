@@ -11,6 +11,8 @@ import kotlin.math.abs
 
 
 /**
+ * 高斯模糊转换器
+ *
  * @author: cangHX
  * @data: 2024/5/18 11:30
  * @desc:

@@ -1,4 +1,4 @@
-package com.proxy.service.imageloader.base.option.glide
+package com.proxy.service.imageloader.base.option.glide.format
 
 /**
  * @author: cangHX

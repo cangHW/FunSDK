@@ -5,8 +5,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieComposition
+import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.loader.lottie.LottieController
-import com.proxy.service.imageloader.base.option.lottie.LottieRepeatModel
+import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
 import com.proxy.service.imageloader.info.R
@@ -23,9 +24,9 @@ class LottieInfo : BaseInfo() {
 
     var sourceData: BaseLottieSourceData? = null
 
-    var isAutoPlay: Boolean = true
-    var count: Int = 1
-    var model: LottieRepeatModel = LottieRepeatModel.RESTART
+    var isAutoPlay: Boolean = ImageLoaderConstants.IS_AUTO_PLAY
+    var loopCount: Int = 1
+    var loopModel: LottieLoopModel = LottieLoopModel.RESTART
     var speed: Float = 1f
 
     private var listener: Animator.AnimatorListener = LottieAnimatorListener(this)
@@ -87,8 +88,8 @@ class LottieInfo : BaseInfo() {
             return
         }
         val source = view.getTag(R.id.cs_image_load_lottie_view_tag) as? LottieInfo? ?: return
-        view.repeatCount = source.count
-        view.repeatMode = source.model.model
+        view.repeatCount = source.loopCount
+        view.repeatMode = source.loopModel.model
         checkPlay(view, controller)
     }
 
@@ -122,13 +123,13 @@ class LottieInfo : BaseInfo() {
     }
 
     override fun hashCode(): Int {
-        val content = "$isAutoPlay-$count-${model.model}"
+        val content = "$isAutoPlay-$loopCount-${loopModel.model}"
         return content.hashCode()
     }
 
     override fun equals(other: Any?): Boolean {
         if (other is LottieInfo) {
-            return isAutoPlay == other.isAutoPlay && count == other.count && model == other.model
+            return isAutoPlay == other.isAutoPlay && loopCount == other.loopCount && loopModel == other.loopModel
         }
         return super.equals(other)
     }

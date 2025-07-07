@@ -50,7 +50,7 @@ class ImageCropActivity : AppCompatActivity() {
         service = CloudSystem.getService(ImageService::class.java)
         binding?.layout?.let {
             controller = service?.createCropLoader(this)
-                ?.loadRes(R.drawable.crop)
+                ?.loadRes(R.drawable.jpg)
 //                ?.setCropFrameRectToFitBitmap()
                 ?.setCropFrameSize(600f, 300f)
 //                ?.setCropFrameRect(RectF(1060f, 20f, 1100f, 100f))

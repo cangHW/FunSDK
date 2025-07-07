@@ -13,6 +13,8 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import java.security.MessageDigest
 
 /**
+ * 水印遮罩转换器
+ *
  * @author: cangHX
  * @data: 2024/5/18 11:57
  * @desc:
@@ -28,7 +30,6 @@ class MaskTransformation(@DrawableRes val drawableId: Int) :
     private val paint = Paint()
 
     init {
-
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     }
 

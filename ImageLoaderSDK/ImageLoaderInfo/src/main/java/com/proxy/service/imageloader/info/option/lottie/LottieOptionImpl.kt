@@ -2,7 +2,7 @@ package com.proxy.service.imageloader.info.option.lottie
 
 import android.animation.ValueAnimator
 import com.proxy.service.imageloader.base.option.lottie.ILottieOption
-import com.proxy.service.imageloader.base.option.lottie.LottieRepeatModel
+import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
 import com.proxy.service.imageloader.info.info.lottie.LottieInfo
@@ -20,17 +20,17 @@ class LottieOptionImpl(private val info: LottieInfo) : LottieLoaderImpl(info),
         return this
     }
 
-    override fun setRepeatCount(count: Int): ILottieOption {
+    override fun setLoopCount(count: Int): ILottieOption {
         if (count <= 0) {
-            info.count = ValueAnimator.INFINITE
+            info.loopCount = ValueAnimator.INFINITE
         } else {
-            info.count = count
+            info.loopCount = count
         }
         return this
     }
 
-    override fun setRepeatModel(model: LottieRepeatModel): ILottieOption {
-        info.model = model
+    override fun setLoopModel(model: LottieLoopModel): ILottieOption {
+        info.loopModel = model
         return this
     }
 

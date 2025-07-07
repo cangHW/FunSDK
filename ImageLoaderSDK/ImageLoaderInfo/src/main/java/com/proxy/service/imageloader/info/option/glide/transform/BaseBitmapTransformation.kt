@@ -42,7 +42,7 @@ abstract class BaseBitmapTransformation : Transformation<Bitmap> {
             targetHeight
         )
 
-        val result = if ((toTransform == transformed)) {
+        val result = if (toTransform == transformed) {
             resource
         } else {
             (BitmapResource.obtain(transformed, bitmapPool))!!

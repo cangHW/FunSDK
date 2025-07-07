@@ -5,7 +5,7 @@ import android.widget.ImageView
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.proxy.service.imageloader.base.loader.glide.IGlideLoader
-import com.proxy.service.imageloader.base.target.ITarget
+import com.proxy.service.imageloader.base.target.CsCustomTarget
 import com.proxy.service.imageloader.info.info.glide.GlideInfo
 
 /**
@@ -13,14 +13,14 @@ import com.proxy.service.imageloader.info.info.glide.GlideInfo
  * @data: 2024/5/16 20:51
  * @desc:
  */
-open class GlideLoaderImpl<R> constructor(private val info: GlideInfo<R>) : IGlideLoader<R> {
+open class GlideLoaderImpl<R>(private val info: GlideInfo<R>) : IGlideLoader<R> {
     override fun into(imageView: ImageView?) {
         imageView?.let {
             info.getRequestBuilder()?.into(it)
         }
     }
 
-    override fun into(target: ITarget<R>?) {
+    override fun into(target: CsCustomTarget<R>?) {
         target?.let {
             info.getRequestBuilder()?.into(object : CustomTarget<R>() {
                 override fun onStart() {

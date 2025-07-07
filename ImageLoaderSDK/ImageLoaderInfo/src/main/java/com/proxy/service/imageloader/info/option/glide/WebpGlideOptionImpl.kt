@@ -10,11 +10,13 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
-import com.proxy.service.imageloader.base.option.glide.IGlideOption
+import com.proxy.service.imageloader.base.drawable.CsWebpDrawable
+import com.proxy.service.imageloader.base.option.glide.IWebpGlideOption
+import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallback
 import com.proxy.service.imageloader.base.option.glide.format.BitmapTransformation
 import com.proxy.service.imageloader.base.option.glide.format.GlideDecodeFormat
-import com.proxy.service.imageloader.info.info.glide.GlideInfo
-import com.proxy.service.imageloader.info.loader.glide.GlideLoaderImpl
+import com.proxy.service.imageloader.info.info.glide.WebpInfo
+import com.proxy.service.imageloader.info.loader.glide.webp.WebpLoaderImpl
 import com.proxy.service.imageloader.info.option.glide.transform.AlphaTransformation
 import com.proxy.service.imageloader.info.option.glide.transform.BlurTransformation
 import com.proxy.service.imageloader.info.option.glide.transform.ColorFilterTransformation
@@ -28,11 +30,30 @@ import com.proxy.service.imageloader.info.option.glide.transform.SaturationTrans
  * @data: 2024/5/16 09:55
  * @desc:
  */
-class GlideOptionImpl<R>(
-    private val info: GlideInfo<R>
-) : GlideLoaderImpl<R>(info), IGlideOption<R> {
+class WebpGlideOptionImpl(
+    private val info: WebpInfo
+) : WebpLoaderImpl(info), IWebpGlideOption {
 
-    override fun size(width: Int, height: Int): IGlideOption<R> {
+    override fun setAutoPlay(isAutoPlay: Boolean): IWebpGlideOption {
+        info.isAutoPlay = isAutoPlay
+        return this
+    }
+
+    override fun setLoopCount(count: Int): IWebpGlideOption {
+        info.loopCount = if (count < -1) {
+            -1
+        } else {
+            count
+        }
+        return this
+    }
+
+    override fun setAnimationCallback(callback: AnimationCallback<CsWebpDrawable>): IWebpGlideOption {
+        info.animationCallback = callback
+        return this
+    }
+
+    override fun size(width: Int, height: Int): IWebpGlideOption {
         info.requestOptions = info.requestOptions
             .override(
                 width.coerceAtLeast(0),
@@ -41,18 +62,18 @@ class GlideOptionImpl<R>(
         return this
     }
 
-    override fun placeholder(placeholderId: Int): IGlideOption<R> {
+    override fun placeholder(placeholderId: Int): IWebpGlideOption {
         info.requestOptions = info.requestOptions
             .placeholder(placeholderId)
         return this
     }
 
-    override fun error(errorId: Int): IGlideOption<R> {
+    override fun error(errorId: Int): IWebpGlideOption {
         info.requestOptions = info.requestOptions.error(errorId)
         return this
     }
 
-    override fun format(format: GlideDecodeFormat): IGlideOption<R> {
+    override fun format(format: GlideDecodeFormat): IWebpGlideOption {
         if (format == GlideDecodeFormat.ARGB_8888) {
             info.requestOptions = info.requestOptions
                 .format(DecodeFormat.PREFER_ARGB_8888)
@@ -63,37 +84,37 @@ class GlideOptionImpl<R>(
         return this
     }
 
-    override fun centerCrop(): IGlideOption<R> {
+    override fun centerCrop(): IWebpGlideOption {
         val transform = CenterCrop()
         info.transformList.add(transform)
         return this
     }
 
-    override fun centerInside(): IGlideOption<R> {
+    override fun centerInside(): IWebpGlideOption {
         val transform = CenterInside()
         info.transformList.add(transform)
         return this
     }
 
-    override fun fitCenter(): IGlideOption<R> {
+    override fun fitCenter(): IWebpGlideOption {
         val transform = FitCenter()
         info.transformList.add(transform)
         return this
     }
 
-    override fun fitXY(): IGlideOption<R> {
+    override fun fitXY(): IWebpGlideOption {
         val transform = FitXYTransformation()
         info.transformList.add(transform)
         return this
     }
 
-    override fun circleCrop(): IGlideOption<R> {
+    override fun circleCrop(): IWebpGlideOption {
         val transform = CircleCrop()
         info.transformList.add(transform)
         return this
     }
 
-    override fun roundedCorners(roundingRadiusPx: Int): IGlideOption<R> {
+    override fun roundedCorners(roundingRadiusPx: Int): IWebpGlideOption {
         if (roundingRadiusPx > 0) {
             val transform = RoundedCorners(roundingRadiusPx)
             info.transformList.add(transform)
@@ -108,7 +129,7 @@ class GlideOptionImpl<R>(
         trRoundingRadiusPx: Float,
         brRoundingRadiusPx: Float,
         blRoundingRadiusPx: Float
-    ): IGlideOption<R> {
+    ): IWebpGlideOption {
         val transform = GranularRoundedCorners(
             tfRoundingRadiusPx.coerceAtLeast(0f),
             trRoundingRadiusPx.coerceAtLeast(0f),
@@ -120,7 +141,7 @@ class GlideOptionImpl<R>(
     }
 
     @SuppressLint("CheckResult")
-    override fun blur(radius: Int, scaling: Int): IGlideOption<R> {
+    override fun blur(radius: Int, scaling: Int): IWebpGlideOption {
         val transform = BlurTransformation(
             radius.coerceAtLeast(0),
             scaling.coerceAtLeast(0)
@@ -129,13 +150,13 @@ class GlideOptionImpl<R>(
         return this
     }
 
-    override fun colorFilter(color: Int): IGlideOption<R> {
+    override fun colorFilter(color: Int): IWebpGlideOption {
         val transform = ColorFilterTransformation(color)
         info.transformList.add(transform)
         return this
     }
 
-    override fun saturation(sat: Float): IGlideOption<R> {
+    override fun saturation(sat: Float): IWebpGlideOption {
         val saturation = if (sat < 0) {
             0f
         } else {
@@ -146,19 +167,19 @@ class GlideOptionImpl<R>(
         return this
     }
 
-    override fun mask(drawableId: Int): IGlideOption<R> {
+    override fun mask(drawableId: Int): IWebpGlideOption {
         val transform = MaskTransformation(drawableId)
         info.transformList.add(transform)
         return this
     }
 
-    override fun alpha(alpha: Int): IGlideOption<R> {
+    override fun alpha(alpha: Int): IWebpGlideOption {
         val transform = AlphaTransformation(alpha.coerceAtLeast(0).coerceAtMost(255))
         info.transformList.add(transform)
         return this
     }
 
-    override fun addTransform(bitmapTransformation: BitmapTransformation): IGlideOption<R> {
+    override fun addTransform(bitmapTransformation: BitmapTransformation): IWebpGlideOption {
         val transform = OutTransformation(bitmapTransformation)
         info.transformList.add(transform)
         return this

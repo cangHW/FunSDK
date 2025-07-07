@@ -109,7 +109,7 @@ class SecurityActivity : BaseActivity<ActivityFrameworkSecurityBinding>() {
                     CsTask.ioThread()?.call(object : ICallable<String> {
                         override fun accept(): String {
                             val result =
-                                CsMd5Utils.getMD5(resources.openRawResource(R.raw.test_loading))
+                                CsMd5Utils.getMD5(resources.openRawResource(R.raw.lottie_loading))
                             binding?.content?.addData("md5", "src=R.raw.test_loading, md5=$result")
                             return ""
                         }

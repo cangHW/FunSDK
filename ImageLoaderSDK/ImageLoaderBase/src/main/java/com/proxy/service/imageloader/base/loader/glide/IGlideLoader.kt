@@ -1,7 +1,7 @@
 package com.proxy.service.imageloader.base.loader.glide
 
 import android.widget.ImageView
-import com.proxy.service.imageloader.base.target.ITarget
+import com.proxy.service.imageloader.base.target.CsCustomTarget
 
 /**
  * 图片加载器
@@ -20,6 +20,6 @@ interface IGlideLoader<R> {
     /**
      * 加载资源到 imageview
      * */
-    fun into(target: ITarget<R>?)
+    fun into(target: CsCustomTarget<R>?)
 
 }

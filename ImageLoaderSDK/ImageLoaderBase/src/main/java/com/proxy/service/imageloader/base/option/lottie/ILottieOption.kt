@@ -1,5 +1,6 @@
 package com.proxy.service.imageloader.base.option.lottie
 
+import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.loader.lottie.ILottieLoader
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
@@ -14,7 +15,7 @@ interface ILottieOption : ILottieLoader {
     /**
      * 设置是否自动播放
      *
-     * @param isAutoPlay 是否自动播放
+     * @param isAutoPlay 是否自动播放, 默认为 [ImageLoaderConstants.IS_AUTO_PLAY]
      * */
     fun setAutoPlay(isAutoPlay: Boolean): ILottieOption
 
@@ -23,12 +24,12 @@ interface ILottieOption : ILottieLoader {
      *
      * @param count 播放次数，如果小于等于 0 则无限循环播放
      * */
-    fun setRepeatCount(count: Int): ILottieOption
+    fun setLoopCount(count: Int): ILottieOption
 
     /**
      * 设置播放模式
      * */
-    fun setRepeatModel(model: LottieRepeatModel): ILottieOption
+    fun setLoopModel(model: LottieLoopModel): ILottieOption
 
     /**
      * 设置动画播放速度

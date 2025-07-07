@@ -41,6 +41,6 @@ class FitXYTransformation : BaseBitmapTransformation() {
     }
 
     override fun updateDiskCacheKey(messageDigest: MessageDigest) {
-        messageDigest.update((ID).toByteArray(Key.CHARSET))
+        messageDigest.update(ID.toByteArray(Key.CHARSET))
     }
 }

@@ -69,6 +69,10 @@ dependencies {
 //    implementation(libs.service.document.pdf)
 //    implementation(project(":DocumentsSDK:Image:DocumentImageBase"))
     implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
+
+
+//    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
+
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)
