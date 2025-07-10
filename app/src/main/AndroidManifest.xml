@@ -55,7 +55,6 @@
         <activity android:name=".framework.func.MonitorActivity" />
         <activity android:name=".framework.func.SoundActivity" />
         <activity android:name=".framework.func.AppInfoActivity" />
-        <activity android:name=".framework.func.WorkActivity" />
         <activity android:name=".framework.func.AppConfigActivity" />
 
         <activity android:name=".permission.PermissionActivity" />

@@ -18,7 +18,6 @@ import com.proxy.service.funsdk.framework.func.ScreenActivity
 import com.proxy.service.funsdk.framework.func.SecurityActivity
 import com.proxy.service.funsdk.framework.func.SoundActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
-import com.proxy.service.funsdk.framework.func.WorkActivity
 
 /**
  * @author: cangHX
@@ -86,10 +85,6 @@ class FrameWorkActivity : AppCompatActivity() {
 
             R.id.sound -> {
                 SoundActivity.launch(this)
-            }
-
-            R.id.work -> {
-                WorkActivity.launch(this)
             }
         }
     }
