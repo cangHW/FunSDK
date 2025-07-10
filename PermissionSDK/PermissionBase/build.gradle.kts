@@ -23,6 +23,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_permission_base_"
 }
 
 dependencies {

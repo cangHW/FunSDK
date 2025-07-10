@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.proxy.service.widget.info.statepage.CsStatePageManager
+import com.proxy.service.widget.info.statepage.config.IStatePageController
 import java.lang.reflect.ParameterizedType
 
 /**
@@ -15,11 +17,16 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     protected var binding: T? = null
+    protected var statePage: IStatePageController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = inflateLayout()
-        setContentView(binding?.root)
+
+        binding?.let {
+            statePage = CsStatePageManager.inflate(it.root)
+            setContentView(statePage?.getRootView())
+        }
 
         initView()
     }

@@ -36,6 +36,9 @@ upArray=(
 #  ":DocumentsSDK:Image:DocumentImageBase"
 #  ":DocumentsSDK:Pdf:DocumentPdfInfo"
 #  ":DocumentsSDK:Pdf:DocumentPdfBase"
+
+    # 视图 UI 库
+  ":WidgetSDK:WidgetInfo"
 )
 
 type_params="r"

@@ -44,7 +44,7 @@ android {
         }
     }
 
-    resourcePrefix = "cs_document_pdf_"
+    resourcePrefix = "cs_document_pdf_info_"
 }
 
 dependencies {

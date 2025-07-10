@@ -23,6 +23,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_thread_base_"
 }
 
 dependencies {

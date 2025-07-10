@@ -36,7 +36,7 @@ class TempView : FrameLayout {
 
     private fun init(context: Context) {
         val rootView =
-            LayoutInflater.from(context).inflate(R.layout.cs_document_pdf_temp_layout, this, false)
+            LayoutInflater.from(context).inflate(R.layout.cs_document_pdf_info_temp_layout, this, false)
         val vp = rootView.findViewById<ViewPager2>(R.id.vp2)
         adapter = TempAdapter()
         vp.adapter = adapter
@@ -61,7 +61,7 @@ class TempView : FrameLayout {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TempViewHolder {
             val rootView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.cs_document_pdf_temp_item, parent, false)
+                .inflate(R.layout.cs_document_pdf_info_temp_item, parent, false)
             return TempViewHolder(rootView)
         }
 

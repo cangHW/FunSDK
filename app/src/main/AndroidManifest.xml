@@ -66,6 +66,7 @@
         <activity android:name=".document.image.preview.ImagePreviewActivity" />
         <activity android:name=".document.image.crop.ImageCropActivity" />
 
+        <activity android:name=".widget.WidgetActivity" />
     </application>
 
     <queries>

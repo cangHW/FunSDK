@@ -33,7 +33,7 @@ class TempSurfaceView : FrameLayout {
 
     private fun init(context: Context) {
         val rootView =
-            LayoutInflater.from(context).inflate(R.layout.cs_document_pdf_temp_surface_layout, null, false)
+            LayoutInflater.from(context).inflate(R.layout.cs_document_pdf_info_temp_surface_layout, null, false)
 
         val sfv = rootView.findViewById<SurfaceView>(R.id.sfv)
         sfv.holder.addCallback(object : SurfaceHolder.Callback {

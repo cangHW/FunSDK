@@ -30,6 +30,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_apm_"
 }
 
 dependencies {

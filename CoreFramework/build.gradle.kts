@@ -30,6 +30,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_core_fw_"
 }
 
 dependencies {

@@ -23,6 +23,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_apihttp_base_"
 }
 
 dependencies {

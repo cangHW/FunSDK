@@ -15,6 +15,7 @@ import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
 import com.proxy.service.funsdk.permission.PermissionActivity
 import com.proxy.service.funsdk.threadpool.ThreadPoolActivity
 import com.proxy.service.funsdk.webview.WebViewActivity
+import com.proxy.service.funsdk.widget.WidgetActivity
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -65,6 +66,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.document -> {
                 DocumentActivity.launch(this)
+            }
+
+            R.id.widget -> {
+                WidgetActivity.launch(this)
             }
         }
     }

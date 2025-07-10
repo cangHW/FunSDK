@@ -30,6 +30,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_thread_info_"
 }
 
 dependencies {
