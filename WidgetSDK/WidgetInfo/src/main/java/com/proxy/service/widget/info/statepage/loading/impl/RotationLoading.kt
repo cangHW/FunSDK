@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import androidx.appcompat.widget.AppCompatImageView
 import com.proxy.service.widget.info.databinding.CsWidgetStatePageLoadingRotationBinding
-import com.proxy.service.widget.info.statepage.config.PageConfig
 import com.proxy.service.widget.info.statepage.loading.LoadingController
 
 /**
@@ -21,6 +20,7 @@ class RotationLoading : LoadingController {
 
     companion object {
         private const val BG_START_COLOR = "#00000000"
+        private const val BG_END_COLOR = "#33000000"
     }
 
     private var binding: CsWidgetStatePageLoadingRotationBinding? = null
@@ -34,7 +34,6 @@ class RotationLoading : LoadingController {
             viewGroup,
             true
         )
-        binding?.root?.setOnClickListener {  }
         hide()
     }
 
@@ -70,7 +69,7 @@ class RotationLoading : LoadingController {
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofArgb(
                 Color.parseColor(BG_START_COLOR),
-                Color.parseColor(PageConfig.background_loading)
+                Color.parseColor(BG_END_COLOR)
             )
             valueAnimator?.duration = 180
             valueAnimator?.addUpdateListener { animator ->

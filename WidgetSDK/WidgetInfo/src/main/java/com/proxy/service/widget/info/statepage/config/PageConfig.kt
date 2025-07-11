@@ -9,7 +9,4 @@ object PageConfig {
 
     const val DEFAULT: String = "default_page"
 
-    var background_loading = "#33000000"
-    var background_empty = "#ffffff"
-    var background_error = "#ffffff"
 }

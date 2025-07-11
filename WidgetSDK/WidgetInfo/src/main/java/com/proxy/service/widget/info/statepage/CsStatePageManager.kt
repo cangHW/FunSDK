@@ -5,7 +5,6 @@ import com.proxy.service.widget.info.statepage.config.EmptyPageType
 import com.proxy.service.widget.info.statepage.config.ErrorPageType
 import com.proxy.service.widget.info.statepage.config.IStatePageController
 import com.proxy.service.widget.info.statepage.config.LoadingPageType
-import com.proxy.service.widget.info.statepage.config.PageConfig
 import com.proxy.service.widget.info.statepage.empty.EmptyController
 import com.proxy.service.widget.info.statepage.error.ErrorController
 import com.proxy.service.widget.info.statepage.loading.LoadingController
@@ -18,27 +17,6 @@ import com.proxy.service.widget.info.statepage.loading.LoadingController
  * @desc:
  */
 object CsStatePageManager {
-
-    /**
-     * 设置 loading 页面背景色, 默认颜色 [PageConfig.background_loading]
-     * */
-    fun setBackgroundColorForLoading(color: String) {
-        PageConfig.background_loading = color
-    }
-
-    /**
-     * 设置 空数据 页面背景色, 默认颜色 [PageConfig.background_empty]
-     * */
-    fun setBackgroundColorForEmpty(color: String) {
-        PageConfig.background_empty = color
-    }
-
-    /**
-     * 设置 错误 页面背景色, 默认颜色 [PageConfig.background_error]
-     * */
-    fun setBackgroundColorForError(color: String) {
-        PageConfig.background_error = color
-    }
 
     /**
      * 注册全局 loading 页面

@@ -1,11 +1,9 @@
 package com.proxy.service.widget.info.statepage.empty.impl
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.proxy.service.widget.info.databinding.CsWidgetStatePageEmptyWithoutrefreshBinding
-import com.proxy.service.widget.info.statepage.config.PageConfig
 import com.proxy.service.widget.info.statepage.empty.EmptyController
 
 /**
@@ -24,7 +22,6 @@ class WithOutRefreshEmpty : EmptyController {
             true
         )
         binding?.root?.setOnClickListener { }
-        binding?.root?.setBackgroundColor(Color.parseColor(PageConfig.background_empty))
         hide()
     }
 

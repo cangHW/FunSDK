@@ -1,11 +1,9 @@
 package com.proxy.service.widget.info.statepage.error.impl
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.proxy.service.widget.info.databinding.CsWidgetStatePageErrorWithrefreshBinding
-import com.proxy.service.widget.info.statepage.config.PageConfig
 import com.proxy.service.widget.info.statepage.error.ErrorController
 
 /**
@@ -24,7 +22,6 @@ class WithRefreshError : ErrorController {
             true
         )
         binding?.root?.setOnClickListener { }
-        binding?.root?.setBackgroundColor(Color.parseColor(PageConfig.background_error))
         hide()
     }
 
