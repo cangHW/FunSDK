@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.system.net.controller
 
+import android.os.Looper
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -19,12 +20,16 @@ interface IController {
         const val TAG = "${CoreConfig.TAG}Net"
 
         fun runUiThread(runnable: Runnable) {
-            CsTask.mainThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    runnable.run()
-                    return ""
-                }
-            })?.start()
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                runnable.run()
+            } else {
+                CsTask.mainThread()?.call(object : ICallable<String> {
+                    override fun accept(): String {
+                        runnable.run()
+                        return ""
+                    }
+                })?.start()
+            }
         }
     }
 }

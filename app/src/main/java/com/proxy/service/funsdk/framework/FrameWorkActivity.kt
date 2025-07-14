@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkBinding
 import com.proxy.service.funsdk.framework.func.AppConfigActivity
 import com.proxy.service.funsdk.framework.func.AppInfoActivity
 import com.proxy.service.funsdk.framework.func.AppInstallActivity
@@ -17,6 +19,7 @@ import com.proxy.service.funsdk.framework.func.MonitorActivity
 import com.proxy.service.funsdk.framework.func.ScreenActivity
 import com.proxy.service.funsdk.framework.func.SecurityActivity
 import com.proxy.service.funsdk.framework.func.SoundActivity
+import com.proxy.service.funsdk.framework.func.SpanActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
 
 /**
@@ -24,7 +27,7 @@ import com.proxy.service.funsdk.framework.func.SystemPageActivity
  * @data: 2024/9/23 10:11
  * @desc:
  */
-class FrameWorkActivity : AppCompatActivity() {
+class FrameWorkActivity : BaseActivity<ActivityFrameworkBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -36,12 +39,7 @@ class FrameWorkActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework)
-    }
-
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.app_info -> {
                 AppInfoActivity.launch(this)
@@ -85,6 +83,10 @@ class FrameWorkActivity : AppCompatActivity() {
 
             R.id.sound -> {
                 SoundActivity.launch(this)
+            }
+
+            R.id.span -> {
+                SpanActivity.launch(this)
             }
         }
     }
