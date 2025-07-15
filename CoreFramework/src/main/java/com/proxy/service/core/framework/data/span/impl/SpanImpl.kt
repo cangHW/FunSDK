@@ -63,4 +63,9 @@ class SpanImpl : AbstractText(), IAppendBuilder {
         mBuilder.append(System.lineSeparator())
         return this
     }
+
+    override fun applyLast() {
+        super.applyLast()
+        this.mType = TYPE_NONE
+    }
 }

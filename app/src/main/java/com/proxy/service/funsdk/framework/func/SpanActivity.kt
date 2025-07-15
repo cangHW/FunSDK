@@ -6,7 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
+import android.widget.TextView
 import com.proxy.service.core.framework.data.span.CsSpanUtils
 import com.proxy.service.core.framework.data.span.enums.BlurUnit
 import com.proxy.service.core.framework.data.span.enums.ImageAlign
@@ -40,7 +40,7 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
         }
     }
 
-    private fun show(view: AppCompatTextView) {
+    private fun show(view: TextView) {
         CsSpanUtils.builder()
             .appendTxt("测试")
             .setItalic()
@@ -55,28 +55,35 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
             .setBold()
             .setTextColor(Color.BLUE)
             .setTextSize(60, TextSizeUnit.UNIT_SP)
-            .setUrl("http://www.baidu.com")
+            .setClick(object :View.OnClickListener{
+                override fun onClick(v: View?) {
+
+                }
+            })
             .setUnderline()
             .setBlur(10f, BlurUnit.OUTER)
 
-//            .appendLineEnd()
+            .appendSpace(0)
+            .setSpaceColor(Color.YELLOW)
+
+            .appendLineEnd()
 
             .appendImage(R.drawable.jpg)
-            .setImageAlign(ImageAlign.ALIGN_BASELINE)
-            .setImageSize(40, 40)
+            .setImageAlign(ImageAlign.ALIGN_TOP)
+            .setImageSize(300, 80, false)
 
             .appendTxt("结束")
             .setBackgroundColor(Color.WHITE)
             .setBold()
             .setTextSize(60, TextSizeUnit.UNIT_SP)
-//            .setSuperscript()
+            .setSuperscript()
 
             .appendTxt("结束2")
-//            .setBackgroundColor(Color.WHITE)
+            .setBackgroundColor(Color.WHITE)
             .setItalic()
             .setTextSize(60, TextSizeUnit.UNIT_SP)
-//            .setShadow(2f, 10f, 10f, Color.RED)
-//            .setSubscript()
+            .setShadow(2f, 10f, 10f, Color.RED)
+            .setSubscript()
 
             .createTo(view)
     }

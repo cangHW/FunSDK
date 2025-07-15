@@ -35,6 +35,10 @@ abstract class AbstractBase : IBaseBuilder {
     protected var flag = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
     protected var mType: Int = TYPE_NONE
 
+    override fun isCanClick(): Boolean {
+        return isHasClick
+    }
+
     override fun create(): SpannableStringBuilder {
         applyLast()
         return mBuilder
