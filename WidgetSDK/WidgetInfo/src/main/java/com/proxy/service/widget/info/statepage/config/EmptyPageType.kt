@@ -5,7 +5,7 @@ package com.proxy.service.widget.info.statepage.config
  * @data: 2025/7/9 20:17
  * @desc:
  */
-class EmptyPageType private constructor(val type: String) {
+class EmptyPageType private constructor(val key: String) {
 
     companion object {
         const val WITH_OUT_REFRESH = "${PageConfig.DEFAULT}_with_out_refresh"
@@ -23,9 +23,11 @@ class EmptyPageType private constructor(val type: String) {
 
         /**
          * 自定义效果
+         *
+         * @param key 唯一标识
          * */
-        fun buildPage(type: String): EmptyPageType {
-            return EmptyPageType(type)
+        fun buildPage(key: String): EmptyPageType {
+            return EmptyPageType(key)
         }
     }
 

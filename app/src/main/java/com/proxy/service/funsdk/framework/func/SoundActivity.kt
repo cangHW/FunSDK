@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.system.sound.CsSoundUtils
 import com.proxy.service.core.framework.system.sound.info.SoundConfig
@@ -29,6 +30,10 @@ class SoundActivity : BaseActivity<ActivityFrameworkSoundBinding>() {
 
     private val soundTag = "sound_tag"
     private var soundId: Int = -1
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkSoundBinding {
+        return ActivityFrameworkSoundBinding.inflate(inflater)
+    }
 
     override fun onClick(view: View) {
         when (view.id) {

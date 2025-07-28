@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.convert.CsStorageUnit
 import com.proxy.service.core.framework.system.device.CsDeviceUtils
@@ -28,6 +29,10 @@ class DeviceActivity : BaseActivity<ActivityFrameworkDeviceBinding>() {
     }
 
     private val unit = CsStorageUnit.B_UNIT_1000
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkDeviceBinding {
+        return ActivityFrameworkDeviceBinding.inflate(inflater)
+    }
 
     override fun onClick(view: View) {
         when (view.id) {

@@ -166,7 +166,18 @@ object CsScreenUtils {
     }
 
     /**
-     * 添加屏幕旋转监听
+     * 添加屏幕旋转监听, 需要配置旋转屏幕时 activity 不销毁
+     *
+     * <manifest
+     * .
+     * .
+     *  <application
+     *
+     *      <activity
+     *          android:name=".xx.xx.XXActivity"
+     *          android:configChanges="orientation|screenSize" />
+     *  </application>
+     * </manifest>
      * */
     fun addScreenRotationCallback(callback: ScreenRotationCallback) {
         DisplayController.instance.addCallback(callback)
@@ -181,6 +192,17 @@ object CsScreenUtils {
 
     /**
      * 添加横竖屏变化监听
+     *
+     * <manifest
+     * .
+     * .
+     *  <application
+     *
+     *      <activity
+     *          android:name=".xx.xx.XXActivity"
+     *          android:configChanges="orientation|screenSize" />
+     *  </application>
+     * </manifest>
      * */
     fun addScreenOrientationCallback(callback: ScreenOrientationCallback) {
         DisplayController.instance.addCallback(callback)

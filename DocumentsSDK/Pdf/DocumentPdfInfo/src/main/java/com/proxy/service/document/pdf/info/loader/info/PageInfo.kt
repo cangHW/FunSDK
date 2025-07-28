@@ -17,10 +17,10 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         private var dpi = -1
 
         private fun getDpi(): Int {
-            if (com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.dpi == -1) {
-                com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.dpi = CsContextManager.getApplication().resources.displayMetrics.densityDpi
+            if (dpi == -1) {
+                dpi = CsContextManager.getApplication().resources.displayMetrics.densityDpi
             }
-            return com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.dpi
+            return dpi
         }
     }
 
@@ -64,9 +64,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
      * */
     fun getPageWidthPixel(): Int {
         if (widthPixel == -1) {
-            widthPixel = PdfiumCore.getInstance().nativeGetPageWidthPixel(page_hand,
-                com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi()
-            )
+            widthPixel = PdfiumCore.getInstance().nativeGetPageWidthPixel(page_hand, getDpi())
         }
         return widthPixel
     }
@@ -86,9 +84,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
      * */
     fun getPageHeightPixel(): Int {
         if (heightPixel == -1) {
-            heightPixel = PdfiumCore.getInstance().nativeGetPageHeightPixel(page_hand,
-                com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi()
-            )
+            heightPixel = PdfiumCore.getInstance().nativeGetPageHeightPixel(page_hand, getDpi())
         }
         return heightPixel
     }
@@ -119,7 +115,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         PdfiumCore.getInstance().nativeRenderPageToBitmap(
             page_hand,
             bitmap,
-            com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi(),
+            getDpi(),
             startX,
             startY,
             drawSizeHor,
@@ -146,7 +142,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         PdfiumCore.getInstance().nativeRenderPageToSurface(
             page_hand,
             surface,
-            com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi(),
+            getDpi(),
             startX,
             startY,
             drawSizeHor,

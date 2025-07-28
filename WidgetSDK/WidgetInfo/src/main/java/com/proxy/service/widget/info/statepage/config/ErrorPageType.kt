@@ -5,7 +5,7 @@ package com.proxy.service.widget.info.statepage.config
  * @data: 2025/7/9 20:19
  * @desc:
  */
-class ErrorPageType private constructor(val type: String) {
+class ErrorPageType private constructor(val key: String) {
 
     companion object {
 
@@ -24,9 +24,11 @@ class ErrorPageType private constructor(val type: String) {
 
         /**
          * 自定义效果
+         *
+         * @param key 唯一标识
          * */
-        fun buildPage(type: String): ErrorPageType {
-            return ErrorPageType(type)
+        fun buildPage(key: String): ErrorPageType {
+            return ErrorPageType(key)
         }
     }
 

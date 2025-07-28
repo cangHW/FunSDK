@@ -5,6 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 import com.proxy.service.document.pdf.base.enums.PagePixelFormat
 import com.proxy.service.document.pdf.base.constants.PdfConstants
+import com.proxy.service.document.pdf.base.enums.ViewShowType
+import com.proxy.service.document.pdf.base.view.callback.OnShouldCreateCoverViewCallback
 
 /**
  * @author: cangHX
@@ -38,7 +40,12 @@ interface IViewLoader {
     fun setPageCacheMaxSize(maxSize: Int): IViewLoader
 
     /**
-     * 设置页面清晰度, 默认: [PagePixelFormat.ARGB_8888]
+     * 设置最大允许显示页面数量, 默认: [PdfConstants.DEFAULT_PAGE_SHOW_MAX_COUNT]
+     * */
+    fun setPageShowMaxCount(maxCount: Int): IViewLoader
+
+    /**
+     * 设置页面清晰度, 默认: [PdfConstants.DEFAULT_PAGE_PIXEL_FORMAT]
      * */
     fun setPagePixelFormat(format: PagePixelFormat): IViewLoader
 
@@ -51,6 +58,16 @@ interface IViewLoader {
      * 设置加载回调
      * */
     fun setLoadStateCallback(callback: LoadStateCallback): IViewLoader
+
+    /**
+     * 设置用于创建遮罩的回调, 可用来展示图书 Vip 章节的锁定效果
+     * */
+    fun setCreateCoverViewCallback(callback: OnShouldCreateCoverViewCallback): IViewLoader
+
+    /**
+     * 设置显示模式, 默认: [PdfConstants.DEFAULT_VIEW_SHOW_TYPE]
+     * */
+    fun setShowType(type: ViewShowType): IViewLoader
 
     /**
      * 创建控制器并加载到父视图

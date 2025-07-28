@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.system.page.CsSystemPageUtils
 import com.proxy.service.funsdk.R
@@ -24,6 +25,10 @@ class SystemPageActivity : BaseActivity<ActivityFrameworkSystempageBinding>() {
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkSystempageBinding {
+        return ActivityFrameworkSystempageBinding.inflate(inflater)
     }
 
     override fun onClick(view: View) {

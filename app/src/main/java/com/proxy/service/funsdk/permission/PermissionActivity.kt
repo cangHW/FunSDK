@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.proxy.service.core.service.permission.CsPermission
@@ -34,6 +35,10 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding>() {
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityPermissionBinding {
+        return ActivityPermissionBinding.inflate(inflater)
     }
 
     override fun initView() {

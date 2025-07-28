@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.apihttp.download
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.download.callback.DownloadCallback
@@ -33,6 +34,10 @@ class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {
 
     private val test_url_BaiduNetdisk =
         "https://ad986c-1905179982.antpcdn.com:19001/b/pkg-ant.baidu.com/issue/netdisk/MACguanjia/4.38.0/BaiduNetdisk_mac_4.38.0_x64.dmg"
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityApiDownloadBinding {
+        return ActivityApiDownloadBinding.inflate(inflater)
+    }
 
     override fun initView() {
         binding?.globalCallback?.setOnCheckedChangeListener { _, isChecked ->

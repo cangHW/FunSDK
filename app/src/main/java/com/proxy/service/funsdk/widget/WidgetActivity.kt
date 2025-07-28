@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.widget
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.system.page.CsSystemPageUtils
 import com.proxy.service.core.service.task.CsTask
@@ -28,6 +29,10 @@ class WidgetActivity: BaseActivity<ActivityWidgetBinding>() {
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityWidgetBinding {
+        return ActivityWidgetBinding.inflate(inflater)
     }
 
     override fun onClick(view: View) {

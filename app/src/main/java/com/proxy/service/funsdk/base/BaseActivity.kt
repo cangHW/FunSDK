@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.proxy.service.widget.info.statepage.CsStatePageManager
 import com.proxy.service.widget.info.statepage.config.IStatePageController
-import java.lang.reflect.ParameterizedType
 
 /**
  * @author: cangHX
@@ -21,7 +20,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = inflateLayout()
+        binding = getViewBinding(LayoutInflater.from(this))
 
         binding?.let {
             statePage = CsStatePageManager.inflate(it.root)
@@ -31,20 +30,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         initView()
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun inflateLayout(): T {
-        val clazz: Class<T> = getGenericClass()
-        val method = clazz.getDeclaredMethod(
-            "inflate",
-            LayoutInflater::class.java
-        )
-        return method.invoke(null, LayoutInflater.from(this)) as T
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun <T> getGenericClass(): Class<T> {
-        return (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<T>
-    }
+    abstract fun getViewBinding(inflater: LayoutInflater): T
 
     protected open fun initView() {}
 

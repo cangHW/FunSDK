@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.system.security.aes.CsAesUtils
 import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
@@ -48,6 +49,10 @@ class SecurityActivity : BaseActivity<ActivityFrameworkSecurityBinding>() {
         .createDecryptLoader()
 
     private var value: String? = null
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkSecurityBinding {
+        return ActivityFrameworkSecurityBinding.inflate(inflater)
+    }
 
     override fun initView() {
         binding?.aesModeSelect?.setOnCheckedChangeListener { _, checkedId ->

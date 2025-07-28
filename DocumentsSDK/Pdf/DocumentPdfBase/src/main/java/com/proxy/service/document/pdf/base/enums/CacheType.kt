@@ -1,4 +1,4 @@
-package com.proxy.service.document.pdf.info.view.cache
+package com.proxy.service.document.pdf.base.enums
 
 /**
  * @author: cangHX

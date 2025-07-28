@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
@@ -33,6 +34,10 @@ class ThreadPoolActivity : BaseActivity<ActivityThreadPoolBinding>() {
     }
 
     private var intervalDisposable: ITaskDisposable? = null
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityThreadPoolBinding {
+        return ActivityThreadPoolBinding.inflate(inflater)
+    }
 
     override fun onClick(view: View) {
         when (view.id) {

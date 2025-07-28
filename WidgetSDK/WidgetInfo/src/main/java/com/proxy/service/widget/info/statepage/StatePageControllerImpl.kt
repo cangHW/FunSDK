@@ -33,9 +33,9 @@ class StatePageControllerImpl(
     private var errorController: ErrorController? = null
 
     init {
-        loadingController = GlobalPageCache.getLoadingPage(loadingPageType.type)
-        emptyController = GlobalPageCache.getEmptyPage(emptyPageType.type)
-        errorController = GlobalPageCache.getErrorPage(errorPageType.type)
+        loadingController = GlobalPageCache.getLoadingPage(loadingPageType.key)
+        emptyController = GlobalPageCache.getEmptyPage(emptyPageType.key)
+        errorController = GlobalPageCache.getErrorPage(errorPageType.key)
 
         rootView.addView(view)
         loadingController?.initView(rootView)

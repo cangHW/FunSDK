@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.proxy.service.core.framework.data.span.CsSpanUtils
@@ -40,6 +41,10 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
         }
     }
 
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkSpanBinding {
+        return ActivityFrameworkSpanBinding.inflate(inflater)
+    }
+
     private fun show(view: TextView) {
         CsSpanUtils.builder()
             .appendTxt("测试")
@@ -69,7 +74,7 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
             .appendLineEnd()
 
             .appendImage(R.drawable.jpg)
-            .setImageAlign(ImageAlign.ALIGN_TOP)
+            .setImageAlign(ImageAlign.ALIGN_CENTER)
             .setImageSize(300, 80, false)
 
             .appendTxt("结束")
@@ -79,7 +84,7 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
             .setSuperscript()
 
             .appendTxt("结束2")
-            .setBackgroundColor(Color.WHITE)
+//            .setBackgroundColor(Color.WHITE)
             .setItalic()
             .setTextSize(60, TextSizeUnit.UNIT_SP)
             .setShadow(2f, 10f, 10f, Color.RED)

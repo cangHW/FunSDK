@@ -6,9 +6,12 @@ import android.util.SparseArray
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.document.pdf.base.constants.PdfConstants
+import com.proxy.service.document.pdf.base.enums.CacheType
 import com.proxy.service.document.pdf.base.loader.IPdfLoader
 import com.proxy.service.document.pdf.info.view.config.RenderConfig
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.threadpool.base.thread.task.IConsumer
+import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -36,6 +39,10 @@ class PartCache private constructor(
         }
     }
 
+    interface OnRefreshCallback {
+        fun onRefresh(position: Int)
+    }
+
     private val isDestroy = AtomicBoolean(false)
     private val sizeCache = SparseArray<Size>()
     private val partCache = LruBitmapCache(maxCount, type)
@@ -46,7 +53,11 @@ class PartCache private constructor(
         sizeCache.clear()
     }
 
-    fun getPart(position: Int, width: Int, height: Int): Part? {
+    fun getRenderConfig(): RenderConfig {
+        return config
+    }
+
+    fun getPart(position: Int, width: Int, height: Int, callback: OnRefreshCallback): Part? {
         if (isDestroy.get()) {
             return null
         }
@@ -55,6 +66,9 @@ class PartCache private constructor(
             val size = getBitmapSize(loader, position, width, height)
             val bitmap =
                 Bitmap.createBitmap(size.bitmapWidth, size.bitmapHeight, config.format.value)
+
+            val weakCallback = WeakReference(callback)
+
             CsTask.computationThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     loader.renderPageToBitmap(
@@ -66,6 +80,13 @@ class PartCache private constructor(
                         pageBgColor = config.pageBackgroundColor
                     )
                     return ""
+                }
+            })?.mainThread()?.doOnNext(object : IConsumer<String> {
+                override fun accept(value: String) {
+                    if (isDestroy.get()) {
+                        return
+                    }
+                    weakCallback.get()?.onRefresh(position)
                 }
             })?.start()
             part = Part(size, bitmap)

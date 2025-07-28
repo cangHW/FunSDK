@@ -27,21 +27,11 @@ object GlobalPageCache {
     private val GLOBAL_PAGE_EMPTY: ConcurrentHashMap<String, EmptyController> =
         ConcurrentHashMap<String, EmptyController>()
 
-    /*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***/
+    /*** *** *** *** *** *** *** *** *** *** Loading *** *** *** *** *** *** *** *** *** ***/
 
     fun putLoadingPage(key: String, controller: LoadingController) {
         GLOBAL_PAGE_LOADING[key] = controller
     }
-
-    fun putErrorPage(key: String, controller: ErrorController) {
-        GLOBAL_PAGE_ERROR[key] = controller
-    }
-
-    fun putEmptyPage(key: String, controller: EmptyController) {
-        GLOBAL_PAGE_EMPTY[key] = controller
-    }
-
-    /*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***/
 
     fun getLoadingPage(key: String): LoadingController? {
         var controller: LoadingController? = GLOBAL_PAGE_LOADING[key]
@@ -49,6 +39,23 @@ object GlobalPageCache {
             controller = getDefaultLoading(key)
         }
         return controller
+    }
+
+    fun removeLoadingPage(key: String) {
+        GLOBAL_PAGE_LOADING.remove(key)
+    }
+
+    private fun getDefaultLoading(key: String): LoadingController? {
+        if (key == LoadingPageType.ROTATION) {
+            return RotationLoading()
+        }
+        return null
+    }
+
+    /*** *** *** *** *** *** *** *** *** *** Error *** *** *** *** *** *** *** *** *** ***/
+
+    fun putErrorPage(key: String, controller: ErrorController) {
+        GLOBAL_PAGE_ERROR[key] = controller
     }
 
     fun getErrorPage(key: String): ErrorController? {
@@ -59,6 +66,23 @@ object GlobalPageCache {
         return controller
     }
 
+    fun removeErrorPage(key: String) {
+        GLOBAL_PAGE_ERROR.remove(key)
+    }
+
+    private fun getDefaultError(key: String): ErrorController? {
+        if (key == ErrorPageType.WITH_REFRESH) {
+            return WithRefreshError()
+        }
+        return null
+    }
+
+    /*** *** *** *** *** *** *** *** *** *** Empty *** *** *** *** *** *** *** *** *** ***/
+
+    fun putEmptyPage(key: String, controller: EmptyController) {
+        GLOBAL_PAGE_EMPTY[key] = controller
+    }
+
     fun getEmptyPage(key: String): EmptyController? {
         var controller: EmptyController? = GLOBAL_PAGE_EMPTY[key]
         if (controller == null) {
@@ -67,34 +91,8 @@ object GlobalPageCache {
         return controller
     }
 
-    /*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***/
-
-    fun removeLoadingPage(key: String) {
-        GLOBAL_PAGE_LOADING.remove(key)
-    }
-
-    fun removeErrorPage(key: String) {
-        GLOBAL_PAGE_ERROR.remove(key)
-    }
-
     fun removeEmptyPage(key: String) {
         GLOBAL_PAGE_EMPTY.remove(key)
-    }
-
-    /*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***/
-
-    private fun getDefaultLoading(key: String): LoadingController? {
-        if (key == LoadingPageType.ROTATION) {
-            return RotationLoading()
-        }
-        return null
-    }
-
-    private fun getDefaultError(key: String): ErrorController? {
-        if (key == ErrorPageType.WITH_REFRESH) {
-            return WithRefreshError()
-        }
-        return null
     }
 
     private fun getDefaultEmpty(key: String): EmptyController? {

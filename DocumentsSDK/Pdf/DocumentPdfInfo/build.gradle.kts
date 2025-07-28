@@ -54,6 +54,7 @@ dependencies {
     kapt(libs.cloud.compiler)
 
     implementation(libs.android.view.constraintlayout)
+    implementation(libs.android.view.recycler)
 
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 

@@ -32,6 +32,10 @@ class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {
 
     private var helper: IVisibleMonitorHelper? = null
 
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkMonitorBinding {
+        return ActivityFrameworkMonitorBinding.inflate(inflater)
+    }
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.monitor_start -> {

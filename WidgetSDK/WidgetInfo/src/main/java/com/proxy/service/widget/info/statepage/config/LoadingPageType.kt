@@ -5,7 +5,7 @@ package com.proxy.service.widget.info.statepage.config
  * @data: 2025/7/9 20:20
  * @desc:
  */
-class LoadingPageType private constructor(val type: String) {
+class LoadingPageType private constructor(val key: String) {
 
     companion object {
         const val ROTATION = "${PageConfig.DEFAULT}_rotation"
@@ -23,9 +23,11 @@ class LoadingPageType private constructor(val type: String) {
 
         /**
          * 自定义效果
+         *
+         * @param key 唯一标识
          * */
-        fun buildPage(type: String): LoadingPageType {
-            return LoadingPageType(type)
+        fun buildPage(key: String): LoadingPageType {
+            return LoadingPageType(key)
         }
     }
 

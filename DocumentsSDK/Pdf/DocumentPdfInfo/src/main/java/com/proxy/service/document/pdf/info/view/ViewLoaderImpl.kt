@@ -7,14 +7,14 @@ import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 import com.proxy.service.document.pdf.base.config.info.FailedResult
 import com.proxy.service.document.pdf.base.config.source.BaseSource
 import com.proxy.service.document.pdf.base.constants.PdfConstants
+import com.proxy.service.document.pdf.base.enums.CacheType
 import com.proxy.service.document.pdf.base.enums.PagePixelFormat
-import com.proxy.service.document.pdf.base.loader.IPdfLoader
+import com.proxy.service.document.pdf.base.enums.ViewShowType
 import com.proxy.service.document.pdf.base.view.IPdfView
 import com.proxy.service.document.pdf.base.view.IViewLoader
-import com.proxy.service.document.pdf.info.PdfServiceImpl
+import com.proxy.service.document.pdf.base.view.callback.OnShouldCreateCoverViewCallback
 import com.proxy.service.document.pdf.info.loader.impl.PdfLoader
 import com.proxy.service.document.pdf.info.view.cache.PartCache
-import com.proxy.service.document.pdf.info.view.cache.CacheType
 import com.proxy.service.document.pdf.info.view.lifecycle.LifecycleManager
 import com.proxy.service.document.pdf.info.view.config.RenderConfig
 
@@ -29,10 +29,15 @@ class ViewLoaderImpl(private val config: PdfConfig) : IViewLoader {
 
     private var owner: LifecycleOwner? = null
     private var loadStateCallback: LoadStateCallback? = null
+    private var shouldCreateCoverViewCallback: OnShouldCreateCoverViewCallback? = null
 
-    private var cacheType: CacheType = CacheType.COUNT
+    private var cacheType: CacheType = PdfConstants.DEFAULT_CACHE_TYPE
     private var maxCacheCount: Int = PdfConstants.DEFAULT_PAGE_CACHE_MAX_COUNT
-    private var maxCacheSize: Int = 0
+    private var maxCacheSize: Int = PdfConstants.DEFAULT_PAGE_CACHE_MAX_SIZE
+
+    private var maxShowCount: Int = PdfConstants.DEFAULT_PAGE_SHOW_MAX_COUNT
+
+    private var showType: ViewShowType = PdfConstants.DEFAULT_VIEW_SHOW_TYPE
 
     override fun setViewBackgroundColor(color: Long): IViewLoader {
         renderConfig.viewBackgroundColor = color
@@ -56,6 +61,11 @@ class ViewLoaderImpl(private val config: PdfConfig) : IViewLoader {
         return this
     }
 
+    override fun setPageShowMaxCount(maxCount: Int): IViewLoader {
+        this.maxShowCount = maxCount
+        return this
+    }
+
     override fun setPagePixelFormat(format: PagePixelFormat): IViewLoader {
         renderConfig.format = format
         return this
@@ -71,17 +81,29 @@ class ViewLoaderImpl(private val config: PdfConfig) : IViewLoader {
         return this
     }
 
+    override fun setCreateCoverViewCallback(callback: OnShouldCreateCoverViewCallback): IViewLoader {
+        this.shouldCreateCoverViewCallback = callback
+        return this
+    }
+
+    override fun setShowType(type: ViewShowType): IViewLoader {
+        this.showType = type
+        return this
+    }
+
     override fun into(viewGroup: ViewGroup): IPdfView {
         return createPdfView(viewGroup)
     }
 
     private fun createPdfView(viewGroup: ViewGroup): IPdfView {
-        val pdf = PdfViewImpl(viewGroup)
+        val pdf = PdfViewImpl(viewGroup, showType, maxShowCount)
+        pdf.setCreateCoverViewCallback(shouldCreateCoverViewCallback)
+
         val loader = PdfLoader()
         val cache = if (cacheType == CacheType.SIZE) {
-            PartCache.create(maxCacheSize, CacheType.SIZE, renderConfig, loader)
+            PartCache.create(maxCacheSize, cacheType, renderConfig, loader)
         } else {
-            PartCache.create(maxCacheCount, CacheType.COUNT, renderConfig, loader)
+            PartCache.create(maxCacheCount, cacheType, renderConfig, loader)
         }
         LifecycleManager.instance.bindLifecycle(owner, loader, cache)
 

@@ -1,3 +1,5 @@
+
+########################   PDF   ###########################
 -keep class com.proxy.service.document.pdf.info.core.OpenResult
 -keep class com.proxy.service.document.pdf.info.core.PdfiumCore
 -keep class com.proxy.service.document.pdf.base.bean.PageSize

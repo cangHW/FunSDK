@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import com.proxy.service.core.framework.system.screen.callback.ScreenOrientationCallback
@@ -28,6 +29,10 @@ class ScreenActivity : BaseActivity<ActivityFrameworkScreenBinding>() {
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkScreenBinding {
+        return ActivityFrameworkScreenBinding.inflate(inflater)
     }
 
     override fun initView() {

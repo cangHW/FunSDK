@@ -49,7 +49,9 @@
         <activity android:name=".framework.func.AppInstallActivity" />
         <activity android:name=".framework.func.FileActivity" />
         <activity android:name=".framework.func.SystemPageActivity" />
-        <activity android:name=".framework.func.ScreenActivity" />
+        <activity
+            android:name=".framework.func.ScreenActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".framework.func.EventActivity" />
         <activity android:name=".framework.func.SecurityActivity" />
         <activity android:name=".framework.func.MonitorActivity" />
@@ -62,11 +64,14 @@
 
         <activity android:name=".document.DocumentActivity" />
         <activity android:name=".document.pdf.PdfActivity" />
+        <activity android:name=".document.pdf.info.PdfInfoActivity" />
+        <activity android:name=".document.pdf.preview.PdfPreViewActivity" />
         <activity android:name=".document.image.ImageActivity" />
         <activity android:name=".document.image.preview.ImagePreviewActivity" />
         <activity android:name=".document.image.crop.ImageCropActivity" />
 
         <activity android:name=".widget.WidgetActivity" />
+
     </application>
 
     <queries>

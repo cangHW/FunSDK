@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.funsdk.R
@@ -37,6 +38,10 @@ class FrameWorkActivity : BaseActivity<ActivityFrameworkBinding>() {
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkBinding {
+        return ActivityFrameworkBinding.inflate(inflater)
     }
 
     override fun onClick(view: View) {

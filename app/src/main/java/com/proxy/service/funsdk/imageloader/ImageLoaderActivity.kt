@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatRadioButton
 import com.proxy.service.core.service.imageloader.CsImageLoader
@@ -49,6 +50,10 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
         )
         setSelect(types)
         types[0]?.isChecked = true
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityImageLoaderBinding {
+        return ActivityImageLoaderBinding.inflate(inflater)
     }
 
     private fun setSelect(views: Array<AppCompatRadioButton?>) {

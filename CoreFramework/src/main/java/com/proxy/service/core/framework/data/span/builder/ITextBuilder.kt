@@ -112,7 +112,8 @@ interface ITextBuilder : IAppendBuilder {
     ): ITextBuilder
 
     /**
-     * 设置阴影效果
+     * 设置阴影效果, 如果相同位置同时设置了 BackgroundColor, 则阴影区域也会自动附加背景色, 色值为 shadowColor
+     *
      * @param radius        阴影强度, 建议 (0.0 - 20.0]
      * @param dx            阴影偏移方向
      * @param dy            阴影偏移方向

@@ -55,6 +55,7 @@ class DisplayController private constructor() {
             handler?.start {
                 val display = displayManager?.getDisplay(displayId) ?: return@start
                 val rotation: Int = display.rotation
+                CsLogger.tag(TAG).d("onDisplayChanged rotation = $rotation")
 
                 callbacks.forEachSync {
                     if (it is ScreenRotationCallback) {
