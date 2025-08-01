@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import com.proxy.service.document.image.base.loader.base.IOption
 import com.proxy.service.document.image.base.loader.base.IRequest
+import com.proxy.service.imageloader.base.option.glide.IGlideOption
 import com.proxy.service.imageloader.base.request.glide.IGlideRequest
 import java.io.File
 
@@ -13,7 +14,7 @@ import java.io.File
  * @data: 2025/5/30 10:49
  * @desc:
  */
-class RequestImpl(private val glideRequest: IGlideRequest<Bitmap>?) : IRequest<IOption> {
+class RequestImpl(private val glideRequest: IGlideRequest<IGlideOption<Bitmap>, Bitmap>?) : IRequest<IOption> {
 
     override fun loadBitmap(bitmap: Bitmap): IOption {
         val option = glideRequest?.loadBitmap(bitmap)
