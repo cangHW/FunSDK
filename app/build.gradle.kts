@@ -66,9 +66,10 @@ dependencies {
     implementation(libs.service.apm)
 
     implementation(libs.service.document.image)
-//    implementation(libs.service.document.pdf)
-    implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
-    implementation(project(":WidgetSDK:WidgetInfo"))
+    implementation(libs.service.document.pdf)
+//    implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
+//    implementation(project(":WidgetSDK:WidgetInfo"))
+    implementation(libs.service.widget)
 
 
 //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")

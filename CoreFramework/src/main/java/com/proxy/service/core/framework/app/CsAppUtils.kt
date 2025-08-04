@@ -165,10 +165,19 @@ object CsAppUtils {
 
     /**
      * 获取应用 icon
+     *
+     * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getIcon(): Drawable {
+    fun getIcon(packageName: String? = null): Drawable {
         val context = CsContextManager.getApplication()
-        return context.applicationInfo.loadIcon(context.packageManager)
+
+        if (packageName == null) {
+            return context.applicationInfo.loadIcon(context.packageManager)
+        }
+
+        val packageManager = context.packageManager
+        val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+        return applicationInfo.loadIcon(packageManager)
     }
 
     /**

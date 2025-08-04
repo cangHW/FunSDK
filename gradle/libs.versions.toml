@@ -30,17 +30,18 @@ cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.17"
 cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.12" }
 cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.11" }
 
-core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.7"}
-service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.1"}
-service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.3"}
-service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.4"}
-service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.2"}
-service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.2"}
-service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.2"}
-service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.2"}
-service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.1"}
-service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.2"}
-service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.1"}
+core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.8"}
+service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.2"}
+service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.4"}
+service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.5"}
+service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.3"}
+service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.3"}
+service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.3"}
+service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.3"}
+service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
+service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.3"}
+service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.2"}
+service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.3"}
 
 ##########################################  三方库  ############################################################################
 # 网络库

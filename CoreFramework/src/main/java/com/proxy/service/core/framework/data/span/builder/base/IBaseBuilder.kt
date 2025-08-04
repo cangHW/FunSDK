@@ -13,7 +13,7 @@ interface IBaseBuilder {
     /**
      * 是否可以点击, 用于判断是否需要设置 movementMethod
      * */
-    fun isCanClick():Boolean
+    fun isCanClick(): Boolean
 
     /**
      * 构建数据
