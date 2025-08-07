@@ -1,6 +1,6 @@
 package com.proxy.service.apm.info.cache
 
-import com.proxy.service.apm.info.config.controller.Controller
+import com.proxy.service.apm.info.config.controller.MonitorConfig
 import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
@@ -32,16 +32,16 @@ class CacheManager {
 
     private val map = HashMap<String, IManager>()
 
-    fun startWatch(path: String, controller: Controller) {
+    fun startWatch(path: String, monitorConfig: MonitorConfig) {
         if (map.containsKey(path)) {
             return
         }
         val manager = CsFileMonitorUtils.createMonitor(
             path,
             FileMonitorCallbackImpl(
-                controller.getMaxFileCount(),
-                controller.getAllFilesMaxSize(),
-                controller.getMaxCacheTime()
+                monitorConfig.getMaxFileCount(),
+                monitorConfig.getAllFilesMaxSize(),
+                monitorConfig.getMaxCacheTime()
             )
         )
         manager.startWatching()
@@ -55,25 +55,25 @@ class CacheManager {
     ) : FileMonitorCallback {
         override fun onStart(totalFileInfos: ArrayList<FileInfo>) {
             super.onStart(totalFileInfos)
-            CsLogger.tag(TAG).i("onStart fileSize = ${totalFileInfos.size}")
+            CsLogger.tag(TAG).d("onStart fileSize = ${totalFileInfos.size}")
             checkFiles(totalFileInfos)
         }
 
         override fun onFileAdded(totalFileInfos: ArrayList<FileInfo>, filePaths: List<String>) {
             super.onFileAdded(totalFileInfos, filePaths)
-            CsLogger.tag(TAG).i("onFileAdded fileSize = ${totalFileInfos.size}")
+            CsLogger.tag(TAG).d("onFileAdded fileSize = ${totalFileInfos.size}")
             checkFiles(totalFileInfos)
         }
 
         override fun onFileChanged(totalFileInfos: ArrayList<FileInfo>) {
             super.onFileChanged(totalFileInfos)
-            CsLogger.tag(TAG).i("onFileChanged fileSize = ${totalFileInfos.size}")
+            CsLogger.tag(TAG).d("onFileChanged fileSize = ${totalFileInfos.size}")
             checkFiles(totalFileInfos)
         }
 
         override fun onFileRemoved(totalFileInfos: ArrayList<FileInfo>, filePaths: List<String>) {
             super.onFileRemoved(totalFileInfos, filePaths)
-            CsLogger.tag(TAG).i("onFileRemoved fileSize = ${totalFileInfos.size}")
+            CsLogger.tag(TAG).d("onFileRemoved fileSize = ${totalFileInfos.size}")
         }
 
         private fun checkFiles(totalFileInfos: ArrayList<FileInfo>) {

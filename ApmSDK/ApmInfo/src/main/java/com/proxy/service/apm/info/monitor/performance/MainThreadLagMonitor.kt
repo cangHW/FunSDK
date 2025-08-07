@@ -6,7 +6,7 @@ import android.os.SystemClock
 import android.util.Printer
 import com.proxy.service.apm.info.cache.CacheManager
 import com.proxy.service.apm.info.common.CommonLog
-import com.proxy.service.apm.info.config.controller.Controller
+import com.proxy.service.apm.info.config.controller.MonitorConfig
 import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.apm.info.utils.FileUtils
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -40,20 +40,22 @@ class MainThreadLagMonitor private constructor() {
     private var fileDir: String = ""
     private var startTime: Long = 0
 
-    fun init(application: Application, controller: Controller) {
-        fileDir = FileUtils.getDefaultDir(application, "performance/main_thread_lag/")
-        CacheManager.getInstance().startWatch(fileDir, controller)
+    fun init(application: Application, config: MonitorConfig) {
+        if (!config.getEnable()){
+            return
+        }
 
-        Looper.getMainLooper().setMessageLogging(object : Printer {
-            override fun println(x: String?) {
-                if (x?.startsWith(">>>>> Dispatching to") == true) {
-                    startTime = SystemClock.uptimeMillis()
-                } else if (x?.startsWith("<<<<< Finished to") == true) {
-                    val endTime = SystemClock.uptimeMillis()
-                    checkIsLag(endTime - startTime)
-                }
+        fileDir = FileUtils.getDefaultDir(application, "performance/main_thread_lag/")
+        CacheManager.getInstance().startWatch(fileDir, config)
+
+        Looper.getMainLooper().setMessageLogging { x ->
+            if (x?.startsWith(">>>>> Dispatching to") == true) {
+                startTime = SystemClock.uptimeMillis()
+            } else if (x?.startsWith("<<<<< Finished to") == true) {
+                val endTime = SystemClock.uptimeMillis()
+                checkIsLag(endTime - startTime)
             }
-        })
+        }
     }
 
     private fun checkIsLag(duration: Long) {
@@ -63,31 +65,31 @@ class MainThreadLagMonitor private constructor() {
         val thread = Thread.currentThread()
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                val stackTrace = thread.stackTrace
-                    .joinToString("\n")
+                val stackTrace = thread.stackTrace.joinToString("\n")
+
+                val time = System.currentTimeMillis()
+
+                var timeString = CsTimeManager.createFactory(time)
+                    .get("yyyy-MM-dd HH:mm:ss.SSS")
 
                 val builder = StringBuilder()
-                builder.append(
-                    "卡顿发生时间: ${
-                        CsTimeManager.createFactory().get("yyyy-MM-dd HH:mm:ss.SSS")
-                    }"
-                ).append("\n").append("\n")
-
+                builder.append("卡顿发生时间: $timeString").append("\n").append("\n")
                 builder.append(Constants.DIVIDER).append("\n")
                 builder.append("卡顿时长: ${duration}ms").append("\n")
                 builder.append("卡顿位置").append("\n").append("\n")
                 builder.append(stackTrace).append("\n").append("\n")
 
-                val fileName = "${
-                    CsTimeManager.createFactory()
-                        .get("yyyy年MM月dd日HH时mm分ss秒SSS毫秒")
-                }.txt"
-                val file = File(fileDir, fileName)
+                timeString = CsTimeManager.createFactory(time)
+                    .get("yyyy年MM月dd日HH时mm分ss秒SSS毫秒")
+                val file = File(fileDir, "$timeString.txt")
                 CsFileWriteUtils.setSourceString(builder.toString()).writeSync(file)
 
                 CommonLog.logAll(file.absolutePath) {
-                    CsLogger.tag(TAG)
-                        .i("触发主线程卡顿，日志记录${if (it) "成功" else "失败"}")
+                    if (it) {
+                        CsLogger.tag(TAG).i("触发主线程卡顿，日志记录成功")
+                    } else {
+                        CsLogger.tag(TAG).i("触发主线程卡顿，日志记录失败")
+                    }
                 }
                 return ""
             }

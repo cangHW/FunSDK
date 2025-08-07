@@ -5,7 +5,7 @@ package com.proxy.service.apm.info.config.controller
  * @data: 2025/4/22 18:13
  * @desc:
  */
-interface IControllerGet {
+interface IMonitorConfigGet {
 
     fun getEnable(): Boolean
 

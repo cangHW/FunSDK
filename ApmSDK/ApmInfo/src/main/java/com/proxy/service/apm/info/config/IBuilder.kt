@@ -1,6 +1,6 @@
 package com.proxy.service.apm.info.config
 
-import com.proxy.service.apm.info.config.controller.Controller
+import com.proxy.service.apm.info.config.controller.MonitorConfig
 
 /**
  * @author: cangHX
@@ -15,19 +15,19 @@ interface IBuilder {
     fun setRootDir(rootDir: String): IBuilder
 
     /**
-     * 设置 java crash 控制器
+     * 设置 java crash 监控配置
      * */
-    fun setJavaCrashMonitorController(controller: Controller): IBuilder
+    fun setJavaCrashMonitorConfig(config: MonitorConfig): IBuilder
 
     /**
-     * 设置主线程卡顿控制器
+     * 设置主线程卡顿监控配置
      * */
-    fun setMainThreadLagMonitorEnable(controller: Controller): IBuilder
+    fun setMainThreadLagMonitorConfig(config: MonitorConfig): IBuilder
 
     /**
-     * 设置 UI 渲染卡顿控制器
+     * 设置 UI 渲染卡顿监控配置
      * */
-    fun setUiLagMonitorEnable(controller: Controller): IBuilder
+    fun setUiLagMonitorConfig(config: MonitorConfig): IBuilder
 
     /**
      * 创建一个配置

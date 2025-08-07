@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2025/4/22 18:33
  * @desc:
  */
-class Controller private constructor(private val controller: IControllerGet) : IControllerGet {
+class MonitorConfig private constructor(private val controller: IMonitorConfigGet) : IMonitorConfigGet {
     override fun getEnable(): Boolean {
         return controller.getEnable()
     }
@@ -26,40 +26,40 @@ class Controller private constructor(private val controller: IControllerGet) : I
     }
 
     companion object {
-        fun builder(): IController {
+        fun builder(): IMonitorConfig {
             return Builder()
         }
     }
 
-    class Builder : IController, IControllerGet {
+    class Builder : IMonitorConfig, IMonitorConfigGet {
 
-        private var enable: Boolean = true
+        private var enable: Boolean = Constants.FUN_ENABLE
         private var maxFileCount: Int = Constants.MAX_FILE_COUNT
         private var maxSize: Long = Constants.MAX_ALL_FILE_SIZE
         private var maxCacheTime: Long = Constants.CACHE_TIME
 
-        override fun setEnable(enable: Boolean): IController {
+        override fun setEnable(enable: Boolean): IMonitorConfig {
             this.enable = enable
             return this
         }
 
-        override fun setMaxFileCount(maxFileCount: Int): IController {
+        override fun setMaxFileCount(maxFileCount: Int): IMonitorConfig {
             this.maxFileCount = maxFileCount
             return this
         }
 
-        override fun setAllFilesMaxSize(maxSize: Long): IController {
+        override fun setAllFilesMaxSize(maxSize: Long): IMonitorConfig {
             this.maxSize = maxSize
             return this
         }
 
-        override fun setMaxCacheTime(time: Long, unit: TimeUnit): IController {
+        override fun setMaxCacheTime(time: Long, unit: TimeUnit): IMonitorConfig {
             this.maxCacheTime = unit.toMillis(time)
             return this
         }
 
-        override fun build(): Controller {
-            return Controller(this)
+        override fun build(): MonitorConfig {
+            return MonitorConfig(this)
         }
 
         override fun getEnable(): Boolean {
