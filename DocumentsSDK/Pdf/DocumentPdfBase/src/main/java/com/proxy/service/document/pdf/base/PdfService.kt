@@ -4,7 +4,7 @@ import com.proxy.service.base.BaseService
 import com.proxy.service.document.pdf.base.config.PdfConfig
 import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 import com.proxy.service.document.pdf.base.loader.IPdfLoader
-import com.proxy.service.document.pdf.base.view.IViewLoader
+import com.proxy.service.document.pdf.base.view.IPdfViewLoader
 
 /**
  * @author: cangHX
@@ -26,5 +26,5 @@ interface PdfService : BaseService {
      *
      * @param config    pdf 配置
      * */
-    fun createViewFactory(config: PdfConfig): IViewLoader
+    fun createViewFactory(config: PdfConfig): IPdfViewLoader
 }

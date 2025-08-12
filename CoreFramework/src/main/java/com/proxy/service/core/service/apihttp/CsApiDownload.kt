@@ -29,7 +29,7 @@ object CsApiDownload {
         }
         if (service == null) {
             CsLogger.tag(TAG)
-                .e("Please check to see if it is referenced. <io.github.cangHW:Service-Apihttp:xxx>")
+                .e("Please check to see if it is referenced. <io.github.canghw:Service-Apihttp:xxx>")
         }
         return service
     }

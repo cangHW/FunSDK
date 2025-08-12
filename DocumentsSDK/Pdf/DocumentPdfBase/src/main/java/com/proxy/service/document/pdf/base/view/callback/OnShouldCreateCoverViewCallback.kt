@@ -11,6 +11,9 @@ interface OnShouldCreateCoverViewCallback {
 
     /**
      * 展示覆盖 view
+     *
+     * @param position      页码
+     * @param coverLayout   遮罩父布局
      * */
     fun onShouldShowCoverView(position: Int, coverLayout: FrameLayout)
 

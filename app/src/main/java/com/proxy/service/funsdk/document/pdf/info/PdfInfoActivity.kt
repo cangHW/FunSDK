@@ -6,9 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.pdf.base.PdfService
+import com.proxy.service.core.service.document.CsDocumentPdf
 import com.proxy.service.document.pdf.base.bean.CatalogueData
 import com.proxy.service.document.pdf.base.config.PdfConfig
 import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
@@ -41,13 +40,11 @@ class PdfInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_pdf_info)
 
-        val service = CloudSystem.getService(PdfService::class.java)
-
         val config = PdfConfig.builder()
             .setSourceAssetPath("pdf/asd.pdf")
             .build()
 
-        loader = service?.createLoader(config, object :LoadStateCallback{
+        loader = CsDocumentPdf.createLoader(config, object :LoadStateCallback{
             override fun onLoadComplete(success: List<BaseSource>, failed: List<FailedResult>) {
                 CsToast.show("PDF 加载完成，success=${success} failed=${failed}")
                 CsLogger.i("PDF 加载完成，success=${success} failed=${failed}")

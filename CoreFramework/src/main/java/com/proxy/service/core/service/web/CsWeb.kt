@@ -25,7 +25,7 @@ object CsWeb {
             service = CloudSystem.getService(WebService::class.java)
         }
         if (service == null) {
-            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Webview:xxx>")
+            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.canghw:Service-Webview:xxx>")
         }
         return service
     }

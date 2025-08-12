@@ -6,7 +6,9 @@ import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
+import com.proxy.service.core.framework.io.file.read.source.InputStreamSource.Companion
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.Reader
 import java.nio.charset.Charset
 import java.util.stream.Collectors
@@ -19,7 +21,7 @@ import java.util.stream.Collectors
  */
 class ReaderSource(private val reader: Reader) : IRead {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}FileRead_Reader"
     }
 
@@ -41,15 +43,31 @@ class ReaderSource(private val reader: Reader) : IRead {
         return ""
     }
 
+    override fun readLines(charset: Charset): List<String> {
+        return try {
+            BufferedReader(reader).use {
+                reader.readLines()
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            emptyList()
+        }
+    }
+
+    override fun readBytes(): ByteArray {
+        return try {
+            reader.readText().toByteArray()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            ByteArray(0)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     private fun readString26(): String {
         val bufferedReader = BufferedReader(reader)
-        bufferedReader.lines().let {
-            try {
-                return it.collect(Collectors.joining(System.lineSeparator()))
-            } finally {
-                it.close()
-            }
+        bufferedReader.lines().use {
+            return it.collect(Collectors.joining(System.lineSeparator()))
         }
     }
 

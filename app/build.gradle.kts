@@ -24,7 +24,7 @@ android {
 
     buildTypes {
         debug {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.service.webview.bridge)
     implementation(libs.service.permission)
     implementation(libs.service.logfile)
-    implementation(libs.service.apm)
+//    implementation(libs.service.apm)
 
     implementation(libs.service.document.image)
     implementation(libs.service.document.pdf)

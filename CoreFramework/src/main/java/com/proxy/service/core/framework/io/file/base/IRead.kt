@@ -15,6 +15,16 @@ interface IRead {
     fun readString(charset: Charset = Charsets.UTF_8): String
 
     /**
+     * 读取全部行数据
+     * */
+    fun readLines(charset: Charset = Charsets.UTF_8): List<String>
+
+    /**
+     * 读取全部数据
+     * */
+    fun readBytes(): ByteArray
+
+    /**
      * 源数据
      * */
     interface Source : ISource<IRead>

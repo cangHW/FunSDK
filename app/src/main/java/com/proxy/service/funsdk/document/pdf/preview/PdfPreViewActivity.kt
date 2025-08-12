@@ -3,24 +3,18 @@ package com.proxy.service.funsdk.document.pdf.preview
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.document.pdf.base.PdfService
+import com.proxy.service.core.service.document.CsDocumentPdf
 import com.proxy.service.document.pdf.base.config.PdfConfig
 import com.proxy.service.document.pdf.base.config.callback.LoadStateCallback
 import com.proxy.service.document.pdf.base.config.info.FailedResult
 import com.proxy.service.document.pdf.base.config.source.BaseSource
 import com.proxy.service.document.pdf.base.enums.ViewShowType
 import com.proxy.service.document.pdf.base.view.IPdfView
-import com.proxy.service.document.pdf.base.view.callback.OnShouldCreateCoverViewCallback
 import com.proxy.service.funsdk.R
 import com.proxy.service.widget.info.toast.CsToast
 
@@ -65,13 +59,12 @@ class PdfPreViewActivity : AppCompatActivity() {
 
     private fun showPdf(): IPdfView? {
         val group = findViewById<FrameLayout>(R.id.group)
-        val service = CloudSystem.getService(PdfService::class.java)
 
         val config = PdfConfig.builder()
             .setSourceAssetPath("pdf/asd.pdf")
             .build()
 
-        return service?.createViewFactory(config)
+        return CsDocumentPdf.createViewFactory(config)
 //            ?.setViewBackgroundColor(0xffff0000)
 //            ?.setPageBackgroundColor(0xff00ff00)
             ?.setLifecycleOwner(this)

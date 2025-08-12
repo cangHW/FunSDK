@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.InputStream
 import java.nio.ByteBuffer
+import java.nio.CharBuffer
 import java.nio.channels.Channels
 import java.nio.charset.Charset
 
@@ -40,6 +41,26 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
             CsLogger.tag(TAG).e(throwable)
         }
         return ""
+    }
+
+    override fun readLines(charset: Charset): List<String> {
+        return try {
+            stream.bufferedReader(charset).use { reader ->
+                reader.readLines()
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            emptyList()
+        }
+    }
+
+    override fun readBytes(): ByteArray {
+        return try {
+            stream.readBytes()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            ByteArray(0)
+        }
     }
 
 

@@ -91,6 +91,23 @@ object CsAppUtils {
     }
 
     /**
+     * 获取应用版本名称
+     *
+     * @param packageName : 包名，为空默认为当前应用
+     * */
+    fun getVersionName(packageName: String? = null): String {
+        try {
+            val pkg = packageName ?: getPackageName()
+            val context = CsContextManager.getApplication()
+            val packageInfo = context.packageManager.getPackageInfo(pkg, 0)
+            return packageInfo.versionName
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        return "0"
+    }
+
+    /**
      * 获取应用版本号
      *
      * @param packageName : 包名，为空默认为当前应用
@@ -112,7 +129,7 @@ object CsAppUtils {
     }
 
     /**
-     * 获取当前应用的目标设备 SDK 版本
+     * 获取应用的目标设备 SDK 版本
      *
      * @param packageName : 包名，为空默认为当前应用
      * */
@@ -126,23 +143,6 @@ object CsAppUtils {
             CsLogger.tag(TAG).d(throwable)
         }
         return -1
-    }
-
-    /**
-     * 获取应用版本名称
-     *
-     * @param packageName : 包名，为空默认为当前应用
-     * */
-    fun getVersionName(packageName: String? = null): String {
-        try {
-            val pkg = packageName ?: getPackageName()
-            val context = CsContextManager.getApplication()
-            val packageInfo = context.packageManager.getPackageInfo(pkg, 0)
-            return packageInfo.versionName
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
-        }
-        return "0"
     }
 
     /**

@@ -26,22 +26,22 @@ android-work-runtime = { group = "androidx.work", name = "work-runtime", version
 ##########################################  开发基础库  ############################################################################
 test-demo-view = { group = "io.github.canghw", name = "Test-DemoView", version = "0.0.6" }
 
-cloud-api = { group = "io.github.cangHW", name = "Cloud-Api", version = "1.1.17" }
-cloud-compiler = { group = "io.github.cangHW", name = "Cloud-Compiler", version = "1.1.12" }
-cloud-plugin = { group = "io.github.cangHW", name = "Cloud-Plugin", version = "1.1.11" }
+cloud-api = { group = "io.github.canghw", name = "Cloud-Api", version = "1.1.20" }
+cloud-compiler = { group = "io.github.canghw", name = "Cloud-Compiler", version = "1.1.14" }
+cloud-plugin = { group = "io.github.canghw", name = "Cloud-Plugin", version = "1.1.13" }
 
-core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.8"}
-service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.2"}
-service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.4"}
-service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.5"}
-service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.3"}
-service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.3"}
-service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.3"}
-service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.3"}
+core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.9"}
+service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.3"}
+service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.5"}
+service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.6"}
+service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.4"}
+service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.4"}
+service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.4"}
+service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.4"}
 service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
-service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.3"}
-service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.2"}
-service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.3"}
+service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.4"}
+service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
+service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.4"}
 
 ##########################################  三方库  ############################################################################
 # 网络库

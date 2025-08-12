@@ -31,7 +31,7 @@ object CsTask {
         }
         if (service == null) {
             CsLogger.tag(TAG)
-                .e("Please check to see if it is referenced. <io.github.cangHW:Service-Threadpool:xxx>")
+                .e("Please check to see if it is referenced. <io.github.canghw:Service-Threadpool:xxx>")
         }
         return service
     }

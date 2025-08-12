@@ -14,6 +14,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
+        externalNativeBuild {
+            cmake {
+                cppFlags("")
+            }
+        }
+
         kapt {
             arguments {
                 arg("CLOUD_MODULE_NAME", project.name)
@@ -28,6 +34,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
         }
     }
 

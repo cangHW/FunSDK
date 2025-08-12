@@ -30,7 +30,7 @@ object CsDocumentImage {
         }
         if (service == null) {
             CsLogger.tag(TAG)
-                .e("Please check to see if it is referenced. <io.github.cangHW:Service-Document-Image:xxx>")
+                .e("Please check to see if it is referenced. <io.github.canghw:Service-Document-Image:xxx>")
         }
         return service
     }

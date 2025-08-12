@@ -17,4 +17,16 @@ class AutoCloseInputStreamSource(stream: InputStream) : InputStreamSource(stream
         return content
     }
 
+    override fun readLines(charset: Charset): List<String> {
+        val content = super.readLines(charset)
+        CsFileUtils.close(stream)
+        return content
+    }
+
+    override fun readBytes(): ByteArray {
+        val content = super.readBytes()
+        CsFileUtils.close(stream)
+        return content
+    }
+
 }

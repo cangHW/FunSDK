@@ -5,40 +5,40 @@ upArray=(
   ":CoreFramework"
 
   # 线程库
-  ":ThreadPoolSDK:ThreadPoolInfo"
-  ":ThreadPoolSDK:ThreadPoolBase"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
-  ":ImageLoaderSDK:ImageLoaderInfo"
-  ":ImageLoaderSDK:ImageLoaderBase"
+#  ":ImageLoaderSDK:ImageLoaderInfo"
+#  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
-  ":ApiHttpSDK:ApiHttpInfo"
-  ":ApiHttpSDK:ApiHttpBase"
+#  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpBase"
 
   # web 容器库
-  ":WebViewSDK:WebViewInfo"
-  ":WebViewSDK:WebViewBase"
-  ":WebViewSDK:WebViewDSBridge"
+#  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewBase"
+#  ":WebViewSDK:WebViewDSBridge"
 
     # 权限库
-  ":Permission:PermissionInfo"
-  ":Permission:PermissionBase"
+#  ":Permission:PermissionInfo"
+#  ":Permission:PermissionBase"
 
     # 日志文件库
-  ":LogFileSDK:LogFileInfo"
+#  ":LogFileSDK:LogFileInfo"
 
     # 性能监控库
-  ":ApmSDK:ApmInfo"
+#  ":ApmSDK:ApmInfo"
 
   # 文档库
-  ":DocumentsSDK:Image:DocumentImageInfo"
-  ":DocumentsSDK:Image:DocumentImageBase"
-  ":DocumentsSDK:Pdf:DocumentPdfInfo"
-  ":DocumentsSDK:Pdf:DocumentPdfBase"
+#  ":DocumentsSDK:Image:DocumentImageInfo"
+#  ":DocumentsSDK:Image:DocumentImageBase"
+#  ":DocumentsSDK:Pdf:DocumentPdfInfo"
+#  ":DocumentsSDK:Pdf:DocumentPdfBase"
 
     # 视图 UI 库
-  ":WidgetSDK:WidgetInfo"
+#  ":WidgetSDK:WidgetInfo"
 )
 
 type_params="r"

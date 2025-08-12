@@ -11,7 +11,7 @@ import com.proxy.service.document.pdf.base.enums.CacheType
 import com.proxy.service.document.pdf.base.enums.PagePixelFormat
 import com.proxy.service.document.pdf.base.enums.ViewShowType
 import com.proxy.service.document.pdf.base.view.IPdfView
-import com.proxy.service.document.pdf.base.view.IViewLoader
+import com.proxy.service.document.pdf.base.view.IPdfViewLoader
 import com.proxy.service.document.pdf.base.view.callback.OnShouldCreateCoverViewCallback
 import com.proxy.service.document.pdf.info.loader.impl.PdfLoader
 import com.proxy.service.document.pdf.info.view.cache.PartCache
@@ -23,7 +23,7 @@ import com.proxy.service.document.pdf.info.view.config.RenderConfig
  * @data: 2025/5/15 09:47
  * @desc:
  */
-class ViewLoaderImpl(private val config: PdfConfig) : IViewLoader {
+class PdfViewLoaderImpl(private val config: PdfConfig) : IPdfViewLoader {
 
     private val renderConfig = RenderConfig()
 
@@ -39,54 +39,54 @@ class ViewLoaderImpl(private val config: PdfConfig) : IViewLoader {
 
     private var showType: ViewShowType = PdfConstants.DEFAULT_VIEW_SHOW_TYPE
 
-    override fun setViewBackgroundColor(color: Long): IViewLoader {
+    override fun setViewBackgroundColor(color: Long): IPdfViewLoader {
         renderConfig.viewBackgroundColor = color
         return this
     }
 
-    override fun setPageBackgroundColor(color: Long): IViewLoader {
+    override fun setPageBackgroundColor(color: Long): IPdfViewLoader {
         renderConfig.viewBackgroundColor = color
         return this
     }
 
-    override fun setPageCacheMaxCount(maxCount: Int): IViewLoader {
+    override fun setPageCacheMaxCount(maxCount: Int): IPdfViewLoader {
         this.maxCacheCount = Math.max(maxCount, PdfConstants.PAGE_CACHE_MIN_COUNT)
         this.cacheType = CacheType.COUNT
         return this
     }
 
-    override fun setPageCacheMaxSize(maxSize: Int): IViewLoader {
+    override fun setPageCacheMaxSize(maxSize: Int): IPdfViewLoader {
         this.maxCacheSize = Math.max(maxSize, PdfConstants.PAGE_CACHE_MIN_SIZE)
         this.cacheType = CacheType.SIZE
         return this
     }
 
-    override fun setPageShowMaxCount(maxCount: Int): IViewLoader {
+    override fun setPageShowMaxCount(maxCount: Int): IPdfViewLoader {
         this.maxShowCount = maxCount
         return this
     }
 
-    override fun setPagePixelFormat(format: PagePixelFormat): IViewLoader {
+    override fun setPagePixelFormat(format: PagePixelFormat): IPdfViewLoader {
         renderConfig.format = format
         return this
     }
 
-    override fun setLifecycleOwner(owner: LifecycleOwner): IViewLoader {
+    override fun setLifecycleOwner(owner: LifecycleOwner): IPdfViewLoader {
         this.owner = owner
         return this
     }
 
-    override fun setLoadStateCallback(callback: LoadStateCallback): IViewLoader {
+    override fun setLoadStateCallback(callback: LoadStateCallback): IPdfViewLoader {
         this.loadStateCallback = callback
         return this
     }
 
-    override fun setCreateCoverViewCallback(callback: OnShouldCreateCoverViewCallback): IViewLoader {
+    override fun setCreateCoverViewCallback(callback: OnShouldCreateCoverViewCallback): IPdfViewLoader {
         this.shouldCreateCoverViewCallback = callback
         return this
     }
 
-    override fun setShowType(type: ViewShowType): IViewLoader {
+    override fun setShowType(type: ViewShowType): IPdfViewLoader {
         this.showType = type
         return this
     }
