@@ -26,6 +26,9 @@ class ImageStoreCompat : AbstractSource<IMediaStore.IImage>(), IMediaStore.IImag
         store.setDir(Environment.DIRECTORY_PICTURES + File.separator + CsAppUtils.getAppName())
     }
 
+    /**
+     * 设置源数据
+     * */
     override fun setSourceBitmap(bitmap: Bitmap): IMediaStore.IImage {
         CsBitmapUtils.toBytes(bitmap)?.let {
             setSourceByte(it)
@@ -33,6 +36,9 @@ class ImageStoreCompat : AbstractSource<IMediaStore.IImage>(), IMediaStore.IImag
         return getT()
     }
 
+    /**
+     * 设置源数据
+     * */
     override fun setSourceByte(bytes: ByteArray): IMediaStore.IImage {
         store.setSource(ByteSource(bytes))
         return getT()

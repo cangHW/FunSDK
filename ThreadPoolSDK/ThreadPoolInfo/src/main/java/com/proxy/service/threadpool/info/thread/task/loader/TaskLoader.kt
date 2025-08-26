@@ -21,6 +21,9 @@ import io.reactivex.disposables.Disposable
 open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
 
     private var onStartCallback: OnStartCallback? = null
+    private var onFailedCallback: OnFailedCallback? = null
+    private var onSuccessCallback: OnSuccessCallback<T>? = null
+    private var onCompleteCallback: OnCompleteCallback? = null
 
     override fun setOnStartCallback(callback: OnStartCallback): ILoader<T> {
         this.onStartCallback = callback
@@ -28,23 +31,17 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
     }
 
     override fun setOnFailedCallback(callback: OnFailedCallback): ILoader<T> {
-        taskInfo.observable = taskInfo.observable?.doOnError {
-            callback.onCallback(it)
-        }
+        this.onFailedCallback = callback
         return this
     }
 
     override fun setOnCompleteCallback(callback: OnCompleteCallback): ILoader<T> {
-        taskInfo.observable = taskInfo.observable?.doOnComplete {
-            callback.onCallback()
-        }
+        this.onCompleteCallback = callback
         return this
     }
 
     override fun setOnSuccessCallback(callback: OnSuccessCallback<T>): ILoader<T> {
-        taskInfo.observable = taskInfo.observable?.doOnNext {
-            callback.onCallback(it)
-        }
+        this.onSuccessCallback = callback
         return this
     }
 
@@ -58,12 +55,17 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
 
             override fun onError(e: Throwable) {
                 CsLogger.tag(ThreadConstants.TAG).d(e, "task has error.")
+                onFailedCallback?.onCallback(e)
+
+                onComplete()
             }
 
             override fun onComplete() {
+                onCompleteCallback?.onCallback()
             }
 
             override fun onNext(t: T) {
+                onSuccessCallback?.onCallback(t)
             }
         })
         return taskDisposableImpl

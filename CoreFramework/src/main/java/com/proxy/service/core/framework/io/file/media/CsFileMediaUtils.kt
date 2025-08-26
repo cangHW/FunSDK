@@ -19,7 +19,7 @@ import com.proxy.service.core.framework.io.file.media.compat.VideoStoreCompat
 object CsFileMediaUtils {
 
     /**
-     * 获取媒体图片管理器
+     * 获取媒体图片管理器, 可用于向相册插入图片
      * */
     fun getImageManager(): IMediaStore.IImage {
         return ImageStoreCompat()

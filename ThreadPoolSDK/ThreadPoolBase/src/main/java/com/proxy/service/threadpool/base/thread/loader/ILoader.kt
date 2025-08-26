@@ -19,7 +19,7 @@ interface ILoader<T> {
     fun setOnStartCallback(callback: OnStartCallback): ILoader<T>
 
     /**
-     * 设置任务完成回调
+     * 设置任务成功回调
      * */
     fun setOnSuccessCallback(callback: OnSuccessCallback<T>): ILoader<T>
 
@@ -39,13 +39,13 @@ interface ILoader<T> {
     fun start(): ITaskDisposable
 
     /**
-     * 阻塞，直到获取到最终结果
+     * 阻塞，直到获取到第一个结果
      * */
     @Throws(Throwable::class)
     fun blockGetFirst(): T?
 
     /**
-     * 阻塞，直到获取到最终结果
+     * 阻塞，直到获取到最后一个结果
      * */
     @Throws(Throwable::class)
     fun blockGetLast(): T?

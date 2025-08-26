@@ -28,9 +28,15 @@ class ProxyProvider : ContentProvider() {
     companion object {
         private const val TAG = "${CoreConfig.TAG}Provider"
 
+        /**
+         * 资源最后更新时间
+         * */
+        private const val LAST_MODIFIED = "_last_modified"
+
         private val COLUMNS: Array<String> = arrayOf(
             OpenableColumns.DISPLAY_NAME,
-            OpenableColumns.SIZE
+            OpenableColumns.SIZE,
+            LAST_MODIFIED
         )
 
         /**
@@ -60,7 +66,7 @@ class ProxyProvider : ContentProvider() {
                 return
             }
             HashSet(SECURITY_PATHS).forEach {
-                if (it.startsWith(filePath)){
+                if (it.startsWith(filePath)) {
                     SECURITY_PATHS.remove(it)
                 }
             }
@@ -70,7 +76,7 @@ class ProxyProvider : ContentProvider() {
          * 获取可供外部使用的 URI
          * */
         fun getUriForFile(file: File?): Uri? {
-            if (file == null){
+            if (file == null) {
                 return null
             }
             val strategy = getPathStrategy("${CsAppUtils.getPackageName()}.proxy_core_provider")
@@ -109,7 +115,7 @@ class ProxyProvider : ContentProvider() {
         selection: String?,
         selectionArgs: Array<String?>?,
         sortOrder: String?
-    ): Cursor? {
+    ): Cursor {
         var projection = projections
         val file = mStrategy?.getFileForUri(uri)
 
@@ -127,6 +133,9 @@ class ProxyProvider : ContentProvider() {
             } else if (OpenableColumns.SIZE == col) {
                 cols[i] = OpenableColumns.SIZE
                 values[i++] = file?.length()
+            } else if (LAST_MODIFIED == col) {
+                cols[i] = LAST_MODIFIED
+                values[i++] = file?.lastModified()
             }
         }
 
@@ -138,7 +147,7 @@ class ProxyProvider : ContentProvider() {
         return cursor
     }
 
-    override fun getType(uri: Uri): String? {
+    override fun getType(uri: Uri): String {
         val file = mStrategy?.getFileForUri(uri)
 
         val lastDot = file?.name?.lastIndexOf('.') ?: -1
@@ -183,25 +192,37 @@ class ProxyProvider : ContentProvider() {
     }
 
     private fun modeToMode(mode: String): Int {
-        val modeBits = if ("r" == mode) {
-            ParcelFileDescriptor.MODE_READ_ONLY
-        } else if ("w" == mode || "wt" == mode) {
-            (ParcelFileDescriptor.MODE_WRITE_ONLY
-                    or ParcelFileDescriptor.MODE_CREATE
-                    or ParcelFileDescriptor.MODE_TRUNCATE)
-        } else if ("wa" == mode) {
-            (ParcelFileDescriptor.MODE_WRITE_ONLY
-                    or ParcelFileDescriptor.MODE_CREATE
-                    or ParcelFileDescriptor.MODE_APPEND)
-        } else if ("rw" == mode) {
-            (ParcelFileDescriptor.MODE_READ_WRITE
-                    or ParcelFileDescriptor.MODE_CREATE)
-        } else if ("rwt" == mode) {
-            (ParcelFileDescriptor.MODE_READ_WRITE
-                    or ParcelFileDescriptor.MODE_CREATE
-                    or ParcelFileDescriptor.MODE_TRUNCATE)
-        } else {
-            throw IllegalArgumentException("Invalid mode: $mode")
+        val modeBits = when (mode) {
+            "r" -> {
+                ParcelFileDescriptor.MODE_READ_ONLY
+            }
+
+            "w", "wt" -> {
+                (ParcelFileDescriptor.MODE_WRITE_ONLY
+                        or ParcelFileDescriptor.MODE_CREATE
+                        or ParcelFileDescriptor.MODE_TRUNCATE)
+            }
+
+            "wa" -> {
+                (ParcelFileDescriptor.MODE_WRITE_ONLY
+                        or ParcelFileDescriptor.MODE_CREATE
+                        or ParcelFileDescriptor.MODE_APPEND)
+            }
+
+            "rw" -> {
+                (ParcelFileDescriptor.MODE_READ_WRITE
+                        or ParcelFileDescriptor.MODE_CREATE)
+            }
+
+            "rwt" -> {
+                (ParcelFileDescriptor.MODE_READ_WRITE
+                        or ParcelFileDescriptor.MODE_CREATE
+                        or ParcelFileDescriptor.MODE_TRUNCATE)
+            }
+
+            else -> {
+                throw IllegalArgumentException("Invalid mode: $mode")
+            }
         }
         return modeBits
     }
@@ -233,7 +254,8 @@ class ProxyProvider : ContentProvider() {
             }
 
             if (!isPermission) {
-                CsLogger.tag(TAG).e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriUtils.addProviderResourcePath\" method.")
+                CsLogger.tag(TAG)
+                    .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriUtils.addProviderResourcePath\" method.")
                 return null
             }
 
@@ -257,7 +279,8 @@ class ProxyProvider : ContentProvider() {
             }
 
             if (!isPermission) {
-                CsLogger.tag(TAG).e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriUtils.addProviderResourcePath\" method.")
+                CsLogger.tag(TAG)
+                    .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriUtils.addProviderResourcePath\" method.")
                 return null
             }
 

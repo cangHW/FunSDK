@@ -43,47 +43,41 @@ class RetryWithDelayInterceptor : Interceptor {
                 ?.method()
                 ?.getAnnotation(CsRetryWithDelay::class.java)
                 ?.let {
-                    val result = CsTask.ioThread()
-                        ?.call(object : IMultiRunnable<Response> {
-                            override fun accept(emitter: MultiRunnableEmitter<Response>) {
-                                var count = 0
-                                val maxCount = Math.max(it.retryCount, 0)
-                                val sleepTime = it.unit.toMillis(it.delay)
+                    response = CsTask.ioThread()?.call(object : IMultiRunnable<Response> {
+                        override fun accept(emitter: MultiRunnableEmitter<Response>) {
+                            var count = 0
+                            val maxCount = Math.max(it.retryCount, 0)
+                            val sleepTime = it.unit.toMillis(it.delay)
 
-                                while (count < maxCount) {
-
-                                    try {
-                                        Thread.sleep(sleepTime)
-                                    } catch (throwable: Throwable) {
-                                        CsLogger.tag(TAG).d(throwable)
-                                    }
-
-                                    try {
-                                        CsLogger.tag(TAG)
-                                            .d("retry = ${count + 1}, max = $maxCount, url = ${request.url}")
-                                        val rep = chain.proceed(request)
-                                        if (rep.isSuccessful) {
-                                            emitter.onNext(rep)
-                                            emitter.onComplete()
-                                            return
-                                        }
-                                    } catch (throwable: Throwable) {
-                                        CsLogger.tag(TAG).d(throwable)
-                                    }
-
-                                    count++
+                            while (count < maxCount) {
+                                try {
+                                    Thread.sleep(sleepTime)
+                                } catch (throwable: Throwable) {
+                                    CsLogger.tag(TAG).d(throwable)
                                 }
 
-                                emitter.onError(IOException("The retry times are used up. url = ${request.url}"))
-                                emitter.onComplete()
+                                try {
+                                    CsLogger.tag(TAG)
+                                        .d("retry = ${count + 1}, max = $maxCount, url = ${request.url}")
+                                    response?.close()
+                                    val rep = chain.proceed(request.newBuilder().build())
+                                    if (rep.isSuccessful) {
+                                        emitter.onNext(rep)
+                                        emitter.onComplete()
+                                        return
+                                    }
+                                } catch (throwable: Throwable) {
+                                    CsLogger.tag(TAG).d(throwable)
+                                }
+                                count++
                             }
-                        })
-                        ?.blockGetFirst()
 
-                    if (result != null) {
-                        response = result
-                    }
+                            emitter.onError(IOException("The retry times are used up. url = ${request.url}"))
+                            emitter.onComplete()
+                        }
+                    })?.blockGetFirst()
                 }
+
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }

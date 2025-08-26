@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.1.9",
+                    version           : "1.1.10",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -26,14 +26,14 @@ ext {
             // 网络库
             ApiHttpBase    : [
                     artifact          : "Service-Apihttp",
-                    version           : "0.2.3",
+                    version           : "0.2.4",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ApiHttpInfo    : [
                     artifact          : "Service-Apihttp-Info",
-                    version           : "0.2.3",
+                    version           : "0.2.4",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -42,14 +42,14 @@ ext {
             // 线程库
             ThreadPoolBase : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.2.5",
+                    version           : "0.2.6",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool-Info",
-                    version           : "0.2.5",
+                    version           : "0.2.6",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -136,14 +136,14 @@ ext {
             ],
             DocumentPdfBase    : [
                     artifact          : "Service-Document-Pdf",
-                    version           : "0.2.3",
+                    version           : "0.2.4",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             DocumentPdfInfo    : [
                     artifact          : "Service-Document-Pdf-Info",
-                    version           : "0.2.3",
+                    version           : "0.2.4",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

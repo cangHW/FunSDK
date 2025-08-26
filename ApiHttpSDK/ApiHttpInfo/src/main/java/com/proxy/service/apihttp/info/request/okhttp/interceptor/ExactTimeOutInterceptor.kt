@@ -28,7 +28,9 @@ class ExactTimeOutInterceptor : Interceptor {
         var response: Response? = null
         var error: Throwable? = null
         try {
-            request.tag(Invocation::class.java)?.method()?.getAnnotation(CsExactTimeOut::class.java)
+            request.tag(Invocation::class.java)
+                ?.method()
+                ?.getAnnotation(CsExactTimeOut::class.java)
                 ?.let {
                     CsLogger.tag(TAG).d("ExactTimeOut = ${it.unit.toMillis(it.timeout)}毫秒. url = ${request.url}")
                     response = CsTask.ioThread()?.call(object : ICallable<Response> {

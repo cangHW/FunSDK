@@ -69,11 +69,17 @@ abstract class BaseStore : IMediaStore<BaseStore>, IMediaStore.IInsertAction,
         return this
     }
 
+    /**
+     * 设置资源名称
+     * */
     override fun setDisplayName(displayName: String): BaseStore {
         this.displayName = displayName
         return this
     }
 
+    /**
+     * 设置资源类型
+     * */
     override fun setMimeType(mimeType: MimeType): BaseStore {
         this.mimeType = mimeType.type
         return this
@@ -95,16 +101,25 @@ abstract class BaseStore : IMediaStore<BaseStore>, IMediaStore.IInsertAction,
             StoreType.AUDIO -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             StoreType.VIDEO -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
             StoreType.FILE -> MediaStore.Files.getContentUri("external")
-            null -> null
+            else -> null
         }
     }
 
     protected abstract class BaseConfig {
 
+        /**
+         * 是否为模糊类型
+         * */
         protected var fuzzyMimeType = false
 
+        /**
+         * 检查或修改查询条件
+         * */
         abstract fun checkSelection(selection: String?): String?
 
+        /**
+         * 检查或修改查询参数
+         * */
         abstract fun checkSelectionArgs(selectionArgs: Array<String>?): Array<String>?
     }
 

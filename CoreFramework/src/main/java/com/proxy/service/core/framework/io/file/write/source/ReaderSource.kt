@@ -22,7 +22,7 @@ import java.nio.file.StandardOpenOption
  */
 class ReaderSource(private val reader: Reader) : AbstractWrite() {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}FileWrite_Reader"
     }
 
@@ -52,6 +52,8 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
             } else {
                 CsLogger.tag(TAG).e(throwable)
             }
+        } finally {
+            CsFileUtils.close(reader)
         }
         return false
     }
@@ -68,6 +70,8 @@ class ReaderSource(private val reader: Reader) : AbstractWrite() {
             } else {
                 CsLogger.tag(TAG).e(throwable)
             }
+        } finally {
+            CsFileUtils.close(reader)
         }
         return false
     }

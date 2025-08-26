@@ -2,6 +2,7 @@ package com.proxy.service.core.framework.io.file.read.source
 
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import java.io.InputStream
@@ -17,7 +18,7 @@ import java.nio.charset.Charset
  */
 open class InputStreamSource(protected val stream: InputStream) : IRead {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}FileRead_InputStream"
     }
 
@@ -39,6 +40,8 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
             return content.toString()
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
+        } finally {
+            CsFileUtils.close(stream)
         }
         return ""
     }
@@ -51,6 +54,8 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             emptyList()
+        } finally {
+            CsFileUtils.close(stream)
         }
     }
 
@@ -60,6 +65,8 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             ByteArray(0)
+        } finally {
+            CsFileUtils.close(stream)
         }
     }
 

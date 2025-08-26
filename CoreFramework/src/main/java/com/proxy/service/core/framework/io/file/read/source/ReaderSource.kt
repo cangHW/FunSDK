@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.base.IRead
 import com.proxy.service.core.framework.io.file.config.IoConfig
 import com.proxy.service.core.framework.io.file.read.source.InputStreamSource.Companion
@@ -60,6 +61,8 @@ class ReaderSource(private val reader: Reader) : IRead {
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             ByteArray(0)
+        } finally {
+            CsFileUtils.close(reader)
         }
     }
 

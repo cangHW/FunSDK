@@ -49,7 +49,6 @@ class PathSource(private val path: Path) : IRead {
                 stream.forEach {
                     list.add(it)
                 }
-                stream.close()
             }
             return list
         } catch (throwable: Throwable) {

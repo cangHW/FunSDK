@@ -10,8 +10,14 @@ import java.io.OutputStream
  */
 interface ISourceWrite {
 
+    /**
+     * 将源数据写入目标位置
+     * */
     fun write(file: File): Boolean
 
+    /**
+     * 将源数据写入目标位置
+     * */
     fun write(stream: OutputStream): Boolean
 
 }

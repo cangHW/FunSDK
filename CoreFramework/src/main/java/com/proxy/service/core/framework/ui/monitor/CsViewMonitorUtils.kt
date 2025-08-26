@@ -6,6 +6,8 @@ import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitor
 import com.proxy.service.core.framework.ui.monitor.visible.impl.VisibleMonitorHelperImpl
 
 /**
+ * view 显示状态监听
+ *
  * @author: cangHX
  * @data: 2024/12/4 18:27
  * @desc:
