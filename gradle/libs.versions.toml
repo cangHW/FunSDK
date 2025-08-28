@@ -25,7 +25,7 @@ cloud-api = { group = "io.github.canghw", name = "Cloud-Api", version = "1.1.20"
 cloud-compiler = { group = "io.github.canghw", name = "Cloud-Compiler", version = "1.1.14" }
 cloud-plugin = { group = "io.github.canghw", name = "Cloud-Plugin", version = "1.1.13" }
 
-core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.10"}
+core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.11"}
 service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.4"}
 service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.6"}
 service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.6"}

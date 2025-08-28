@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.text.TextUtils
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -67,7 +68,7 @@ object CsInstallUtils {
      *         <!-- 查询特定包名应用 -->
      *         <package android:name="com.example.someapp" />
      *
-     *         <!-- 查询所有已安装的应用（仅在特殊情况下使用）-->
+     *         <!-- 查询所有已安装且存在入口的应用（仅在特殊情况下使用）-->
      *         <intent>
      *             <action android:name="android.intent.action.MAIN" />
      *         </intent>
@@ -94,7 +95,8 @@ object CsInstallUtils {
         val context: Context = CsContextManager.getApplication()
         val packageManager: PackageManager = context.packageManager ?: return false
         try {
-            return packageManager.getLaunchIntentForPackage(packageName) != null
+            val info = packageManager.getPackageInfo(packageName, 0)
+            return info != null
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).d(throwable)
         }
@@ -200,7 +202,10 @@ object CsInstallUtils {
     }
 
     /**
-     * 打开对应包名的应用
+     * 打开对应包名的应用, 如果 activityName 不为空则打开对应页面, 为空则打开目标应用主界面
+     *
+     * @param activityName  activity 的全路径
+     *
      * 需要配置权限
      *
      * <manifest
@@ -213,7 +218,7 @@ object CsInstallUtils {
      *         <!-- 查询特定包名应用 -->
      *         <package android:name="com.example.someapp" />
      *
-     *         <!-- 查询所有已安装的应用（仅在特殊情况下使用）-->
+     *         <!-- 查询所有已安装且存在入口的应用（仅在特殊情况下使用）-->
      *         <intent>
      *             <action android:name="android.intent.action.MAIN" />
      *         </intent>
@@ -236,10 +241,16 @@ object CsInstallUtils {
      * </manifest>
      *
      * */
-    fun openApp(packageName: String): Boolean {
+    fun openApp(packageName: String, activityName: String? = null): Boolean {
         try {
             val context: Context = CsContextManager.getApplication()
-            val intent = context.packageManager.getLaunchIntentForPackage(packageName)
+            val intent = if (TextUtils.isEmpty(activityName)) {
+                context.packageManager.getLaunchIntentForPackage(packageName)
+            } else {
+                val intent = Intent()
+                intent.setClassName(packageName, activityName ?: "")
+                intent
+            }
             if (intent == null) {
                 CsLogger.tag(TAG).d("open failed")
                 return false
@@ -267,7 +278,7 @@ object CsInstallUtils {
      *         <!-- 查询特定包名应用 -->
      *         <package android:name="com.example.someapp" />
      *
-     *         <!-- 查询所有已安装的应用（仅在特殊情况下使用）-->
+     *         <!-- 查询所有已安装且存在入口的应用（仅在特殊情况下使用）-->
      *         <intent>
      *             <action android:name="android.intent.action.MAIN" />
      *         </intent>
