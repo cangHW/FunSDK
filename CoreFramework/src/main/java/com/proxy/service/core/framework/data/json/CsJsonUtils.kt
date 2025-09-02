@@ -1,7 +1,6 @@
 package com.proxy.service.core.framework.data.json
 
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.TypeAdapter
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
@@ -84,7 +83,7 @@ object CsJsonUtils {
             return null
         }
         return try {
-            gson.fromJson(json, object : TypeToken<HashMap<String, String>>() {}.type);
+            gson.fromJson(json, object : TypeToken<HashMap<String, String>>() {}.type)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             null

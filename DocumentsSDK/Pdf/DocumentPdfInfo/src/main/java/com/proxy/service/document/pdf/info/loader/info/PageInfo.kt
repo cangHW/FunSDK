@@ -5,15 +5,18 @@ import android.view.Surface
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.document.pdf.base.bean.LinkData
 import com.proxy.service.document.pdf.info.core.PdfiumCore
+import com.proxy.service.document.pdf.info.loader.cache.LruPageTextCache
 
 /**
  * @author: cangHX
  * @data: 2025/4/30 17:55
  * @desc:
  */
-class PageInfo(private val doc_hand: Long, val page_hand: Long) {
+class PageInfo(private val doc_hand: Long, val page_hand: Long, private val pageIndex:Int) {
 
     companion object {
+        private val pageTextInfoCache = LruPageTextCache()
+
         private var dpi = -1
 
         private fun getDpi(): Int {
@@ -48,6 +51,18 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
      * 当前页面高度
      * */
     private var heightPoint: Int = -1
+
+    /**
+     * 获取页面内文字信息
+     * */
+    fun getPageTextInfo(): PageTextInfo {
+        var info = pageTextInfoCache.get(pageIndex)
+        if (info == null) {
+            info = PageTextInfo(page_hand)
+            pageTextInfoCache.put(pageIndex, info)
+        }
+        return info
+    }
 
     /**
      * 获取超链接
@@ -153,5 +168,12 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         )
     }
 
+    /**
+     * 关闭页面
+     * */
+    fun close() {
+        pageTextInfoCache.get(pageIndex)?.clear()
+        pageTextInfoCache.remove(pageIndex)
+    }
 
 }

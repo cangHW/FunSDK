@@ -1,5 +1,6 @@
 
 #include <jni.h>
+#include <string>
 #include "h/pdflog.h"
 #include "fpdfview.h"
 
@@ -74,3 +75,67 @@ char *getErrorDescription(const long error) {
 
     return description;
 }
+
+jstring UnicodeToJString(unsigned int unicode) {
+    std::string utf8;
+    if (unicode <= 0x7F) {
+        // 1 字节 UTF-8
+        utf8 += static_cast<char>(unicode);
+    } else if (unicode <= 0x7FF) {
+        // 2 字节 UTF-8
+        utf8 += static_cast<char>(0xC0 | ((unicode >> 6) & 0x1F));
+        utf8 += static_cast<char>(0x80 | (unicode & 0x3F));
+    } else if (unicode <= 0xFFFF) {
+        // 3 字节 UTF-8
+        utf8 += static_cast<char>(0xE0 | ((unicode >> 12) & 0x0F));
+        utf8 += static_cast<char>(0x80 | ((unicode >> 6) & 0x3F));
+        utf8 += static_cast<char>(0x80 | (unicode & 0x3F));
+    } else if (unicode <= 0x10FFFF) {
+        // 4 字节 UTF-8
+        utf8 += static_cast<char>(0xF0 | ((unicode >> 18) & 0x07));
+        utf8 += static_cast<char>(0x80 | ((unicode >> 12) & 0x3F));
+        utf8 += static_cast<char>(0x80 | ((unicode >> 6) & 0x3F));
+        utf8 += static_cast<char>(0x80 | (unicode & 0x3F));
+    }
+    return utf8;
+}
+
+jstring UnicodeToJString(JNIEnv *env, unsigned short *buffer, int count) {
+    if (!buffer || count <= 0) {
+        LOGE("Invalid buffer or count.\n");
+        return env->NewStringUTF("");
+    }
+
+    char *utf8Buffer = (char *) malloc((count * 3 + 1) * sizeof(char));
+    if (!utf8Buffer) {
+        LOGE("Failed to allocate memory for UTF-8 buffer.\n");
+        free(buffer);
+        return env->NewStringUTF("");
+    }
+
+    int utf8Index = 0;
+    for (int i = 0; i < count; ++i) {
+        unsigned short unicodeChar = buffer[i];
+        if (unicodeChar <= 0x7F) {
+            utf8Buffer[utf8Index++] = (char) unicodeChar;
+        } else if (unicodeChar <= 0x7FF) {
+            utf8Buffer[utf8Index++] = (char) (0xC0 | ((unicodeChar >> 6) & 0x1F));
+            utf8Buffer[utf8Index++] = (char) (0x80 | (unicodeChar & 0x3F));
+        } else if (unicodeChar <= 0xFFFF) {
+            utf8Buffer[utf8Index++] = (char) (0xE0 | ((unicodeChar >> 12) & 0x0F));
+            utf8Buffer[utf8Index++] = (char) (0x80 | ((unicodeChar >> 6) & 0x3F));
+            utf8Buffer[utf8Index++] = (char) (0x80 | (unicodeChar & 0x3F));
+        } else {
+            utf8Buffer[utf8Index++] = (char) (0xF0 | ((unicodeChar >> 18) & 0x07));
+            utf8Buffer[utf8Index++] = (char) (0x80 | ((unicodeChar >> 12) & 0x3F));
+            utf8Buffer[utf8Index++] = (char) (0x80 | ((unicodeChar >> 6) & 0x3F));
+            utf8Buffer[utf8Index++] = (char) (0x80 | (unicodeChar & 0x3F));
+        }
+    }
+    utf8Buffer[utf8Index] = '\0';
+
+    jstring result = env->NewStringUTF(utf8Buffer);
+    free(utf8Buffer);
+    return result;
+}
+

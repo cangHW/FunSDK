@@ -61,6 +61,11 @@ class PartCache private constructor(
         if (isDestroy.get()) {
             return null
         }
+
+        val count = loader.getTextCount(position)
+        val text = loader.getText(position)
+        CsLogger.tag(TAG).i("count = $count, text = $text")
+
         var part = partCache.get(position)
         if (part == null) {
             val size = getBitmapSize(loader, position, width, height)

@@ -3,7 +3,7 @@ package com.proxy.service.document.pdf.base.bean
 /**
  * @author: cangHX
  * @data: 2025/4/30 16:08
- * @desc:
+ * @desc: 标记
  */
 class MetaData {
 
