@@ -9,8 +9,8 @@ upArray=(
 #  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
-  ":ImageLoaderSDK:ImageLoaderInfo"
-  ":ImageLoaderSDK:ImageLoaderBase"
+#  ":ImageLoaderSDK:ImageLoaderInfo"
+#  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpInfo"
@@ -34,8 +34,11 @@ upArray=(
   # 文档库
 #  ":DocumentsSDK:Image:DocumentImageInfo"
 #  ":DocumentsSDK:Image:DocumentImageBase"
-#  ":DocumentsSDK:Pdf:DocumentPdfInfo"
-#  ":DocumentsSDK:Pdf:DocumentPdfBase"
+  ":DocumentsSDK:Pdf:DocumentPdfInfo"
+  ":DocumentsSDK:Pdf:DocumentPdfBase"
+
+    # 视图 UI 库
+#  ":WidgetSDK:WidgetInfo"
 )
 
 type_params="r"

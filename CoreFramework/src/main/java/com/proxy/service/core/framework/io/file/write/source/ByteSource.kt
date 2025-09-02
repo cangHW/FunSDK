@@ -67,6 +67,8 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
             } else {
                 CsLogger.tag(TAG).e(throwable)
             }
+        }finally {
+            CsFileUtils.close(stream)
         }
         return false
     }
@@ -106,7 +108,6 @@ class ByteSource(private val bytes: ByteArray) : AbstractWrite() {
             outputStream.write(temp, 0, length)
             offset += length
         }
-        outputStream.flush()
     }
 
 }

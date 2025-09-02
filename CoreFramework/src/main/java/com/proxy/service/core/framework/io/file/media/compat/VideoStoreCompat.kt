@@ -23,6 +23,9 @@ class VideoStoreCompat : AbstractSource<IMediaStore.IVideo>(), IMediaStore.IVide
         store.setDir(Environment.DIRECTORY_MOVIES + File.separator + CsAppUtils.getAppName())
     }
 
+    /**
+     * 设置源数据
+     * */
     override fun setSourceByte(bytes: ByteArray): IMediaStore.IVideo {
         store.setSource(ByteSource(bytes))
         return getT()

@@ -13,7 +13,7 @@ import com.proxy.service.document.image.base.callback.base.OnScaleCallback
 import com.proxy.service.document.image.base.callback.base.OnSingleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
 import com.proxy.service.document.image.base.loader.base.IOption
-import com.proxy.service.imageloader.base.option.glide.GlideDecodeFormat
+import com.proxy.service.imageloader.base.option.glide.format.GlideDecodeFormat
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
 
 /**

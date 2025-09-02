@@ -23,6 +23,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_imageload_base_"
 }
 
 dependencies {

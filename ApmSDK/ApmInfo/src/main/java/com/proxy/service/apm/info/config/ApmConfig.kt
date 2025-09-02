@@ -1,6 +1,6 @@
 package com.proxy.service.apm.info.config
 
-import com.proxy.service.apm.info.config.controller.Controller
+import com.proxy.service.apm.info.config.controller.MonitorConfig
 
 /**
  * @author: cangHX
@@ -13,16 +13,16 @@ class ApmConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.getRootDir()
     }
 
-    override fun getJavaCrashMonitorController(): Controller {
-        return builder.getJavaCrashMonitorController()
+    override fun getJavaCrashMonitorConfig(): MonitorConfig {
+        return builder.getJavaCrashMonitorConfig()
     }
 
-    override fun getMainThreadLagMonitorController(): Controller {
-        return builder.getMainThreadLagMonitorController()
+    override fun getMainThreadLagMonitorConfig(): MonitorConfig {
+        return builder.getMainThreadLagMonitorConfig()
     }
 
-    override fun getUiLagMonitorController(): Controller {
-        return builder.getUiLagMonitorController()
+    override fun getUiLagMonitorConfig(): MonitorConfig {
+        return builder.getUiLagMonitorConfig()
     }
 
     companion object {
@@ -34,27 +34,27 @@ class ApmConfig private constructor(private val builder: IBuilderGet) : IBuilder
     class Builder : IBuilder, IBuilderGet {
 
         private var rootDir = ""
-        private var javaCrashMonitorController: Controller = Controller.builder().build()
-        private var mainThreadLagMonitorController: Controller = Controller.builder().build()
-        private var uiLagMonitorController: Controller = Controller.builder().build()
+        private var javaCrashMonitorConfig: MonitorConfig = MonitorConfig.builder().build()
+        private var mainThreadLagMonitorConfig: MonitorConfig = MonitorConfig.builder().build()
+        private var uiLagMonitorConfig: MonitorConfig = MonitorConfig.builder().build()
 
         override fun setRootDir(rootDir: String): IBuilder {
             this.rootDir = rootDir
             return this
         }
 
-        override fun setJavaCrashMonitorController(controller: Controller): IBuilder {
-            this.javaCrashMonitorController = controller
+        override fun setJavaCrashMonitorConfig(config: MonitorConfig): IBuilder {
+            this.javaCrashMonitorConfig = config
             return this
         }
 
-        override fun setMainThreadLagMonitorEnable(controller: Controller): IBuilder {
-            this.mainThreadLagMonitorController = controller
+        override fun setMainThreadLagMonitorConfig(config: MonitorConfig): IBuilder {
+            this.mainThreadLagMonitorConfig = config
             return this
         }
 
-        override fun setUiLagMonitorEnable(controller: Controller): IBuilder {
-            this.uiLagMonitorController = controller
+        override fun setUiLagMonitorConfig(config: MonitorConfig): IBuilder {
+            this.uiLagMonitorConfig = config
             return this
         }
 
@@ -66,16 +66,16 @@ class ApmConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return rootDir
         }
 
-        override fun getJavaCrashMonitorController(): Controller {
-            return javaCrashMonitorController
+        override fun getJavaCrashMonitorConfig(): MonitorConfig {
+            return javaCrashMonitorConfig
         }
 
-        override fun getMainThreadLagMonitorController(): Controller {
-            return mainThreadLagMonitorController
+        override fun getMainThreadLagMonitorConfig(): MonitorConfig {
+            return mainThreadLagMonitorConfig
         }
 
-        override fun getUiLagMonitorController(): Controller {
-            return uiLagMonitorController
+        override fun getUiLagMonitorConfig(): MonitorConfig {
+            return uiLagMonitorConfig
         }
     }
 

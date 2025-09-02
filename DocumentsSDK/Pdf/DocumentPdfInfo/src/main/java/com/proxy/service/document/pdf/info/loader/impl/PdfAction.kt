@@ -12,7 +12,7 @@ import com.proxy.service.document.pdf.info.core.PdfiumCore
  * @data: 2025/4/30 14:58
  * @desc:
  */
-open class PdfAction : PdfEdit(), IPdfAction {
+open class PdfAction : PdfText(), IPdfAction {
 
     override fun getPageCount(): Int {
         if (isNotReady()) {

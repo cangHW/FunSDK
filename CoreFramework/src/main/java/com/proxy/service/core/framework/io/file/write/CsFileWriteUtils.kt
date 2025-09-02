@@ -1,10 +1,10 @@
 package com.proxy.service.core.framework.io.file.write
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IWrite
-import com.proxy.service.core.framework.io.file.write.source.AutoCloseInputStreamSource
 import com.proxy.service.core.framework.io.file.write.source.ByteSource
 import com.proxy.service.core.framework.io.file.write.source.InputStreamSource
 import com.proxy.service.core.framework.io.file.write.source.PathSource
@@ -46,7 +46,16 @@ object CsFileWriteUtils : IWrite.Source {
      * */
     override fun setSourceAssetPath(assetPath: String): IWrite {
         val context = CsContextManager.getApplication()
-        return AutoCloseInputStreamSource(context.assets.open(assetPath))
+        return setSourceStream(context.assets.open(assetPath))
+    }
+
+    /**
+     * 设置源数据
+     * */
+    override fun setSourceUri(uri: Uri): IWrite {
+        val contentResolver = CsContextManager.getApplication().contentResolver
+        val inputStream = contentResolver.openInputStream(uri)
+        return setSourceStream(inputStream!!)
     }
 
     /**

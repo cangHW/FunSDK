@@ -41,8 +41,10 @@ class CipherController(
     override fun update(byteArray: ByteArray): ByteArray {
         try {
             val array = cipher.update(byteArray)
-            byteArrayList.add(array)
-            return array
+            if (array != null) {
+                byteArrayList.add(array)
+                return array
+            }
         } catch (throwable: Throwable) {
             CsLogger.tag(Config.TAG).e(throwable)
         }
@@ -60,7 +62,10 @@ class CipherController(
 
     override fun finish(): ByteArray {
         try {
-            byteArrayList.add(cipher.doFinal())
+            val array = cipher.doFinal()
+            if (array != null) {
+                byteArrayList.add(array)
+            }
             return mergeByteArrays(byteArrayList)
         } catch (throwable: Throwable) {
             CsLogger.tag(Config.TAG).e(throwable)

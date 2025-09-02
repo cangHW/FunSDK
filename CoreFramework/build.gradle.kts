@@ -30,6 +30,8 @@ android {
             )
         }
     }
+
+    resourcePrefix = "cs_core_fw_"
 }
 
 dependencies {
@@ -58,7 +60,7 @@ dependencies {
     implementation(libs.sp.mmkv)
 
     // work 基于条件任务管理
-    implementation(libs.android.work.runtime)
+//    implementation(libs.android.work.runtime)
 
 }
 

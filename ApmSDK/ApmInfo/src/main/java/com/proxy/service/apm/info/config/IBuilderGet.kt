@@ -1,6 +1,6 @@
 package com.proxy.service.apm.info.config
 
-import com.proxy.service.apm.info.config.controller.Controller
+import com.proxy.service.apm.info.config.controller.MonitorConfig
 
 /**
  * @author: cangHX
@@ -11,10 +11,10 @@ interface IBuilderGet {
 
     fun getRootDir(): String
 
-    fun getJavaCrashMonitorController(): Controller
+    fun getJavaCrashMonitorConfig(): MonitorConfig
 
-    fun getMainThreadLagMonitorController(): Controller
+    fun getMainThreadLagMonitorConfig(): MonitorConfig
 
-    fun getUiLagMonitorController(): Controller
+    fun getUiLagMonitorConfig(): MonitorConfig
 
 }

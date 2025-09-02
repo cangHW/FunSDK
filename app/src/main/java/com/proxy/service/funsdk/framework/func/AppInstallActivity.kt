@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.install.CsInstallUtils
@@ -41,6 +42,10 @@ class AppInstallActivity : BaseActivity<ActivityFrameworkAppinstallBinding>(), I
 
         AssetUtils.copyFolderFromAssets(this, "apk", apkDir) {}
         CsUriManager.addProviderResourcePath(apkDir)
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkAppinstallBinding {
+        return ActivityFrameworkAppinstallBinding.inflate(inflater)
     }
 
     private var pkg = ""

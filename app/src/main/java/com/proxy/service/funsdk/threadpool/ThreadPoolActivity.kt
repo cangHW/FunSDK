@@ -4,12 +4,15 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityThreadPoolBinding
 import com.proxy.service.threadpool.base.thread.callback.OnCompleteCallback
+import com.proxy.service.threadpool.base.thread.callback.OnFailedCallback
+import com.proxy.service.threadpool.base.thread.callback.OnSuccessCallback
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.threadpool.base.thread.task.IConsumer
@@ -34,6 +37,10 @@ class ThreadPoolActivity : BaseActivity<ActivityThreadPoolBinding>() {
 
     private var intervalDisposable: ITaskDisposable? = null
 
+    override fun getViewBinding(inflater: LayoutInflater): ActivityThreadPoolBinding {
+        return ActivityThreadPoolBinding.inflate(inflater)
+    }
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.run_normal_task -> {
@@ -57,8 +64,26 @@ class ThreadPoolActivity : BaseActivity<ActivityThreadPoolBinding>() {
                                 "task",
                                 "${getThreadIdInfo()} 普通任务 value=$value. StartTime=$time"
                             )
+//                            throw IllegalArgumentException("ssss")
                         }
-                    })?.setOnCompleteCallback(object : OnCompleteCallback {
+                    })
+                    ?.setOnSuccessCallback(object :OnSuccessCallback<String>{
+                        override fun onCallback(value: String) {
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 普通任务 OnSuccess. StartTime=$time"
+                            )
+                        }
+                    })
+                    ?.setOnFailedCallback(object :OnFailedCallback{
+                        override fun onCallback(throwable: Throwable) {
+                            binding?.content?.addData(
+                                "task",
+                                "${getThreadIdInfo()} 普通任务 OnFailed. StartTime=$time"
+                            )
+                        }
+                    })
+                    ?.setOnCompleteCallback(object : OnCompleteCallback {
                         override fun onCallback() {
                             binding?.content?.addData(
                                 "task",

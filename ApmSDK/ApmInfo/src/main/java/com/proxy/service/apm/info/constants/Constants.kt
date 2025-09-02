@@ -11,10 +11,8 @@ object Constants {
 
     const val DIVIDER = "*** *** *** *** *** *** *** *** *** *** *** *** *** ***"
 
-    const val TASK_CACHE_NAME = "Apm-CacheManager"
-
+    const val FUN_ENABLE = true
     const val CACHE_TIME = 7 * 24 * 60 * 60 * 1000L
-
     const val MAX_ALL_FILE_SIZE = 50 * 1024 * 1024L
     const val MAX_FILE_COUNT = 5
 

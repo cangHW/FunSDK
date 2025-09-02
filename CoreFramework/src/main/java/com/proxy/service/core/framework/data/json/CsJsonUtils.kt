@@ -6,9 +6,11 @@ import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
+import org.json.JSONArray
 import java.io.Reader
 import java.io.Writer
 import java.lang.reflect.Type
+
 
 /**
  * json 序列化、反序列化工具
@@ -41,12 +43,47 @@ object CsJsonUtils {
     /**
      * 解析数据
      * */
-    fun <T> fromJson(json: String?, type: Class<T>): T? {
+    fun <T> fromJson(json: String?, tClass: Class<T>): T? {
         if (json.isNullOrEmpty()) {
             return null
         }
         return try {
-            gson.fromJson(json, type)
+            gson.fromJson(json, tClass)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            null
+        }
+    }
+
+    /**
+     * 解析数据
+     * */
+    fun <T> fromJsonToList(json: String?, tClass: Class<T>): MutableList<T>? {
+        val data = json ?: return null
+        return try {
+            val list = ArrayList<T>()
+            val array = JSONArray(data)
+            for (index in 0 until array.length()) {
+                fromJson(array.getString(index), tClass)?.let {
+                    list.add(it)
+                }
+            }
+            list
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            null
+        }
+    }
+
+    /**
+     * 解析数据
+     * */
+    fun fromJsonToMap(json: String?): HashMap<String, String>? {
+        if (json.isNullOrEmpty()) {
+            return null
+        }
+        return try {
+            gson.fromJson(json, object : TypeToken<HashMap<String, String>>() {}.type)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             null
@@ -71,12 +108,12 @@ object CsJsonUtils {
     /**
      * 转为 JsonString
      * */
-    fun toJson(src: Any?, typeOfSrc: Type): String? {
+    fun toJson(src: Any?, type: Type): String? {
         if (src == null) {
             return null
         }
         return try {
-            gson.toJson(src, typeOfSrc)
+            gson.toJson(src, type)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             null

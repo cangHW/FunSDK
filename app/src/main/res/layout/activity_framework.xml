@@ -153,7 +153,7 @@
             android:textSize="20dp" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/work"
+            android:id="@+id/span"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="10dp"
@@ -162,7 +162,7 @@
             android:focusable="true"
             android:gravity="center"
             android:onClick="onClick"
-            android:text="后台任务"
+            android:text="富文本"
             android:textSize="20dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

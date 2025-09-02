@@ -47,7 +47,9 @@ DocumentFile::~DocumentFile() {
 
 static jlong loadPageInternal(JNIEnv *env, DocumentFile *doc, int pageIndex) {
     try {
-        if (doc == nullptr) throw "Get page document null";
+        if (doc == nullptr) {
+            throw "Get page document null";
+        }
 
         FPDF_DOCUMENT pdfDoc = doc->pdfDocument;
         if (pdfDoc != nullptr) {
@@ -62,8 +64,11 @@ static jlong loadPageInternal(JNIEnv *env, DocumentFile *doc, int pageIndex) {
 
     } catch (const char *msg) {
         LOGE("%s", msg);
-        jniThrowException(env, "java/lang/IllegalStateException",
-                          "cannot load page");
+        jniThrowException(
+                env,
+                "java/lang/IllegalStateException",
+                "cannot load page"
+        );
         return -1;
     }
 }
@@ -82,15 +87,16 @@ getBlock(void *param, unsigned long position, unsigned char *outBuffer, unsigned
 }
 
 
-jobject createOpenError(JNIEnv *env, long code){
+jobject createOpenError(JNIEnv *env, long code) {
     jclass clazz = env->FindClass("com/proxy/service/document/pdf/info/core/OpenResult");
     jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(JJ)V");
-    jobject result = env->NewObject(clazz, constructorID, static_cast<jlong>(-1), static_cast<jlong>(code));
+    jobject result = env->NewObject(clazz, constructorID, static_cast<jlong>(-1),
+                                    static_cast<jlong>(code));
     env->DeleteLocalRef(clazz);
     return result;
 }
 
-jobject createOpenResult(JNIEnv *env,FPDF_DOCUMENT document, DocumentFile *docFile){
+jobject createOpenResult(JNIEnv *env, FPDF_DOCUMENT document, DocumentFile *docFile) {
     jclass clazz = env->FindClass("com/proxy/service/document/pdf/info/core/OpenResult");
     jmethodID constructorID = env->GetMethodID(clazz, "<init>", "(JJ)V");
 
@@ -103,7 +109,8 @@ jobject createOpenResult(JNIEnv *env,FPDF_DOCUMENT document, DocumentFile *docFi
     }
 
     docFile->pdfDocument = document;
-    jobject result = env->NewObject(clazz, constructorID, reinterpret_cast<jlong>(docFile), static_cast<jlong>(0));
+    jobject result = env->NewObject(clazz, constructorID, reinterpret_cast<jlong>(docFile),
+                                    static_cast<jlong>(0));
     env->DeleteLocalRef(clazz);
     return result;
 }
@@ -116,7 +123,7 @@ jobject createOpenResult(JNIEnv *env,FPDF_DOCUMENT document, DocumentFile *docFi
 // 通过文件地址加载文档
 extern "C" JNIEXPORT jobject JNICALL
 Java_com_proxy_service_document_pdf_info_core_PdfiumCore_nativeOpenDocumentByPath(
-        JNIEnv *env, jobject thiz, jstring filepath, jstring password){
+        JNIEnv *env, jobject thiz, jstring filepath, jstring password) {
     DocumentFile *docFile = new DocumentFile();
 
     const char *cfilepath = nullptr;

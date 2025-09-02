@@ -23,7 +23,7 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -63,12 +63,13 @@ dependencies {
     implementation(libs.service.webview.bridge)
     implementation(libs.service.permission)
     implementation(libs.service.logfile)
-    implementation(libs.service.apm)
+//    implementation(libs.service.apm)
 
     implementation(libs.service.document.image)
-//    implementation(libs.service.document.pdf)
-//    implementation(project(":DocumentsSDK:Image:DocumentImageBase"))
-    implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
+    implementation(libs.service.document.pdf)
+//    implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
+//    implementation(project(":WidgetSDK:WidgetInfo"))
+    implementation(libs.service.widget)
 
 
 //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")

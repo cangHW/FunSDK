@@ -6,6 +6,8 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
+ * 支持异步操作 map
+ *
  * @author: cangHX
  * @data: 2024/12/27 14:45
  * @desc:

@@ -14,6 +14,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
+        externalNativeBuild {
+            cmake {
+                cppFlags("")
+            }
+        }
+
         kapt {
             arguments {
                 arg("CLOUD_MODULE_NAME", project.name)
@@ -30,6 +36,15 @@ android {
             )
         }
     }
+
+    externalNativeBuild {
+        cmake {
+            path("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
+
+    resourcePrefix = "cs_apm_"
 }
 
 dependencies {

@@ -23,7 +23,7 @@ object CsApi {
             service = CloudSystem.getService(RequestService::class.java)
         }
         if (service == null) {
-            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.cangHW:Service-Apihttp:xxx>")
+            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.canghw:Service-Apihttp:xxx>")
         }
         return service
     }

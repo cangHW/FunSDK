@@ -14,7 +14,7 @@ class DocumentInfo(private val controller: BaseController, val hand: Long) {
     /**
      * 页面映射
      * */
-    private val pageMap = ArrayMap<Int, com.proxy.service.document.pdf.info.loader.info.PageInfo>()
+    private val pageMap = ArrayMap<Int, PageInfo>()
 
     /**
      * 页面数量
@@ -71,7 +71,7 @@ class DocumentInfo(private val controller: BaseController, val hand: Long) {
     /**
      * 获取页面信息
      * */
-    fun getPageInfo(pageIndex: Int): com.proxy.service.document.pdf.info.loader.info.PageInfo? {
+    fun getPageInfo(pageIndex: Int): PageInfo? {
         if (pageIndex < getPageStart()) {
             return null
         }
@@ -82,7 +82,7 @@ class DocumentInfo(private val controller: BaseController, val hand: Long) {
         var page = pageMap.get(real_index)
         if (page == null) {
             val page_hand = PdfiumCore.getInstance().nativeLoadPage(hand, real_index)
-            page = com.proxy.service.document.pdf.info.loader.info.PageInfo(hand, page_hand)
+            page = PageInfo(hand, page_hand, pageIndex)
             pageMap.put(real_index, page)
         }
         return page
@@ -94,6 +94,7 @@ class DocumentInfo(private val controller: BaseController, val hand: Long) {
     fun close() {
         val list = ArrayList<Long>()
         pageMap.forEach {
+            it.value.close()
             list.add(it.value.page_hand)
         }
         PdfiumCore.getInstance().nativeClosePages(list.toLongArray())

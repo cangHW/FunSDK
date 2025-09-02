@@ -7,6 +7,7 @@ import com.proxy.service.core.framework.app.config.CsConfigUtils
 import com.proxy.service.core.framework.app.config.controller.impl.ComponentCallbackImpl
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
@@ -15,20 +16,26 @@ import com.proxy.service.core.framework.app.context.callback.AbstractActivityLif
  */
 object AppConfigInit {
 
+    private val isInit = AtomicBoolean(false)
+
     fun init() {
         if (!CsConfigUtils.isConfigHasChange()) {
             return
         }
-        CsContextManager.addActivityLifecycleCallback(null, true, activityLifecycle)
-        CsContextManager.getApplication().registerComponentCallbacks(componentCallback)
+        if (isInit.compareAndSet(false, true)) {
+            CsContextManager.addActivityLifecycleCallback(null, true, activityLifecycle)
+            CsContextManager.getApplication().registerComponentCallbacks(componentCallback)
+        }
     }
 
     fun finish() {
         if (CsConfigUtils.isConfigHasChange()) {
             return
         }
-        CsContextManager.removeActivityLifecycleCallback(activityLifecycle)
-        CsContextManager.getApplication().unregisterComponentCallbacks(componentCallback)
+        if (isInit.compareAndSet(true, false)) {
+            CsContextManager.removeActivityLifecycleCallback(activityLifecycle)
+            CsContextManager.getApplication().unregisterComponentCallbacks(componentCallback)
+        }
     }
 
 

@@ -12,7 +12,7 @@ import java.security.DigestInputStream
 import java.security.MessageDigest
 
 /**
- * 安全，md5 相关工具
+ * 安全相关 —— md5 工具
  *
  * @author: cangHX
  * @data: 2024/4/28 17:31

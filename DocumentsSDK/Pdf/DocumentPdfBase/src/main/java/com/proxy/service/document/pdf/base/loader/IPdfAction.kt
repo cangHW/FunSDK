@@ -10,7 +10,7 @@ import com.proxy.service.document.pdf.base.bean.PageSize
  * @data: 2025/4/30 14:53
  * @desc:
  */
-interface IPdfAction : IPdfEdit {
+interface IPdfAction : IPdfText {
 
     /**
      * 获取页面数量

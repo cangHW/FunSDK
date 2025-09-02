@@ -24,10 +24,15 @@ class BaseUrlInterceptor(private val baseUrl: String) : Interceptor {
         var request = chain.request()
 
         try {
-            request.tag(Invocation::class.java)?.method()?.getAnnotation(CsBaseUrl::class.java)
+            request.tag(Invocation::class.java)
+                ?.method()
+                ?.getAnnotation(CsBaseUrl::class.java)
                 ?.let {
                     if (it.baseUrl.isNotBlank()) {
-                        request.url.toString().replace(baseUrl, it.baseUrl).toHttpUrlOrNull()
+                        request.url
+                            .toString()
+                            .replace(baseUrl, it.baseUrl)
+                            .toHttpUrlOrNull()
                             ?.let { httpUrl ->
                                 request = request.newBuilder().url(httpUrl).build()
                             }

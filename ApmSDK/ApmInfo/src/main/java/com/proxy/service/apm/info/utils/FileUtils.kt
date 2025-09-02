@@ -13,7 +13,7 @@ import java.io.File
  */
 object FileUtils {
 
-    fun getRootDir(application: Application): String {
+    private fun getRootDir(application: Application): String {
         val userDir = CsApmMonitor.getConfig().getRootDir()
 
         if (!TextUtils.isEmpty(userDir)) {

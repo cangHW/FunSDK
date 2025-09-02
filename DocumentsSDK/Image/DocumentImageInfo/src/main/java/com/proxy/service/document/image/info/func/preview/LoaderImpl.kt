@@ -24,7 +24,7 @@ import com.proxy.service.document.image.info.drawable.ActionDrawable
 import com.proxy.service.document.image.info.drawable.ConfigInfo
 import com.proxy.service.document.image.info.func.preview.factory.LayoutFactory
 import com.proxy.service.imageloader.base.option.glide.IGlideOption
-import com.proxy.service.imageloader.base.target.ITarget
+import com.proxy.service.imageloader.base.target.CsCustomTarget
 
 /**
  * @author: cangHX
@@ -81,7 +81,7 @@ open class LoaderImpl(
         if (imageView == null) {
             return
         }
-        glideOption?.into(object : ITarget<Bitmap> {
+        glideOption?.into(object : CsCustomTarget<Bitmap>() {
             override fun onLoadCleared(placeholder: Drawable?) {
                 imageView.setImageDrawable(null)
                 imageView.setOnTouchListener(null)

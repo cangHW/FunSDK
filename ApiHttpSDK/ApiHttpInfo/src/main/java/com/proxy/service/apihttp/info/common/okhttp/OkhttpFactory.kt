@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.info.common.okhttp
 
 import com.proxy.service.apihttp.info.common.ssl.TrustCerManager
+import com.proxy.service.apihttp.info.request.okhttp.interceptor.ExceptionInterceptor
 import com.proxy.service.core.constants.CoreConfig
 import okhttp3.Cache
 import okhttp3.OkHttpClient
@@ -39,12 +40,18 @@ object OkhttpFactory {
             }
         }
 
-        config.getInterceptor().forEach {
-            builder.addInterceptor(it)
+        if (config.getInterceptor().isNotEmpty()) {
+            builder.addInterceptor(ExceptionInterceptor())
+            config.getInterceptor().forEach {
+                builder.addInterceptor(it)
+            }
         }
 
-        config.getNetworkInterceptor().forEach {
-            builder.addNetworkInterceptor(it)
+        if (config.getNetworkInterceptor().isNotEmpty()) {
+            builder.addNetworkInterceptor(ExceptionInterceptor())
+            config.getNetworkInterceptor().forEach {
+                builder.addNetworkInterceptor(it)
+            }
         }
 
         config.getEventListener()?.let {

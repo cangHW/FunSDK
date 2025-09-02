@@ -20,7 +20,7 @@ import java.nio.file.StandardOpenOption
  */
 open class InputStreamSource(protected val stream: InputStream) : AbstractWrite() {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}FileWrite_InputStream"
     }
 
@@ -50,6 +50,8 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             } else {
                 CsLogger.tag(TAG).e(throwable)
             }
+        } finally {
+            CsFileUtils.close(stream)
         }
         return false
     }
@@ -66,6 +68,8 @@ open class InputStreamSource(protected val stream: InputStream) : AbstractWrite(
             } else {
                 CsLogger.tag(TAG).e(throwable)
             }
+        } finally {
+            CsFileUtils.close(stream)
         }
         return false
     }

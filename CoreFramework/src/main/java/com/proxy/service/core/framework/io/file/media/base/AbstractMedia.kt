@@ -30,6 +30,9 @@ abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,
         NormalStore()
     }
 
+    /**
+     * 设置资源名称
+     * */
     override fun setDisplayName(displayName: String): T {
         if (displayName.trim().isEmpty()) {
             CsLogger.tag(TAG).d("displayName can not be null or empty.")
@@ -39,11 +42,17 @@ abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,
         return getT()
     }
 
+    /**
+     * 设置资源类型
+     * */
     override fun setMimeType(mimeType: MimeType): T {
         store.setMimeType(mimeType)
         return getT()
     }
 
+    /**
+     * 插入
+     * */
     override fun insert(callback: InsertCallback?) {
         store.insert(object : InsertCallback {
             override fun onSuccess(path: String) {
@@ -61,6 +70,9 @@ abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,
         })
     }
 
+    /**
+     * 查询
+     * */
     override fun query(callback: QueryCallback?) {
         store.query(callback)
     }

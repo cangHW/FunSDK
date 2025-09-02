@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="cs_widget_RoundLayout">
+        <attr name="round_radius" format="dimension" tools:ignore="ResourceName" />
+        <attr name="round_radius_top_left" format="dimension" tools:ignore="ResourceName" />
+        <attr name="round_radius_top_right" format="dimension" tools:ignore="ResourceName" />
+        <attr name="round_radius_bottom_left" format="dimension" tools:ignore="ResourceName" />
+        <attr name="round_radius_bottom_right" format="dimension" tools:ignore="ResourceName" />
+    </declare-styleable>
+
+</resources>

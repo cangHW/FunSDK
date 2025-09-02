@@ -1,7 +1,6 @@
 package com.proxy.service.core.framework.io.file.base
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.net.Uri
 import java.io.File
 import java.io.InputStream
 import java.io.Reader
@@ -20,6 +19,11 @@ interface ISource<T> {
      * assetPath 示例：asd/xxx.txt
      * */
     fun setSourceAssetPath(assetPath: String): T
+
+    /**
+     * 设置源数据
+     * */
+    fun setSourceUri(uri: Uri): T
 
     /**
      * 设置源数据

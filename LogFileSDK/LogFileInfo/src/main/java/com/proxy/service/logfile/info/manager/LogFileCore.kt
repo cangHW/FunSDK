@@ -36,6 +36,7 @@ class LogFileCore {
         } else {
             logConfig.getLogDir()
         }
+        CsFileUtils.createDir(config._dir)
 
         config._namePrefix = logConfig.getFileNamePrefix()
         config._namePostfix = logConfig.getFileNamePostfix()

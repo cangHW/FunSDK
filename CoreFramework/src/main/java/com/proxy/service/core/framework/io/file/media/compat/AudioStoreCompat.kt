@@ -23,6 +23,9 @@ class AudioStoreCompat : AbstractSource<IMediaStore.IAudio>(), IMediaStore.IAudi
         store.setDir(Environment.DIRECTORY_MUSIC + File.separator + CsAppUtils.getAppName())
     }
 
+    /**
+     * 设置源数据
+     * */
     override fun setSourceByte(bytes: ByteArray): IMediaStore.IAudio {
         store.setSource(ByteSource(bytes))
         return getT()

@@ -11,7 +11,7 @@ import android.view.FrameMetrics
 import android.view.Window
 import androidx.annotation.RequiresApi
 import com.proxy.service.apm.info.cache.CacheManager
-import com.proxy.service.apm.info.config.controller.Controller
+import com.proxy.service.apm.info.config.controller.MonitorConfig
 import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.apm.info.utils.FileUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -51,9 +51,13 @@ class UiLagMonitor {
     private var fileDir: String = ""
     private var handler: IHandlerOption? = null
 
-    fun init(application: Application, controller: Controller) {
+    fun init(application: Application, config: MonitorConfig) {
+        if (!config.getEnable()){
+            return
+        }
+
         fileDir = FileUtils.getDefaultDir(application, "performance/ui_lag/")
-        CacheManager.getInstance().startWatch(fileDir, controller)
+        CacheManager.getInstance().startWatch(fileDir, config)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             checkUiLagN()
@@ -171,10 +175,8 @@ class UiLagMonitor {
             handler = CsTask.launchTaskGroup("UiLagMonitor-log")
         }
         handler?.start {
-            val fileName = "${
-                CsTimeManager.createFactory().get("yyyy年MM月dd日")
-            }.txt"
-            val file = File(fileDir, fileName)
+            val timeString = CsTimeManager.createFactory().get("yyyy年MM月dd日")
+            val file = File(fileDir, "$timeString.txt")
             try {
                 CsFileWriteUtils.setSourceString(content)
                     .writeSync(file, append = true, shouldThrow = true)

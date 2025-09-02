@@ -28,7 +28,7 @@ object CsPermission {
         }
         if (service == null) {
             CsLogger.tag(TAG)
-                .e("Please check to see if it is referenced. <io.github.cangHW:Service-Permission:xxx>")
+                .e("Please check to see if it is referenced. <io.github.canghw:Service-Permission:xxx>")
         }
         return service
     }

@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.webview
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.service.web.CsWeb
 import com.proxy.service.funsdk.R
@@ -30,6 +31,10 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
     }
 
     private var webView: IWeb? = null
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityWebViewBinding {
+        return ActivityWebViewBinding.inflate(inflater)
+    }
 
     override fun initView() {
         webView = CsWeb.createWebLoader(WebConfig.builder().build())

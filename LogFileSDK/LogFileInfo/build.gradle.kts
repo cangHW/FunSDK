@@ -42,6 +42,8 @@ android {
             version = "3.22.1"
         }
     }
+
+    resourcePrefix = "cs_logfile_"
 }
 
 dependencies {

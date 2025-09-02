@@ -31,7 +31,7 @@ android {
         }
     }
 
-    resourcePrefix = "cs_document_image_"
+    resourcePrefix = "cs_document_image_info_"
 }
 
 dependencies {

@@ -26,6 +26,7 @@ object RetrofitManager {
             .client(client)
 
         config.getConverterFactory().forEach {
+            CsLogger.tag(TAG).d("addConverterFactory factory = $it")
             builder.addConverterFactory(it)
         }
         builder.addConverterFactory(ScalarsConverterFactory.create())

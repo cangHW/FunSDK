@@ -8,6 +8,7 @@ import com.proxy.service.document.pdf.base.bean.CatalogueData
 import com.proxy.service.document.pdf.base.bean.LinkData
 import com.proxy.service.document.pdf.base.bean.MetaData
 import com.proxy.service.document.pdf.base.bean.PageSize
+import com.proxy.service.document.pdf.base.bean.TextWebLinkData
 import com.proxy.service.document.pdf.info.constants.Constants
 
 /**
@@ -234,6 +235,145 @@ class PdfiumCore {
      * */
     private external fun nativeGetLinkRectF(link_hand: Long): RectF?
 
+
+    /*** *** *** *** *** *** *** 页面文字处理 *** *** *** *** *** *** ***/
+
+    /**
+     * 加载页面内全部字符信息
+     *
+     * @param page_hand 页面指针
+     *
+     * @return 返回字符信息指针
+     * */
+    external fun nativeLoadTextPage(page_hand: Long): Long
+
+    /**
+     * 清理加载的页面内字符信息
+     *
+     * @param page_text_hand    字符信息指针
+     * */
+    external fun nativeCloseTextPage(page_text_hand: Long)
+
+    /**
+     * 获取当前页面内的全部字符数量
+     *
+     * @param page_text_hand    字符信息指针
+     * */
+    external fun nativeGetCharsCount(page_text_hand: Long): Int
+
+    /**
+     * 获取当前页面内对应位置的字符
+     *
+     * @param page_text_hand    字符信息指针
+     * @param textIndex         字符下标
+     * */
+    external fun nativeGetTextByIndex(page_text_hand: Long, textIndex: Int): String
+
+    /**
+     * 获取当前页面内对应位置字符的字体大小, 单位: 点（points）, 1 点约等于 1/72 英寸。
+     *
+     * @param page_text_hand    字符信息指针
+     * @param textIndex         字符下标
+     * */
+    external fun nativeGetFontSizeByIndex(page_text_hand: Long, textIndex: Int): Double
+
+    /**
+     * 获取当前页面内对应位置字符的坐标区域
+     *
+     * @param page_text_hand    字符信息指针
+     * @param textIndex         字符下标
+     * */
+    external fun nativeGetTextBox(
+        page_text_hand: Long,
+        textIndex: Int,
+        left: DoubleArray,
+        top: DoubleArray,
+        right: DoubleArray,
+        bottom: DoubleArray
+    )
+
+    /**
+     * 根据位置获取文字索引
+     *
+     * @param page_text_hand    字符信息指针
+     *
+     * @return 返回 -1 代表附近无文字, -3 代表 page_text_hand 无效
+     * */
+    external fun nativeGetTextIndexAtPos(
+        page_text_hand: Long,
+        touchX: Double,
+        touchY: Double,
+        xTolerance: Double,
+        yTolerance: Double
+    ): Int
+
+    /**
+     * 获取指定位置与长度的字符串
+     *
+     * @param page_text_hand    字符信息指针
+     * @param startIndex        字符串开始下标
+     * @param count             字符串长度
+     * */
+    external fun nativeGetText(
+        page_text_hand: Long,
+        startIndex: Int,
+        count: Int
+    ): String
+
+    /**
+     * 获取当前页面内对应字符串的坐标区域
+     *
+     * @param page_text_hand    字符信息指针
+     * @param startIndex        字符串开始下标
+     * @param count             字符串长度
+     * */
+    external fun nativeGetTextRect(
+        page_text_hand: Long,
+        startIndex: Int,
+        count: Int,
+        left: DoubleArray,
+        top: DoubleArray,
+        right: DoubleArray,
+        bottom: DoubleArray
+    )
+
+    /**
+     * 获取当前页面坐标区域内的字符串
+     *
+     * @param page_text_hand    字符信息指针
+     * */
+    external fun nativeGetTextByRect(
+        page_text_hand: Long,
+        left: Double,
+        top: Double,
+        right: Double,
+        bottom: Double
+    ): String
+
+    /**
+     * 搜索当前页面内的文字
+     *
+     * @param page_text_hand    字符信息指针
+     * @param text              待搜索字符串
+     * @param flag              搜索模式, [SearchTextFlag]
+     * @param startIndex        开始搜索下标
+     *
+     * @return 搜索到的文字开始下标数组
+     * */
+    external fun nativeSearchText(
+        page_text_hand: Long,
+        text: String,
+        flag: Int,
+        startIndex: Int
+    ): IntArray?
+
+    /**
+     * 获取页面文字中的链接信息, 和文档的超链接不同 [nativeGetPageLinks].
+     * 同样可用于跳转网页
+     * */
+    external fun nativeGetWebLinks(
+        page_text_hand: Long
+    ): ArrayList<TextWebLinkData>
 
     /*** *** *** *** *** *** *** 页面渲染-整体渲染 *** *** *** *** *** *** ***/
 

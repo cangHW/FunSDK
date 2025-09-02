@@ -3,6 +3,8 @@ package com.proxy.service.core.framework.collections
 import com.proxy.service.core.framework.collections.base.ISet
 
 /**
+ * 支持异步操作 set
+ *
  * @author: cangHX
  * @data: 2025/5/23 18:40
  * @desc:

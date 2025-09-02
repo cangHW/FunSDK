@@ -18,7 +18,7 @@ import java.util.stream.Collectors
 @RequiresApi(Build.VERSION_CODES.O)
 class PathSource(private val path: Path) : IRead {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}FileRead_Path"
     }
 
@@ -30,16 +30,44 @@ class PathSource(private val path: Path) : IRead {
             return ""
         }
         try {
-            Files.lines(path, charset).let {
-                try {
-                    return it.collect(Collectors.joining(System.lineSeparator()))
-                }finally {
-                    it.close()
-                }
+            Files.lines(path, charset).use {
+                return it.collect(Collectors.joining(System.lineSeparator()))
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
         return ""
+    }
+
+    override fun readLines(charset: Charset): List<String> {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return emptyList()
+        }
+        try {
+            val list = ArrayList<String>()
+            Files.lines(path, charset).use { stream ->
+                stream.forEach {
+                    list.add(it)
+                }
+            }
+            return list
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        return emptyList()
+    }
+
+    override fun readBytes(): ByteArray {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return ByteArray(0)
+        }
+        return try {
+            Files.newInputStream(path).use { inputStream ->
+                inputStream.readBytes()
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            ByteArray(0)
+        }
     }
 }

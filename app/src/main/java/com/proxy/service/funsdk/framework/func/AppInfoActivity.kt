@@ -3,6 +3,7 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.funsdk.R
@@ -24,6 +25,10 @@ class AppInfoActivity : BaseActivity<ActivityFrameworkAppinfoBinding>() {
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkAppinfoBinding {
+        return ActivityFrameworkAppinfoBinding.inflate(inflater)
     }
 
     override fun onClick(view: View) {

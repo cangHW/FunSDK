@@ -1,10 +1,10 @@
 package com.proxy.service.core.framework.io.file.read
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IRead
-import com.proxy.service.core.framework.io.file.read.source.AutoCloseInputStreamSource
 import com.proxy.service.core.framework.io.file.read.source.InputStreamSource
 import com.proxy.service.core.framework.io.file.read.source.PathSource
 import com.proxy.service.core.framework.io.file.read.source.ReaderSource
@@ -31,7 +31,16 @@ object CsFileReadUtils : IRead.Source {
      * */
     override fun setSourceAssetPath(assetPath: String): IRead {
         val context = CsContextManager.getApplication()
-        return AutoCloseInputStreamSource(context.assets.open(assetPath))
+        return setSourceStream(context.assets.open(assetPath))
+    }
+
+    /**
+     * 设置源数据
+     * */
+    override fun setSourceUri(uri: Uri): IRead {
+        val contentResolver = CsContextManager.getApplication().contentResolver
+        val inputStream = contentResolver.openInputStream(uri)
+        return setSourceStream(inputStream!!)
     }
 
     /**

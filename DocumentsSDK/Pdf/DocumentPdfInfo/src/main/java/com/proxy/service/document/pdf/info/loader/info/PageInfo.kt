@@ -5,22 +5,25 @@ import android.view.Surface
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.document.pdf.base.bean.LinkData
 import com.proxy.service.document.pdf.info.core.PdfiumCore
+import com.proxy.service.document.pdf.info.loader.cache.LruPageTextCache
 
 /**
  * @author: cangHX
  * @data: 2025/4/30 17:55
  * @desc:
  */
-class PageInfo(private val doc_hand: Long, val page_hand: Long) {
+class PageInfo(private val doc_hand: Long, val page_hand: Long, private val pageIndex:Int) {
 
     companion object {
+        private val pageTextInfoCache = LruPageTextCache()
+
         private var dpi = -1
 
         private fun getDpi(): Int {
-            if (com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.dpi == -1) {
-                com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.dpi = CsContextManager.getApplication().resources.displayMetrics.densityDpi
+            if (dpi == -1) {
+                dpi = CsContextManager.getApplication().resources.displayMetrics.densityDpi
             }
-            return com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.dpi
+            return dpi
         }
     }
 
@@ -50,6 +53,18 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
     private var heightPoint: Int = -1
 
     /**
+     * 获取页面内文字信息
+     * */
+    fun getPageTextInfo(): PageTextInfo {
+        var info = pageTextInfoCache.get(pageIndex)
+        if (info == null) {
+            info = PageTextInfo(page_hand)
+            pageTextInfoCache.put(pageIndex, info)
+        }
+        return info
+    }
+
+    /**
      * 获取超链接
      * */
     fun getLinks(): ArrayList<LinkData> {
@@ -64,9 +79,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
      * */
     fun getPageWidthPixel(): Int {
         if (widthPixel == -1) {
-            widthPixel = PdfiumCore.getInstance().nativeGetPageWidthPixel(page_hand,
-                com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi()
-            )
+            widthPixel = PdfiumCore.getInstance().nativeGetPageWidthPixel(page_hand, getDpi())
         }
         return widthPixel
     }
@@ -86,9 +99,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
      * */
     fun getPageHeightPixel(): Int {
         if (heightPixel == -1) {
-            heightPixel = PdfiumCore.getInstance().nativeGetPageHeightPixel(page_hand,
-                com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi()
-            )
+            heightPixel = PdfiumCore.getInstance().nativeGetPageHeightPixel(page_hand, getDpi())
         }
         return heightPixel
     }
@@ -119,7 +130,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         PdfiumCore.getInstance().nativeRenderPageToBitmap(
             page_hand,
             bitmap,
-            com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi(),
+            getDpi(),
             startX,
             startY,
             drawSizeHor,
@@ -146,7 +157,7 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         PdfiumCore.getInstance().nativeRenderPageToSurface(
             page_hand,
             surface,
-            com.proxy.service.document.pdf.info.loader.info.PageInfo.Companion.getDpi(),
+            getDpi(),
             startX,
             startY,
             drawSizeHor,
@@ -157,5 +168,12 @@ class PageInfo(private val doc_hand: Long, val page_hand: Long) {
         )
     }
 
+    /**
+     * 关闭页面
+     * */
+    fun close() {
+        pageTextInfoCache.get(pageIndex)?.clear()
+        pageTextInfoCache.remove(pageIndex)
+    }
 
 }

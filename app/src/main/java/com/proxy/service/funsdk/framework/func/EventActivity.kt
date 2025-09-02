@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.message.broadcast.CsBroadcastManager
@@ -31,6 +32,10 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>(), MessageRece
             }
             context.startActivity(intent)
         }
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkEventBinding {
+        return ActivityFrameworkEventBinding.inflate(inflater)
     }
 
     override fun initView() {

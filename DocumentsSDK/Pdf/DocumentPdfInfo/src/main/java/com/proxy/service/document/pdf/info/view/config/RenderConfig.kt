@@ -13,6 +13,6 @@ class RenderConfig {
     var viewBackgroundColor: Long = PdfConstants.DEFAULT_BG_COLOR
     var pageBackgroundColor: Long = PdfConstants.DEFAULT_BG_COLOR
 
-    var format: PagePixelFormat = PagePixelFormat.ARGB_8888
+    var format: PagePixelFormat = PdfConstants.DEFAULT_PAGE_PIXEL_FORMAT
 
 }
