@@ -1,0 +1,72 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.proxy.service.widget.info.WidgetInfo-mergeReleaseResources-20:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/canghaixiao/.gradle/caches/transforms-3/b92869d147ab16e1fc6c1ebf2025e753/transformed/appcompat-1.4.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "/Users/canghaixiao/.gradle/caches/transforms-3/6677c163e90b4849d78361eff0a6538c/transformed/core-1.7.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.proxy.service.widget.info.WidgetInfo-merged_res-22:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/canghaixiao/.gradle/caches/transforms-3/b92869d147ab16e1fc6c1ebf2025e753/transformed/appcompat-1.4.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "/Users/canghaixiao/.gradle/caches/transforms-3/6677c163e90b4849d78361eff0a6538c/transformed/core-1.7.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}

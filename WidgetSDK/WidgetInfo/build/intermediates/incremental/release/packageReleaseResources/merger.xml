@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3" xmlns:ns1="http://schemas.android.com/tools"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res"/><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/build/generated/res/rs/release"/><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/build/generated/res/resValues/release"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res"><file name="cs_widget_state_page_empty" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/drawable/cs_widget_state_page_empty.webp" qualifiers="" type="drawable"/><file name="cs_widget_state_page_loading_black" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/drawable/cs_widget_state_page_loading_black.webp" qualifiers="" type="drawable"/><file name="cs_widget_state_page_error_withrefresh" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/layout/cs_widget_state_page_error_withrefresh.xml" qualifiers="" type="layout"/><file name="cs_widget_toast_view" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/layout/cs_widget_toast_view.xml" qualifiers="" type="layout"/><file name="cs_widget_state_page_loading_rotation" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/layout/cs_widget_state_page_loading_rotation.xml" qualifiers="" type="layout"/><file name="cs_widget_toast_with_icon_view" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/layout/cs_widget_toast_with_icon_view.xml" qualifiers="" type="layout"/><file name="cs_widget_state_page_basic" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/layout/cs_widget_state_page_basic.xml" qualifiers="" type="layout"/><file name="cs_widget_state_page_empty_withoutrefresh" path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/layout/cs_widget_state_page_empty_withoutrefresh.xml" qualifiers="" type="layout"/><file path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/values/attrs.xml" qualifiers=""><declare-styleable name="cs_widget_RoundLayout">
+        <attr format="dimension" name="round_radius" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_top_left" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_top_right" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_bottom_left" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_bottom_right" ns1:ignore="ResourceName"/>
+    </declare-styleable></file><file path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/main/res/values/style.xml" qualifiers=""><style name="cs_widget_toast_parent_layout">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#99333333</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="round_radius">8dp</item>
+    </style><style name="cs_widget_toast_imageview">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style><style name="cs_widget_toast_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">#E5FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style></file></source><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/build/generated/res/rs/release"/><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/build/generated/res/resValues/release"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/release/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release" generated-set="release$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/canghaixiao/Documents/workspace/cloud/FunSDK/WidgetSDK/WidgetInfo/src/release/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"/><mergedItems><configuration qualifiers=""><declare-styleable name="cs_widget_RoundLayout">
+        <attr format="dimension" name="round_radius" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_top_left" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_top_right" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_bottom_left" ns1:ignore="ResourceName"/>
+        <attr format="dimension" name="round_radius_bottom_right" ns1:ignore="ResourceName"/>
+    </declare-styleable></configuration></mergedItems></merger>
