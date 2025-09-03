@@ -94,8 +94,8 @@ class CsRecyclerItemDecoration private constructor(
          * 创建一个间距管理类，并设置横向纵向间距，数值格式：px
          * */
         fun createWithPx(spaceVPX: Int, spaceHPX: Int): CsRecyclerItemDecoration {
-            val realSpaceVPX = Math.min(spaceVPX, 0)
-            val realSpaceHPX = Math.min(spaceHPX, 0)
+            val realSpaceVPX = Math.max(spaceVPX, 0)
+            val realSpaceHPX = Math.max(spaceHPX, 0)
 
             val isSpaceShowOnViewTop = isSpaceShowOnViewTopLocal.get() ?: false
             isSpaceShowOnViewTopLocal.remove()
@@ -157,32 +157,40 @@ class CsRecyclerItemDecoration private constructor(
         val isLast = parent.getChildAdapterPosition(view) == layoutManager.itemCount - 1
 
         if (layoutManager.orientation == RecyclerView.VERTICAL) {
-            if (spaceInfo.isSpaceShowOnViewTop && isFirst) {
-                outRect.top = spaceInfo.firstLineOutSize ?: spaceInfo.spaceHeightWithVertical
-            } else {
-                outRect.top = 0
+            if (isFirst){
+                if (spaceInfo.isSpaceShowOnViewTop) {
+                    outRect.top = spaceInfo.firstLineOutSize ?: spaceInfo.spaceHeightWithVertical
+                } else {
+                    outRect.top = 0
+                }
             }
 
             outRect.bottom = spaceInfo.spaceHeightWithVertical
 
-            if (spaceInfo.isSpaceShowOnViewBottom && isLast) {
-                outRect.bottom = spaceInfo.lastLineOutSize ?: spaceInfo.spaceHeightWithVertical
-            } else {
-                outRect.bottom = 0
+            if (isLast){
+                if (spaceInfo.isSpaceShowOnViewBottom) {
+                    outRect.bottom = spaceInfo.lastLineOutSize ?: spaceInfo.spaceHeightWithVertical
+                } else {
+                    outRect.bottom = 0
+                }
             }
         } else if (layoutManager.orientation == RecyclerView.HORIZONTAL) {
-            if (spaceInfo.isSpaceShowOnViewLeft && isFirst) {
-                outRect.left = spaceInfo.firstLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-            } else {
-                outRect.left = 0
+            if (isFirst){
+                if (spaceInfo.isSpaceShowOnViewLeft) {
+                    outRect.left = spaceInfo.firstLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
+                } else {
+                    outRect.left = 0
+                }
             }
 
             outRect.right = spaceInfo.spaceWidthWithHorizontal
 
-            if (spaceInfo.isSpaceShowOnViewRight && isLast) {
-                outRect.right = spaceInfo.lastLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-            } else {
-                outRect.right = 0
+            if (isLast){
+                if (spaceInfo.isSpaceShowOnViewRight) {
+                    outRect.right = spaceInfo.lastLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
+                } else {
+                    outRect.right = 0
+                }
             }
         }
     }
@@ -214,18 +222,22 @@ class CsRecyclerItemDecoration private constructor(
         currentLine: Int,
         currentIndex: Int
     ) {
-        if (spaceInfo.isSpaceShowOnViewTop && currentLine == 0) {
-            outRect.top = spaceInfo.firstLineOutSize ?: spaceInfo.spaceHeightWithVertical
-        } else {
-            outRect.top = 0
+        if (currentLine == 0){
+            if (spaceInfo.isSpaceShowOnViewTop) {
+                outRect.top = spaceInfo.firstLineOutSize ?: spaceInfo.spaceHeightWithVertical
+            } else {
+                outRect.top = 0
+            }
         }
 
         outRect.bottom = spaceInfo.spaceHeightWithVertical
 
-        if (spaceInfo.isSpaceShowOnViewBottom && currentLine == maxLine - 1) {
-            outRect.bottom = spaceInfo.lastLineOutSize ?: spaceInfo.spaceHeightWithVertical
-        } else {
-            outRect.bottom = 0
+        if (currentLine == maxLine - 1){
+            if (spaceInfo.isSpaceShowOnViewBottom) {
+                outRect.bottom = spaceInfo.lastLineOutSize ?: spaceInfo.spaceHeightWithVertical
+            } else {
+                outRect.bottom = 0
+            }
         }
 
         if (spaceInfo.isSpaceShowOnViewLeft && spaceInfo.isSpaceShowOnViewRight) {
@@ -252,18 +264,22 @@ class CsRecyclerItemDecoration private constructor(
         currentLine: Int,
         currentIndex: Int
     ) {
-        if (spaceInfo.isSpaceShowOnViewLeft && currentLine == 0) {
-            outRect.left = spaceInfo.firstLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-        } else {
-            outRect.left = 0
+        if (currentLine == 0){
+            if (spaceInfo.isSpaceShowOnViewLeft) {
+                outRect.left = spaceInfo.firstLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
+            } else {
+                outRect.left = 0
+            }
         }
 
         outRect.right = spaceInfo.spaceWidthWithHorizontal
 
-        if (spaceInfo.isSpaceShowOnViewRight && currentLine == maxLine - 1) {
-            outRect.right = spaceInfo.lastLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-        } else {
-            outRect.right = 0
+        if (currentLine == maxLine - 1){
+            if (spaceInfo.isSpaceShowOnViewRight) {
+                outRect.right = spaceInfo.lastLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
+            } else {
+                outRect.right = 0
+            }
         }
 
         if (spaceInfo.isSpaceShowOnViewTop && spaceInfo.isSpaceShowOnViewBottom) {
