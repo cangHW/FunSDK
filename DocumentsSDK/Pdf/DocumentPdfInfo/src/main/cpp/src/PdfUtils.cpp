@@ -76,7 +76,7 @@ char *getErrorDescription(const long error) {
     return description;
 }
 
-jstring UnicodeToJString(unsigned int unicode) {
+jstring UnicodeToJString(JNIEnv *env, unsigned int unicode) {
     std::string utf8;
     if (unicode <= 0x7F) {
         // 1 字节 UTF-8
@@ -97,7 +97,7 @@ jstring UnicodeToJString(unsigned int unicode) {
         utf8 += static_cast<char>(0x80 | ((unicode >> 6) & 0x3F));
         utf8 += static_cast<char>(0x80 | (unicode & 0x3F));
     }
-    return utf8;
+    return env->NewStringUTF(utf8.c_str());
 }
 
 jstring UnicodeToJString(JNIEnv *env, unsigned short *buffer, int count) {

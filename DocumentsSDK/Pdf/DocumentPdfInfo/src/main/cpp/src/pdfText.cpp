@@ -50,7 +50,7 @@ Java_com_proxy_service_document_pdf_info_core_PdfiumCore_nativeGetTextByIndex(
     if (unicode == 0) {
         return env->NewStringUTF("");
     }
-    return UnicodeToJString(unicode);
+    return UnicodeToJString(env, unicode);
 }
 
 // 获取当前页面内对应位置字符的字体大小

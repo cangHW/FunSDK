@@ -14,6 +14,6 @@ int jniThrowExceptionFmt(JNIEnv *env, const char *className, const char *fmt, ..
 
 char *getErrorDescription(const long error);
 
-jstring UnicodeToJString(unsigned int unicode);
+jstring UnicodeToJString(JNIEnv *env, unsigned int unicode);
 
 jstring UnicodeToJString(JNIEnv *env, unsigned short *buffer, int count);
