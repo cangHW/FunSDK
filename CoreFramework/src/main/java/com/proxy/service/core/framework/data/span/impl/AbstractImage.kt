@@ -4,6 +4,11 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import com.proxy.service.core.framework.data.span.builder.IImageBuilder
+import com.proxy.service.core.framework.data.span.controller.image.IImageSize
+import com.proxy.service.core.framework.data.span.controller.image.ImageMaxSizeController
+import com.proxy.service.core.framework.data.span.controller.image.ImageSizeByHeightController
+import com.proxy.service.core.framework.data.span.controller.image.ImageSizeByWidthController
+import com.proxy.service.core.framework.data.span.controller.image.ImageSizeController
 import com.proxy.service.core.framework.data.span.custom.CustomImageResizeSpan
 import com.proxy.service.core.framework.data.span.enums.ImageAlign
 
@@ -25,16 +30,20 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
 
     private var alignImage = DEFAULT_IMAGE_ALIGN
 
-    private var imageSizeWidthPx: Int? = null
-    private var imageSizeHeightPx: Int? = null
-    private var imageSizeKeepAspectRatio: Boolean = true
-
-    private var imageMaxSizeWidthPx: Int? = null
-    private var imageMaxSizeHeightPx: Int? = null
-    private var imageMaxSizeKeepAspectRatio: Boolean = true
+    private var imageSize:IImageSize?=null
 
     override fun setImageAlign(align: ImageAlign): IImageBuilder {
         this.alignImage = align
+        return this
+    }
+
+    override fun setImageSizeByWidth(widthPx: Int, keepAspectRatio: Boolean): IImageBuilder {
+        imageSize = ImageSizeByWidthController(Math.max(widthPx, 1), keepAspectRatio)
+        return this
+    }
+
+    override fun setImageSizeByHeight(heightPx: Int, keepAspectRatio: Boolean): IImageBuilder {
+        imageSize = ImageSizeByHeightController(Math.max(heightPx, 1), keepAspectRatio)
         return this
     }
 
@@ -43,9 +52,11 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
         heightPx: Int,
         keepAspectRatio: Boolean
     ): IImageBuilder {
-        this.imageSizeWidthPx = Math.max(widthPx, 1)
-        this.imageSizeHeightPx = Math.max(heightPx, 1)
-        this.imageSizeKeepAspectRatio = keepAspectRatio
+        imageSize = ImageSizeController(
+            Math.max(widthPx, 1),
+            Math.max(heightPx, 1),
+            keepAspectRatio
+        )
         return this
     }
 
@@ -54,9 +65,11 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
         maxHeightPx: Int,
         keepAspectRatio: Boolean
     ): IImageBuilder {
-        this.imageMaxSizeWidthPx = Math.max(maxWidthPx, 1)
-        this.imageMaxSizeHeightPx = Math.max(maxHeightPx, 1)
-        this.imageMaxSizeKeepAspectRatio = keepAspectRatio
+        imageSize = ImageMaxSizeController(
+            Math.max(maxWidthPx, 1),
+            Math.max(maxHeightPx, 1),
+            keepAspectRatio
+        )
         return this
     }
 
@@ -84,17 +97,7 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
                 imageSpan = CustomImageResizeSpan(tempResourceId, alignImage)
             }
 
-            imageSpan?.setImageSize(
-                imageSizeWidthPx,
-                imageSizeHeightPx,
-                imageSizeKeepAspectRatio
-            )
-
-            imageSpan?.setImageMaxSize(
-                imageMaxSizeWidthPx,
-                imageMaxSizeHeightPx,
-                imageMaxSizeKeepAspectRatio
-            )
+            imageSpan?.setImageSize(imageSize)
 
             if (imageSpan != null) {
                 mBuilder.setSpan(imageSpan, start, end, flag)
@@ -106,13 +109,5 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
         imageResourceId = null
 
         alignImage = DEFAULT_IMAGE_ALIGN
-
-        imageSizeWidthPx = null
-        imageSizeHeightPx = null
-        imageSizeKeepAspectRatio = true
-
-        imageMaxSizeWidthPx = null
-        imageMaxSizeHeightPx = null
-        imageMaxSizeKeepAspectRatio = true
     }
 }

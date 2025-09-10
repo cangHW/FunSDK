@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import com.proxy.service.core.constants.CoreConfig
-import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.data.span.controller.image.IImageSize
 import com.proxy.service.core.framework.data.span.enums.ImageAlign
 
 /**
@@ -16,17 +16,11 @@ import com.proxy.service.core.framework.data.span.enums.ImageAlign
  */
 class CustomImageResizeSpan : CustomImageSpan {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}Span_ImageResize"
     }
 
-    private var imageSizeWidthPx: Int? = null
-    private var imageSizeHeightPx: Int? = null
-    private var imageSizeKeepAspectRatio: Boolean = true
-
-    private var imageMaxSizeWidthPx: Int? = null
-    private var imageMaxSizeHeightPx: Int? = null
-    private var imageMaxSizeKeepAspectRatio: Boolean = true
+    private var imageSize: IImageSize? = null
 
     constructor(bitmap: Bitmap, verticalAlignment: ImageAlign) : super(bitmap, verticalAlignment)
 
@@ -42,24 +36,8 @@ class CustomImageResizeSpan : CustomImageSpan {
         verticalAlignment
     )
 
-    fun setImageSize(
-        widthPx: Int?,
-        heightPx: Int?,
-        keepAspectRatio: Boolean
-    ) {
-        this.imageSizeWidthPx = widthPx
-        this.imageSizeHeightPx = heightPx
-        this.imageSizeKeepAspectRatio = keepAspectRatio
-    }
-
-    fun setImageMaxSize(
-        maxWidthPx: Int?,
-        maxHeightPx: Int?,
-        keepAspectRatio: Boolean
-    ) {
-        this.imageMaxSizeWidthPx = maxWidthPx
-        this.imageMaxSizeHeightPx = maxHeightPx
-        this.imageMaxSizeKeepAspectRatio = keepAspectRatio
+    fun setImageSize(imageSize: IImageSize?) {
+        this.imageSize = imageSize
     }
 
     private var tempDrawable: Drawable? = null
@@ -67,95 +45,18 @@ class CustomImageResizeSpan : CustomImageSpan {
     override fun getDrawable(): Drawable? {
         val drawable = super.getDrawable() ?: return null
         if (drawable != tempDrawable) {
-            val tempSizeWidthPx = imageSizeWidthPx
-            val tempSizeHeightPx = imageSizeHeightPx
+            val originalWidth = drawable.intrinsicWidth
+            val originalHeight = drawable.intrinsicHeight
 
-            val tempMaxSizeWidthPx = imageMaxSizeWidthPx
-            val tempMaxSizeHeightPx = imageMaxSizeHeightPx
-
-            if (tempSizeWidthPx != null && tempSizeHeightPx != null) {
-                adjustDrawableSize(
-                    drawable,
-                    tempSizeWidthPx,
-                    tempSizeHeightPx,
-                    imageSizeKeepAspectRatio
-                )
-            } else if (tempMaxSizeWidthPx != null && tempMaxSizeHeightPx != null) {
-                adjustDrawableMaxSize(
-                    drawable,
-                    tempMaxSizeWidthPx,
-                    tempMaxSizeHeightPx,
-                    imageMaxSizeKeepAspectRatio
-                )
+            imageSize?.let {
+                if (it.setDrawableSize(originalWidth, originalHeight)) {
+                    drawable.setBounds(0, 0, it.getFinalWidth(), it.getFinalHeight())
+                }
             }
 
             tempDrawable = drawable
         }
         return drawable
-    }
-
-
-    private fun adjustDrawableSize(
-        drawable: Drawable,
-        widthPx: Int,
-        heightPx: Int,
-        keepAspectRatio: Boolean
-    ) {
-        val originalWidth = drawable.intrinsicWidth
-        val originalHeight = drawable.intrinsicHeight
-
-        if (originalWidth <= 0 || originalHeight <= 0) {
-            CsLogger.tag(TAG).e("The width and height of the drawable are less than or equal to 0")
-            return
-        }
-
-        if (keepAspectRatio) {
-            val aspectRatio = originalWidth.toFloat() / originalHeight.toFloat()
-            if (widthPx / heightPx.toFloat() > aspectRatio) {
-                val adjustedWidth = (heightPx * aspectRatio).toInt()
-                drawable.setBounds(0, 0, adjustedWidth, heightPx)
-            } else {
-                val adjustedHeight = (widthPx / aspectRatio).toInt()
-                drawable.setBounds(0, 0, widthPx, adjustedHeight)
-            }
-        } else {
-            drawable.setBounds(0, 0, widthPx, heightPx)
-        }
-    }
-
-
-    private fun adjustDrawableMaxSize(
-        drawable: Drawable,
-        maxWidthPx: Int,
-        maxHeightPx: Int,
-        keepAspectRatio: Boolean
-    ) {
-        val originalWidth = drawable.intrinsicWidth
-        val originalHeight = drawable.intrinsicHeight
-
-        if (originalWidth <= 0 || originalHeight <= 0) {
-            CsLogger.tag(TAG).e("The width and height of the drawable are less than or equal to 0")
-            return
-        }
-
-        if (keepAspectRatio) {
-            val aspectRatio = originalWidth.toFloat() / originalHeight.toFloat()
-            if (originalWidth > maxWidthPx || originalHeight > maxHeightPx) {
-                if (maxWidthPx / maxHeightPx.toFloat() > aspectRatio) {
-                    val adjustedWidth = (maxHeightPx * aspectRatio).toInt()
-                    drawable.setBounds(0, 0, adjustedWidth, maxHeightPx)
-                } else {
-                    val adjustedHeight = (maxWidthPx / aspectRatio).toInt()
-                    drawable.setBounds(0, 0, maxWidthPx, adjustedHeight)
-                }
-            } else {
-                drawable.setBounds(0, 0, originalWidth, originalHeight)
-            }
-        } else {
-            val adjustedWidth = Math.min(originalWidth, maxWidthPx)
-            val adjustedHeight = Math.min(originalHeight, maxHeightPx)
-            drawable.setBounds(0, 0, adjustedWidth, adjustedHeight)
-        }
     }
 
 }

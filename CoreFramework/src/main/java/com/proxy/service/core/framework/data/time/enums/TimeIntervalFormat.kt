@@ -12,50 +12,110 @@ enum class TimeIntervalFormat(val pattern: String) {
     /**
      * 日天时小时分分钟秒秒毫秒毫秒
      *
+     * 示例: 10天14小时30分钟00秒钟231毫秒
+     * */
+    TYPE_D_HH_MM_SS_MS("DD天HH小时MM分钟SS秒SSS毫秒"),
+
+    /**
+     * 日天时小时分分钟秒秒毫秒毫秒
+     *
      * 示例: 10天14小时30分钟0秒钟231毫秒
      * */
-    TYPE_D_H_M_S_MS("dd天HH小时mm分钟ss秒SSS毫秒"),
+    TYPE_D_H_M_S_MS("DD天H小时M分钟S秒SSS毫秒"),
 
     /**
      * 时:分
      *
      * 示例: 14:30
      * */
-    TYPE_H_M("HH:mm"),
+    TYPE_HH_MM("HH:MM"),
+
+    /**
+     * 时:分
+     *
+     * 示例: 14:30
+     * */
+    TYPE_H_M("H:M"),
 
     /**
      * 时:分:秒
      *
      * 示例: 14:30:00
      * */
-    TYPE_H_M_S("HH:mm:ss"),
+    TYPE_HH_MM_SS("HH:MM:SS"),
+
+    /**
+     * 时:分:秒
+     *
+     * 示例: 14:30:0
+     * */
+    TYPE_H_M_S("H:M:S"),
 
     /**
      * 时:分:秒.毫秒
      *
      * 示例: 14:30:00.231
      * */
-    TYPE_H_M_S_MS("HH:mm:ss.SSS"),
+    TYPE_HH_MM_SS_MS("HH:MM:SS.SSS"),
+
+    /**
+     * 时:分:秒.毫秒
+     *
+     * 示例: 14:30:0.231
+     * */
+    TYPE_H_M_S_MS("H:M:S.SSS"),
+
+    /**
+     * 分分钟秒秒毫秒毫秒
+     *
+     * 示例: 30分钟00秒钟231毫秒
+     * */
+    TYPE_MM_SS_MS("MM分钟SS秒SSS毫秒"),
 
     /**
      * 分分钟秒秒毫秒毫秒
      *
      * 示例: 30分钟0秒钟231毫秒
      * */
-    TYPE_M_S_MS("mm分钟ss秒SSS毫秒"),
+    TYPE_M_S_MS("M分钟S秒SSS毫秒"),
 
     /**
      * 不确定性格式
      * */
-    TYPE_F_D_H_M_S_MS_1("F-dd天HH小时mm分钟ss秒SSS毫秒"),
+    TYPE_F_D_HH_MM_SS_MS_1("F-DD天HH小时MM分钟SS秒SSS毫秒"),
 
     /**
      * 不确定性格式
      * */
-    TYPE_F_D_H_M_S_MS_2("F-dddHHhmmmsssSSSms"),
+    TYPE_F_D_H_M_S_MS_1("F-DD天H小时M分钟S秒SSS毫秒"),
 
     /**
      * 不确定性格式
      * */
-    TYPE_F_1_D_H_M_S_MS_2("F-+dddHHhmmmsssSSSms");
+    TYPE_F_D_HH_MM_SS_MS_2("F-DDdHHhMMmSSsSSSms"),
+
+    /**
+     * 不确定性格式
+     * */
+    TYPE_F_D_H_M_S_MS_2("F-DDdHhMmSsSSSms"),
+
+    /**
+     * 不确定性格式
+     * */
+    TYPE_F_1_D_HH_MM_SS_MS_1("F-+DD天HH小时MM分钟SS秒SSS毫秒"),
+
+    /**
+     * 不确定性格式
+     * */
+    TYPE_F_1_D_H_M_S_MS_1("F-+DD天H小时M分钟S秒SSS毫秒"),
+
+    /**
+     * 不确定性格式
+     * */
+    TYPE_F_1_D_HH_MM_SS_MS_2("F-+DDdHHhMMmSSsSSSms"),
+
+    /**
+     * 不确定性格式
+     * */
+    TYPE_F_1_D_H_M_S_MS_2("F-+DDdHhMmSsSSSms");
 }

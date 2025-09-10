@@ -42,34 +42,38 @@ open class IntervalRunImpl : IIntervalRun {
 
         intervalInfo.dd?.let {
             val days = TimeUnit.MILLISECONDS.toDays(time)
+            time -= TimeUnit.DAYS.toMillis(days)
+
             if (!pattern.startsWith("F-") || days > 0) {
                 builder.append(days).append(it)
             }
-            time -= TimeUnit.DAYS.toMillis(days)
         }
 
         intervalInfo.hh?.let {
             val hours = TimeUnit.MILLISECONDS.toHours(time)
-            if (!pattern.startsWith("F-") || hours > 0) {
-                builder.append(hours).append(it)
-            }
             time -= TimeUnit.HOURS.toMillis(hours)
+
+            if (!pattern.startsWith("F-") || hours > 0) {
+                builder.append(complement(hours, intervalInfo.hLength)).append(it)
+            }
         }
 
         intervalInfo.mm?.let {
             val minutes = TimeUnit.MILLISECONDS.toMinutes(time)
-            if (!pattern.startsWith("F-") || minutes > 0) {
-                builder.append(minutes).append(it)
-            }
             time -= TimeUnit.MINUTES.toMillis(minutes)
+
+            if (!pattern.startsWith("F-") || minutes > 0) {
+                builder.append(complement(minutes, intervalInfo.mLength)).append(it)
+            }
         }
 
         intervalInfo.ss?.let {
-            val seconds = TimeUnit.MILLISECONDS.toMinutes(time)
-            if (!pattern.startsWith("F-") || seconds > 0) {
-                builder.append(seconds).append(it)
-            }
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(time)
             time -= TimeUnit.SECONDS.toMillis(seconds)
+
+            if (!pattern.startsWith("F-") || seconds > 0) {
+                builder.append(complement(seconds, intervalInfo.sLength)).append(it)
+            }
         }
 
         intervalInfo.sss?.let {
@@ -98,17 +102,12 @@ open class IntervalRunImpl : IIntervalRun {
     private fun parseTimeInterval(pattern: String): TimeIntervalInfo {
         val sorts: ArrayList<TimeIndexType> = ArrayList()
 
-        val dIndex: Int = pattern.indexOf("dd")
+        val dIndex: Int = pattern.indexOf("DD")
         sorts.add(TimeIndexType(TimeIndexType.DAY, dIndex, 2))
 
-        val hIndex: Int = pattern.indexOf("HH")
-        sorts.add(TimeIndexType(TimeIndexType.HOURS, hIndex, 2))
-
-        val mIndex: Int = pattern.indexOf("mm")
-        sorts.add(TimeIndexType(TimeIndexType.MINUTES, mIndex, 2))
-
-        val sIndex: Int = pattern.indexOf("ss")
-        sorts.add(TimeIndexType(TimeIndexType.SECONDS, sIndex, 2))
+        parseTimeWithHour(sorts, pattern)
+        parseTimeWithMinutes(sorts, pattern)
+        parseTimeWithSeconds(sorts, pattern)
 
         val msIndex: Int = pattern.indexOf("SSS")
         sorts.add(TimeIndexType(TimeIndexType.MILLIS, msIndex, 3))
@@ -135,14 +134,16 @@ open class IntervalRunImpl : IIntervalRun {
                 setTypeNameToInfo(
                     intervalInfo,
                     type,
-                    pattern.substring(type.index + type.count)
+                    pattern.substring(type.index + type.count),
+                    type.count
                 )
             } else {
                 val type2: TimeIndexType = sorts.get(i + 1)
                 setTypeNameToInfo(
                     intervalInfo,
                     type,
-                    pattern.substring(type.index + type.count, type2.index)
+                    pattern.substring(type.index + type.count, type2.index),
+                    type.count
                 )
             }
         }
@@ -150,10 +151,51 @@ open class IntervalRunImpl : IIntervalRun {
         return intervalInfo
     }
 
+    private fun parseTimeWithHour(sorts: ArrayList<TimeIndexType>, pattern: String) {
+        var hIndex: Int = pattern.indexOf("HH")
+        if (hIndex >= 0) {
+            sorts.add(TimeIndexType(TimeIndexType.HOURS, hIndex, 2))
+            return
+        }
+
+        hIndex = pattern.indexOf("H")
+        if (hIndex >= 0) {
+            sorts.add(TimeIndexType(TimeIndexType.HOURS, hIndex, 1))
+            return
+        }
+    }
+
+    private fun parseTimeWithMinutes(sorts: ArrayList<TimeIndexType>, pattern: String) {
+        var mIndex: Int = pattern.indexOf("MM")
+        if (mIndex >= 0) {
+            sorts.add(TimeIndexType(TimeIndexType.MINUTES, mIndex, 2))
+            return
+        }
+
+        mIndex = pattern.indexOf("M")
+        if (mIndex >= 0) {
+            sorts.add(TimeIndexType(TimeIndexType.MINUTES, mIndex, 1))
+        }
+    }
+
+    private fun parseTimeWithSeconds(sorts: ArrayList<TimeIndexType>, pattern: String) {
+        var sIndex: Int = pattern.indexOf("SS")
+        if (sIndex >= 0) {
+            sorts.add(TimeIndexType(TimeIndexType.SECONDS, sIndex, 2))
+            return
+        }
+
+        sIndex = pattern.indexOf("S")
+        if (sIndex >= 0) {
+            sorts.add(TimeIndexType(TimeIndexType.SECONDS, sIndex, 1))
+        }
+    }
+
     private fun setTypeNameToInfo(
         intervalInfo: TimeIntervalInfo,
         typeInfo: TimeIndexType,
-        typeName: String
+        typeName: String,
+        count: Int
     ) {
         when (typeInfo.name) {
             TimeIndexType.DAY -> {
@@ -162,14 +204,17 @@ open class IntervalRunImpl : IIntervalRun {
 
             TimeIndexType.HOURS -> {
                 intervalInfo.hh = typeName
+                intervalInfo.hLength = count
             }
 
             TimeIndexType.MINUTES -> {
                 intervalInfo.mm = typeName
+                intervalInfo.mLength = count
             }
 
             TimeIndexType.SECONDS -> {
                 intervalInfo.ss = typeName
+                intervalInfo.sLength = count
             }
 
             TimeIndexType.MILLIS -> {
@@ -192,5 +237,13 @@ open class IntervalRunImpl : IIntervalRun {
             return "TimeIndexType(name='$name', index=$index, count=$count)"
         }
 
+    }
+
+    private fun complement(num: Long, length: Int): String {
+        var str = num.toString()
+        while (str.length < length) {
+            str = "0$str"
+        }
+        return str
     }
 }

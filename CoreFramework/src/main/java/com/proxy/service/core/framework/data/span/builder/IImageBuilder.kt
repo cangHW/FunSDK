@@ -21,6 +21,26 @@ interface IImageBuilder : IAppendBuilder {
      *
      * @param keepAspectRatio   是否保持宽高比例
      * */
+    fun setImageSizeByWidth(
+        @IntRange(from = 1) widthPx: Int,
+        keepAspectRatio: Boolean = true
+    ): IImageBuilder
+
+    /**
+     * 设置图片尺寸, 图片会被放大或缩小到对应尺寸
+     *
+     * @param keepAspectRatio   是否保持宽高比例
+     * */
+    fun setImageSizeByHeight(
+        @IntRange(from = 1) heightPx: Int,
+        keepAspectRatio: Boolean = true
+    ): IImageBuilder
+
+    /**
+     * 设置图片尺寸, 图片会被放大或缩小到对应尺寸
+     *
+     * @param keepAspectRatio   是否保持宽高比例
+     * */
     fun setImageSize(
         @IntRange(from = 1) widthPx: Int,
         @IntRange(from = 1) heightPx: Int,

@@ -11,9 +11,15 @@ class TimeIntervalInfo {
 
     var hh: String? = null
 
+    var hLength = 1
+
     var mm: String? = null
 
+    var mLength = 1
+
     var ss: String? = null
+
+    var sLength = 1
 
     var sss: String? = null
 }
