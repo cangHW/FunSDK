@@ -320,33 +320,27 @@ object CsSoundUtils {
         private val soundMap: HashMap<String, SoundInfo>
     ) : SoundPool.OnLoadCompleteListener {
         override fun onLoadComplete(soundPool: SoundPool?, sampleId: Int, status: Int) {
-            CsTask.ioThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    synchronized(soundMap) {
-                        for (entry in soundMap) {
-                            val value = entry.value
+            synchronized(soundMap) {
+                for (entry in soundMap) {
+                    val value = entry.value
 
-                            if (value.poolName != poolName) {
-                                continue
-                            }
-
-                            if (value.soundId != sampleId) {
-                                continue
-                            }
-
-                            if (status == 0) {
-                                value.isReady = true
-                                CsLogger.tag(Config.TAG).i("load success. sound tag: ${entry.key}")
-                            } else {
-                                CsLogger.tag(Config.TAG)
-                                    .i("load failed. sound tag: ${entry.key}, status: $status")
-                            }
-                            return ""
-                        }
+                    if (value.poolName != poolName) {
+                        continue
                     }
-                    return ""
+
+                    if (value.soundId != sampleId) {
+                        continue
+                    }
+
+                    if (status == 0) {
+                        value.isReady = true
+                        CsLogger.tag(Config.TAG).i("load success. sound tag: ${entry.key}")
+                    } else {
+                        CsLogger.tag(Config.TAG)
+                            .i("load failed. sound tag: ${entry.key}, status: $status")
+                    }
                 }
-            })?.start()
+            }
         }
     }
 
