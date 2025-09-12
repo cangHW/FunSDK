@@ -7,7 +7,7 @@ import android.animation.Animator
  * @data: 2024/6/5 09:29
  * @desc:
  */
-class LottieAnimatorListener constructor(val info: LottieInfo) : Animator.AnimatorListener {
+class LottieAnimatorListener(val info: LottieInfo) : Animator.AnimatorListener {
     override fun onAnimationStart(p0: Animator) {
         info.animationStartCallback?.onAnimation(p0)
     }

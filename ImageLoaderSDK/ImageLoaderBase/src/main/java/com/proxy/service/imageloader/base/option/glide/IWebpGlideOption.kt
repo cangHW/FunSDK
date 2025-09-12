@@ -3,6 +3,7 @@ package com.proxy.service.imageloader.base.option.glide
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.drawable.CsWebpDrawable
 import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallback
+import com.proxy.service.imageloader.base.option.glide.callback.LoadErrorCallback
 
 /**
  * 配置管理器
@@ -26,6 +27,11 @@ interface IWebpGlideOption : IBaseOption<IWebpGlideOption, CsWebpDrawable> {
      * @param count 播放次数, 如果小于 0 则无限循环播放, 等于 0 则使用资源自身的循环次数
      * */
     fun setLoopCount(count: Int): IWebpGlideOption
+
+    /**
+     * 设置动画异常回调
+     * */
+    fun setAnimationErrorCallback(callback: LoadErrorCallback): IWebpGlideOption
 
     /**
      * 设置动画回调

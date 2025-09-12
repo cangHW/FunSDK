@@ -4,6 +4,7 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.loader.lottie.ILottieLoader
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
+import com.proxy.service.imageloader.base.option.lottie.callback.LottieLoadErrorCallback
 
 /**
  * @author: cangHX
@@ -36,6 +37,11 @@ interface ILottieOption : ILottieLoader {
      * @param speed 设置播放速度。如果速度为小于 0，动画将向后播放
      * */
     fun setAnimationSpeed(speed: Float): ILottieOption
+
+    /**
+     * 设置动画异常回调
+     * */
+    fun setAnimationErrorCallback(callback: LottieLoadErrorCallback): ILottieOption
 
     /**
      * 设置动画开始回调

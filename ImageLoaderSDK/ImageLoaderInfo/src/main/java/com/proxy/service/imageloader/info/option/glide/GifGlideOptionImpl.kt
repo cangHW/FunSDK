@@ -14,6 +14,7 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.drawable.CsGifDrawable
 import com.proxy.service.imageloader.base.option.glide.IGifGlideOption
 import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallback
+import com.proxy.service.imageloader.base.option.glide.callback.LoadErrorCallback
 import com.proxy.service.imageloader.base.option.glide.format.BitmapTransformation
 import com.proxy.service.imageloader.base.option.glide.format.GlideDecodeFormat
 import com.proxy.service.imageloader.info.info.glide.GifInfo
@@ -46,6 +47,11 @@ class GifGlideOptionImpl(
         } else {
             count
         }
+        return this
+    }
+
+    override fun setAnimationErrorCallback(callback: LoadErrorCallback): IGifGlideOption {
+        info.errorCallback = callback
         return this
     }
 

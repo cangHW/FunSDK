@@ -38,6 +38,11 @@ open class WebpLoaderImpl(
                     }
                     return null
                 }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    info.errorCallback?.onAnimationError()
+                }
             })
     }
 

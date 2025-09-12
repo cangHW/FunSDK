@@ -8,6 +8,7 @@ import com.bumptech.glide.load.MultiTransformation
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.drawable.CsWebpDrawable
 import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallback
+import com.proxy.service.imageloader.base.option.glide.callback.LoadErrorCallback
 
 /**
  * @author: cangHX
@@ -19,6 +20,7 @@ class WebpInfo : GlideInfo<Drawable>() {
     var isAutoPlay: Boolean = ImageLoaderConstants.IS_AUTO_PLAY
     var loopCount: Int = -1
 
+    var errorCallback: LoadErrorCallback?=null
     var animationCallback: AnimationCallback<CsWebpDrawable>? = null
 
     override fun getRequestBuilder(): RequestBuilder<Drawable>? {

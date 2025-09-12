@@ -21,7 +21,7 @@ import com.proxy.service.imageloader.info.loader.lottie.factory.ViewGroupFactory
  * @data: 2024/6/4 17:45
  * @desc:
  */
-open class LottieLoaderImpl constructor(private val info: LottieInfo) : ILottieLoader {
+open class LottieLoaderImpl(private val info: LottieInfo) : ILottieLoader {
     override fun into(linearLayout: LinearLayout?): LottieController {
         if (linearLayout == null) {
             return LottieControllerEmpty()

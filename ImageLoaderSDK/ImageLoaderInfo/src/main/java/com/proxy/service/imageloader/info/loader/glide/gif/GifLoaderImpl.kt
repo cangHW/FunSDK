@@ -37,6 +37,11 @@ open class GifLoaderImpl(
                     view.setImageDrawable(gifDrawable)
                     return gifDrawable
                 }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                    info.errorCallback?.onAnimationError()
+                }
             })
     }
 

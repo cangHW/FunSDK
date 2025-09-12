@@ -5,6 +5,7 @@ import com.proxy.service.imageloader.base.option.lottie.ILottieOption
 import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
+import com.proxy.service.imageloader.base.option.lottie.callback.LottieLoadErrorCallback
 import com.proxy.service.imageloader.info.info.lottie.LottieInfo
 import com.proxy.service.imageloader.info.loader.lottie.LottieLoaderImpl
 
@@ -13,8 +14,9 @@ import com.proxy.service.imageloader.info.loader.lottie.LottieLoaderImpl
  * @data: 2024/6/4 17:33
  * @desc:
  */
-class LottieOptionImpl(private val info: LottieInfo) : LottieLoaderImpl(info),
-    ILottieOption {
+class LottieOptionImpl(
+    private val info: LottieInfo
+) : LottieLoaderImpl(info), ILottieOption {
     override fun setAutoPlay(isAutoPlay: Boolean): ILottieOption {
         info.isAutoPlay = isAutoPlay
         return this
@@ -36,6 +38,11 @@ class LottieOptionImpl(private val info: LottieInfo) : LottieLoaderImpl(info),
 
     override fun setAnimationSpeed(speed: Float): ILottieOption {
         info.speed = speed
+        return this
+    }
+
+    override fun setAnimationErrorCallback(callback: LottieLoadErrorCallback): ILottieOption {
+        info.animationErrorCallback = callback
         return this
     }
 
