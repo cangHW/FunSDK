@@ -1,11 +1,11 @@
 package com.proxy.service.imageloader.info.option.lottie
 
 import android.animation.ValueAnimator
+import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 import com.proxy.service.imageloader.base.option.lottie.ILottieOption
 import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
-import com.proxy.service.imageloader.base.option.lottie.callback.LottieLoadErrorCallback
 import com.proxy.service.imageloader.info.info.lottie.LottieInfo
 import com.proxy.service.imageloader.info.loader.lottie.LottieLoaderImpl
 
@@ -41,8 +41,8 @@ class LottieOptionImpl(
         return this
     }
 
-    override fun setAnimationErrorCallback(callback: LottieLoadErrorCallback): ILottieOption {
-        info.animationErrorCallback = callback
+    override fun setLoadErrorCallback(callback: LoadErrorCallback): ILottieOption {
+        info.loadErrorCallback = callback
         return this
     }
 

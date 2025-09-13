@@ -9,8 +9,11 @@ import com.proxy.service.imageloader.info.info.lottie.LottieInfo
  * @data: 2024/6/5 09:52
  * @desc:
  */
-class LottieControllerImpl constructor(val view: LottieAnimationView, val info: LottieInfo):
-    LottieController {
+class LottieControllerImpl(
+    private val view: LottieAnimationView,
+    private val info: LottieInfo
+): LottieController {
+
     override fun playAnimation() {
         view.playAnimation()
         view.speed = info.speed

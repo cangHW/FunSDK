@@ -14,7 +14,10 @@ import com.proxy.service.imageloader.info.request.lottie.source.UrlLottieSource
  * @data: 2024/6/7 10:43
  * @desc:
  */
-class LottieRequestImpl(private val info: LottieInfo) : ILottieRequest {
+class LottieRequestImpl(
+    private val info: LottieInfo
+) : ILottieRequest {
+
     override fun loadUrl(url: String): ILottieOption {
         info.sourceData = UrlLottieSource(url)
         return LottieOptionImpl(info)

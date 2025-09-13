@@ -11,10 +11,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.drawable.CsWebpDrawable
-import com.proxy.service.imageloader.base.option.glide.IGifGlideOption
 import com.proxy.service.imageloader.base.option.glide.IWebpGlideOption
 import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallback
-import com.proxy.service.imageloader.base.option.glide.callback.LoadErrorCallback
+import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 import com.proxy.service.imageloader.base.option.glide.format.BitmapTransformation
 import com.proxy.service.imageloader.base.option.glide.format.GlideDecodeFormat
 import com.proxy.service.imageloader.info.info.glide.WebpInfo
@@ -50,8 +49,8 @@ class WebpGlideOptionImpl(
         return this
     }
 
-    override fun setAnimationErrorCallback(callback: LoadErrorCallback): IWebpGlideOption {
-        info.errorCallback = callback
+    override fun setLoadErrorCallback(callback: LoadErrorCallback): IWebpGlideOption {
+        info.loadErrorCallback = callback
         return this
     }
 

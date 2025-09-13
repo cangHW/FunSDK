@@ -7,10 +7,10 @@ import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieComposition
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.loader.lottie.LottieController
+import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationCallback
 import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimationUpdateCallback
-import com.proxy.service.imageloader.base.option.lottie.callback.LottieLoadErrorCallback
 import com.proxy.service.imageloader.info.R
 import com.proxy.service.imageloader.info.info.base.BaseInfo
 import com.proxy.service.imageloader.info.loader.lottie.ILottieLoadCallback
@@ -35,7 +35,8 @@ class LottieInfo : BaseInfo() {
     private var updateListener: ValueAnimator.AnimatorUpdateListener =
         LottieAnimatorUpdateListener(this)
 
-    var animationErrorCallback: LottieLoadErrorCallback? = null
+    var loadErrorCallback: LoadErrorCallback? = null
+
     var animationStartCallback: LottieAnimationCallback? = null
     var animationEndCallback: LottieAnimationCallback? = null
     var animationCancelCallback: LottieAnimationCallback? = null
@@ -81,9 +82,7 @@ class LottieInfo : BaseInfo() {
 
             override fun onError(result: Throwable?) {
                 view.setTag(R.id.cs_imageload_info_lottie_view_tag, null)
-                animationErrorCallback?.onAnimationError(
-                    result ?: IllegalArgumentException("Unknown")
-                )
+                loadErrorCallback?.onLoadError()
             }
         })
     }

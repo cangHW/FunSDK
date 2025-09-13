@@ -1,4 +1,4 @@
-package com.proxy.service.imageloader.base.option.glide.callback
+package com.proxy.service.imageloader.base.option.base
 
 /**
  * @author: cangHX
@@ -7,6 +7,6 @@ package com.proxy.service.imageloader.base.option.glide.callback
  */
 interface LoadErrorCallback {
 
-    fun onAnimationError()
+    fun onLoadError()
 
 }

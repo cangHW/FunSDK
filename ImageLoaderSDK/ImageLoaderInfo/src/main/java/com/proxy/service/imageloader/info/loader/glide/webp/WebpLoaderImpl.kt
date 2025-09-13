@@ -41,7 +41,7 @@ open class WebpLoaderImpl(
 
                 override fun onLoadFailed(errorDrawable: Drawable?) {
                     super.onLoadFailed(errorDrawable)
-                    info.errorCallback?.onAnimationError()
+                    info.loadErrorCallback?.onLoadError()
                 }
             })
     }
