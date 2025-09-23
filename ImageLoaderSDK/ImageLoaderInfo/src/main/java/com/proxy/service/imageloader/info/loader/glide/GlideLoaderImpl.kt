@@ -13,7 +13,10 @@ import com.proxy.service.imageloader.info.info.glide.GlideInfo
  * @data: 2024/5/16 20:51
  * @desc:
  */
-open class GlideLoaderImpl<R>(private val info: GlideInfo<R>) : IGlideLoader<R> {
+open class GlideLoaderImpl<R>(
+    private val info: GlideInfo<R>
+) : IGlideLoader<R> {
+
     override fun into(imageView: ImageView?) {
         imageView?.let {
             info.getRequestBuilder()?.into(it)

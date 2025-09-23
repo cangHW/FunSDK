@@ -15,23 +15,23 @@ import java.util.WeakHashMap
 class BroadcastReceiverImpl : BroadcastReceiver() {
 
     companion object {
-        private const val TAG = "${CoreConfig.TAG}EventReceiver"
+        const val TAG = "${CoreConfig.TAG}Broadcast"
         const val ACTION = "com.proxy.service.core.framework.Event"
 
         private val any = Any()
-        private val weakReceiverHashMap = WeakHashMap<MessageReceiverListener, Any>()
+        private val weakReceiverHashMap = WeakHashMap<BroadcastMessageListener, Any>()
 
         /**
          * 添加弱引用回调
          * */
-        fun addWeakReceiverListener(listener: MessageReceiverListener) {
+        fun addWeakReceiverListener(listener: BroadcastMessageListener) {
             weakReceiverHashMap[listener] = any
         }
 
         /**
          * 移除弱引用回调
          * */
-        fun removeReceiverListener(listener: MessageReceiverListener) {
+        fun removeReceiverListener(listener: BroadcastMessageListener) {
             weakReceiverHashMap.remove(listener)
         }
     }

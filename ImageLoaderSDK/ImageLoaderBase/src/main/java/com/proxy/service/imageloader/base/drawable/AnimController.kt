@@ -11,11 +11,21 @@ import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallbac
  */
 class AnimController<T : Drawable> {
 
+    /**
+     * 通过 CsGifDrawable 注册的回调
+     * */
     private val callbackList = ArrayList<Animatable2Compat.AnimationCallback>()
+
+    /**
+     * 通过图片加载器注册的回调
+     * */
     private var animationCallback: AnimationCallback<T>? = null
 
     private var isAnimStarted = false
 
+    /**
+     * 动画状态回调
+     * */
     private var animStateChangedCallback: OnAnimStateChangedCallback<T>? = null
 
     interface OnAnimStateChangedCallback<T> {

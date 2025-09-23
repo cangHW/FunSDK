@@ -11,8 +11,9 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/11/27 20:38
  * @desc:
  */
-class IdleTaskControllerImpl(private var task: Runnable?) : IIdleTaskController,
-    Callable<Boolean> {
+class IdleTaskControllerImpl(
+    private var task: Runnable?
+) : IIdleTaskController, Callable<Boolean> {
 
     companion object {
         private const val TAG = "${ThreadConstants.TAG}_IdleTask"

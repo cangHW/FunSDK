@@ -9,10 +9,10 @@ import com.airbnb.lottie.LottieAnimationView
  * @desc:
  */
 object ConstraintLayoutFactory : IFactory<ConstraintLayout> {
-    override fun loadLottieAnimationView(viewGroup: ConstraintLayout): LottieAnimationView {
+    override fun loadLottieAnimationView(viewGroup: ConstraintLayout): LottieAnimationViewImpl {
         var lottieView = getLottieAnimationView(viewGroup)
         if (lottieView == null) {
-            lottieView = LottieAnimationView(viewGroup.context)
+            lottieView = LottieAnimationViewImpl(viewGroup.context)
             val params = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT

@@ -33,7 +33,9 @@ open class GifLoaderImpl(
                         RealGifDrawable(resource)
                     }
                     gifDrawable?.setAnimationCallback(info.animationCallback)
-                    gifDrawable?.setLoopCount(info.loopCount)
+                    info.loopCount?.let {
+                        gifDrawable?.setLoopCount(it)
+                    }
                     view.setImageDrawable(gifDrawable)
                     return gifDrawable
                 }
@@ -83,7 +85,9 @@ open class GifLoaderImpl(
             ) {
                 val gifDrawable = RealGifDrawable(resource)
                 gifDrawable.setAnimationCallback(info.animationCallback)
-                gifDrawable.setLoopCount(info.loopCount)
+                info.loopCount?.let {
+                    gifDrawable.setLoopCount(it)
+                }
                 target.onResourceReady(gifDrawable)
                 if (info.isAutoPlay) {
                     gifDrawable.start()

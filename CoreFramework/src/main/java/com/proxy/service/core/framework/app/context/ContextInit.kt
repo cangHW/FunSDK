@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
+import com.proxy.service.core.framework.app.context.common.ComponentCallbacksImpl
 import com.proxy.service.core.framework.app.context.lifecycle.ActivityStatusLifecycleImpl
 import com.proxy.service.core.framework.app.context.lifecycle.AppShowStatusLifecycleImpl
 import com.proxy.service.core.framework.app.context.lifecycle.TopActivityLifecycleImpl
@@ -39,6 +40,7 @@ object ContextInit {
         ContextInit.application?.registerActivityLifecycleCallbacks(AppShowStatusLifecycleImpl.getInstance())
         ContextInit.application?.registerActivityLifecycleCallbacks(ActivityStatusLifecycleImpl.getInstance())
         ContextInit.application?.registerActivityLifecycleCallbacks(TopActivityLifecycleImpl.getInstance())
+        ContextInit.application?.registerComponentCallbacks(ComponentCallbacksImpl.getInstance())
     }
 
     private fun getApplicationFromContext(context: Context): Application? {

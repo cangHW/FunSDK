@@ -14,8 +14,9 @@ import com.proxy.service.threadpool.info.thread.task.scheduler.TaskScheduler
  * @data: 2024/6/14 13:00
  * @desc:
  */
-abstract class TaskAction<T : Any>(private var taskInfo: TaskInfo<T>) :
-    TaskScheduler<T>(taskInfo), IAction<T> {
+abstract class TaskAction<T : Any>(
+    private var taskInfo: TaskInfo<T>
+) : TaskScheduler<T>(taskInfo), IAction<T> {
 
     override fun <R : Any> map(function: IFunction<T, R>): ITaskOption<R> {
         val task = TaskInfo<R>()

@@ -23,10 +23,13 @@ class LottieOptionImpl(
     }
 
     override fun setLoopCount(count: Int): ILottieOption {
-        if (count <= 0) {
-            info.loopCount = ValueAnimator.INFINITE
-        } else {
-            info.loopCount = count
+        if (count != 0) {
+            val value = count - 1
+            if (value < 0) {
+                info.loopCount = ValueAnimator.INFINITE
+            } else {
+                info.loopCount = value
+            }
         }
         return this
     }

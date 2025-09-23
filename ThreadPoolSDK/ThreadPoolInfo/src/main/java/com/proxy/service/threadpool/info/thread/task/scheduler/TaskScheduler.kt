@@ -12,8 +12,10 @@ import io.reactivex.schedulers.Schedulers
  * @data: 2024/6/14 10:39
  * @desc:
  */
-abstract class TaskScheduler<T : Any>(private var taskInfo: TaskInfo<T>) :
-    TaskLoader<T>(taskInfo), ITaskOption<T>, IScheduler<ITaskOption<T>> {
+abstract class TaskScheduler<T : Any>(
+    private var taskInfo: TaskInfo<T>
+) : TaskLoader<T>(taskInfo), ITaskOption<T>, IScheduler<ITaskOption<T>> {
+
     override fun ioThread(): ITaskOption<T> {
         val scheduler = Schedulers.io()
         taskInfo.setScheduler(scheduler)

@@ -3,15 +3,20 @@ package com.proxy.service.funsdk.imageloader
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatRadioButton
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityImageLoaderBinding
+import com.proxy.service.imageloader.base.drawable.CsGifDrawable
+import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
+import com.proxy.service.imageloader.base.target.CsCustomTarget
 
 /**
  * @author: cangHX
@@ -98,6 +103,8 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
 
     private val lottie = ResourceInfo(
         "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/%E5%9B%BE%E7%89%87/lottie_loading.json",
+//        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/test_lottie/motivate_3.1_lottie%202.zip",
+//        "https://static0.xesimg.com/newgameresources/qd_cs_bx1/motivate_3.1_lottie.json",
         R.raw.lottie_loading
     )
 
@@ -148,7 +155,7 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
         }
 
         option
-//            ?.setLoopCount(3)
+            ?.setLoopCount(1)
 //            ?.setAnimationCallback(object : AnimationCallback<CsGifDrawable>{
 //                override fun onAnimationEnd(drawable: CsGifDrawable) {
 //                    CsLogger.i("onAnimationEnd. drawable=$drawable")
@@ -196,7 +203,7 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
         }
 
         option
-//            ?.setLoopCount(3)
+            ?.setLoopCount(1)
 //            ?.setAnimationCallback(object :AnimationCallback<CsWebpDrawable>{
 //                override fun onAnimationEnd(drawable: CsWebpDrawable) {
 //                    CsLogger.i("onAnimationEnd. drawable=$drawable")
@@ -221,8 +228,14 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
             return
         }
 
-        option?.setLoopCount(3)
-            ?.setLoopModel(LottieLoopModel.REVERSE)
+        option
+            ?.setLoopCount(1)
+//            ?.setLoopModel(LottieLoopModel.REVERSE)
+            ?.setLoadErrorCallback(object : LoadErrorCallback{
+                override fun onLoadError() {
+                    CsLogger.tag("qqqqqqq").e("error")
+                }
+            })
             ?.into(binding?.layout)
     }
 

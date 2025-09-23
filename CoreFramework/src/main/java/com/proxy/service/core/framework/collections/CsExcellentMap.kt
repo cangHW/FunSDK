@@ -1,12 +1,15 @@
 package com.proxy.service.core.framework.collections
 
 import com.proxy.service.core.framework.collections.base.IMap
+import com.proxy.service.core.framework.collections.callback.OnDataChangedCallback
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
- * 支持异步操作 map
+ * 线程安全、支持异步操作 map
  *
  * @author: cangHX
  * @data: 2024/12/27 14:45
@@ -18,46 +21,68 @@ open class CsExcellentMap<K, V> : IMap<K, V> {
     private val read = lock.readLock()
     private val write = lock.writeLock()
 
+    private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<Map.Entry<K, V>>>()
     private val map = HashMap<K, V>()
 
     override fun size(): Int {
         return map.size
     }
 
-    override fun putSync(key: K, value: V) {
+    override fun containsKey(k: K): Boolean {
+        read.lock()
+        try {
+            return map.containsKey(k)
+        } finally {
+            read.unlock()
+        }
+    }
+
+    override fun runInTransaction(runnable: Runnable) {
         write.lock()
         try {
-            if (!map.containsKey(key)) {
-                map.put(key, value)
-            }
+            runnable.run()
         } finally {
             write.unlock()
         }
     }
 
-    override fun removeSync(predicate: (K, V) -> Boolean) {
-        val temp: Map<K, V>
+    override fun removeDataChangedCallback(callback: OnDataChangedCallback<Map.Entry<K, V>>) {
+        dataChangedCallbacks.removeSync(callback)
+    }
+
+    override fun addDataChangedCallback(callback: OnDataChangedCallback<Map.Entry<K, V>>) {
+        dataChangedCallbacks.putSync(callback)
+    }
+
+    override fun putSync(key: K, value: V): Boolean {
         write.lock()
         try {
-            temp = map.filter {
-                predicate(it.key, it.value)
-            }
+            map.put(key, value)
         } finally {
             write.unlock()
         }
+        sendDataAdd(key, value)
+        return true
+    }
 
-        temp.forEach {
+    override fun removeSync(predicate: (K, V) -> Boolean) {
+        filterSync(predicate).forEach {
             removeSync(it.key)
         }
     }
 
-    override fun removeSync(key: K) {
+    override fun removeSync(key: K): V? {
+        val value: V?
         write.lock()
         try {
-            map.remove(key)
+            value = map.remove(key)
         } finally {
             write.unlock()
         }
+        value?.let {
+            sendDataRemoved(key, it)
+        }
+        return value
     }
 
     override fun putAsync(key: K, value: V) {
@@ -96,6 +121,35 @@ open class CsExcellentMap<K, V> : IMap<K, V> {
         }
     }
 
+    override fun getOrWait(key: K, time: Long, unit: TimeUnit): V? {
+        var value: V? = get(key)
+        if (value != null) {
+            return value
+        }
+
+        val launch = CountDownLatch(1)
+        val callback = object : OnDataChangedCallback<Map.Entry<K, V>>() {
+            override fun onDataAdd(t: Map.Entry<K, V>) {
+                super.onDataAdd(t)
+                if (t.key == key) {
+                    value = t.value
+                    launch.countDown()
+                }
+            }
+        }
+        addDataChangedCallback(callback)
+        value = get(key)
+        if (value != null) {
+            launch.countDown()
+        }
+        try {
+            launch.await(time, unit)
+        } catch (_: Throwable) {
+        }
+        removeDataChangedCallback(callback)
+        return value
+    }
+
     override fun forEachAsync(observer: (K, V) -> Unit) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -106,19 +160,28 @@ open class CsExcellentMap<K, V> : IMap<K, V> {
     }
 
     override fun forEachSync(observer: (K, V) -> Unit) {
-        HashMap(map).forEach {
+        val temp: Map<K, V>
+        read.lock()
+        try {
+            temp = map.toMap()
+        } finally {
+            read.unlock()
+        }
+        temp.forEach {
             observer(it.key, it.value)
         }
     }
 
     override fun filterSync(predicate: (K, V) -> Boolean): Map<K, V> {
+        val temp: Map<K, V>
         read.lock()
         try {
-            return map.filter {
-                predicate(it.key, it.value)
-            }
+            temp = map.toMap()
         } finally {
             read.unlock()
+        }
+        return temp.filter {
+            predicate(it.key, it.value)
         }
     }
 
@@ -136,4 +199,17 @@ open class CsExcellentMap<K, V> : IMap<K, V> {
         })?.start()
     }
 
+    private fun sendDataAdd(key: K, value: V) {
+        dataChangedCallbacks.forEachSync {
+            it.onDataAdd(MapEntry(key, value))
+        }
+    }
+
+    private fun sendDataRemoved(key: K, value: V) {
+        dataChangedCallbacks.forEachSync {
+            it.onDataRemoved(MapEntry(key, value))
+        }
+    }
+
+    private class MapEntry<K, V>(override val key: K, override val value: V) : Map.Entry<K, V>
 }

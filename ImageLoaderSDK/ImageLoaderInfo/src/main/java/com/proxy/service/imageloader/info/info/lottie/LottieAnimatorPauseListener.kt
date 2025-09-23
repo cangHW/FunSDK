@@ -7,8 +7,10 @@ import android.animation.Animator
  * @data: 2024/6/5 09:30
  * @desc:
  */
-class LottieAnimatorPauseListener constructor(val info: LottieInfo) :
-    Animator.AnimatorPauseListener {
+class LottieAnimatorPauseListener(
+    private val info: LottieInfo
+) : Animator.AnimatorPauseListener {
+
     override fun onAnimationPause(p0: Animator) {
         info.animationPauseCallback?.onAnimation(p0)
     }

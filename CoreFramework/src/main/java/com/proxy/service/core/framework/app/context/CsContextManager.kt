@@ -5,7 +5,9 @@ import android.app.Activity
 import android.app.Application
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
+import com.proxy.service.core.framework.app.context.callback.AbstractAppStateChanged
 import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
+import com.proxy.service.core.framework.app.context.common.ComponentCallbacksImpl
 import com.proxy.service.core.framework.app.context.lifecycle.ActivityStatusLifecycleImpl
 import com.proxy.service.core.framework.app.context.lifecycle.AppShowStatusLifecycleImpl
 import com.proxy.service.core.framework.app.context.lifecycle.TopActivityLifecycleImpl
@@ -130,21 +132,35 @@ object CsContextManager {
     fun addActivityLifecycleCallback(
         activity: Activity?,
         isSync: Boolean = false,
-        abstractActivityLifecycle: AbstractActivityLifecycle
+        activityLifecycle: AbstractActivityLifecycle
     ) {
         ActivityStatusLifecycleImpl.getInstance()
-            .addAbstractActivityLifecycle(
+            .addActivityLifecycle(
                 activity,
                 isSync,
-                abstractActivityLifecycle
+                activityLifecycle
             )
     }
 
     /**
      * 移除 activity 生命周期变化监听
      * */
-    fun removeActivityLifecycleCallback(abstractActivityLifecycle: AbstractActivityLifecycle) {
+    fun removeActivityLifecycleCallback(activityLifecycle: AbstractActivityLifecycle) {
         ActivityStatusLifecycleImpl.getInstance()
-            .removeAbstractActivityLifecycle(abstractActivityLifecycle)
+            .removeActivityLifecycle(activityLifecycle)
+    }
+
+    /**
+     * 添加 app 状态变化监听
+     * */
+    fun addAppStateChangedCallback(appStateChanged: AbstractAppStateChanged) {
+        ComponentCallbacksImpl.getInstance().addAppStateChanged(appStateChanged)
+    }
+
+    /**
+     * 移除 app 状态变化监听
+     * */
+    fun removeAppStateChangedCallback(appStateChanged: AbstractAppStateChanged) {
+        ComponentCallbacksImpl.getInstance().removeAppStateChanged(appStateChanged)
     }
 }

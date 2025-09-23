@@ -30,7 +30,7 @@ interface HandlerController {
     fun startTask(key: Any, value: TaskInfo)
 
     /**
-     * 完成一个任务
+     * 结束一个任务
      * */
     fun finishTask(key: Any)
 

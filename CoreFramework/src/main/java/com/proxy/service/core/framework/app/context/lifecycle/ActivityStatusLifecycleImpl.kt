@@ -38,7 +38,7 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     private val lifecycleSync: IMap<AbstractActivityLifecycle, Activity> = CsExcellentMap()
     private val lifecycleAsync: IMap<AbstractActivityLifecycle, Activity> = CsExcellentMap()
 
-    fun addAbstractActivityLifecycle(
+    fun addActivityLifecycle(
         activity: Activity?,
         isSync: Boolean,
         activityLifecycle: AbstractActivityLifecycle
@@ -58,7 +58,7 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
         }
     }
 
-    fun removeAbstractActivityLifecycle(activityLifecycle: AbstractActivityLifecycle) {
+    fun removeActivityLifecycle(activityLifecycle: AbstractActivityLifecycle) {
         globalLifecycleSync.removeSync(activityLifecycle)
         globalLifecycleAsync.removeSync(activityLifecycle)
         lifecycleSync.removeSync(activityLifecycle)

@@ -10,11 +10,11 @@ import com.airbnb.lottie.LottieAnimationView
  */
 interface IFactory<T : ViewGroup> {
 
-    fun getLottieAnimationView(viewGroup: ViewGroup): LottieAnimationView? {
+    fun getLottieAnimationView(viewGroup: ViewGroup): LottieAnimationViewImpl? {
         var index = 0
         while (index < viewGroup.childCount) {
             val child = viewGroup.getChildAt(index)
-            if (child is LottieAnimationView) {
+            if (child is LottieAnimationViewImpl) {
                 return child
             }
             index++
@@ -22,5 +22,5 @@ interface IFactory<T : ViewGroup> {
         return null
     }
 
-    fun loadLottieAnimationView(viewGroup: T): LottieAnimationView
+    fun loadLottieAnimationView(viewGroup: T): LottieAnimationViewImpl
 }

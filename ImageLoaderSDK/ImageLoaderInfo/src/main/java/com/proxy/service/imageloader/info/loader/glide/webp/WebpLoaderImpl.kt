@@ -32,7 +32,9 @@ open class WebpLoaderImpl(
                     if (resource is WebpDrawable) {
                         val webpDrawable = RealWebpDrawable(resource)
                         webpDrawable.setAnimationCallback(info.animationCallback)
-                        webpDrawable.setLoopCount(info.loopCount)
+                        info.loopCount?.let {
+                            webpDrawable.setLoopCount(it)
+                        }
                         view.setImageDrawable(webpDrawable)
                         return webpDrawable
                     }
@@ -85,7 +87,9 @@ open class WebpLoaderImpl(
                 if (resource is WebpDrawable) {
                     val webpDrawable = RealWebpDrawable(resource)
                     webpDrawable.setAnimationCallback(info.animationCallback)
-                    webpDrawable.setLoopCount(info.loopCount)
+                    info.loopCount?.let {
+                        webpDrawable.setLoopCount(it)
+                    }
                     target.onResourceReady(webpDrawable)
                     if (info.isAutoPlay) {
                         webpDrawable.start()

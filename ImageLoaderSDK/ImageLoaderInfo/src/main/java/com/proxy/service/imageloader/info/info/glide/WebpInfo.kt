@@ -18,7 +18,7 @@ import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 class WebpInfo : GlideInfo<Drawable>() {
 
     var isAutoPlay: Boolean = ImageLoaderConstants.IS_AUTO_PLAY
-    var loopCount: Int = -1
+    var loopCount: Int? = null
 
     var loadErrorCallback: LoadErrorCallback?=null
 

@@ -25,7 +25,7 @@ interface IGifGlideOption : IBaseOption<IGifGlideOption, CsGifDrawable>, IOption
     /**
      * 设置循环播放次数
      *
-     * @param count 播放次数, 如果小于 0 则无限循环播放, 等于 0 则使用资源自身的循环次数
+     * @param count 播放次数, 如果小于 0 则无限循环播放, 等于 0 则使用资源自身默认的循环次数
      * */
     fun setLoopCount(count: Int): IGifGlideOption
 

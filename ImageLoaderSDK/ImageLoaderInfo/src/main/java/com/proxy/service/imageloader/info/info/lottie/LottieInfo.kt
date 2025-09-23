@@ -1,7 +1,5 @@
 package com.proxy.service.imageloader.info.info.lottie
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.content.Context
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieComposition
@@ -14,6 +12,8 @@ import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimation
 import com.proxy.service.imageloader.info.R
 import com.proxy.service.imageloader.info.info.base.BaseInfo
 import com.proxy.service.imageloader.info.loader.lottie.ILottieLoadCallback
+import com.proxy.service.imageloader.info.loader.lottie.factory.LottieAnimationViewImpl
+import com.proxy.service.imageloader.info.loader.lottie.factory.LottieAnimationViewImpl.OnDrawErrorCallback
 import com.proxy.service.imageloader.info.request.lottie.source.BaseLottieSourceData
 
 /**
@@ -26,14 +26,13 @@ class LottieInfo : BaseInfo() {
     var sourceData: BaseLottieSourceData? = null
 
     var isAutoPlay: Boolean = ImageLoaderConstants.IS_AUTO_PLAY
-    var loopCount: Int = 1
+    var loopCount: Int? = null
     var loopModel: LottieLoopModel = LottieLoopModel.RESTART
     var speed: Float = 1f
 
-    private var listener: Animator.AnimatorListener = LottieAnimatorListener(this)
-    private var pauseListener: Animator.AnimatorPauseListener = LottieAnimatorPauseListener(this)
-    private var updateListener: ValueAnimator.AnimatorUpdateListener =
-        LottieAnimatorUpdateListener(this)
+    private var listener = LottieAnimatorListener(this)
+    private var pauseListener = LottieAnimatorPauseListener(this)
+    private var updateListener = LottieAnimatorUpdateListener(this)
 
     var loadErrorCallback: LoadErrorCallback? = null
 
@@ -47,7 +46,7 @@ class LottieInfo : BaseInfo() {
 
     var animationUpdateCallback: LottieAnimationUpdateCallback? = null
 
-    fun loadConfig(view: LottieAnimationView, controller: LottieController) {
+    fun loadConfig(view: LottieAnimationViewImpl, controller: LottieController) {
         if (sourceData == null) {
             return
         }
@@ -63,14 +62,12 @@ class LottieInfo : BaseInfo() {
         view.addAnimatorPauseListener(pauseListener)
         view.addAnimatorUpdateListener(updateListener)
 
-        if (source?.equals(this) == true) {
-            checkPlay(view, controller)
-            return
-        }
-        if (source?.sourceData?.equals(sourceData) == true) {
-            setConfig(view, controller)
-            return
-        }
+        view.setOnDrawErrorCallback(object : OnDrawErrorCallback{
+            override fun onErrorCallback(throwable: Throwable) {
+                loadErrorCallback?.onLoadError()
+            }
+        })
+
         sourceData?.load(getContext(), object : ILottieLoadCallback {
             override fun onResult(result: LottieComposition?) {
                 if (result == null) {
@@ -92,7 +89,9 @@ class LottieInfo : BaseInfo() {
             return
         }
         val source = view.getTag(R.id.cs_imageload_info_lottie_view_tag) as? LottieInfo? ?: return
-        view.repeatCount = source.loopCount
+        source.loopCount?.let {
+            view.repeatCount = it
+        }
         view.repeatMode = source.loopModel.model
         checkPlay(view, controller)
     }
@@ -124,17 +123,5 @@ class LottieInfo : BaseInfo() {
             return it
         }
         return null
-    }
-
-    override fun hashCode(): Int {
-        val content = "$isAutoPlay-$loopCount-${loopModel.model}"
-        return content.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is LottieInfo) {
-            return isAutoPlay == other.isAutoPlay && loopCount == other.loopCount && loopModel == other.loopModel
-        }
-        return super.equals(other)
     }
 }

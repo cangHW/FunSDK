@@ -7,12 +7,19 @@
     <application>
 
         <provider
-            android:name="com.proxy.service.core.framework.io.uri.ProxyProvider"
-            android:authorities="${applicationId}.proxy_core_provider"
+            android:name=".framework.app.message.provider.ContentProviderImpl"
+            android:authorities="${applicationId}.proxy_share_data_provider"
             android:exported="true"
-            android:grantUriPermissions="true"/>
+            android:grantUriPermissions="true" />
 
-        <receiver android:name=".framework.app.message.broadcast.BroadcastReceiverImpl"
+        <provider
+            android:name=".framework.io.uri.ProxyProvider"
+            android:authorities="${applicationId}.proxy_share_file_provider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+        <receiver
+            android:name=".framework.app.message.broadcast.BroadcastReceiverImpl"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.proxy.service.core.framework.Event" />

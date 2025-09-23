@@ -11,7 +11,7 @@ import android.os.Bundle
  * @data: 2024/12/2 15:20
  * @desc:
  */
-interface MessageReceiverListener {
+interface BroadcastMessageListener {
 
     /**
      * 接收到消息

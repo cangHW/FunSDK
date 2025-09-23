@@ -5,7 +5,7 @@ package com.proxy.service.core.framework.collections.base
  * @data: 2024/12/27 14:53
  * @desc:
  */
-interface ISet<K> {
+interface ISet<V> : IDataChanged<V>, ITransaction {
 
     /**
      * 数据数量
@@ -13,55 +13,60 @@ interface ISet<K> {
     fun size(): Int
 
     /**
+     * 对应数据是否存在
+     * */
+    fun containsKey(v: V): Boolean
+
+    /**
      * 同步存数据
      * */
-    fun putSync(key: K)
+    fun putSync(value: V)
 
     /**
      * 异步存数据
      * */
-    fun putAsync(key: K)
+    fun putAsync(value: V)
 
     /**
      * 同步移除数据
      * */
-    fun removeSync(key: K)
+    fun removeSync(value: V)
 
     /**
      * 异步移除数据
      * */
-    fun removeAsync(key: K)
+    fun removeAsync(value: V)
 
     /**
      * 同步移除数据
      * */
-    fun removeSync(predicate: (K) -> Boolean)
+    fun removeSync(predicate: (V) -> Boolean)
 
     /**
      * 异步移除数据
      * */
-    fun removeAsync(predicate: (K) -> Boolean)
+    fun removeAsync(predicate: (V) -> Boolean)
 
     /**
      * 同步遍历
      * */
-    fun forEachSync(observer: (K) -> Unit)
+    fun forEachSync(observer: (V) -> Unit)
 
     /**
      * 异步遍历
      * */
-    fun forEachAsync(observer: (K) -> Unit)
+    fun forEachAsync(observer: (V) -> Unit)
 
     /**
      * 同步获取数据并进行过滤
      * */
-    fun filterSync(predicate: (K) -> Boolean = { true }): Set<K>
+    fun filterSync(predicate: (V) -> Boolean = { true }): Set<V>
 
     /**
      * 异步获取数据并进行过滤
      * */
     fun filterAsync(
-        predicate: (K) -> Boolean = { true },
-        observer: (K) -> Unit
+        predicate: (V) -> Boolean = { true },
+        observer: (V) -> Unit
     )
 }

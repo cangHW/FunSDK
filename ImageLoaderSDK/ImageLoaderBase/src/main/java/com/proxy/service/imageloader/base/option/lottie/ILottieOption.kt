@@ -23,7 +23,7 @@ interface ILottieOption : ILottieLoader, IOption<ILottieOption> {
     /**
      * 设置播放次数
      *
-     * @param count 播放次数，如果小于等于 0 则无限循环播放
+     * @param count 播放次数, 如果小于 0 则无限循环播放, 等于 0 则使用资源自身默认的循环次数
      * */
     fun setLoopCount(count: Int): ILottieOption
 

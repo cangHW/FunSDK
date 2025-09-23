@@ -12,13 +12,16 @@ import com.proxy.service.threadpool.info.thread.info.TaskDisposableImpl
 import com.proxy.service.threadpool.info.thread.info.TaskInfo
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import java.net.UnknownHostException
 
 /**
  * @author: cangHX
  * @data: 2024/6/13 11:47
  * @desc:
  */
-open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
+open class TaskLoader<T : Any>(
+    private val taskInfo: TaskInfo<T>
+) : ILoader<T> {
 
     private var onStartCallback: OnStartCallback? = null
     private var onFailedCallback: OnFailedCallback? = null
@@ -75,9 +78,18 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
         onStartCallback?.onCallback()
         taskInfo.checkBlockIsReady()
         try {
-            return taskInfo.observable?.blockingFirst()
-        }catch (throwable:Throwable){
+            val result = taskInfo.observable?.blockingFirst()
+            if (result != null) {
+                onSuccessCallback?.onCallback(result)
+            } else {
+                onFailedCallback?.onCallback(UnknownHostException("result is null."))
+            }
+            return result
+        } catch (throwable: Throwable) {
             CsLogger.tag(ThreadConstants.TAG).d(throwable)
+            onFailedCallback?.onCallback(throwable)
+        } finally {
+            onCompleteCallback?.onCallback()
         }
         return null
     }
@@ -86,9 +98,18 @@ open class TaskLoader<T : Any>(private val taskInfo: TaskInfo<T>) : ILoader<T> {
         onStartCallback?.onCallback()
         taskInfo.checkBlockIsReady()
         try {
-            return taskInfo.observable?.blockingLast()
-        }catch (throwable:Throwable){
+            val result = taskInfo.observable?.blockingLast()
+            if (result != null) {
+                onSuccessCallback?.onCallback(result)
+            } else {
+                onFailedCallback?.onCallback(UnknownHostException("result is null."))
+            }
+            return result
+        } catch (throwable: Throwable) {
             CsLogger.tag(ThreadConstants.TAG).d(throwable)
+            onFailedCallback?.onCallback(throwable)
+        } finally {
+            onCompleteCallback?.onCallback()
         }
         return null
     }

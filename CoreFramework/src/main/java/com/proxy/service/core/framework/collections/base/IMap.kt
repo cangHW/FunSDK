@@ -1,11 +1,14 @@
 package com.proxy.service.core.framework.collections.base
 
+import java.util.concurrent.TimeUnit
+
+
 /**
  * @author: cangHX
  * @data: 2024/12/27 14:53
  * @desc:
  */
-interface IMap<K, V> {
+interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
 
     /**
      * 数据数量
@@ -13,9 +16,14 @@ interface IMap<K, V> {
     fun size(): Int
 
     /**
+     * 对应数据是否存在
+     * */
+    fun containsKey(k: K): Boolean
+
+    /**
      * 同步存数据
      * */
-    fun putSync(key: K, value: V)
+    fun putSync(key: K, value: V): Boolean
 
     /**
      * 异步存数据
@@ -25,7 +33,7 @@ interface IMap<K, V> {
     /**
      * 同步移除数据
      * */
-    fun removeSync(key: K)
+    fun removeSync(key: K): V?
 
     /**
      * 异步移除数据
@@ -46,6 +54,11 @@ interface IMap<K, V> {
      * 获取数据
      * */
     fun get(key: K): V?
+
+    /**
+     * 获取数据
+     * */
+    fun getOrWait(key: K, time: Long, unit: TimeUnit): V?
 
     /**
      * 同步遍历

@@ -26,7 +26,9 @@ import java.io.FileNotFoundException
 class ProxyProvider : ContentProvider() {
 
     companion object {
-        private const val TAG = "${CoreConfig.TAG}Provider"
+        private const val TAG = "${CoreConfig.TAG}ProxyProvider"
+
+        private const val AUTHORITY_SUFFIX = ".proxy_share_file_provider"
 
         /**
          * 资源最后更新时间
@@ -79,7 +81,7 @@ class ProxyProvider : ContentProvider() {
             if (file == null) {
                 return null
             }
-            val strategy = getPathStrategy("${CsAppUtils.getPackageName()}.proxy_core_provider")
+            val strategy = getPathStrategy("${CsAppUtils.getPackageName()}$AUTHORITY_SUFFIX")
             return strategy.getUriForFile(file)
         }
 
@@ -255,7 +257,7 @@ class ProxyProvider : ContentProvider() {
 
             if (!isPermission) {
                 CsLogger.tag(TAG)
-                    .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriUtils.addProviderResourcePath\" method.")
+                    .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriManager.addProviderResourcePath\" method.")
                 return null
             }
 
@@ -280,7 +282,7 @@ class ProxyProvider : ContentProvider() {
 
             if (!isPermission) {
                 CsLogger.tag(TAG)
-                    .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriUtils.addProviderResourcePath\" method.")
+                    .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriManager.addProviderResourcePath\" method.")
                 return null
             }
 

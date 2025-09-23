@@ -11,10 +11,10 @@ import com.proxy.service.imageloader.info.loader.lottie.factory.IFactory
  * @desc:
  */
 object LinearLayoutFactory : IFactory<LinearLayout> {
-    override fun loadLottieAnimationView(viewGroup: LinearLayout): LottieAnimationView {
+    override fun loadLottieAnimationView(viewGroup: LinearLayout): LottieAnimationViewImpl {
         var lottieView = getLottieAnimationView(viewGroup)
         if (lottieView == null) {
-            lottieView = LottieAnimationView(viewGroup.context)
+            lottieView = LottieAnimationViewImpl(viewGroup.context)
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT

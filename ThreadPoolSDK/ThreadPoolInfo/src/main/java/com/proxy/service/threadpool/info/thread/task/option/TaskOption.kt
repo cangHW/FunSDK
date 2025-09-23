@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/6/14 15:10
  * @desc:
  */
-abstract class TaskOption<T : Any>(private var taskInfo: TaskInfo<T>) :
-    TaskAction<T>(taskInfo),
-    IOption<T> {
+abstract class TaskOption<T : Any>(
+    private var taskInfo: TaskInfo<T>
+) : TaskAction<T>(taskInfo), IOption<T> {
 
     override fun timeout(timeout: Long, unit: TimeUnit): ITaskOption<T> {
         taskInfo.observable = taskInfo.observable?.timeout(timeout, unit, Schedulers.computation())

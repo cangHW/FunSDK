@@ -10,7 +10,9 @@ import com.proxy.service.threadpool.info.handler.manager.HandlerController
  * @data: 2024/7/3 17:25
  * @desc:
  */
-open class HandlerLoaderImpl(private val handlerController: HandlerController) : IHandlerLoader {
+open class HandlerLoaderImpl(
+    private val handlerController: HandlerController
+) : IHandlerLoader {
 
     protected val delayMillisLocal = ThreadLocal<Long>()
     protected val uptimeMillisLocal = ThreadLocal<Long>()

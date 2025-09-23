@@ -12,8 +12,9 @@ import io.reactivex.Observable
  * @data: 2024/6/7 17:22
  * @desc:
  */
-class TaskOptionImpl<T : Any>(private var taskInfo: TaskInfo<T>) :
-    TaskOption<T>(taskInfo), IObserver<T>, IRealObserver<T> {
+class TaskOptionImpl<T : Any>(
+    private var taskInfo: TaskInfo<T>
+) : TaskOption<T>(taskInfo), IObserver<T>, IRealObserver<T> {
 
     override fun getObserver(): Observable<T>? {
         return taskInfo.observable

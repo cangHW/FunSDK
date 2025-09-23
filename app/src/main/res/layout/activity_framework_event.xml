@@ -25,6 +25,16 @@
                 style="@style/checkbox_style"
                 android:text="配置event消息回调" />
 
+            <CheckBox
+                android:id="@+id/check_content_provider"
+                style="@style/checkbox_style"
+                android:text="配置ContentProvider消息回调" />
+
+            <CheckBox
+                android:id="@+id/check_process"
+                style="@style/checkbox_style"
+                android:text="配置Process消息回调" />
+
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -46,6 +56,16 @@
                 android:id="@+id/send_thread_event_msg"
                 style="@style/button_style"
                 android:text="发送子线程 event 消息" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_content_provider_msg"
+                style="@style/button_style"
+                android:text="发送 ContentProvider 消息" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_process_msg"
+                style="@style/button_style"
+                android:text="发送 Process 消息" />
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.proxy.service.testview.DemoTestView

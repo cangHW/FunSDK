@@ -10,10 +10,10 @@ import com.airbnb.lottie.LottieAnimationView
  * @desc:
  */
 object FrameLayoutFactory : IFactory<FrameLayout> {
-    override fun loadLottieAnimationView(viewGroup: FrameLayout): LottieAnimationView {
+    override fun loadLottieAnimationView(viewGroup: FrameLayout): LottieAnimationViewImpl {
         var lottieView = getLottieAnimationView(viewGroup)
         if (lottieView == null) {
-            lottieView = LottieAnimationView(viewGroup.context)
+            lottieView = LottieAnimationViewImpl(viewGroup.context)
             val params = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT

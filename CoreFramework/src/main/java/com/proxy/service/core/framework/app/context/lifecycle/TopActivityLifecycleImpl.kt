@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
+import com.proxy.service.core.constants.CoreConfig
+import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
@@ -13,6 +15,7 @@ import android.os.Bundle
 class TopActivityLifecycleImpl : ActivityLifecycleCallbacks {
 
     companion object {
+        private const val TAG = "${CoreConfig.TAG}Activity"
         private val mInstance by lazy { TopActivityLifecycleImpl() }
         fun getInstance(): TopActivityLifecycleImpl {
             return mInstance
@@ -115,7 +118,8 @@ class TopActivityLifecycleImpl : ActivityLifecycleCallbacks {
                     }
                 }
             }
-        } catch (_: Throwable) {
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
         }
         return null
     }
