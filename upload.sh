@@ -5,12 +5,12 @@ upArray=(
   ":CoreFramework"
 
   # 线程库
-  ":ThreadPoolSDK:ThreadPoolInfo"
-  ":ThreadPoolSDK:ThreadPoolBase"
+#  ":ThreadPoolSDK:ThreadPoolInfo"
+#  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
-  ":ImageLoaderSDK:ImageLoaderInfo"
-  ":ImageLoaderSDK:ImageLoaderBase"
+#  ":ImageLoaderSDK:ImageLoaderInfo"
+#  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpInfo"

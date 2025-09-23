@@ -13,6 +13,18 @@ import java.util.concurrent.TimeUnit
 open class IntervalRunImpl : IIntervalRun {
 
     companion object {
+        private const val TYPE_DD = "DD"
+        private const val TYPE_HH = "HH"
+        private const val TYPE_H = "H"
+        private const val TYPE_MM = "MM"
+        private const val TYPE_M = "M"
+        private const val TYPE_SS = "SS"
+        private const val TYPE_S = "S"
+        private const val TYPE_CCC = "CCC"
+
+        private const val TYPE_F_ = "F-"
+        private const val TYPE_F_F = "F-+"
+
         private val formatMap = HashMap<String, TimeIntervalInfo>()
     }
 
@@ -44,7 +56,7 @@ open class IntervalRunImpl : IIntervalRun {
             val days = TimeUnit.MILLISECONDS.toDays(time)
             time -= TimeUnit.DAYS.toMillis(days)
 
-            if (!pattern.startsWith("F-") || days > 0) {
+            if (!pattern.startsWith(TYPE_F_) || days > 0) {
                 builder.append(days).append(it)
             }
         }
@@ -53,7 +65,7 @@ open class IntervalRunImpl : IIntervalRun {
             val hours = TimeUnit.MILLISECONDS.toHours(time)
             time -= TimeUnit.HOURS.toMillis(hours)
 
-            if (!pattern.startsWith("F-") || hours > 0) {
+            if (!pattern.startsWith(TYPE_F_) || hours > 0) {
                 builder.append(complement(hours, intervalInfo.hLength)).append(it)
             }
         }
@@ -62,7 +74,7 @@ open class IntervalRunImpl : IIntervalRun {
             val minutes = TimeUnit.MILLISECONDS.toMinutes(time)
             time -= TimeUnit.MINUTES.toMillis(minutes)
 
-            if (!pattern.startsWith("F-") || minutes > 0) {
+            if (!pattern.startsWith(TYPE_F_) || minutes > 0) {
                 builder.append(complement(minutes, intervalInfo.mLength)).append(it)
             }
         }
@@ -71,18 +83,18 @@ open class IntervalRunImpl : IIntervalRun {
             val seconds = TimeUnit.MILLISECONDS.toSeconds(time)
             time -= TimeUnit.SECONDS.toMillis(seconds)
 
-            if (!pattern.startsWith("F-") || seconds > 0) {
+            if (!pattern.startsWith(TYPE_F_) || seconds > 0) {
                 builder.append(complement(seconds, intervalInfo.sLength)).append(it)
             }
         }
 
         intervalInfo.sss?.let {
-            if (!pattern.startsWith("F-") || time > 0) {
+            if (!pattern.startsWith(TYPE_F_) || time > 0) {
                 builder.append(time).append(it)
             }
         }
 
-        if (builder.isEmpty() && pattern.startsWith("F-+")) {
+        if (builder.isEmpty() && pattern.startsWith(TYPE_F_F)) {
             if (intervalInfo.sss != null) {
                 builder.append(0).append(intervalInfo.sss)
             } else if (intervalInfo.ss != null) {
@@ -102,14 +114,14 @@ open class IntervalRunImpl : IIntervalRun {
     private fun parseTimeInterval(pattern: String): TimeIntervalInfo {
         val sorts: ArrayList<TimeIndexType> = ArrayList()
 
-        val dIndex: Int = pattern.indexOf("DD")
+        val dIndex: Int = pattern.indexOf(TYPE_DD)
         sorts.add(TimeIndexType(TimeIndexType.DAY, dIndex, 2))
 
         parseTimeWithHour(sorts, pattern)
         parseTimeWithMinutes(sorts, pattern)
         parseTimeWithSeconds(sorts, pattern)
 
-        val msIndex: Int = pattern.indexOf("SSS")
+        val msIndex: Int = pattern.indexOf(TYPE_CCC)
         sorts.add(TimeIndexType(TimeIndexType.MILLIS, msIndex, 3))
 
         sorts.sortWith(object : Comparator<TimeIndexType?> {
@@ -152,13 +164,13 @@ open class IntervalRunImpl : IIntervalRun {
     }
 
     private fun parseTimeWithHour(sorts: ArrayList<TimeIndexType>, pattern: String) {
-        var hIndex: Int = pattern.indexOf("HH")
+        var hIndex: Int = pattern.indexOf(TYPE_HH)
         if (hIndex >= 0) {
             sorts.add(TimeIndexType(TimeIndexType.HOURS, hIndex, 2))
             return
         }
 
-        hIndex = pattern.indexOf("H")
+        hIndex = pattern.indexOf(TYPE_H)
         if (hIndex >= 0) {
             sorts.add(TimeIndexType(TimeIndexType.HOURS, hIndex, 1))
             return
@@ -166,26 +178,26 @@ open class IntervalRunImpl : IIntervalRun {
     }
 
     private fun parseTimeWithMinutes(sorts: ArrayList<TimeIndexType>, pattern: String) {
-        var mIndex: Int = pattern.indexOf("MM")
+        var mIndex: Int = pattern.indexOf(TYPE_MM)
         if (mIndex >= 0) {
             sorts.add(TimeIndexType(TimeIndexType.MINUTES, mIndex, 2))
             return
         }
 
-        mIndex = pattern.indexOf("M")
+        mIndex = pattern.indexOf(TYPE_M)
         if (mIndex >= 0) {
             sorts.add(TimeIndexType(TimeIndexType.MINUTES, mIndex, 1))
         }
     }
 
     private fun parseTimeWithSeconds(sorts: ArrayList<TimeIndexType>, pattern: String) {
-        var sIndex: Int = pattern.indexOf("SS")
+        var sIndex: Int = pattern.indexOf(TYPE_SS)
         if (sIndex >= 0) {
             sorts.add(TimeIndexType(TimeIndexType.SECONDS, sIndex, 2))
             return
         }
 
-        sIndex = pattern.indexOf("S")
+        sIndex = pattern.indexOf(TYPE_S)
         if (sIndex >= 0) {
             sorts.add(TimeIndexType(TimeIndexType.SECONDS, sIndex, 1))
         }
