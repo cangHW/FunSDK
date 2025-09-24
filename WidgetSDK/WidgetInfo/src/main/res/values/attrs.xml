@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="cs_widget_RoundLayout">
-        <attr name="round_radius" format="dimension" tools:ignore="ResourceName" />
-        <attr name="round_radius_top_left" format="dimension" tools:ignore="ResourceName" />
-        <attr name="round_radius_top_right" format="dimension" tools:ignore="ResourceName" />
-        <attr name="round_radius_bottom_left" format="dimension" tools:ignore="ResourceName" />
-        <attr name="round_radius_bottom_right" format="dimension" tools:ignore="ResourceName" />
+    <declare-styleable name="cs_widget_RoundLayout" tools:ignore="ResourceName">
+        <attr name="round_radius" format="dimension" />
+        <attr name="round_radius_top_left" format="dimension" />
+        <attr name="round_radius_top_right" format="dimension" />
+        <attr name="round_radius_bottom_left" format="dimension" />
+        <attr name="round_radius_bottom_right" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="cs_widget_font_style_text_view" tools:ignore="ResourceName">
+        <attr name="font_weight" format="enum">
+            <enum name="weight_100" value="100" />
+            <enum name="weight_300" value="300" />
+            <enum name="weight_400" value="400" />
+            <enum name="weight_500" value="500" />
+            <enum name="weight_700" value="700" />
+            <enum name="weight_800" value="800" />
+            <enum name="weight_900" value="900" />
+        </attr>
+        <attr name="font_style" format="enum">
+            <enum name="normal" value="100" />
+            <enum name="italic" value="200" />
+            <enum name="bold" value="300" />
+            <enum name="bold_italic" value="400" />
+        </attr>
     </declare-styleable>
 
 </resources>

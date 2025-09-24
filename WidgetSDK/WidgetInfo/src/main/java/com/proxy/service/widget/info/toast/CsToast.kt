@@ -3,15 +3,13 @@ package com.proxy.service.widget.info.toast
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Looper
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.widget.info.toast.enums.ToastDuration
+import com.proxy.service.widget.info.toast.info.BaseViewInfo
 import com.proxy.service.widget.info.utils.ThreadUtils
 
 /**
@@ -21,7 +19,10 @@ import com.proxy.service.widget.info.utils.ThreadUtils
  */
 object CsToast {
 
-    private val toastMap = HashMap<String, ToastViewFactory.BaseViewInfo>()
+    private const val KEY_TXT = "text-"
+    private const val KEY_ICON_TXT = "icon-text-"
+
+    private val viewInfoCache = HashMap<String, BaseViewInfo>()
 
     private var config: ToastConfig = ToastConfig()
     private var factory: ToastViewFactory = ToastViewFactory()
@@ -45,10 +46,10 @@ object CsToast {
     }
 
     /**
-     * 清空已缓存的 toast 对象
+     * 清空已缓存的 toast 视图对象
      * */
     fun clearToastCache() {
-        toastMap.clear()
+        viewInfoCache.clear()
     }
 
     /*** *** *** *** *** *** *** *** *** *** 文字吐司 *** *** *** *** *** *** *** *** *** *** ***/
@@ -74,19 +75,11 @@ object CsToast {
         tag: String = ""
     ) {
         ThreadUtils.runOnMainThread {
-            val key = "text-$tag"
-
             val context = CsContextManager.getApplication()
-            var viewInfo: ToastViewFactory.BaseViewInfo? = toastMap.get(key)
-            if (viewInfo == null) {
-                viewInfo = factory.getToastView(context, tag)
-                toastMap.put(key, viewInfo)
-            }
+            val viewInfo = createViewInfo(context, tag, false)
             viewInfo.updateTxt(content)
 
-            val toast = createToast(context, viewInfo.rootView)
-            toast.duration = duration.value
-            toast.show()
+            showToast(createToast(context), viewInfo, duration.value)
         }
     }
 
@@ -152,20 +145,12 @@ object CsToast {
         tag: String = ""
     ) {
         ThreadUtils.runOnMainThread {
-            val key = "icon-text-$tag"
-
             val context = CsContextManager.getApplication()
-            var viewInfo: ToastViewFactory.BaseViewInfo? = toastMap.get(key)
-            if (viewInfo == null) {
-                viewInfo = factory.getToastViewWithIcon(context, tag)
-                toastMap.put(key, viewInfo)
-            }
+            val viewInfo = createViewInfo(context, tag, true)
             viewInfo.updateIcon(icon)
             viewInfo.updateTxt(content)
 
-            val toast = createToast(context, viewInfo.rootView)
-            toast.duration = duration.value
-            toast.show()
+            showToast(createToast(context), viewInfo, duration.value)
         }
     }
 
@@ -198,38 +183,52 @@ object CsToast {
         tag: String = ""
     ) {
         ThreadUtils.runOnMainThread {
-            val key = "icon-text-$tag"
-
             val context = CsContextManager.getApplication()
-            var viewInfo: ToastViewFactory.BaseViewInfo? = toastMap.get(key)
-            if (viewInfo == null) {
-                viewInfo = factory.getToastViewWithIcon(context, tag)
-                toastMap.put(key, viewInfo)
-            }
+            val viewInfo = createViewInfo(context, tag, true)
             viewInfo.updateIcon(icon)
             viewInfo.updateTxt(content)
 
-            val toast = createToast(context, viewInfo.rootView)
-            toast.duration = duration.value
-            toast.show()
+            showToast(createToast(context), viewInfo, duration.value)
         }
     }
 
     /*** *** *** *** *** *** *** *** *** *** 私有函数 *** *** *** *** *** *** *** *** *** *** ***/
 
-    private fun createToast(context: Context, view: View): Toast {
+    private fun createViewInfo(context: Context, tag: String, hasIcon: Boolean): BaseViewInfo {
+        val key = if (hasIcon) {
+            "$KEY_ICON_TXT$tag"
+        } else {
+            "$KEY_TXT$tag"
+        }
+        var viewInfo: BaseViewInfo? = viewInfoCache.get(key)
+        if (viewInfo == null) {
+            viewInfo = if (hasIcon) {
+                factory.getToastViewWithIcon(context, tag)
+            } else {
+                factory.getToastView(context, tag)
+            }
+            viewInfoCache.put(key, viewInfo)
+        }
+        return viewInfo
+    }
+
+    private fun createToast(context: Context): Toast {
         var toast = currentToast
         if (toast != null) {
-            if (toast.view != view) {
-                toast.view = view
-            }
             return toast
         }
         toast = Toast(context)
-        toast.view = view
         toast.setMargin(config.horizontalMargin, config.verticalMargin)
         toast.setGravity(config.gravity.value, config.xOffsetPx, config.yOffsetPx)
         currentToast = toast
         return toast
+    }
+
+    private fun showToast(toast: Toast, viewInfo: BaseViewInfo, duration: Int) {
+        if (toast.view != viewInfo.rootView) {
+            toast.view = viewInfo.rootView
+        }
+        toast.duration = duration
+        toast.show()
     }
 }

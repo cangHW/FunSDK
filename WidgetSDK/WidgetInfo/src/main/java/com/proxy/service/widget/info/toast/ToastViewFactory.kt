@@ -2,17 +2,12 @@ package com.proxy.service.widget.info.toast
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.proxy.service.widget.info.R
+import com.proxy.service.widget.info.toast.info.ToastViewInfo
+import com.proxy.service.widget.info.toast.info.ToastWithIconViewInfo
 
 /**
  * toast 视图工厂
@@ -23,36 +18,6 @@ import com.proxy.service.widget.info.R
  */
 open class ToastViewFactory {
 
-    open class BaseViewInfo(val rootView: View) {
-
-        open fun updateIcon(bitmap: Bitmap?) {}
-
-        open fun updateIcon(drawable: Drawable?) {}
-
-        open fun updateIcon(@DrawableRes resId: Int) {}
-
-
-        open fun updateTxt(content: String) {}
-
-        open fun updateTxt(@StringRes resId: Int) {}
-
-    }
-
-
-    open class ToastViewInfo(
-        rootView: View,
-        private val textView: TextView?
-    ) : BaseViewInfo(rootView) {
-
-        override fun updateTxt(content: String) {
-            textView?.setText(content)
-        }
-
-        override fun updateTxt(resId: Int) {
-            textView?.setText(resId)
-        }
-    }
-
     /**
      * 获取普通 toast 视图
      * */
@@ -61,35 +26,6 @@ open class ToastViewFactory {
         val view = LayoutInflater.from(context).inflate(R.layout.cs_widget_toast_view, null)
         val textView = view.findViewById<AppCompatTextView>(R.id.toast_content)
         return ToastViewInfo(view, textView)
-    }
-
-
-    open class ToastWithIconViewInfo(
-        rootView: View,
-        private val iconView: ImageView?,
-        private val textView: TextView?
-    ) : BaseViewInfo(rootView) {
-
-        override fun updateIcon(bitmap: Bitmap?) {
-            iconView?.setImageBitmap(bitmap)
-        }
-
-        override fun updateIcon(drawable: Drawable?) {
-            iconView?.setImageDrawable(drawable)
-        }
-
-        override fun updateIcon(resId: Int) {
-            iconView?.setImageResource(resId)
-        }
-
-        override fun updateTxt(content: String) {
-            textView?.setText(content)
-        }
-
-        override fun updateTxt(resId: Int) {
-            textView?.setText(resId)
-        }
-
     }
 
     /**

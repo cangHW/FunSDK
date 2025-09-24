@@ -1,5 +1,7 @@
 package com.proxy.service.widget.info.toast
 
+import com.proxy.service.widget.info.toast.enums.ToastGravity
+
 /**
  * @author: cangHX
  * @data: 2025/7/8 18:35
