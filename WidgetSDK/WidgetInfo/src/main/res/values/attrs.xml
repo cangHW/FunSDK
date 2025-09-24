@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="cs_widget_RoundLayout" tools:ignore="ResourceName">
+    <declare-styleable name="CsRoundLayout" tools:ignore="ResourceName">
         <attr name="round_radius" format="dimension" />
         <attr name="round_radius_top_left" format="dimension" />
         <attr name="round_radius_top_right" format="dimension" />
@@ -9,7 +9,7 @@
         <attr name="round_radius_bottom_right" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="cs_widget_font_style_text_view" tools:ignore="ResourceName">
+    <declare-styleable name="CsFontStyleTextView" tools:ignore="ResourceName">
         <attr name="font_weight" format="enum">
             <enum name="weight_100" value="100" />
             <enum name="weight_300" value="300" />

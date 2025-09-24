@@ -44,19 +44,17 @@ class CsFontStyleTextView : AppCompatTextView {
         init(context, attrs)
     }
 
-    @SuppressLint("CustomViewStyleable")
     private fun init(context: Context, attrs: AttributeSet?) {
         if (attrs == null) {
             return
         }
-        val array =
-            context.obtainStyledAttributes(attrs, R.styleable.cs_widget_font_style_text_view)
+        val array = context.obtainStyledAttributes(attrs, R.styleable.CsFontStyleTextView)
         val style = array.getInt(
-            R.styleable.cs_widget_font_style_text_view_font_weight,
+            R.styleable.CsFontStyleTextView_font_weight,
             FontWeight.WEIGHT_400.value
         )
         val fontStyle = array.getInt(
-            R.styleable.cs_widget_font_style_text_view_font_style,
+            R.styleable.CsFontStyleTextView_font_style,
             FontStyle.NORMAL.value
         )
         array.recycle()
