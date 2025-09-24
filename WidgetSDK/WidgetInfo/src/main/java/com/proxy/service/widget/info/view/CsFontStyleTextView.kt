@@ -1,11 +1,12 @@
 package com.proxy.service.widget.info.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.graphics.TypefaceCompat
+import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.widget.info.R
 
 /**
@@ -18,13 +19,34 @@ class CsFontStyleTextView : AppCompatTextView {
     companion object {
 
         private var selectTypeface: Typeface? = null
+        private val typefaceCache = CsExcellentMap<String, Typeface>()
 
-        fun setTypeface(typeface: Typeface) {
+        /**
+         * 设置默认字体
+         * */
+        fun setDefaultTypeface(typeface: Typeface) {
             selectTypeface = typeface
         }
 
-        fun setTypeface(familyName: String, fontStyle: FontStyle) {
-            selectTypeface = Typeface.create(familyName, fontStyle.style)
+        /**
+         * 设置默认字体
+         * */
+        fun setDefaultTypeface(familyName: String, fontStyle: FontStyle) {
+            setDefaultTypeface(Typeface.create(familyName, fontStyle.style))
+        }
+
+        /**
+         * 添加字体
+         * */
+        fun addTypeface(fontFamily: String, typeface: Typeface) {
+            typefaceCache.putSync(fontFamily, typeface)
+        }
+
+        /**
+         * 添加字体
+         * */
+        fun addTypeface(fontFamily: String, familyName: String, fontStyle: FontStyle) {
+            addTypeface(fontFamily, Typeface.create(familyName, fontStyle.style))
         }
     }
 
@@ -49,7 +71,7 @@ class CsFontStyleTextView : AppCompatTextView {
             return
         }
         val array = context.obtainStyledAttributes(attrs, R.styleable.CsFontStyleTextView)
-        val style = array.getInt(
+        val fontWeight = array.getInt(
             R.styleable.CsFontStyleTextView_font_weight,
             FontWeight.WEIGHT_400.value
         )
@@ -57,21 +79,28 @@ class CsFontStyleTextView : AppCompatTextView {
             R.styleable.CsFontStyleTextView_font_style,
             FontStyle.NORMAL.value
         )
+        val fontFamily = array.getString(R.styleable.CsFontStyleTextView_font_family)
         array.recycle()
 
         includeFontPadding = false
 
-        typeface = getFont(style, fontStyle)
-    }
-
-    /**
-     * 获取字体
-     */
-    private fun getFont(widget: Int, textStyle: Int): Typeface? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            Typeface.create(selectTypeface, widget, textStyle == FontStyle.ITALIC.value)
+        val font = if (fontFamily != null) {
+            typefaceCache.get(fontFamily)
         } else {
             null
+        }
+        typeface = getFont(font ?: selectTypeface, fontWeight, fontStyle)
+    }
+
+    private fun getFont(typeface: Typeface?, widget: Int, style: Int): Typeface? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            Typeface.create(typeface, widget, style == FontStyle.ITALIC.value)
+        } else {
+            try {
+                TypefaceCompat.create(context, typeface, FontStyle.valueOf(style).style)
+            } catch (throwable: Throwable) {
+                null
+            }
         }
     }
 }
@@ -119,4 +148,31 @@ enum class FontStyle(val value: Int, val style: Int) {
      * 粗体 + 斜体
      * */
     BOLD_ITALIC(400, Typeface.BOLD_ITALIC);
+
+
+    companion object {
+        fun valueOf(value: Int): FontStyle {
+            return when (value) {
+                NORMAL.value -> {
+                    NORMAL
+                }
+
+                ITALIC.value -> {
+                    ITALIC
+                }
+
+                BOLD.value -> {
+                    BOLD
+                }
+
+                BOLD_ITALIC.value -> {
+                    BOLD_ITALIC
+                }
+
+                else -> {
+                    NORMAL
+                }
+            }
+        }
+    }
 }

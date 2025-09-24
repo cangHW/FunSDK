@@ -38,6 +38,7 @@
             <enum name="bold" value="300" />
             <enum name="bold_italic" value="400" />
         </attr>
+        <attr name="font_family" format="string" />
     </declare-styleable>
 
 </resources>
