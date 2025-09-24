@@ -77,13 +77,26 @@ class CsFontStyleTextView : AppCompatTextView {
 }
 
 enum class FontWeight(val value: Int) {
+    WEIGHT_50(50),
     WEIGHT_100(100),
+    WEIGHT_150(150),
+    WEIGHT_200(200),
+    WEIGHT_250(250),
     WEIGHT_300(300),
+    WEIGHT_350(350),
     WEIGHT_400(400),
+    WEIGHT_450(450),
     WEIGHT_500(500),
+    WEIGHT_550(550),
+    WEIGHT_600(600),
+    WEIGHT_650(650),
     WEIGHT_700(700),
+    WEIGHT_750(750),
     WEIGHT_800(800),
+    WEIGHT_850(850),
     WEIGHT_900(900),
+    WEIGHT_950(950),
+    WEIGHT_1000(1000);
 }
 
 enum class FontStyle(val value: Int, val style: Int) {
