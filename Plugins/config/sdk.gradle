@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.1.15",
+                    version           : "1.1.16",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -58,14 +58,14 @@ ext {
             // 图片库
             ImageLoaderBase: [
                     artifact          : "Service-Imageloader",
-                    version           : "0.2.10",
+                    version           : "0.2.11",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ImageLoaderInfo: [
                     artifact          : "Service-Imageloader-Info",
-                    version           : "0.2.10",
+                    version           : "0.2.11",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

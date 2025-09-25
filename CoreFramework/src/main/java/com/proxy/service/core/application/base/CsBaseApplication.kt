@@ -13,12 +13,44 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 abstract class CsBaseApplication : BaseCoreFw() {
 
-    companion object{
+    companion object {
         private const val TAG = "${CoreConfig.TAG}Application"
+    }
+
+    enum class ThreadType {
+        /**
+         * io 线程
+         * */
+        IO_THREAD,
+
+        /**
+         * cpu 线程
+         * */
+        COMPUTATION_THREAD,
+
+        /**
+         * 主线程
+         * */
+        MAIN_THREAD;
+    }
+
+    /**
+     * 前置依赖任务
+     * */
+    open fun dependsOn(): List<Class<CsBaseApplication>> {
+        return listOf()
+    }
+
+    /**
+     * 运行线程
+     * */
+    open fun runOnThread(): ThreadType {
+        return ThreadType.MAIN_THREAD
     }
 
     final override fun create(application: Application, isDebug: Boolean) {
         CsLogger.tag(TAG).d("${this.javaClass.simpleName} onCreate isDebug = $isDebug")
         onCreate(application, isDebug)
     }
+
 }

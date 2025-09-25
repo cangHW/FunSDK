@@ -37,7 +37,7 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
         super.onCreate(savedInstanceState)
 
         binding?.content?.let {
-            show(it)
+            show(it, ImageAlign.ALIGN_CENTER)
         }
     }
 
@@ -45,55 +45,81 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
         return ActivityFrameworkSpanBinding.inflate(inflater)
     }
 
-    private fun show(view: TextView) {
+    private fun show(view: TextView, align: ImageAlign) {
         CsSpanUtils.builder()
-            .appendTxt("测试")
-            .setItalic()
-            .setTextColor(Color.RED)
-            .setTextSize(60, TextSizeUnit.UNIT_SP)
-            .setStrikethrough()
+//            .appendTxt("测试")
+//            .setItalic()
+//            .setTextColor(Color.RED)
+//            .setTextSize(60, TextSizeUnit.UNIT_SP)
+//            .setStrikethrough()
 
-            .appendSpace(20)
-            .setSpaceColor(Color.YELLOW)
+//            .appendSpace(20)
+//            .setSpaceColor(Color.YELLOW)
 
             .appendTxt("文案")
-            .setBold()
-            .setTextColor(Color.BLUE)
-            .setTextSize(60, TextSizeUnit.UNIT_SP)
-            .setClick(object :View.OnClickListener{
-                override fun onClick(v: View?) {
+//            .setBold()
+//            .setTextColor(Color.BLUE)
+//            .setTextSize(60, TextSizeUnit.UNIT_SP)
+//            .setClick(object :View.OnClickListener{
+//                override fun onClick(v: View?) {
+//
+//                }
+//            })
+//            .setUnderline()
+//            .setBlur(10f, BlurUnit.OUTER)
+//
+//            .appendSpace(0)
+//            .setSpaceColor(Color.YELLOW)
+//
+//            .appendLineEnd()
 
-                }
-            })
-            .setUnderline()
-            .setBlur(10f, BlurUnit.OUTER)
-
-            .appendSpace(0)
-            .setSpaceColor(Color.YELLOW)
-
-            .appendLineEnd()
+//            .appendTxt("")
+//            .setTextSize(0)
+//            .appendSpace(0)
 
             .appendImage(R.drawable.jpg)
-            .setImageAlign(ImageAlign.ALIGN_CENTER)
-            .setImageSize(300, 80, false)
+            .setImageAlign(align)
+//            .setImageSizeByWidth(300)
+            .setImageSize(60, 90, false)
 
             .appendTxt("结束")
-            .setBackgroundColor(Color.WHITE)
-            .setBold()
-            .setTextSize(60, TextSizeUnit.UNIT_SP)
-            .setSuperscript()
-
-            .appendTxt("结束2")
 //            .setBackgroundColor(Color.WHITE)
-            .setItalic()
-            .setTextSize(60, TextSizeUnit.UNIT_SP)
-            .setShadow(2f, 10f, 10f, Color.RED)
-            .setSubscript()
+            .setBold()
+//            .setTextSize(60, TextSizeUnit.UNIT_SP)
+//            .setSuperscript()
+
+//            .appendTxt("结束2")
+////            .setBackgroundColor(Color.WHITE)
+//            .setItalic()
+//            .setTextSize(60, TextSizeUnit.UNIT_SP)
+//            .setShadow(2f, 10f, 10f, Color.RED)
+//            .setSubscript()
 
             .createTo(view)
     }
 
     override fun onClick(view: View) {
-
+        when(view.id){
+            R.id.center->{
+                binding?.content?.let {
+                    show(it, ImageAlign.ALIGN_CENTER)
+                }
+            }
+            R.id.baseline->{
+                binding?.content?.let {
+                    show(it, ImageAlign.ALIGN_BASELINE)
+                }
+            }
+            R.id.top->{
+                binding?.content?.let {
+                    show(it, ImageAlign.ALIGN_TOP)
+                }
+            }
+            R.id.bottom->{
+                binding?.content?.let {
+                    show(it, ImageAlign.ALIGN_BOTTOM)
+                }
+            }
+        }
     }
 }

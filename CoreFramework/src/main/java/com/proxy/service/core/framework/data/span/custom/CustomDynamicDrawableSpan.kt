@@ -3,6 +3,8 @@ package com.proxy.service.core.framework.data.span.custom
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.text.style.ReplacementSpan
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -41,7 +43,6 @@ abstract class CustomDynamicDrawableSpan(
         return d
     }
 
-
     override fun getSize(
         paint: Paint,
         text: CharSequence?,
@@ -56,22 +57,72 @@ abstract class CustomDynamicDrawableSpan(
             return rect.right
         }
 
-        val lineHeight = fm.bottom - fm.top
-        if (lineHeight < rect.height()) {
-            if (verticalAlignment == ImageAlign.ALIGN_TOP) {
-                fm.top = fm.top
-                fm.bottom = rect.height() + fm.top
-            } else if (verticalAlignment == ImageAlign.ALIGN_CENTER) {
-                fm.top = -rect.height() / 2 - lineHeight / 4
-                fm.bottom = rect.height() / 2 - lineHeight / 4
-            } else {
-                fm.top = -rect.height() + fm.bottom
-                fm.bottom = fm.bottom
+        val lineHeight = getLineHeightFromMetrics(paint, fm)
+        val drawableHeight = rect.height()
+
+        when (verticalAlignment) {
+            ImageAlign.ALIGN_TOP -> {
+                if (lineHeight < drawableHeight) {
+                    fm.top = fm.top
+                    fm.bottom = drawableHeight + fm.top
+                    fm.ascent = fm.top
+                    fm.descent = fm.bottom
+                }
             }
-            fm.ascent = fm.top
-            fm.descent = fm.bottom
+
+            ImageAlign.ALIGN_CENTER -> {
+                if (lineHeight < drawableHeight) {
+                    fm.top = -drawableHeight / 2 - lineHeight / 4
+                    fm.bottom = drawableHeight / 2 - lineHeight / 4
+                    fm.ascent = fm.top
+                    fm.descent = fm.bottom
+                }
+            }
+
+            ImageAlign.ALIGN_BASELINE -> {
+                if (lineHeight < drawableHeight + fm.descent) {
+                    fm.top = -drawableHeight + fm.descent
+                    fm.bottom = fm.descent
+                    fm.ascent = fm.top
+                    fm.descent = fm.bottom
+                }
+            }
+
+            else -> {
+                if (lineHeight < drawableHeight) {
+                    fm.top = -drawableHeight + fm.bottom
+                    fm.bottom = fm.bottom
+                    fm.ascent = fm.top
+                    fm.descent = fm.bottom
+                }
+            }
         }
+
         return rect.right
+    }
+
+    private fun getLineHeightFromMetrics(paint: Paint, fm: Paint.FontMetricsInt): Int {
+        if (fm.top == 0 && fm.bottom == 0) {
+            val fm2 = paint.fontMetricsInt
+            fm.top = fm2.top
+            fm.bottom = fm2.bottom
+            fm.ascent = fm2.ascent
+            fm.descent = fm2.descent
+        }
+
+        var lineHeight = fm.bottom - fm.top
+        if (lineHeight == 0) {
+            lineHeight = if (paint is TextPaint) {
+                StaticLayout.Builder
+                    .obtain(" ", 0, 1, paint, Int.MAX_VALUE)
+                    .build()
+                    .height
+            } else {
+                (paint.textSize * 1.2).toInt()
+            }
+        }
+
+        return lineHeight
     }
 
     override fun draw(
@@ -94,18 +145,25 @@ abstract class CustomDynamicDrawableSpan(
         }
 
         canvas.save()
-        val transY: Float
         val lineHeight = bottom - top
 
         if (rect.height() < lineHeight) {
-            transY = if (verticalAlignment == ImageAlign.ALIGN_TOP) {
-                top.toFloat()
-            } else if (verticalAlignment == ImageAlign.ALIGN_CENTER) {
-                ((bottom + top - rect.height()) / 2).toFloat()
-            } else if (verticalAlignment == ImageAlign.ALIGN_BASELINE) {
-                (y - rect.height()).toFloat()
-            } else {
-                (bottom - rect.height()).toFloat()
+            val transY = when (verticalAlignment) {
+                ImageAlign.ALIGN_TOP -> {
+                    top.toFloat()
+                }
+
+                ImageAlign.ALIGN_CENTER -> {
+                    (bottom + top - rect.height()) / 2f
+                }
+
+                ImageAlign.ALIGN_BASELINE -> {
+                    (y - rect.height()).toFloat()
+                }
+
+                else -> {
+                    (bottom - rect.height()).toFloat()
+                }
             }
             canvas.translate(x, transY)
         } else {
@@ -114,6 +172,4 @@ abstract class CustomDynamicDrawableSpan(
         drawable.draw(canvas)
         canvas.restore()
     }
-
-
 }

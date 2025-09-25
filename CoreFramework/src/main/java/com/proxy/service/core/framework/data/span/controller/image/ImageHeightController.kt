@@ -5,7 +5,7 @@ package com.proxy.service.core.framework.data.span.controller.image
  * @data: 2025/9/10 10:24
  * @desc:
  */
-class ImageSizeByHeightController(
+class ImageHeightController(
     private val heightPx: Int,
     private val keepAspectRatio: Boolean
 ) : IImageSize() {

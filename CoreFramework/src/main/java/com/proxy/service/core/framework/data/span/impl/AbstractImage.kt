@@ -6,8 +6,8 @@ import android.net.Uri
 import com.proxy.service.core.framework.data.span.builder.IImageBuilder
 import com.proxy.service.core.framework.data.span.controller.image.IImageSize
 import com.proxy.service.core.framework.data.span.controller.image.ImageMaxSizeController
-import com.proxy.service.core.framework.data.span.controller.image.ImageSizeByHeightController
-import com.proxy.service.core.framework.data.span.controller.image.ImageSizeByWidthController
+import com.proxy.service.core.framework.data.span.controller.image.ImageHeightController
+import com.proxy.service.core.framework.data.span.controller.image.ImageWidthController
 import com.proxy.service.core.framework.data.span.controller.image.ImageSizeController
 import com.proxy.service.core.framework.data.span.custom.CustomImageResizeSpan
 import com.proxy.service.core.framework.data.span.enums.ImageAlign
@@ -20,7 +20,7 @@ import com.proxy.service.core.framework.data.span.enums.ImageAlign
 abstract class AbstractImage : AbstractSpace(), IImageBuilder {
 
     companion object {
-        private val DEFAULT_IMAGE_ALIGN = ImageAlign.ALIGN_BOTTOM
+        private val DEFAULT_IMAGE_ALIGN = ImageAlign.ALIGN_BASELINE
     }
 
     protected var imageBitmap: Bitmap? = null
@@ -29,21 +29,20 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
     protected var imageResourceId: Int? = null
 
     private var alignImage = DEFAULT_IMAGE_ALIGN
-
-    private var imageSize:IImageSize?=null
+    private var imageSize: IImageSize? = null
 
     override fun setImageAlign(align: ImageAlign): IImageBuilder {
         this.alignImage = align
         return this
     }
 
-    override fun setImageSizeByWidth(widthPx: Int, keepAspectRatio: Boolean): IImageBuilder {
-        imageSize = ImageSizeByWidthController(Math.max(widthPx, 1), keepAspectRatio)
+    override fun setImageSizeOnlyWidth(widthPx: Int, keepAspectRatio: Boolean): IImageBuilder {
+        imageSize = ImageWidthController(Math.max(widthPx, 1), keepAspectRatio)
         return this
     }
 
-    override fun setImageSizeByHeight(heightPx: Int, keepAspectRatio: Boolean): IImageBuilder {
-        imageSize = ImageSizeByHeightController(Math.max(heightPx, 1), keepAspectRatio)
+    override fun setImageSizeOnlyHeight(heightPx: Int, keepAspectRatio: Boolean): IImageBuilder {
+        imageSize = ImageHeightController(Math.max(heightPx, 1), keepAspectRatio)
         return this
     }
 

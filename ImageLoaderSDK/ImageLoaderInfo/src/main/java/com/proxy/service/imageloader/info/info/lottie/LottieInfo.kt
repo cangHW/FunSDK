@@ -28,6 +28,7 @@ class LottieInfo : BaseInfo() {
     var isAutoPlay: Boolean = ImageLoaderConstants.IS_AUTO_PLAY
     var loopCount: Int? = null
     var loopModel: LottieLoopModel = LottieLoopModel.RESTART
+    var progress: Float = 0f
     var speed: Float = 1f
 
     private var listener = LottieAnimatorListener(this)

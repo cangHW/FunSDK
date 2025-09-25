@@ -1,5 +1,6 @@
 package com.proxy.service.imageloader.base.option.lottie
 
+import androidx.annotation.FloatRange
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.loader.lottie.ILottieLoader
 import com.proxy.service.imageloader.base.option.base.IOption
@@ -33,8 +34,13 @@ interface ILottieOption : ILottieLoader, IOption<ILottieOption> {
     fun setLoopModel(model: LottieLoopModel): ILottieOption
 
     /**
+     * 设置动画初始进度
+     * */
+    fun setAnimationProgress(@FloatRange(from = 0.0, to = 1.0) progress: Float): ILottieOption
+
+    /**
      * 设置动画播放速度
-     * @param speed 设置播放速度。如果速度为小于 0，动画将向后播放
+     * @param speed 设置播放速度。如果速度为小于 0，动画将反向播放
      * */
     fun setAnimationSpeed(speed: Float): ILottieOption
 

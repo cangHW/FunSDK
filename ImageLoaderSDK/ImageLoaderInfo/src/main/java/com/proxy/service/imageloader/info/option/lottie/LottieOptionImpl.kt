@@ -39,6 +39,11 @@ class LottieOptionImpl(
         return this
     }
 
+    override fun setAnimationProgress(progress: Float): ILottieOption {
+        info.progress = progress
+        return this
+    }
+
     override fun setAnimationSpeed(speed: Float): ILottieOption {
         info.speed = speed
         return this

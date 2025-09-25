@@ -15,8 +15,9 @@ class LottieControllerImpl(
 ): LottieController {
 
     override fun playAnimation() {
-        view.playAnimation()
         view.speed = info.speed
+        view.progress = info.progress
+        view.playAnimation()
     }
 
     override fun pauseAnimation() {

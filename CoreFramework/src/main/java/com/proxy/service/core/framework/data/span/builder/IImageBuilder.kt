@@ -17,21 +17,21 @@ interface IImageBuilder : IAppendBuilder {
     fun setImageAlign(align: ImageAlign): IImageBuilder
 
     /**
-     * 设置图片尺寸, 图片会被放大或缩小到对应尺寸
+     * 只设置图片宽度, 图片宽度会被放大或缩小到对应尺寸
      *
      * @param keepAspectRatio   是否保持宽高比例
      * */
-    fun setImageSizeByWidth(
+    fun setImageSizeOnlyWidth(
         @IntRange(from = 1) widthPx: Int,
         keepAspectRatio: Boolean = true
     ): IImageBuilder
 
     /**
-     * 设置图片尺寸, 图片会被放大或缩小到对应尺寸
+     * 只设置图片高度, 图片高度会被放大或缩小到对应尺寸
      *
      * @param keepAspectRatio   是否保持宽高比例
      * */
-    fun setImageSizeByHeight(
+    fun setImageSizeOnlyHeight(
         @IntRange(from = 1) heightPx: Int,
         keepAspectRatio: Boolean = true
     ): IImageBuilder
