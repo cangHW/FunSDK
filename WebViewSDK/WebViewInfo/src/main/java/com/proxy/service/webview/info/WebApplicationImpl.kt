@@ -21,8 +21,12 @@ class WebApplicationImpl : CsBaseApplication() {
 
     private val webTag = "${WebViewConstants.LOG_TAG_START}Application"
 
+    override fun moduleType(): ModuleType {
+        return ModuleType.SDK
+    }
+
     override fun priority(): Int {
-        return -100
+        return -550
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {

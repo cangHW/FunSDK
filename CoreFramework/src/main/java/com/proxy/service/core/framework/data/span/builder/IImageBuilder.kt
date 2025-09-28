@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.data.span.builder
 
+import android.view.View
 import androidx.annotation.IntRange
 import com.proxy.service.core.framework.data.span.builder.base.IAppendBuilder
 import com.proxy.service.core.framework.data.span.enums.ImageAlign
@@ -57,4 +58,9 @@ interface IImageBuilder : IAppendBuilder {
         @IntRange(from = 1) maxHeightPx: Int,
         keepAspectRatio: Boolean = true
     ): IImageBuilder
+
+    /**
+     * 设置点击效果, 针对部分系统版本计算实际响应区域超出应该响应区域问题, 建议在前后各设置一个 space [appendSpace]
+     * */
+    fun setImageClick(listener: View.OnClickListener):IImageBuilder
 }

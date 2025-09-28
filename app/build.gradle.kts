@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.cloud.service")
+    id("kotlin-kapt")
 }
 
 android {
@@ -19,6 +20,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+
+        kapt {
+            arguments {
+                arg("CLOUD_MODULE_NAME", project.name)
+            }
         }
     }
 
@@ -47,6 +54,7 @@ android {
 
 dependencies {
     implementation(libs.android.appcompat)
+    kapt(libs.cloud.compiler)
 
     implementation(libs.android.view.flexbox)
     implementation(libs.android.view.constraintlayout)

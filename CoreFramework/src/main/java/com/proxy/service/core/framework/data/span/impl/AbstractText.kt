@@ -224,7 +224,7 @@ abstract class AbstractText : AbstractImage(), ITextBuilder {
         return this
     }
 
-    override fun setClick(listener: View.OnClickListener): ITextBuilder {
+    override fun setTextClick(listener: View.OnClickListener): ITextBuilder {
         this.textListener = listener
         return this
     }

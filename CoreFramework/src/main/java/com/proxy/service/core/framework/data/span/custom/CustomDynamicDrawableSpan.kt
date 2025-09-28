@@ -80,9 +80,9 @@ abstract class CustomDynamicDrawableSpan(
             }
 
             ImageAlign.ALIGN_BASELINE -> {
-                if (lineHeight < drawableHeight + fm.descent) {
-                    fm.top = -drawableHeight + fm.descent
-                    fm.bottom = fm.descent
+                if (lineHeight < drawableHeight + fm.bottom) {
+                    fm.top = -drawableHeight
+                    fm.bottom = fm.bottom
                     fm.ascent = fm.top
                     fm.descent = fm.bottom
                 }

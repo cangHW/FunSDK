@@ -37,8 +37,8 @@ abstract class CsBaseApplication : BaseCoreFw() {
     /**
      * 前置依赖任务
      * */
-    open fun dependsOn(): List<Class<CsBaseApplication>> {
-        return listOf()
+    open fun dependsOn(): List<Class<out CsBaseApplication>>? {
+        return null
     }
 
     /**
@@ -48,8 +48,9 @@ abstract class CsBaseApplication : BaseCoreFw() {
         return ThreadType.MAIN_THREAD
     }
 
+
     final override fun create(application: Application, isDebug: Boolean) {
-        CsLogger.tag(TAG).d("${this.javaClass.simpleName} onCreate isDebug = $isDebug")
+        CsLogger.tag(TAG).d("${this.javaClass.simpleName} start onCreate. isDebug = $isDebug")
         onCreate(application, isDebug)
     }
 

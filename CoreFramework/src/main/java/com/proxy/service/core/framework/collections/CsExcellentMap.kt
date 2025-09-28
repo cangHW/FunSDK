@@ -9,20 +9,29 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
- * 线程安全、支持异步操作 map
+ * 线程安全、支持异步操作以及有序、无序的 map
  *
  * @author: cangHX
  * @data: 2024/12/27 14:45
  * @desc:
  */
-open class CsExcellentMap<K, V> : IMap<K, V> {
+open class CsExcellentMap<K, V>(
+    /**
+     * 是否有序
+     * */
+    isOrder: Boolean = false
+) : IMap<K, V> {
 
     private val lock = ReentrantReadWriteLock()
     private val read = lock.readLock()
     private val write = lock.writeLock()
 
     private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<Map.Entry<K, V>>>()
-    private val map = HashMap<K, V>()
+    private val map = if (isOrder) {
+        LinkedHashMap<K, V>()
+    } else {
+        HashMap<K, V>()
+    }
 
     override fun size(): Int {
         return map.size

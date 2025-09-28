@@ -15,6 +15,10 @@ import io.reactivex.plugins.RxJavaPlugins
 @CloudApiService(serviceTag = "config/thread_pool")
 class ThreadPoolConfig : CsBaseConfig() {
 
+    override fun moduleType(): ModuleType {
+        return ModuleType.SDK
+    }
+
     override fun priority(): Int {
         return -900
     }

@@ -61,9 +61,6 @@ dependencies {
 
     // work 基于条件任务管理
 //    implementation(libs.android.work.runtime)
-
-//    implementation("androidx.startup:startup-runtime:1.1.1")
-
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

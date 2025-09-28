@@ -1,14 +1,17 @@
 package com.proxy.service.core
 
 import android.app.Application
-import android.util.SparseArray
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.core.application.base.BaseCoreFw
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.application.base.CsBaseConfig
+import com.proxy.service.core.application.startup.PriorityUtils
+import com.proxy.service.core.application.startup.StartupManager
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+
 
 /**
  * 整体架构初始化入口
@@ -19,15 +22,42 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object CsCore {
 
-    private const val TAG = "${CoreConfig.TAG}Init"
+    private const val DEFAULT_TIMEOUT: Long = 5 * 1000
     private val isInit = AtomicBoolean(false)
 
     /**
      * 核心库初始化
      * */
     fun init(application: Application, isDebug: Boolean) {
+        init(application, isDebug, DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
+    }
+
+    /**
+     * 核心库初始化并设置超时时长
+     * */
+    fun init(application: Application, isDebug: Boolean, time: Long, unit: TimeUnit) {
+        init(application, isDebug, time, unit, false)
+    }
+
+    /**
+     * 核心库初始化并设置超时是否需要抛出异常, 如果不抛出异常, 超时后初始化任务会转为后台继续执行.
+     * */
+    fun init(application: Application, isDebug: Boolean, shouldThrow: Boolean) {
+        init(application, isDebug, DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS, shouldThrow)
+    }
+
+    /**
+     * 核心库初始化并设置超时时长与超时是否需要抛出异常, 如果不抛出异常, 超时后初始化任务会转为后台继续执行.
+     * */
+    fun init(
+        application: Application,
+        isDebug: Boolean,
+        time: Long,
+        unit: TimeUnit,
+        shouldThrow: Boolean
+    ) {
         if (!isInit.compareAndSet(false, true)) {
-            CsLogger.tag(TAG).d("init is ready.")
+            CsLogger.tag(StartupManager.TAG).d("init is ready.")
             return
         }
 
@@ -39,17 +69,20 @@ object CsCore {
         CloudSystem.init(application, isDebug)
         CoreConfig.isDebug = isDebug
 
-        val sparseApplication = SparseArray<ArrayList<CsBaseApplication>>()
-        val sparseConfig = SparseArray<ArrayList<CsBaseConfig>>()
+        val allApp = HashMap<Class<*>, CsBaseApplication>()
+        val applications = ArrayList<CsBaseApplication>()
+        val configs = ArrayList<CsBaseConfig>()
 
         CloudSystem.getServices(BaseCoreFw::class.java).forEach {
+            PriorityUtils.checkPriority(it)
             when (it) {
                 is CsBaseApplication -> {
-                    addToArray(sparseApplication, it)
+                    allApp.put(it.javaClass, it)
+                    applications.add(it)
                 }
 
                 is CsBaseConfig -> {
-                    addToArray(sparseConfig, it)
+                    configs.add(it)
                 }
 
                 else -> {
@@ -58,83 +91,48 @@ object CsCore {
             }
         }
 
-        initConfig(sparseConfig, application, isDebug)
+        initConfig(configs, application, isDebug)
 
-        CsLogger.tag(TAG).d("start init application.")
+        CsLogger.tag(StartupManager.TAG).d("start init application.")
 
-        initApplication(sparseApplication, application, isDebug)
+        StartupManager.getInstance().initializer(
+            allApp,
+            applications,
+            application,
+            isDebug,
+            time,
+            unit,
+            shouldThrow
+        )
 
         if (isDebug) {
-            CsLogger.tag(TAG)
-                .d("CsCore 初始化完成. 总耗时 ${System.currentTimeMillis() - startInitTime} 毫秒")
+            CsLogger.tag(StartupManager.TAG)
+                .d("CsCore init finish. total usage time ${System.currentTimeMillis() - startInitTime}ms")
         }
     }
 
-    /**
-     * 添加数据到 SparseArray
-     * */
-    private fun <T : BaseCoreFw> addToArray(sparse: SparseArray<ArrayList<T>>, t: T) {
-        var list = sparse[t.priority()]
-        if (list == null) {
-            list = ArrayList()
-            sparse.put(t.priority(), list)
-        }
-        list.add(t)
-    }
 
     /**
      * 初始化 config
      * */
     private fun initConfig(
-        sparse: SparseArray<ArrayList<CsBaseConfig>>,
+        configs: ArrayList<CsBaseConfig>,
         application: Application,
         isDebug: Boolean
     ) {
-        for (index in 0 until sparse.size()) {
-            val priority = sparse.keyAt(index)
-            sparse.get(priority).forEach {
-                var time: Long = 0
-                if (isDebug) {
-                    time = System.currentTimeMillis()
-                }
-                try {
-                    it.create(application, isDebug)
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(TAG).e(throwable)
-                }
-                if (isDebug) {
-                    CsLogger.tag(TAG)
-                        .d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
-                }
-            }
+        configs.sortWith { c1: CsBaseConfig, c2: CsBaseConfig ->
+            c1.priority().compareTo(c2.priority())
         }
-    }
 
-    /**
-     * 初始化 application
-     * */
-    private fun initApplication(
-        sparse: SparseArray<ArrayList<CsBaseApplication>>,
-        application: Application,
-        isDebug: Boolean
-    ) {
-        for (index in 0 until sparse.size()) {
-            val priority = sparse.keyAt(index)
-            CsLogger.tag(TAG).d("run priority = $priority")
-            sparse.get(priority).forEach {
-                var time: Long = 0
-                if (isDebug) {
-                    time = System.currentTimeMillis()
-                }
-                try {
-                    it.create(application, isDebug)
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(TAG).e(throwable)
-                }
-                if (isDebug) {
-                    CsLogger.tag(TAG)
-                        .d("${it.javaClass.simpleName} onCreate 耗时 ${System.currentTimeMillis() - time} 毫秒")
-                }
+        configs.forEach {
+            var time: Long = 0
+            if (isDebug) {
+                time = System.currentTimeMillis()
+            }
+            it.create(application, isDebug)
+            if (isDebug) {
+                CsLogger.tag(StartupManager.TAG)
+                    .d("${it.javaClass.simpleName} onCreate usage time ${System.currentTimeMillis() - time}ms")
             }
         }
     }

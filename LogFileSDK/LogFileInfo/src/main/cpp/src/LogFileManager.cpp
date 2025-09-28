@@ -21,7 +21,11 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
     if (cacheTime <= 0) {
         return false;
     }
-    clean_old_logs(dir, cacheTime);
+    jlong cleanTaskIntervalTime = callLongFrom(env, config, "getCleanTaskIntervalTime", "()J");
+    if (cleanTaskIntervalTime <= 0) {
+        return false;
+    }
+    clean_old_logs(dir, cacheTime, cleanTaskIntervalTime);
 
     std::string namePrefix = callStringFrom(env, config, "getNamePrefix", "()Ljava/lang/String;");
     if (namePrefix.empty()) {

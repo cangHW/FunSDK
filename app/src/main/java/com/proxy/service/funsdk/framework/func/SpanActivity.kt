@@ -56,7 +56,7 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
 //            .appendSpace(20)
 //            .setSpaceColor(Color.YELLOW)
 
-            .appendTxt("文案")
+//            .appendTxt("文案")
 //            .setBold()
 //            .setTextColor(Color.BLUE)
 //            .setTextSize(60, TextSizeUnit.UNIT_SP)
@@ -82,7 +82,8 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
 //            .setImageSizeByWidth(300)
             .setImageSize(60, 90, false)
 
-            .appendTxt("结束")
+            .appendTxt("结束\n结束")
+            .setBackgroundColor(Color.RED)
 //            .setBackgroundColor(Color.WHITE)
             .setBold()
 //            .setTextSize(60, TextSizeUnit.UNIT_SP)

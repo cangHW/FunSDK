@@ -41,6 +41,7 @@ class LogFileCore {
         config._namePrefix = logConfig.getFileNamePrefix()
         config._namePostfix = logConfig.getFileNamePostfix()
         config._cacheTime = logConfig.getCacheTime()
+        config._cleanTaskIntervalTime = logConfig.getCleanTaskIntervalTime()
         config._type = logConfig.getLogType()
         config._singleFileMaxSize = logConfig.getSingleFileMaxSize()
         config._maxFileCount = logConfig.getMaxFileCount()

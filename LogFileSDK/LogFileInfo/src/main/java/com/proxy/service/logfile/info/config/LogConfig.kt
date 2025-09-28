@@ -32,6 +32,10 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.getCacheTime()
     }
 
+    override fun getCleanTaskIntervalTime(): Long {
+        return builder.getCleanTaskIntervalTime()
+    }
+
     override fun getLogType(): Int {
         return builder.getLogType()
     }
@@ -67,6 +71,7 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var namePostfix: String = Constants.NAME_POSTFIX
 
         private var cacheTime: Long = Constants.CACHE_TIME
+        private var cleanTaskIntervalTime: Long = Constants.CLEAN_TASK_INTERVAL_TIME
 
         private var type: Int = Constants.TYPE_NORMAL
 
@@ -112,6 +117,11 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setCacheTime(time: Long, unit: TimeUnit): IBuilder {
             this.cacheTime = unit.toMillis(time)
+            return this
+        }
+
+        override fun setCleanTaskIntervalTime(time: Long, unit: TimeUnit): IBuilder {
+            this.cleanTaskIntervalTime = unit.toMillis(time)
             return this
         }
 
@@ -168,6 +178,10 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun getCacheTime(): Long {
             return cacheTime
+        }
+
+        override fun getCleanTaskIntervalTime(): Long {
+            return cleanTaskIntervalTime
         }
 
         override fun getLogType(): Int {

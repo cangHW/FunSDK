@@ -33,6 +33,11 @@ interface IBuilderGet {
     fun getCacheTime(): Long
 
     /**
+     * 获取清理任务执行间隔时长
+     * */
+    fun getCleanTaskIntervalTime(): Long
+
+    /**
      * 获取日志类型
      * */
     fun getLogType(): Int

@@ -15,8 +15,12 @@ import com.proxy.service.logfile.info.manager.LogFileCore
 @CloudApiService(serviceTag = "application/log_file")
 class LogFileApplication : CsBaseApplication(), OnAppShowStatusChangedCallback {
 
+    override fun moduleType(): ModuleType {
+        return ModuleType.SDK
+    }
+
     override fun priority(): Int {
-        return -500
+        return -1000
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {

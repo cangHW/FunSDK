@@ -19,6 +19,6 @@ abstract class CsBaseConfig : BaseCoreFw() {
 
     override fun create(application: Application, isDebug: Boolean) {
         onCreate(application, isDebug)
-        CsLogger.tag(TAG).d("${this.javaClass.simpleName} onCreate isDebug = $isDebug")
+        CsLogger.tag(TAG).d("${this.javaClass.simpleName} onCreate end. isDebug = $isDebug")
     }
 }

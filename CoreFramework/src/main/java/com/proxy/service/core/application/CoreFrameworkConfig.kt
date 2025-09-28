@@ -14,6 +14,10 @@ import com.proxy.service.core.framework.app.context.ContextInit
 @CloudApiService(serviceTag = "Core/Config")
 class CoreFrameworkConfig : CsBaseConfig() {
 
+    override fun moduleType(): ModuleType {
+        return ModuleType.SDK
+    }
+
     override fun priority(): Int {
         return -990
     }

@@ -22,6 +22,10 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
     private var application: Application? = null
 
+    override fun moduleType(): ModuleType {
+        return ModuleType.SDK
+    }
+
     override fun priority(): Int {
         return -1000
     }

@@ -10,20 +10,42 @@ import com.proxy.service.logfile.info.constants.Constants
 class Strategy {
     var _pkg: String = ""
 
+    /**
+     * 同步模式
+     * */
     var _isSyncMode: Boolean = false
 
+    /**
+     * 保存路径
+     * */
     var _dir: String = ""
 
+    /**
+     * 日志文件前后缀
+     * */
     var _namePrefix: String = ""
     var _namePostfix: String = ""
 
+    /**
+     * 缓存时长与清理任务执行间隔时长
+     * */
     var _cacheTime: Long = 0
+    var _cleanTaskIntervalTime: Long = 0
 
+    /**
+     * 日志记录类型
+     * */
     var _type: Int = Constants.TYPE_NORMAL
 
+    /**
+     * 单个文件最大长度与最大文件数量 [Constants.TYPE_ROTATING]
+     * */
     var _singleFileMaxSize: Long = 0
     var _maxFileCount: Int = 0
 
+    /**
+     * 文件创建时间节点 [Constants.TYPE_DAILY]
+     * */
     var _hour: Int = 0
     var _minute: Int = 0
 
@@ -49,6 +71,10 @@ class Strategy {
 
     fun getCacheTime(): Long {
         return _cacheTime
+    }
+
+    fun getCleanTaskIntervalTime(): Long {
+        return _cleanTaskIntervalTime
     }
 
     fun getType(): Int {

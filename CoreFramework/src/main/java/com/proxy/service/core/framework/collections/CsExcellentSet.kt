@@ -10,7 +10,12 @@ import com.proxy.service.core.framework.collections.callback.OnDataChangedCallba
  * @data: 2025/5/23 18:40
  * @desc:
  */
-class CsExcellentSet<V> : ISet<V> {
+class CsExcellentSet<V>(
+    /**
+     * 是否有序
+     * */
+    isOrder: Boolean = false
+) : ISet<V> {
 
     companion object {
         private val any = Any()
@@ -18,7 +23,7 @@ class CsExcellentSet<V> : ISet<V> {
 
     private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<V>>()
     private val dataChangedCallbackImpl = DataChangedCallbackImpl(dataChangedCallbacks)
-    private val map = CsExcellentMap<V, Any>()
+    private val map = CsExcellentMap<V, Any>(isOrder)
 
     init {
         map.addDataChangedCallback(dataChangedCallbackImpl)

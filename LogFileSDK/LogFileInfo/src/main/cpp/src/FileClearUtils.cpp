@@ -1,12 +1,37 @@
 #include <iostream>
 #include <filesystem>
 #include "h/FileClearUtils.h"
+#include <thread>
+#include "../spdlog/include/spdlog/spdlog.h"
 
+
+void doWork(const std::string &basicString, jlong time, bool keep_latest_file);
 
 namespace fs = std::__fs::filesystem;
 
-void clean_old_logs(const std::string &log_dir, jlong max_cache_time) {
+void pollingTask(const std::string &log_dir, jlong max_cache_time, jlong cleanTaskIntervalTime) {
+    while (true) {
+        doWork(log_dir, max_cache_time, true);
+        std::this_thread::sleep_for(std::chrono::milliseconds(cleanTaskIntervalTime));
+    }
+}
+
+void clean_old_logs(const std::string &log_dir, jlong max_cache_time, jlong cleanTaskIntervalTime) {
+    doWork(log_dir, max_cache_time, false);
+    std::thread(pollingTask, log_dir, max_cache_time, cleanTaskIntervalTime).detach();
+}
+
+
+void doWork(const std::string &log_dir, jlong max_cache_time, bool keep_latest_file) {
+    spdlog::log(spdlog::level::info,
+                "{}  [{}] Start deleting files that have exceeded the cache time. cacheTime={}",
+                "I", "LogFileDeleteCache", max_cache_time
+    );
+
     auto now = std::chrono::system_clock::now();
+    fs::path latest_file;
+    std::chrono::system_clock::time_point latest_time;
+
     for (const auto &entry: fs::directory_iterator(log_dir)) {
         if (entry.is_regular_file()) {
             try {
@@ -16,12 +41,35 @@ void clean_old_logs(const std::string &log_dir, jlong max_cache_time) {
                 );
                 auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                         now - sctp).count();
-                if (time_ms > static_cast<std::chrono::milliseconds::rep>(max_cache_time)) {
-                    fs::remove(entry.path());
+
+                bool isExceedCacheTime =
+                        time_ms > static_cast<std::chrono::milliseconds::rep>(max_cache_time);
+                bool isShouldRetained =
+                        keep_latest_file && (latest_file.empty() || sctp > latest_time);
+
+                if (isExceedCacheTime) {
+                    if (isShouldRetained) {
+                        if (!latest_file.empty()) {
+                            fs::remove(latest_file);
+                            spdlog::log(spdlog::level::info, "{}  [{}] Deleted file: {}", "I",
+                                        "LogFileDeleteCache", latest_file.string());
+                        }
+                        latest_file = entry.path();
+                        latest_time = sctp;
+                    } else {
+                        fs::remove(entry.path());
+                        spdlog::log(spdlog::level::info, "{}  [{}] Deleted file: {}", "I",
+                                    "LogFileDeleteCache", entry.path().string());
+                    }
+                } else {
+                    latest_file = entry.path();
+                    latest_time = sctp;
                 }
             } catch (const std::exception &e) {
-                std::cerr << "Error processing file: " << entry.path() << " - " << e.what() << '\n';
+                spdlog::log(spdlog::level::err, "{}  [{}] Error processing file: {} - {}", "E",
+                            "LogFileDeleteCache", entry.path().string(), e.what());
             }
         }
     }
 }
+

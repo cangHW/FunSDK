@@ -15,6 +15,10 @@ import com.proxy.service.webview.bridge.ds.converter.WebServiceConverter
 @CloudApiService(serviceTag = "web_bridge/application")
 class WebBridgeConfig : CsBaseConfig() {
 
+    override fun moduleType(): ModuleType {
+        return ModuleType.SDK
+    }
+
     override fun priority(): Int {
         return -550
     }

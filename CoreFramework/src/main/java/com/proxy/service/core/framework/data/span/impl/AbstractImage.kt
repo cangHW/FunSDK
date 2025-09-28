@@ -3,12 +3,14 @@ package com.proxy.service.core.framework.data.span.impl
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.view.View
 import com.proxy.service.core.framework.data.span.builder.IImageBuilder
 import com.proxy.service.core.framework.data.span.controller.image.IImageSize
 import com.proxy.service.core.framework.data.span.controller.image.ImageMaxSizeController
 import com.proxy.service.core.framework.data.span.controller.image.ImageHeightController
 import com.proxy.service.core.framework.data.span.controller.image.ImageWidthController
 import com.proxy.service.core.framework.data.span.controller.image.ImageSizeController
+import com.proxy.service.core.framework.data.span.custom.CustomClickableSpan
 import com.proxy.service.core.framework.data.span.custom.CustomImageResizeSpan
 import com.proxy.service.core.framework.data.span.enums.ImageAlign
 
@@ -23,13 +25,28 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
         private val DEFAULT_IMAGE_ALIGN = ImageAlign.ALIGN_BASELINE
     }
 
+    /**
+     * 图片资源
+     * */
     protected var imageBitmap: Bitmap? = null
     protected var imageDrawable: Drawable? = null
     protected var imageUri: Uri? = null
     protected var imageResourceId: Int? = null
 
+    /**
+     * 图片对齐方式
+     * */
     private var alignImage = DEFAULT_IMAGE_ALIGN
+
+    /**
+     * 图片大小
+     * */
     private var imageSize: IImageSize? = null
+
+    /**
+     * 点击事件
+     * */
+    private var imageListener: View.OnClickListener? = null
 
     override fun setImageAlign(align: ImageAlign): IImageBuilder {
         this.alignImage = align
@@ -72,6 +89,11 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
         return this
     }
 
+    override fun setImageClick(listener: View.OnClickListener): IImageBuilder {
+        this.imageListener = listener
+        return this
+    }
+
     override fun applyLast() {
         super.applyLast()
         if (mType == TYPE_IMAGE) {
@@ -96,17 +118,25 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
                 imageSpan = CustomImageResizeSpan(tempResourceId, alignImage)
             }
 
-            imageSpan?.setImageSize(imageSize)
-
             if (imageSpan != null) {
+                imageSpan.setImageSize(imageSize)
                 mBuilder.setSpan(imageSpan, start, end, flag)
             }
+
+            if (imageListener != null) {
+                isHasClick = true
+                mBuilder.setSpan(CustomClickableSpan(imageListener), start, end, flag)
+            }
         }
+
         imageBitmap = null
         imageDrawable = null
         imageUri = null
         imageResourceId = null
 
         alignImage = DEFAULT_IMAGE_ALIGN
+        imageSize = null
+
+        imageListener = null
     }
 }
