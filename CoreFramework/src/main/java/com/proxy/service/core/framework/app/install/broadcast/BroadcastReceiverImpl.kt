@@ -9,9 +9,10 @@ import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
+import com.proxy.service.core.framework.collections.CsExcellentSet
+import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.controller.IController
-import java.util.WeakHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -27,16 +28,15 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
         private val isStart = AtomicBoolean(false)
         private val receiver = BroadcastReceiverImpl()
 
-        private val any = Any()
-        private val weakReceiverHashMap = WeakHashMap<InstallReceiverListener, Any>()
+        private val weakReceiverSet = CsExcellentSet<InstallReceiverListener>(Type.WEAK)
 
         /**
          * 添加弱引用回调
          * */
         fun addWeakReceiverListener(listener: InstallReceiverListener) {
-            synchronized(weakReceiverHashMap) {
-                weakReceiverHashMap[listener] = any
-                if (weakReceiverHashMap.size > 0) {
+            weakReceiverSet.runInTransaction{
+                weakReceiverSet.putSync(listener)
+                if (weakReceiverSet.size() > 0) {
                     if (isStart.compareAndSet(false, true)) {
                         receiver.start()
                     }
@@ -48,9 +48,9 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
          * 移除弱引用回调
          * */
         fun removeReceiverListener(listener: InstallReceiverListener) {
-            synchronized(weakReceiverHashMap) {
-                weakReceiverHashMap.remove(listener)
-                if (weakReceiverHashMap.size <= 0) {
+            weakReceiverSet.runInTransaction{
+                weakReceiverSet.removeSync(listener)
+                if (weakReceiverSet.size() <= 0) {
                     receiver.stop()
                     isStart.set(false)
                 }
@@ -65,11 +65,11 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
         intentFilter.addAction(InstallStatusEnum.PACKAGE_ADDED.value)
         intentFilter.addAction(InstallStatusEnum.PACKAGE_REMOVED.value)
         intentFilter.addDataScheme("package")
+        val context = CsContextManager.getApplication()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            CsContextManager.getApplication()
-                .registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED)
+            context.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED)
         } else {
-            CsContextManager.getApplication().registerReceiver(receiver, intentFilter)
+            context.registerReceiver(receiver, intentFilter)
         }
     }
 
@@ -78,13 +78,8 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (weakReceiverHashMap.size <= 0) {
-            synchronized(weakReceiverHashMap) {
-                if (weakReceiverHashMap.size <= 0) {
-                    stop()
-                    return
-                }
-            }
+        if (weakReceiverSet.size()<=0){
+            stop()
         }
 
         if (context == null) {
@@ -94,16 +89,12 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
         CsLogger.tag(TAG).d("onReceive action = ${statusEnum.value}, intent = $intent")
         val packageName = intent?.data?.schemeSpecificPart ?: ""
 
-        try {
-            weakReceiverHashMap.iterator().forEach {
-                try {
-                    it.key.onReceive(context, statusEnum, packageName)
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(TAG).e(throwable)
-                }
+        weakReceiverSet.forEachSync {
+            try {
+                it.onReceive(context, statusEnum, packageName)
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
             }
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
         }
     }
 }

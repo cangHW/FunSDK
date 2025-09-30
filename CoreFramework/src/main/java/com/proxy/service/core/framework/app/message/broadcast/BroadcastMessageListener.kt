@@ -16,6 +16,6 @@ interface BroadcastMessageListener {
     /**
      * 接收到消息
      */
-    fun onReceive(context: Context, data: Uri?, extras: Bundle?)
+    fun onReceive(context: Context, fromPkg: String, data: Uri?, extras: Bundle?)
 
 }

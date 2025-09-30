@@ -4,13 +4,9 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
-import com.proxy.service.core.framework.app.message.process.request.RequestDispatch
-import com.proxy.service.core.framework.app.message.process.response.ResponseDispatch
 import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.TimeUnit
@@ -23,14 +19,14 @@ import java.util.concurrent.TimeUnit
 class ContentProviderImpl : ContentProvider() {
 
     companion object {
-        const val TAG = "${CoreConfig.TAG}ContentProvider"
+        const val TAG = "${CoreConfig.TAG}Msg_Provider"
 
         private const val AUTHORITY_SUFFIX = ".proxy_share_data_provider"
 
         /**
          * 等待初始化的最长时间
          * */
-        private const val TIME_OUT_WAITING_FOR_INIT = 3 * 1000L
+        private const val TIME_OUT_WAITING_FOR_INIT = 5 * 1000L
 
         private val receiverMap = CsExcellentMap<String, ProviderMessageListener>()
 
@@ -51,7 +47,9 @@ class ContentProviderImpl : ContentProvider() {
         /**
          * 发送消息
          * */
-        fun sendMessage(toPkg: String, method: String, arg: String?, extras: Bundle?): Bundle?{
+        fun sendMessage(toPkg: String, method: String, arg: String?, extras: Bundle?): Bundle? {
+            CsLogger.tag(TAG)
+                .d("send: toPkg = $toPkg, method = $method, arg = $arg, extras = $extras")
             return try {
                 CsContextManager.getApplication().contentResolver?.call(
                     getUri(toPkg),

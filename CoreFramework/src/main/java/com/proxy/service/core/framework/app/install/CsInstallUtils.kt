@@ -95,8 +95,7 @@ object CsInstallUtils {
         val context: Context = CsContextManager.getApplication()
         val packageManager: PackageManager = context.packageManager ?: return false
         try {
-            val info = packageManager.getPackageInfo(packageName, 0)
-            return info != null
+            return packageManager.getPackageInfo(packageName, 0) != null
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).d(throwable)
         }

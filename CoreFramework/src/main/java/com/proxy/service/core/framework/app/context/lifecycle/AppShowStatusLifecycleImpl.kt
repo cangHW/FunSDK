@@ -3,8 +3,6 @@ package com.proxy.service.core.framework.app.context.lifecycle
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
-import com.proxy.service.core.framework.collections.base.IMap
-import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
 import com.proxy.service.core.framework.collections.CsExcellentSet
 import com.proxy.service.core.framework.collections.base.ISet

@@ -9,7 +9,7 @@ import com.proxy.service.core.constants.CoreConfig
  */
 object EventConfig {
 
-    const val TAG = "${CoreConfig.TAG}Event"
+    const val TAG = "${CoreConfig.TAG}Msg_Event"
 
     const val THREAD_EVENT = "thread-event"
     const val THREAD_EVENT_ALWAYS_ACTIVE = "thread-event-always-active"

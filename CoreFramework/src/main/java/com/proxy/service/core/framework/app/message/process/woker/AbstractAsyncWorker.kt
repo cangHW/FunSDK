@@ -1,8 +1,11 @@
 package com.proxy.service.core.framework.app.message.process.woker
 
+import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
 import com.proxy.service.core.framework.app.message.process.channel.ChannelManager
+import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 
@@ -19,7 +22,7 @@ abstract class AbstractAsyncWorker : AbstractWorker() {
          *
          * @param result    回调数据
          * */
-        fun onProgress(result: String)
+        fun onProgress(result: String): Boolean
 
         /**
          * 回调进度
@@ -27,14 +30,14 @@ abstract class AbstractAsyncWorker : AbstractWorker() {
          * @param version   版本号
          * @param result    回调数据
          * */
-        fun onProgress(version: String, result: String)
+        fun onProgress(version: String, result: String): Boolean
 
         /**
          * 回调结束
          *
          * @param result    回调数据
          * */
-        fun onFinish(result: String)
+        fun onFinish(result: String): Boolean
 
         /**
          * 回调结束
@@ -42,47 +45,57 @@ abstract class AbstractAsyncWorker : AbstractWorker() {
          * @param version   版本号
          * @param result    回调数据
          * */
-        fun onFinish(version: String, result: String)
+        fun onFinish(version: String, result: String): Boolean
     }
 
     /**
      * 获取返回值
      * */
     final override fun getResponse(fromPkg: String, request: ShareMessage): ShareMessage {
-        CsTask.mainThread()
-            ?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    doWork(fromPkg, request, object : WorkerProgressCallback {
-                        override fun onProgress(result: String) {
-                            onProgress(ShareMessageFactory.DEFAULT_VERSION, result)
-                        }
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                doWork(fromPkg, request, object : WorkerProgressCallback {
+                    override fun onProgress(result: String): Boolean {
+                        return onProgress(request.messageVersion, result)
+                    }
 
-                        override fun onProgress(version: String, result: String) {
-                            val message = ShareMessageFactory.createResponseProgress(
-                                version,
-                                request,
-                                result
-                            )
-                            ChannelManager.send(fromPkg, request.receiveChannel, message)
+                    override fun onProgress(version: String, result: String): Boolean {
+                        val message = ShareMessageFactory.createResponseProgress(
+                            version,
+                            request,
+                            result
+                        )
+                        val call = ChannelManager.send(fromPkg, request.receiveChannel, message)
+                        if (call?.getMessageType() != MessageType.RESPONSE_FINISH) {
+                            CsLogger.tag(ShareDataConstants.TAG)
+                                .e("AbstractAsyncWorker send onProgress error. result=$call")
+                            return false
                         }
+                        return true
+                    }
 
-                        override fun onFinish(result: String) {
-                            onFinish(ShareMessageFactory.DEFAULT_VERSION, result)
-                        }
+                    override fun onFinish(result: String): Boolean {
+                        return onFinish(request.messageVersion, result)
+                    }
 
-                        override fun onFinish(version: String, result: String) {
-                            val message = ShareMessageFactory.createResponseFinish(
-                                version,
-                                request,
-                                result
-                            )
-                            ChannelManager.send(fromPkg, request.receiveChannel, message)
+                    override fun onFinish(version: String, result: String): Boolean {
+                        val message = ShareMessageFactory.createResponseFinish(
+                            version,
+                            request,
+                            result
+                        )
+                        val call = ChannelManager.send(fromPkg, request.receiveChannel, message)
+                        if (call?.getMessageType() != MessageType.RESPONSE_FINISH) {
+                            CsLogger.tag(ShareDataConstants.TAG)
+                                .e("AbstractAsyncWorker send onProgress error. result=$call")
+                            return false
                         }
-                    })
-                    return ""
-                }
-            })
-            ?.start()
+                        return true
+                    }
+                })
+                return ""
+            }
+        })?.start()
         return ShareMessageFactory.createResponseWaiting(request)
     }
 

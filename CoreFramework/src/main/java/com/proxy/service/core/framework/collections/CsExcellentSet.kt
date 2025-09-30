@@ -2,6 +2,7 @@ package com.proxy.service.core.framework.collections
 
 import com.proxy.service.core.framework.collections.base.ISet
 import com.proxy.service.core.framework.collections.callback.OnDataChangedCallback
+import com.proxy.service.core.framework.collections.type.Type
 
 /**
  * 线程安全、支持异步操作 set
@@ -12,9 +13,9 @@ import com.proxy.service.core.framework.collections.callback.OnDataChangedCallba
  */
 class CsExcellentSet<V>(
     /**
-     * 是否有序
+     * 模式
      * */
-    isOrder: Boolean = false
+    type: Type = Type.NORMAL
 ) : ISet<V> {
 
     companion object {
@@ -23,7 +24,7 @@ class CsExcellentSet<V>(
 
     private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<V>>()
     private val dataChangedCallbackImpl = DataChangedCallbackImpl(dataChangedCallbacks)
-    private val map = CsExcellentMap<V, Any>(isOrder)
+    private val map = CsExcellentMap<V, Any>(type)
 
     init {
         map.addDataChangedCallback(dataChangedCallbackImpl)

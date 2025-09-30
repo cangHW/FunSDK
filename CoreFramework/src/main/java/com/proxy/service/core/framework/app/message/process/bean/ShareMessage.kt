@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.Process
 import com.proxy.service.core.framework.app.CsAppUtils
-import com.proxy.service.core.framework.app.message.process.channel.ChannelEnum
+import com.proxy.service.core.framework.app.message.process.channel.ReceiveChannel
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -27,7 +27,7 @@ class ShareMessage : Parcelable {
     /**
      * 消息类型
      * */
-    val messageType: String
+    private val _messageType: String
 
     /**
      * 消息接收渠道
@@ -60,7 +60,7 @@ class ShareMessage : Parcelable {
     ) {
         this.messageId = messageId
         this.messageVersion = messageVersion
-        this.messageType = messageType
+        this._messageType = messageType
         this.receiveChannel = receiveChannel
         this.messageTime = messageTime
         this.method = method
@@ -70,28 +70,51 @@ class ShareMessage : Parcelable {
     constructor(parcel: Parcel) {
         messageId = parcel.readString() ?: ""
         messageVersion = parcel.readString() ?: ""
-        messageType = parcel.readString() ?: ""
+        _messageType = parcel.readString() ?: ""
         receiveChannel = parcel.readString() ?: ""
         messageTime = parcel.readLong()
         method = parcel.readString() ?: ""
         content = parcel.readString() ?: ""
     }
 
-    fun isRequest(): Boolean {
-        if (ShareMessageFactory.DEFAULT_TYPE_REQUEST_SYNC == messageType) {
-            return true
-        }
-        return ShareMessageFactory.DEFAULT_TYPE_REQUEST_ASYNC == messageType
+    /**
+     * 获取消息类型
+     * */
+    fun getMessageType(): MessageType {
+        return MessageType.valueOf(_messageType)
     }
 
+    /**
+     * 是否请求消息
+     * */
+    fun isRequest(): Boolean {
+        return when (_messageType) {
+            MessageType.REQUEST_SYNC.name, MessageType.REQUEST_ASYNC.name -> {
+                true
+            }
+
+            else -> {
+                false
+            }
+        }
+    }
+
+    /**
+     * 是否响应消息
+     * */
     fun isResponse(): Boolean {
-        if (ShareMessageFactory.DEFAULT_TYPE_RESPONSE_WAITING == messageType) {
-            return true
+        return when (_messageType) {
+            MessageType.RESPONSE_WAITING.name,
+            MessageType.RESPONSE_PROGRESS.name,
+            MessageType.RESPONSE_FINISH.name,
+            MessageType.RESPONSE_ERROR.name -> {
+                true
+            }
+
+            else -> {
+                false
+            }
         }
-        if (ShareMessageFactory.DEFAULT_TYPE_RESPONSE_PROGRESS == messageType) {
-            return true
-        }
-        return ShareMessageFactory.DEFAULT_TYPE_RESPONSE_FINISH == messageType
     }
 
     override fun describeContents(): Int {
@@ -101,7 +124,7 @@ class ShareMessage : Parcelable {
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(messageId)
         dest.writeString(messageVersion)
-        dest.writeString(messageType)
+        dest.writeString(_messageType)
         dest.writeString(receiveChannel)
         dest.writeLong(messageTime)
         dest.writeString(method)
@@ -109,7 +132,7 @@ class ShareMessage : Parcelable {
     }
 
     override fun toString(): String {
-        return "ShareMessage(messageId='$messageId', messageVersion='$messageVersion', messageType='$messageType', receiveChannel='$receiveChannel', messageTime=$messageTime, method='$method', content='$content')"
+        return "ShareMessage(messageId='$messageId', messageVersion='$messageVersion', messageType='$_messageType', receiveChannel='$receiveChannel', messageTime=$messageTime, method='$method', content='$content')"
     }
 
     companion object CREATOR : Parcelable.Creator<ShareMessage> {
@@ -124,17 +147,7 @@ class ShareMessage : Parcelable {
 }
 
 object ShareMessageFactory {
-
     private val Ids: AtomicInteger = AtomicInteger(0)
-    const val DEFAULT_VERSION: String = "V1"
-
-    const val DEFAULT_TYPE_REQUEST_SYNC: String = "request_sync"
-    const val DEFAULT_TYPE_REQUEST_ASYNC: String = "request_async"
-
-    const val DEFAULT_TYPE_RESPONSE_WAITING: String = "response_waiting"
-    const val DEFAULT_TYPE_RESPONSE_PROGRESS: String = "response_progress"
-    const val DEFAULT_TYPE_RESPONSE_FINISH: String = "response_finish"
-    const val DEFAULT_TYPE_RESPONSE_ERROR: String = "response_error"
 
     /**
      * 创建消息 id
@@ -155,7 +168,7 @@ object ShareMessageFactory {
         return ShareMessage(
             createMessageId(),
             messageVersion,
-            DEFAULT_TYPE_REQUEST_SYNC,
+            MessageType.REQUEST_SYNC.name,
             receiveChannel,
             System.currentTimeMillis(),
             method,
@@ -175,7 +188,7 @@ object ShareMessageFactory {
         return ShareMessage(
             createMessageId(),
             messageVersion,
-            DEFAULT_TYPE_REQUEST_ASYNC,
+            MessageType.REQUEST_ASYNC.name,
             receiveChannel,
             System.currentTimeMillis(),
             method,
@@ -185,29 +198,14 @@ object ShareMessageFactory {
 
 
     /**
-     * 创建错误返回
-     * */
-    fun createResponseError(request: ShareMessage, errorCode: Int): ShareMessage {
-        return ShareMessage(
-            request.messageId,
-            request.messageVersion,
-            DEFAULT_TYPE_RESPONSE_ERROR,
-            ChannelEnum.NONE.name,
-            System.currentTimeMillis(),
-            request.method,
-            "$errorCode"
-        )
-    }
-
-    /**
      * 创建等待返回
      * */
     fun createResponseWaiting(request: ShareMessage): ShareMessage {
         return ShareMessage(
             request.messageId,
             request.messageVersion,
-            DEFAULT_TYPE_RESPONSE_WAITING,
-            ChannelEnum.NONE.name,
+            MessageType.RESPONSE_WAITING.name,
+            ReceiveChannel.NONE.name,
             System.currentTimeMillis(),
             request.method,
             ""
@@ -225,8 +223,8 @@ object ShareMessageFactory {
         return ShareMessage(
             request.messageId,
             messageVersion,
-            DEFAULT_TYPE_RESPONSE_PROGRESS,
-            ChannelEnum.NONE.name,
+            MessageType.RESPONSE_PROGRESS.name,
+            ReceiveChannel.NONE.name,
             System.currentTimeMillis(),
             request.method,
             response
@@ -244,11 +242,26 @@ object ShareMessageFactory {
         return ShareMessage(
             request.messageId,
             messageVersion,
-            DEFAULT_TYPE_RESPONSE_FINISH,
-            ChannelEnum.NONE.name,
+            MessageType.RESPONSE_FINISH.name,
+            ReceiveChannel.NONE.name,
             System.currentTimeMillis(),
             request.method,
             response
+        )
+    }
+
+    /**
+     * 创建错误返回
+     * */
+    fun createResponseError(request: ShareMessage, errorCode: String): ShareMessage {
+        return ShareMessage(
+            request.messageId,
+            request.messageVersion,
+            MessageType.RESPONSE_ERROR.name,
+            ReceiveChannel.NONE.name,
+            System.currentTimeMillis(),
+            request.method,
+            errorCode
         )
     }
 }

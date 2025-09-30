@@ -1,85 +1,72 @@
 package com.proxy.service.core.framework.app.message.process.channel.provider
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import com.proxy.service.core.framework.app.install.CsInstallUtils
+import com.proxy.service.core.framework.app.message.broadcast.BroadcastMessageListener
+import com.proxy.service.core.framework.app.message.broadcast.BroadcastReceiverImpl
+import com.proxy.service.core.framework.app.message.broadcast.OrderedBroadcastMessageListener
+import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
-import com.proxy.service.core.framework.app.message.process.callback.RequestCallback
+import com.proxy.service.core.framework.app.message.process.channel.ChannelManager
 import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
 import com.proxy.service.core.framework.app.message.process.request.RequestDispatch
 import com.proxy.service.core.framework.app.message.process.response.ResponseDispatch
-import com.proxy.service.core.framework.app.message.provider.ContentProviderImpl
-import com.proxy.service.core.framework.app.message.provider.ProviderMessageListener
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/9/18 18:12
+ * @data: 2025/9/30 10:55
  * @desc:
  */
-class ProviderFactory private constructor() : BaseFactory(), ProviderMessageListener {
+class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMessageListener {
 
     companion object {
-        private val _instance by lazy { ProviderFactory() }
+        private val _instance by lazy { BroadcastFactory() }
 
-        fun getInstance(): ProviderFactory {
+        fun getInstance(): BroadcastFactory {
             return _instance
         }
     }
 
-    /**
-     * 消息是否可以发送
-     * */
     override fun isCanSend(toPkg: String): Boolean {
-        val result = CsInstallUtils.isInstallApp(toPkg)
-        if (!result) {
+        if (!CsInstallUtils.isInstallApp(toPkg)) {
             CsLogger.tag(ShareDataConstants.TAG)
-                .e("Since the target application cannot be searched, provider communication cannot be used. toPkg=$toPkg")
+                .e("The target application could not be found. We continued to try sending messages via broadcast, but there is no guarantee of success. toPkg=$toPkg")
         }
-        return result
+        return true
     }
 
-    /**
-     * 发送消息
-     * */
     override fun send(toPkg: String, message: ShareMessage): ShareMessage? {
-        if (!isCanSend(toPkg)) {
-            return ShareMessageFactory.createResponseError(
-                message,
-                RequestCallback.ERROR_CODE_UNINSTALL.toString()
-            )
-        }
+        isCanSend(toPkg)
 
         CsLogger.tag(ShareDataConstants.TAG)
-            .d("ProviderFactory send msg. toPkg=$toPkg, message=$message")
+            .d("BroadcastFactory send msg. toPkg=$toPkg, message=$message")
 
         val requestBundle = createBundleByShareMessage(message)
-        val responseBundle = ContentProviderImpl.sendMessage(
+        val responseBundle = BroadcastReceiverImpl.sendOrder(
+            ShareDataConstants.SHARE_DATA_BROADCAST_ACTION_NAME,
             toPkg,
-            ShareDataConstants.SHARE_DATA_PROVIDER_METHOD_NAME,
             null,
             requestBundle
         )
         val result = getShareMessageFromBundle(responseBundle)
         CsLogger.tag(ShareDataConstants.TAG)
-            .d("ProviderFactory call msg. fromPkg=$toPkg, message=$result")
+            .d("BroadcastFactory call msg. fromPkg=$toPkg, message=$result")
         return result
     }
 
-    /**
-     * 接收到消息
-     */
-    override fun onReceive(
-        context: Context?,
+    override fun onOrderReceive(
+        context: Context,
         fromPkg: String,
-        arg: String?,
+        data: Uri?,
         extras: Bundle?
     ): Bundle? {
         val message: ShareMessage = getShareMessageFromBundle(extras) ?: return null
-
         CsLogger.tag(ShareDataConstants.TAG)
-            .d("ProviderFactory receive msg. fromPkg=$fromPkg, message=$message")
+            .d("BroadcastFactory receive msg. fromPkg=$fromPkg, message=$message")
 
         val resultMessage = if (message.isRequest()) {
             RequestDispatch.dispatch(fromPkg, message)
@@ -93,5 +80,4 @@ class ProviderFactory private constructor() : BaseFactory(), ProviderMessageList
         }
         return null
     }
-
 }

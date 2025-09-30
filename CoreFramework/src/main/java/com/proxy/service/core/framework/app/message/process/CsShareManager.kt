@@ -1,14 +1,16 @@
 package com.proxy.service.core.framework.app.message.process
 
-import com.proxy.service.core.framework.app.install.CsInstallUtils
+import com.proxy.service.core.framework.app.message.broadcast.BroadcastReceiverImpl
+import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
 import com.proxy.service.core.framework.app.message.process.callback.RequestCallback
-import com.proxy.service.core.framework.app.message.process.channel.ChannelEnum
 import com.proxy.service.core.framework.app.message.process.channel.ChannelManager
+import com.proxy.service.core.framework.app.message.process.channel.ReceiveChannel
+import com.proxy.service.core.framework.app.message.process.channel.SendChannel
+import com.proxy.service.core.framework.app.message.process.channel.provider.BroadcastFactory
 import com.proxy.service.core.framework.app.message.process.channel.provider.ProviderFactory
 import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
-import com.proxy.service.core.framework.app.message.process.exceptions.UnInstallException
 import com.proxy.service.core.framework.app.message.process.request.RequestDispatch
 import com.proxy.service.core.framework.app.message.process.response.ResponseDispatch
 import com.proxy.service.core.framework.app.message.process.woker.AbstractAsyncWorker
@@ -27,17 +29,20 @@ import java.util.concurrent.TimeUnit
  * @data: 2025/9/17 18:53
  * @desc:
  */
-class CsShareManager private constructor(
-    private val toPkg: String,
-    private val method: String
-) {
+class CsShareManager private constructor(private val toPkg: String, private val method: String) {
 
     companion object {
+        private const val DEFAULT_VERSION: String = "V1"
+        private const val DEFAULT_TIMEOUT = 10 * 1000L
 
         init {
             ContentProviderImpl.addReceiverListener(
                 ShareDataConstants.SHARE_DATA_PROVIDER_METHOD_NAME,
                 ProviderFactory.getInstance()
+            )
+            BroadcastReceiverImpl.addWeakReceiverListener(
+                ShareDataConstants.SHARE_DATA_BROADCAST_ACTION_NAME,
+                BroadcastFactory.getInstance()
             )
         }
 
@@ -70,11 +75,11 @@ class CsShareManager private constructor(
         }
     }
 
-    private var version = ShareMessageFactory.DEFAULT_VERSION
-    private var timeout: Long = 10 * 1000
+    private var version = DEFAULT_VERSION
+    private var timeout = DEFAULT_TIMEOUT
     private var params = ""
-    private var sendChannel = ChannelEnum.AUTO
-    private var receiveChannel = ChannelEnum.AUTO
+    private var sendChannel = SendChannel.AUTO
+    private var receiveChannel = ReceiveChannel.AUTO
 
     /**
      * 设置版本号, 用于调用同一功能的不同版本, 需要 sever 端支持
@@ -101,99 +106,78 @@ class CsShareManager private constructor(
     }
 
     /**
-     * 设置发送渠道
+     * 设置发送渠道, 默认: [SendChannel.AUTO]
      * */
-    fun setSendChannel(channel: ChannelEnum): CsShareManager {
+    fun setSendChannel(channel: SendChannel): CsShareManager {
         this.sendChannel = channel
         return this
     }
 
     /**
-     * 设置接收渠道
+     * 设置接收渠道, 默认: [ReceiveChannel.AUTO]
      * */
-    fun setReceiveChannel(channel: ChannelEnum): CsShareManager {
+    fun setReceiveChannel(channel: ReceiveChannel): CsShareManager {
         this.receiveChannel = channel
         return this
     }
 
     /**
-     * 同步执行, 需要配置目标应用可见, 配置方式参考 [CsInstallUtils.isInstallApp]
+     * 同步执行
      * */
-    fun get(): ShareMessage? {
-        val response: ShareMessage? = CsTask.ioThread()
-            ?.call(object : ICallable<ShareMessage> {
-                override fun accept(): ShareMessage {
-                    val message = ShareMessageFactory.createRequestSync(
-                        version,
-                        receiveChannel.name,
-                        method,
-                        params
-                    )
-                    val result = ChannelManager.send(toPkg, sendChannel.name, message)
-                        ?: throw UnknownError("result is null")
-                    return result
-                }
-            })
-            ?.timeout(timeout, TimeUnit.MILLISECONDS)
-            ?.blockGetFirst()
+    fun execute(): ShareMessage? {
+        CsLogger.tag(ShareDataConstants.TAG).d("CsShareManager execute")
+        val response: ShareMessage? = CsTask.ioThread()?.call(object : ICallable<ShareMessage> {
+            override fun accept(): ShareMessage {
+                val message = ShareMessageFactory.createRequestSync(
+                    version,
+                    receiveChannel.name,
+                    method,
+                    params
+                )
+                val result = ChannelManager.send(toPkg, sendChannel.name, message)
+                    ?: throw UnknownError("result is null")
+                return result
+            }
+        })?.timeout(timeout, TimeUnit.MILLISECONDS)?.blockGetFirst()
         return response
     }
 
     /**
-     * 异步执行, 需要配置目标应用可见, 配置方式参考 [CsInstallUtils.isInstallApp]
+     * 异步执行
      * */
-    fun post(callback: RequestCallback?) {
-        if (!CsInstallUtils.isInstallApp(toPkg)) {
-            if (callback == null) {
-                return
-            }
-            CsTask.mainThread()
-                ?.call(object : ICallable<String> {
-                    override fun accept(): String {
-                        callback.onFailed(
-                            RequestCallback.ERROR_CODE_UNINSTALL,
-                            UnInstallException(
-                                RequestCallback.ERROR_CODE_UNINSTALL,
-                                "The target app is not installed. package: $toPkg"
-                            )
-                        )
-                        return ""
-                    }
-                })
-                ?.start()
-            return
-        }
-
-        CsTask.ioThread()
-            ?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    val receiver = if (callback == null) {
-                        ChannelEnum.NONE
-                    } else {
-                        receiveChannel
-                    }
-
-                    val request = ShareMessageFactory.createRequestAsync(
-                        version,
-                        receiver.name,
-                        method,
-                        params
-                    )
-                    if (receiver != ChannelEnum.NONE) {
-                        ResponseDispatch.addWaitingTask(request.messageId, timeout, callback)
-                    }
-                    val result = ChannelManager.send(toPkg, sendChannel.name, request)
-                    if (result == null) {
-                        val errorMessage = ShareMessageFactory.createResponseError(
-                            request,
-                            RequestCallback.ERROR_CODE_SEVER_ERROR
-                        )
-                        ResponseDispatch.dispatch(errorMessage)
-                    }
-                    return ""
+    fun enqueue(callback: RequestCallback?) {
+        CsLogger.tag(ShareDataConstants.TAG).d("CsShareManager enqueue")
+        CsTask.ioThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                val receiver = if (callback == null) {
+                    ReceiveChannel.NONE
+                } else {
+                    receiveChannel
                 }
-            })
-            ?.start()
+
+                val request = ShareMessageFactory.createRequestAsync(
+                    version,
+                    receiver.name,
+                    method,
+                    params
+                )
+                if (receiver != ReceiveChannel.NONE) {
+                    ResponseDispatch.addWaitingTask(request, toPkg, timeout, callback)
+                }
+
+                var result = ChannelManager.send(toPkg, sendChannel.name, request)
+                if (result?.getMessageType() != MessageType.RESPONSE_WAITING) {
+                    if (result == null || result.getMessageType() != MessageType.RESPONSE_ERROR) {
+                        result = ShareMessageFactory.createResponseError(
+                            request,
+                            RequestCallback.ERROR_CODE_SEVER_ERROR.toString()
+                        )
+                    }
+                    ResponseDispatch.dispatch(result)
+                }
+                return ""
+            }
+        })?.start()
     }
 
 }

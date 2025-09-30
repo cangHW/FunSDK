@@ -23,6 +23,7 @@ import com.proxy.service.core.framework.app.message.provider.ProviderMessageList
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkEventBinding
+import java.lang.StringBuilder
 
 /**
  * @author: cangHX
@@ -32,7 +33,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkEventBinding
 class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
 
     companion object {
-
+        private const val BROADCAST_ACTION = "broadcast_action"
         private const val PROVIDER_METHOD = "test_message"
         private const val WORKER_SYNC_METHOD = "sync_method"
         private const val WORKER_ASYNC_METHOD = "async_method"
@@ -53,9 +54,9 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     override fun initView() {
         binding?.checkBroadcast?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CsBroadcastManager.addWeakReceiverListener(broadcastMessageListener)
+                CsBroadcastManager.addWeakReceiverListener(BROADCAST_ACTION, broadcastMessageListener)
             } else {
-                CsBroadcastManager.removeReceiverListener(broadcastMessageListener)
+                CsBroadcastManager.removeReceiverListener(BROADCAST_ACTION, broadcastMessageListener)
             }
         }
 
@@ -81,7 +82,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
             if (isChecked) {
                 CsShareManager.addWorker(syncWorker)
                 CsShareManager.addWorker(asyncWorker)
-            }else{
+            } else {
                 CsShareManager.removeWorker(syncWorker)
                 CsShareManager.removeWorker(asyncWorker)
             }
@@ -132,37 +133,62 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 binding?.content?.addData("provider", "返回值 bundle = $result")
             }
 
-            R.id.send_process_msg -> {
+            R.id.send_process_sync_msg -> {
                 val pkg = "com.proxy.service.funsdk2"
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_SYNC_METHOD")
-                val syncResult = CsShareManager.create(pkg, WORKER_SYNC_METHOD)
-                    .get()
+                val syncResult = CsShareManager.create(pkg, WORKER_SYNC_METHOD).execute()
                 binding?.content?.addData("worker", "返回值 $syncResult")
+            }
+
+            R.id.send_process_async_msg -> {
+                val pkg = "com.proxy.service.funsdk2"
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_ASYNC_METHOD")
-                CsShareManager.create(pkg, WORKER_ASYNC_METHOD)
-                    .post(object : RequestCallback() {
-                        override fun onFailed(code: Int, throwable: Throwable) {
-                            binding?.content?.addData("worker", "onFailed 返回值 code = $code $throwable")
-                        }
+                CsShareManager.create(pkg, WORKER_ASYNC_METHOD).enqueue(object : RequestCallback() {
+                    override fun onFailed(code: Int, throwable: Throwable) {
+                        binding?.content?.addData(
+                            "worker",
+                            "onFailed 返回值 code = $code $throwable"
+                        )
+                    }
 
-                        override fun onProgress(message: ShareMessage) {
-                            binding?.content?.addData("worker", "onProgress 返回值 $message")
-                        }
+                    override fun onProgress(
+                        version: String,
+                        time: Long,
+                        method: String,
+                        content: String
+                    ) {
+                        val builder = StringBuilder()
+                        builder.append("version=").append(version).append(", ")
+                        builder.append("time=").append(time).append(", ")
+                        builder.append("method=").append(method).append(", ")
+                        builder.append("content=").append(content)
+                        binding?.content?.addData("worker", "onProgress 返回值 $builder")
+                    }
 
-                        override fun onSuccess(message: ShareMessage) {
-                            binding?.content?.addData("worker", "onSuccess 返回值 $message")
-                        }
-                    })
+                    override fun onSuccess(
+                        version: String,
+                        time: Long,
+                        method: String,
+                        content: String
+                    ) {
+                        val builder = StringBuilder()
+                        builder.append("version=").append(version).append(", ")
+                        builder.append("time=").append(time).append(", ")
+                        builder.append("method=").append(method).append(", ")
+                        builder.append("content=").append(content)
+                        binding?.content?.addData("worker", "onSuccess 返回值 $builder")
+                    }
+                })
             }
         }
     }
 
 
     private val broadcastMessageListener = object : BroadcastMessageListener {
-        override fun onReceive(context: Context, data: Uri?, extras: Bundle?) {
-            binding?.content?.addData("broadcast", "接收广播 data = $data, extras = $extras")
+        override fun onReceive(context: Context, fromPkg: String, data: Uri?, extras: Bundle?) {
+            binding?.content?.addData("broadcast", "接收广播 fromPkg = $fromPkg, data = $data, extras = $extras")
         }
     }
 
@@ -225,10 +251,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
 
     private val syncWorker = object : AbstractSyncWorker() {
         override fun doWork(request: ShareMessage): String {
-            binding?.content?.addData(
-                "syncWorker",
-                "接收消息 $request"
-            )
+            binding?.content?.addData("syncWorker", "接收消息 $request")
             return "abc"
         }
 
@@ -238,12 +261,8 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     }
 
     private val asyncWorker = object : AbstractAsyncWorker() {
-
         override fun doWork(request: ShareMessage, callback: WorkerProgressCallback) {
-            binding?.content?.addData(
-                "asyncWorker",
-                "接收消息 $request"
-            )
+            binding?.content?.addData("asyncWorker", "接收消息 $request")
             callback.onProgress("111")
             callback.onProgress("222")
             callback.onProgress("333")

@@ -63,9 +63,14 @@
                 android:text="发送 ContentProvider 消息" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/send_process_msg"
+                android:id="@+id/send_process_sync_msg"
                 style="@style/button_style"
-                android:text="发送 Process 消息" />
+                android:text="发送 Process 同步消息" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_process_async_msg"
+                style="@style/button_style"
+                android:text="发送 Process 异步消息" />
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.proxy.service.testview.DemoTestView

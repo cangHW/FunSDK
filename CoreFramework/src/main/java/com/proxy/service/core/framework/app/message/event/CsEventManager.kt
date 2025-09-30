@@ -10,9 +10,10 @@ import com.proxy.service.core.framework.app.message.event.impl.MainThreadAlwaysS
 import com.proxy.service.core.framework.app.message.event.impl.MainThreadLifecycleSendImpl
 import com.proxy.service.core.framework.app.message.event.impl.WorkThreadAlwaysSendImpl
 import com.proxy.service.core.framework.app.message.event.impl.WorkThreadLifecycleSendImpl
+import com.proxy.service.core.framework.collections.CsExcellentMap
+import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
-import java.util.WeakHashMap
 
 /**
  * 应用内 event 消息相关工具
@@ -23,8 +24,7 @@ import java.util.WeakHashMap
  */
 object CsEventManager {
 
-    private val weakCallbackMap = WeakHashMap<IEvent, ISend>()
-
+    private val callbackMap = CsExcellentMap<IEvent, ISend>(Type.WEAK)
     private val handler = CsTask.launchTaskGroup(EventConfig.THREAD_EVENT)
 
     /**
@@ -35,11 +35,11 @@ object CsEventManager {
      * */
     fun addWeakCallback(callback: MainThreadEventCallback, lifecycleOwner: LifecycleOwner? = null) {
         if (lifecycleOwner == null) {
-            weakCallbackMap[callback] = MainThreadAlwaysSendImpl(callback)
+            callbackMap.putSync(callback, MainThreadAlwaysSendImpl(callback))
         } else {
             val send = MainThreadLifecycleSendImpl(callback, lifecycleOwner)
             send.initLifecycle()
-            weakCallbackMap[callback] = send
+            callbackMap.putSync(callback, send)
         }
     }
 
@@ -51,26 +51,19 @@ object CsEventManager {
      * */
     fun addWeakCallback(callback: WorkThreadEventCallback, lifecycleOwner: LifecycleOwner? = null) {
         if (lifecycleOwner == null) {
-            weakCallbackMap[callback] = WorkThreadAlwaysSendImpl(callback)
+            callbackMap.putSync(callback, WorkThreadAlwaysSendImpl(callback))
         } else {
             val send = WorkThreadLifecycleSendImpl(callback, lifecycleOwner)
             send.initLifecycle()
-            weakCallbackMap[callback] = send
+            callbackMap.putSync(callback, send)
         }
     }
 
     /**
      * 移除监听
      * */
-    fun remove(callback: MainThreadEventCallback) {
-        weakCallbackMap.remove(callback)
-    }
-
-    /**
-     * 移除监听
-     * */
-    fun remove(callback: WorkThreadEventCallback) {
-        weakCallbackMap.remove(callback)
+    fun remove(callback: IEvent) {
+        callbackMap.removeSync(callback)
     }
 
     /**
@@ -78,13 +71,9 @@ object CsEventManager {
      * */
     fun sendEventValue(any: Any) {
         handler?.start {
-            val iterator = weakCallbackMap.entries.iterator()
-            while (iterator.hasNext()) {
-                val entry = iterator.next()
-                entry.key ?: continue
-                val value = entry.value ?: continue
+            callbackMap.forEachSync { _, iSend ->
                 try {
-                    value.sendEventValue(any)
+                    iSend.sendEventValue(any)
                 } catch (throwable: Throwable) {
                     CsLogger.tag(EventConfig.TAG).e(throwable)
                 }

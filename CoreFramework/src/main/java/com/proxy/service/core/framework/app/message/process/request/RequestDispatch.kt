@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.app.message.process.request
 
+import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.collections.callback.OnDataChangedCallback
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
@@ -28,13 +29,21 @@ object RequestDispatch {
     private val asyncWorkers = CsExcellentMap<String, AbstractWorker>()
 
     fun dispatch(fromPkg: String, message: ShareMessage): ShareMessage {
-        val worker: AbstractWorker? = when (message.messageType) {
-            ShareMessageFactory.DEFAULT_TYPE_REQUEST_ASYNC -> {
-                getAsyncWorker(message.method)
+        val worker: AbstractWorker? = when (message.getMessageType()) {
+            MessageType.REQUEST_SYNC -> {
+                syncWorkers.getOrWait(
+                    message.method,
+                    TIME_OUT_WAITING_FOR_INIT,
+                    TimeUnit.MILLISECONDS
+                )
             }
 
-            ShareMessageFactory.DEFAULT_TYPE_REQUEST_SYNC -> {
-                getSyncWorker(message.method)
+            MessageType.REQUEST_ASYNC -> {
+                asyncWorkers.getOrWait(
+                    message.method,
+                    TIME_OUT_WAITING_FOR_INIT,
+                    TimeUnit.MILLISECONDS
+                )
             }
 
             else -> {
@@ -45,7 +54,7 @@ object RequestDispatch {
         if (worker == null) {
             return ShareMessageFactory.createResponseError(
                 message,
-                RequestCallback.ERROR_METHOD_NOT_SUPPORT
+                RequestCallback.ERROR_METHOD_NOT_SUPPORT.toString()
             )
         }
 
@@ -61,47 +70,11 @@ object RequestDispatch {
     }
 
     fun removeWorker(worker: AbstractWorker) {
-        syncWorkers.removeSync(worker.getMethodName())
-        asyncWorkers.removeSync(worker.getMethodName())
-    }
-
-    private fun getSyncWorker(method: String): AbstractWorker? {
-        return getData(method, syncWorkers)
-    }
-
-    private fun getAsyncWorker(method: String): AbstractWorker? {
-        return getData(method, asyncWorkers)
-    }
-
-    private fun getData(
-        method: String,
-        map: CsExcellentMap<String, AbstractWorker>
-    ): AbstractWorker? {
-        var worker = map.get(method)
-        if (worker != null) {
-            return worker
+        if (worker is AbstractSyncWorker) {
+            syncWorkers.removeSync(worker.getMethodName())
+        } else if (worker is AbstractAsyncWorker) {
+            asyncWorkers.removeSync(worker.getMethodName())
         }
-        val launch = CountDownLatch(1)
-        val callback = object : OnDataChangedCallback<Map.Entry<String, AbstractWorker>>() {
-            override fun onDataAdd(t: Map.Entry<String, AbstractWorker>) {
-                super.onDataAdd(t)
-                if (t.key == method) {
-                    worker = t.value
-                    launch.countDown()
-                }
-            }
-        }
-        map.addDataChangedCallback(callback)
-        worker = map.get(method)
-        if (worker != null) {
-            launch.countDown()
-        }
-        try {
-            launch.await(TIME_OUT_WAITING_FOR_INIT, TimeUnit.MILLISECONDS)
-        } catch (_: Throwable) {
-        }
-        map.removeDataChangedCallback(callback)
-        return worker
     }
 
 }

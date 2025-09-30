@@ -1,7 +1,6 @@
 package com.proxy.service.core.framework.app.message.provider
 
 import android.os.Bundle
-import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.install.CsInstallUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -17,7 +16,7 @@ object CsProviderManager {
     private const val METHOD_PREFIX = "app_"
 
     /**
-     * 添加消息回调
+     * 添加消息回调, 同一个 method 只能绑定一个监听
      * */
     fun addReceiverListener(method: String, listener: ProviderMessageListener) {
         ContentProviderImpl.addReceiverListener(checkMethod(method), listener)
@@ -47,10 +46,7 @@ object CsProviderManager {
             return null
         }
 
-        val realMethodName = checkMethod(method)
-        CsLogger.tag(ContentProviderImpl.TAG)
-            .d("send: toPkg = $toPkg, method = $realMethodName, arg = $arg, extras = $extras")
-        return ContentProviderImpl.sendMessage(toPkg, realMethodName, arg, extras)
+        return ContentProviderImpl.sendMessage(toPkg, checkMethod(method), arg, extras)
     }
 
     private fun checkMethod(method: String): String {

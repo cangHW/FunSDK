@@ -1,6 +1,7 @@
 package com.proxy.service.core.application.startup
 
 import com.proxy.service.core.framework.collections.CsExcellentMap
+import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.task.IConsumer
@@ -96,7 +97,7 @@ class InitializerCache<T> {
     private var disposable: ITaskDisposable? = null
 
     private val block = LinkedBlockingQueue<Int>()
-    private val taskMap = CsExcellentMap<Class<*>, TaskInfo<T>>(true)
+    private val taskMap = CsExcellentMap<Class<*>, TaskInfo<T>>(Type.ORDER)
 
     private var totalCount: Int = 0
     private val completeCount = AtomicInteger(0)

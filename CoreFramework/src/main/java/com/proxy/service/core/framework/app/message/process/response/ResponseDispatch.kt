@@ -1,13 +1,14 @@
 package com.proxy.service.core.framework.app.message.process.response
 
-import com.proxy.service.core.framework.collections.CsExcellentMap
+import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
 import com.proxy.service.core.framework.app.message.process.callback.RequestCallback
-import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
 import com.proxy.service.core.framework.app.message.process.exceptions.NotSupportException
 import com.proxy.service.core.framework.app.message.process.exceptions.SeverException
 import com.proxy.service.core.framework.app.message.process.exceptions.TimeOutException
+import com.proxy.service.core.framework.app.message.process.exceptions.UnInstallException
+import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.util.concurrent.TimeUnit
@@ -25,65 +26,56 @@ object ResponseDispatch {
 
     fun dispatch(request: ShareMessage): ShareMessage {
         refreshTask(request.messageId)
-        CsTask.mainThread()
-            ?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    when (request.messageType) {
-                        ShareMessageFactory.DEFAULT_TYPE_RESPONSE_ERROR -> {
-                            taskParams.removeSync(request.messageId)?.let {
-                                cancelTask(it.messageId)
-                                val code = request.content.toIntOrNull()
-                                if (code == RequestCallback.ERROR_METHOD_NOT_SUPPORT) {
-                                    it.callback.onFailed(
-                                        RequestCallback.ERROR_METHOD_NOT_SUPPORT,
-                                        NotSupportException(
-                                            RequestCallback.ERROR_METHOD_NOT_SUPPORT,
-                                            "The current method is not supported. method: ${request.method}"
-                                        )
-                                    )
-                                } else if (code == RequestCallback.ERROR_CODE_SEVER_ERROR) {
-                                    it.callback.onFailed(
-                                        RequestCallback.ERROR_CODE_SEVER_ERROR,
-                                        SeverException(
-                                            RequestCallback.ERROR_CODE_SEVER_ERROR,
-                                            "An exception occurred on the server side."
-                                        )
-                                    )
-                                }
-                            }
-                        }
-
-                        ShareMessageFactory.DEFAULT_TYPE_RESPONSE_PROGRESS -> {
-                            taskParams.get(request.messageId)?.callback?.onProgress(request)
-                        }
-
-                        ShareMessageFactory.DEFAULT_TYPE_RESPONSE_FINISH -> {
-                            taskParams.removeSync(request.messageId)?.let {
-                                cancelTask(it.messageId)
-                                it.callback.onSuccess(request)
-                            }
-                        }
-
-                        else -> {}
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                when (request.getMessageType()) {
+                    MessageType.RESPONSE_ERROR -> {
+                        callError(request.messageId, request.content.toIntOrNull())
                     }
-                    return ""
+
+                    MessageType.RESPONSE_PROGRESS -> {
+                        taskParams.get(request.messageId)
+                            ?.callback
+                            ?.onProgress(
+                                request.messageVersion,
+                                request.messageTime,
+                                request.method,
+                                request.content
+                            )
+                    }
+
+                    MessageType.RESPONSE_FINISH -> {
+                        taskParams.removeSync(request.messageId)?.let {
+                            cancelTask(it.messageId)
+                            it.callback.onSuccess(
+                                request.messageVersion,
+                                request.messageTime,
+                                request.method,
+                                request.content
+                            )
+                        }
+                    }
+
+                    else -> {}
                 }
-            })
-            ?.start()
-        return ShareMessageFactory.createResponseFinish(
-            request.messageVersion,
-            request,
-            ""
-        )
+                return ""
+            }
+        })?.start()
+        return ShareMessageFactory.createResponseFinish(request.messageVersion, request, "")
     }
 
-    fun addWaitingTask(messageId: String, timeout: Long, callback: RequestCallback?) {
+    fun addWaitingTask(
+        request: ShareMessage,
+        toPkg: String,
+        timeout: Long,
+        callback: RequestCallback?
+    ) {
         if (callback == null) {
             return
         }
-        val params = TaskParams(messageId, timeout, callback)
-        taskParams.putSync(messageId, params)
-        startTask(messageId, timeout)
+        val params = TaskParams(request.messageId, toPkg, request.method, timeout, callback)
+        taskParams.putSync(request.messageId, params)
+        startTask(request.messageId, timeout)
     }
 
     private fun refreshTask(messageId: String) {
@@ -98,15 +90,64 @@ object ResponseDispatch {
     }
 
     private fun startTask(messageId: String, timeout: Long) {
-        handler?.setDelay(timeout, TimeUnit.MILLISECONDS)
-            ?.start(messageId) {
-                taskParams.removeSync(messageId)?.callback?.onFailed(
-                    RequestCallback.ERROR_CODE_TIME_OUT,
-                    TimeOutException(
-                        RequestCallback.ERROR_CODE_TIME_OUT,
-                        "There is still no result after the waiting time, which is $timeout milliseconds"
-                    )
-                )
-            }
+        handler?.setDelay(timeout, TimeUnit.MILLISECONDS)?.start(messageId) {
+            callError(messageId, RequestCallback.ERROR_CODE_TIME_OUT)
+        }
     }
+
+    private fun callError(messageId: String, errorCode: Int?) {
+        cancelTask(messageId)
+        val params = taskParams.removeSync(messageId) ?: return
+        if (errorCode == null) {
+            return
+        }
+
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                when (errorCode) {
+                    RequestCallback.ERROR_CODE_UNINSTALL -> {
+                        params.callback.onFailed(
+                            RequestCallback.ERROR_CODE_UNINSTALL,
+                            UnInstallException(
+                                RequestCallback.ERROR_CODE_UNINSTALL,
+                                "The target app is not installed. package: ${params.toPkg}"
+                            )
+                        )
+                    }
+
+                    RequestCallback.ERROR_CODE_TIME_OUT -> {
+                        params.callback.onFailed(
+                            RequestCallback.ERROR_CODE_TIME_OUT,
+                            TimeOutException(
+                                RequestCallback.ERROR_CODE_TIME_OUT,
+                                "There is still no result after the waiting time, which is ${params.timeout} milliseconds"
+                            )
+                        )
+                    }
+
+                    RequestCallback.ERROR_METHOD_NOT_SUPPORT -> {
+                        params.callback.onFailed(
+                            RequestCallback.ERROR_METHOD_NOT_SUPPORT,
+                            NotSupportException(
+                                RequestCallback.ERROR_METHOD_NOT_SUPPORT,
+                                "The current method is not supported. method: ${params.method}"
+                            )
+                        )
+                    }
+
+                    RequestCallback.ERROR_CODE_SEVER_ERROR -> {
+                        params.callback.onFailed(
+                            RequestCallback.ERROR_CODE_SEVER_ERROR,
+                            SeverException(
+                                RequestCallback.ERROR_CODE_SEVER_ERROR,
+                                "An exception occurred on the server side."
+                            )
+                        )
+                    }
+                }
+                return ""
+            }
+        })?.start()
+    }
+
 }

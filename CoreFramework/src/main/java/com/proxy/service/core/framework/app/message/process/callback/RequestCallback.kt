@@ -1,7 +1,5 @@
 package com.proxy.service.core.framework.app.message.process.callback
 
-import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
-
 /**
  * @author: cangHX
  * @data: 2025/9/17 20:38
@@ -34,16 +32,29 @@ abstract class RequestCallback {
 
     /**
      * 进度回调
+     *
+     * @param version   版本
+     * @param time      消息发送时间
+     * @param method    功能名称
+     * @param content   消息内容
      * */
-    open fun onProgress(message: ShareMessage) {}
+    open fun onProgress(version: String, time: Long, method: String, content: String) {}
 
     /**
      * 成功回调
+     *
+     * @param version   版本
+     * @param time      消息发送时间
+     * @param method    功能名称
+     * @param content   消息内容
      * */
-    abstract fun onSuccess(message: ShareMessage)
+    abstract fun onSuccess(version: String, time: Long, method: String, content: String)
 
     /**
      * 失败回调
+     *
+     * @param code      错误码
+     * @param throwable 错误信息
      * */
     abstract fun onFailed(code: Int, throwable: Throwable)
 

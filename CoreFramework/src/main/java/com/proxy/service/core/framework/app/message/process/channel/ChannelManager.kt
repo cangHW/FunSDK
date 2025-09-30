@@ -1,7 +1,10 @@
 package com.proxy.service.core.framework.app.message.process.channel
 
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
+import com.proxy.service.core.framework.app.message.process.channel.provider.BroadcastFactory
 import com.proxy.service.core.framework.app.message.process.channel.provider.ProviderFactory
+import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
+import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
@@ -10,14 +13,20 @@ import com.proxy.service.core.framework.app.message.process.channel.provider.Pro
  */
 object ChannelManager {
 
-    fun send(toPkg: String, channelName: String, message: ShareMessage): ShareMessage? {
-        return when (channelName) {
-            ChannelEnum.AUTO.name -> {
+    fun send(toPkg: String, sendChannelName: String, message: ShareMessage): ShareMessage? {
+        CsLogger.tag(ShareDataConstants.TAG)
+            .d("ChannelManager send. toPkg=$toPkg, sendChannelName=$sendChannelName, message=$message")
+        return when (sendChannelName) {
+            SendChannel.AUTO.name -> {
                 sendForAuto(toPkg, message)
             }
 
-            ChannelEnum.PROVIDER.name -> {
+            SendChannel.PROVIDER.name -> {
                 ProviderFactory.getInstance().send(toPkg, message)
+            }
+
+            SendChannel.BROADCAST.name -> {
+                BroadcastFactory.getInstance().send(toPkg, message)
             }
 
             else -> {
@@ -27,7 +36,10 @@ object ChannelManager {
     }
 
     private fun sendForAuto(toPkg: String, message: ShareMessage): ShareMessage? {
-        return ProviderFactory.getInstance().send(toPkg, message)
+        if (ProviderFactory.getInstance().isCanSend(toPkg)){
+            return ProviderFactory.getInstance().send(toPkg, message)
+        }
+        return BroadcastFactory.getInstance().send(toPkg, message)
     }
 
 }

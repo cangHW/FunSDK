@@ -9,6 +9,8 @@ import com.proxy.service.core.framework.app.message.process.callback.RequestCall
  */
 data class TaskParams(
     val messageId: String,
+    val toPkg:String,
+    val method:String,
     val timeout: Long,
     val callback: RequestCallback
 )

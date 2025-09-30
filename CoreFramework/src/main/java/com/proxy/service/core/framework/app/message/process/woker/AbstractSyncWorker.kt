@@ -11,10 +11,21 @@ import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFac
 abstract class AbstractSyncWorker : AbstractWorker() {
 
     /**
+     * @param version   数据, 版本号
+     * @param result    数据
+     * */
+    data class Result(val version: String, val result: String)
+
+    /**
      * 获取返回值
      * */
     final override fun getResponse(fromPkg: String, request: ShareMessage): ShareMessage {
-        return doWork(fromPkg, request)
+        val result = doWork(fromPkg, request)
+        return ShareMessageFactory.createResponseFinish(
+            result.version,
+            request,
+            result.result
+        )
     }
 
     /**
@@ -23,13 +34,8 @@ abstract class AbstractSyncWorker : AbstractWorker() {
      * @param fromPkg   请求方包名
      * @param request   请求信息
      * */
-    open fun doWork(fromPkg: String, request: ShareMessage): ShareMessage {
-        val result = doWork(request)
-        return ShareMessageFactory.createResponseFinish(
-            request.messageVersion,
-            request,
-            result
-        )
+    open fun doWork(fromPkg: String, request: ShareMessage): Result {
+        return Result(request.messageVersion, doWork(request))
     }
 
     /**

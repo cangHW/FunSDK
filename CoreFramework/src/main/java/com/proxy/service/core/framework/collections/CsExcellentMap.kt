@@ -1,9 +1,13 @@
 package com.proxy.service.core.framework.collections
 
 import com.proxy.service.core.framework.collections.base.IMap
+import com.proxy.service.core.framework.collections.base.synchronize.SynchronizedMap
 import com.proxy.service.core.framework.collections.callback.OnDataChangedCallback
+import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.util.WeakHashMap
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -17,9 +21,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
  */
 open class CsExcellentMap<K, V>(
     /**
-     * 是否有序
+     * 模式
      * */
-    isOrder: Boolean = false
+    type: Type = Type.NORMAL
 ) : IMap<K, V> {
 
     private val lock = ReentrantReadWriteLock()
@@ -27,10 +31,18 @@ open class CsExcellentMap<K, V>(
     private val write = lock.writeLock()
 
     private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<Map.Entry<K, V>>>()
-    private val map = if (isOrder) {
-        LinkedHashMap<K, V>()
-    } else {
-        HashMap<K, V>()
+    private val map: java.util.AbstractMap<K, V> = when (type) {
+        Type.NORMAL -> {
+            ConcurrentHashMap()
+        }
+
+        Type.WEAK -> {
+            SynchronizedMap(WeakHashMap<K, V>())
+        }
+
+        Type.ORDER -> {
+            SynchronizedMap(LinkedHashMap<K, V>())
+        }
     }
 
     override fun size(): Int {
