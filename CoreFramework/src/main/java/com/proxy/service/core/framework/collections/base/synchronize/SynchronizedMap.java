@@ -38,6 +38,14 @@ public class SynchronizedMap<K, V> extends AbstractMap<K, V> implements Map<K, V
         this.real = real;
     }
 
+    public ReentrantReadWriteLock.ReadLock getReadLock(){
+        return read;
+    }
+
+    public ReentrantReadWriteLock.WriteLock getWriteLock(){
+        return write;
+    }
+
     @Override
     public int size() {
         read.lock();

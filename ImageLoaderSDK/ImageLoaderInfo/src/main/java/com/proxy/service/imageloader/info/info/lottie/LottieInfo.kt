@@ -89,15 +89,10 @@ class LottieInfo : BaseInfo() {
         if (view.composition == null) {
             return
         }
-        val source = view.getTag(R.id.cs_imageload_info_lottie_view_tag) as? LottieInfo? ?: return
-        source.loopCount?.let {
+        loopCount?.let {
             view.repeatCount = it
         }
-        view.repeatMode = source.loopModel.model
-        checkPlay(view, controller)
-    }
-
-    private fun checkPlay(view: LottieAnimationView, controller: LottieController) {
+        view.repeatMode = loopModel.model
         if (view.isAnimating) {
             controller.cancelAnimation()
         }

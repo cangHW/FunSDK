@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.LottieDrawable
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 
@@ -34,12 +36,24 @@ class LottieAnimationViewImpl : LottieAnimationView {
         this.drawErrorCallback = callback
     }
 
+    override fun setComposition(composition: LottieComposition) {
+        resetLottieDrawable()
+        super.setComposition(composition)
+    }
+
     override fun onDraw(canvas: Canvas) {
         try {
             super.onDraw(canvas)
         } catch (throwable: Throwable) {
             CsLogger.tag(ImageLoaderConstants.TAG).e(throwable)
             this.drawErrorCallback?.onErrorCallback(throwable)
+        }
+    }
+
+    private fun resetLottieDrawable(){
+        val d = getDrawable()
+        if (d is LottieDrawable){
+            d.clearComposition()
         }
     }
 }

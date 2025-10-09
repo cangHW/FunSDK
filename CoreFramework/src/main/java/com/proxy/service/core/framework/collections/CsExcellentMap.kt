@@ -26,14 +26,10 @@ open class CsExcellentMap<K, V>(
     type: Type = Type.NORMAL
 ) : IMap<K, V> {
 
-    private val lock = ReentrantReadWriteLock()
-    private val read = lock.readLock()
-    private val write = lock.writeLock()
-
     private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<Map.Entry<K, V>>>()
-    private val map: java.util.AbstractMap<K, V> = when (type) {
+    private val map: SynchronizedMap<K, V> = when (type) {
         Type.NORMAL -> {
-            ConcurrentHashMap()
+            SynchronizedMap(HashMap<K, V>())
         }
 
         Type.WEAK -> {
@@ -50,20 +46,15 @@ open class CsExcellentMap<K, V>(
     }
 
     override fun containsKey(k: K): Boolean {
-        read.lock()
-        try {
-            return map.containsKey(k)
-        } finally {
-            read.unlock()
-        }
+        return map.containsKey(k)
     }
 
     override fun runInTransaction(runnable: Runnable) {
-        write.lock()
+        map.writeLock.lock()
         try {
             runnable.run()
         } finally {
-            write.unlock()
+            map.writeLock.unlock()
         }
     }
 
@@ -76,12 +67,7 @@ open class CsExcellentMap<K, V>(
     }
 
     override fun putSync(key: K, value: V): Boolean {
-        write.lock()
-        try {
-            map.put(key, value)
-        } finally {
-            write.unlock()
-        }
+        map.put(key, value)
         sendDataAdd(key, value)
         return true
     }
@@ -93,13 +79,7 @@ open class CsExcellentMap<K, V>(
     }
 
     override fun removeSync(key: K): V? {
-        val value: V?
-        write.lock()
-        try {
-            value = map.remove(key)
-        } finally {
-            write.unlock()
-        }
+        val value: V? = map.remove(key)
         value?.let {
             sendDataRemoved(key, it)
         }
@@ -134,12 +114,7 @@ open class CsExcellentMap<K, V>(
     }
 
     override fun get(key: K): V? {
-        read.lock()
-        try {
-            return map.get(key)
-        } finally {
-            read.unlock()
-        }
+        return map.get(key)
     }
 
     override fun getOrWait(key: K, time: Long, unit: TimeUnit): V? {
@@ -182,11 +157,11 @@ open class CsExcellentMap<K, V>(
 
     override fun forEachSync(observer: (K, V) -> Unit) {
         val temp: Map<K, V>
-        read.lock()
+        map.readLock.lock()
         try {
             temp = map.toMap()
         } finally {
-            read.unlock()
+            map.readLock.unlock()
         }
         temp.forEach {
             observer(it.key, it.value)
@@ -195,11 +170,11 @@ open class CsExcellentMap<K, V>(
 
     override fun filterSync(predicate: (K, V) -> Boolean): Map<K, V> {
         val temp: Map<K, V>
-        read.lock()
+        map.readLock.lock()
         try {
             temp = map.toMap()
         } finally {
-            read.unlock()
+            map.readLock.unlock()
         }
         return temp.filter {
             predicate(it.key, it.value)
