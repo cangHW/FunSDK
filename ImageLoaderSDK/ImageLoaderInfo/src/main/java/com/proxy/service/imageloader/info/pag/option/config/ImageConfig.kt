@@ -44,10 +44,9 @@ class ImageConfig private constructor(
 
     override fun tryPreLoad() {
         try {
-            val url = data.getImageUrl()
-            if (!url.isNullOrEmpty() && url.isNotBlank()) {
-                imageSource = ImageUrlSource(url, data.getImageUrlCacheKey())
-                return
+            data.getImageUrl()?.let {
+                imageSource = ImageUrlSource(it, data.getImageUrlCacheKey())
+                return@tryPreLoad
             }
 
             data.getImageBitmap()?.let {
@@ -55,16 +54,14 @@ class ImageConfig private constructor(
                 return@tryPreLoad
             }
 
-            val path = data.getImagePath()
-            if (!path.isNullOrEmpty() && path.isNotBlank()) {
-                imageSource = ImagePathSource(path)
-                return
+            data.getImagePath()?.let {
+                imageSource = ImagePathSource(it)
+                return@tryPreLoad
             }
 
-            val assetsName = data.getImageAssetsName()
-            if (!assetsName.isNullOrEmpty() && assetsName.isNotBlank()) {
-                imageSource = ImageAssetsSource(assetsName)
-                return
+            data.getImageAssetsName()?.let {
+                imageSource = ImageAssetsSource(it)
+                return@tryPreLoad
             }
 
             data.getImageByte()?.let {

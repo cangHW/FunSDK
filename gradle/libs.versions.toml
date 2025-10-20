@@ -28,7 +28,7 @@ cloud-plugin = { group = "io.github.canghw", name = "Cloud-Plugin", version = "1
 core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.20"}
 service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.4"}
 service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.8"}
-service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.13"}
+service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.14"}
 service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.5"}
 service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.5"}
 service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.4"}

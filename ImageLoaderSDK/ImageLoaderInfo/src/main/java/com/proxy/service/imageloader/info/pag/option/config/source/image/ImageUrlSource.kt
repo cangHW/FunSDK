@@ -33,6 +33,10 @@ class ImageUrlSource(
     private var callback: IImageLoadCallback? = null
 
     override fun preLoad() {
+        if (TextUtils.isEmpty(url)) {
+            exception = IllegalArgumentException("The image url cannot be empty. url=$url")
+            return
+        }
         val cacheKey = if (TextUtils.isEmpty(cacheKey)) {
             "${CACHE_KEY_POSTFIX}${StringUtils.urlToString(url)}"
         } else {
@@ -57,6 +61,11 @@ class ImageUrlSource(
     }
 
     override fun loadImage(callback: IImageLoadCallback) {
+        if (TextUtils.isEmpty(url)) {
+            callback.onError(IllegalArgumentException("The image url cannot be empty. url=$url"))
+            return
+        }
+
         this.callback = callback
         tryCall()
     }

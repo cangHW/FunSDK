@@ -34,20 +34,19 @@ class TextConfig private constructor(
             val font = data.getPagTextFont() ?: return
             val isFontStyleEnable = font.isFontStyleEnable()
 
-            val url = data.getPagTextFont()?.getFontFamilyUrl()
-            if (!url.isNullOrEmpty() && url.isNotBlank()) {
-                fontSource = FontUrlSource(url, font.getFontFamilyUrlCacheKey(), isFontStyleEnable)
-                return
+            data.getPagTextFont()?.getFontFamilyUrl()?.let {
+                fontSource = FontUrlSource(it, font.getFontFamilyUrlCacheKey(), isFontStyleEnable)
+                return@tryPreLoad
             }
-            val assetsName = data.getPagTextFont()?.getFontFamilyAssetsName()
-            if (!assetsName.isNullOrEmpty() && assetsName.isNotBlank()) {
-                fontSource = FontAssetsSource(assetsName, isFontStyleEnable)
-                return
+
+            data.getPagTextFont()?.getFontFamilyAssetsName()?.let {
+                fontSource = FontAssetsSource(it, isFontStyleEnable)
+                return@tryPreLoad
             }
-            val path = data.getPagTextFont()?.getFontFamilyPath()
-            if (!path.isNullOrEmpty() && path.isNotBlank()) {
-                fontSource = FontPathSource(path, isFontStyleEnable)
-                return
+
+            data.getPagTextFont()?.getFontFamilyPath()?.let {
+                fontSource = FontPathSource(it, isFontStyleEnable)
+                return@tryPreLoad
             }
         } finally {
             fontSource.preLoad()

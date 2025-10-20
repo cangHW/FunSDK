@@ -1,5 +1,6 @@
 package com.proxy.service.imageloader.info.pag.option.config.source.font
 
+import android.text.TextUtils
 import org.libpag.PAGFont
 import org.libpag.PAGText
 
@@ -14,6 +15,11 @@ class FontPathSource(
 ) : BaseFontSource(isFontStyleEnable) {
 
     override fun loadFont(pagText: PAGText, callback: IFontLoadCallback) {
+        if (TextUtils.isEmpty(path)) {
+            callback.onError(IllegalArgumentException("The font path cannot be empty. path=$path"))
+            return
+        }
+
         val font = PAGFont.RegisterFont(path)
         if (font == null) {
             callback.onError(null)

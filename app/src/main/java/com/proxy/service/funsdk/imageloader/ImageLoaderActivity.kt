@@ -261,6 +261,7 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
             )?.replaceImage(
                 0,
                 PagImageData.builderWithPath("/storage/emulated/0/Android/data/com.proxy.service.funsdk/files/jpg.jpg")
+//                PagImageData.builderWithPath("")
 //                PagImageData.builderWithPath("/storage/emulated/0/Android/data/com.proxy.service.funsdk/files/png.png")
 //                PagImageData.builderWithRes(0)
                     .setScaleMode(PagScaleMode.CENTER_INSIDE)

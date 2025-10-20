@@ -1,5 +1,6 @@
 package com.proxy.service.imageloader.info.pag.option.config.source.image
 
+import android.text.TextUtils
 import org.libpag.PAGImage
 
 /**
@@ -12,6 +13,11 @@ class ImageByteSource(
 ) : BaseImageSource() {
 
     override fun loadImage(callback: IImageLoadCallback) {
+        if (byteArray.isEmpty()) {
+            callback.onError(IllegalArgumentException("The image byteArray cannot be empty. byteArray=$byteArray"))
+            return
+        }
+
         val image = PAGImage.FromBytes(byteArray)
         if (image == null) {
             callback.onError(IllegalArgumentException("The image loading failed. byteArray=$byteArray"))

@@ -39,6 +39,11 @@ class FontUrlSource(
 
 
     override fun preLoad() {
+        if (TextUtils.isEmpty(url)) {
+            exception = IllegalArgumentException("The font url cannot be empty. url=$url")
+            return
+        }
+
         val cacheKey = if (TextUtils.isEmpty(cacheKey)) {
             "$CACHE_KEY_POSTFIX${StringUtils.urlToString(url)}"
         } else {
@@ -63,6 +68,11 @@ class FontUrlSource(
     }
 
     override fun loadFont(pagText: PAGText, callback: IFontLoadCallback) {
+        if (TextUtils.isEmpty(url)) {
+            callback.onError(IllegalArgumentException("The font url cannot be empty. url=$url"))
+            return
+        }
+
         this.pagText = pagText
         this.callback = callback
         tryCall()
