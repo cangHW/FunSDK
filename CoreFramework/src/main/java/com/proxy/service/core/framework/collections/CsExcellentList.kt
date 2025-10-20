@@ -29,7 +29,21 @@ class CsExcellentList<V> : IList<V> {
     }
 
     override fun size(): Int {
-        return list.size
+        read.lock()
+        try {
+            return list.size
+        } finally {
+            read.unlock()
+        }
+    }
+
+    override fun clear() {
+        write.lock()
+        try {
+            list.clear()
+        }finally {
+            write.unlock()
+        }
     }
 
     override fun get(position: Int): V? {

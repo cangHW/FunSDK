@@ -45,17 +45,11 @@ object CsSpManager : ISpAction {
     }
 
     override fun clearAllCache() {
-        getSp().let {
-            it.clearAll()
-            SpInit.remove(it)
-        }
+        getSp().clearAllCache()
     }
 
     override fun close() {
-        getSp().let {
-            it.close()
-            SpInit.remove(it)
-        }
+        getSp().close()
     }
 
     override fun removeValueForKey(key: String) {
@@ -70,6 +64,10 @@ object CsSpManager : ISpAction {
         getSp().trim()
     }
 
+    override fun allKeys(): Array<String> {
+        return getSp().allKeys()
+    }
+
     override fun getRootDir(): String {
         val dir = SpInit.getRootPath()
         if (dir.isEmpty()) {
@@ -78,68 +76,72 @@ object CsSpManager : ISpAction {
         return dir
     }
 
+    override fun getController(): ISpController {
+        return getSp()
+    }
+
     override fun put(key: String, value: Int): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Long): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Float): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Double): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Boolean): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: String?): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: ByteArray?): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Parcelable?): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Set<String>?): Boolean {
-        return getSp().encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun getInt(key: String, defaultValue: Int): Int {
-        return getSp().decodeInt(key, defaultValue)
+        return getSp().getInt(key, defaultValue)
     }
 
     override fun getLong(key: String, defaultValue: Long): Long {
-        return getSp().decodeLong(key, defaultValue)
+        return getSp().getLong(key, defaultValue)
     }
 
     override fun getFloat(key: String, defaultValue: Float): Float {
-        return getSp().decodeFloat(key, defaultValue)
+        return getSp().getFloat(key, defaultValue)
     }
 
     override fun getDouble(key: String, defaultValue: Double): Double {
-        return getSp().decodeDouble(key, defaultValue)
+        return getSp().getDouble(key, defaultValue)
     }
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        return getSp().decodeBool(key, defaultValue)
+        return getSp().getBoolean(key, defaultValue)
     }
 
     override fun getString(key: String, defaultValue: String?): String? {
-        return getSp().decodeString(key, defaultValue)
+        return getSp().getString(key, defaultValue)
     }
 
     override fun getByteArray(key: String, defaultValue: ByteArray?): ByteArray? {
-        return getSp().decodeBytes(key, defaultValue)
+        return getSp().getByteArray(key, defaultValue)
     }
 
     override fun <T : Parcelable> getParcelable(
@@ -147,14 +149,14 @@ object CsSpManager : ISpAction {
         tClass: Class<T>,
         defaultValue: T?
     ): T? {
-        return getSp().decodeParcelable(key, tClass, defaultValue)
+        return getSp().getParcelable(key, tClass, defaultValue)
     }
 
     override fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>? {
-        return getSp().decodeStringSet(key, defaultValue)
+        return getSp().getStringSet(key, defaultValue)
     }
 
-    private fun getSp(): MMKV {
+    private fun getSp(): ISpController {
         val name = explicitName.get()
         if (name != null) {
             explicitName.remove()

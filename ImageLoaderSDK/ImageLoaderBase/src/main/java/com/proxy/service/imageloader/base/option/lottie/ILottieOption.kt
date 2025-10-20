@@ -12,7 +12,7 @@ import com.proxy.service.imageloader.base.option.lottie.callback.LottieAnimation
  * @data: 2024/6/4 17:31
  * @desc:
  */
-interface ILottieOption : ILottieLoader, IOption<ILottieOption> {
+interface ILottieOption : ILottieLoader, IOption<ILottieOption>, ILottieAction<ILottieOption> {
 
     /**
      * 设置是否自动播放
@@ -20,29 +20,6 @@ interface ILottieOption : ILottieLoader, IOption<ILottieOption> {
      * @param isAutoPlay 是否自动播放, 默认为 [ImageLoaderConstants.IS_AUTO_PLAY]
      * */
     fun setAutoPlay(isAutoPlay: Boolean): ILottieOption
-
-    /**
-     * 设置播放次数
-     *
-     * @param count 播放次数, 如果小于 0 则无限循环播放, 等于 0 则使用资源自身默认的循环次数
-     * */
-    fun setLoopCount(count: Int): ILottieOption
-
-    /**
-     * 设置播放模式
-     * */
-    fun setLoopModel(model: LottieLoopModel): ILottieOption
-
-    /**
-     * 设置动画初始进度
-     * */
-    fun setAnimationProgress(@FloatRange(from = 0.0, to = 1.0) progress: Float): ILottieOption
-
-    /**
-     * 设置动画播放速度
-     * @param speed 设置播放速度。如果速度为小于 0，动画将反向播放
-     * */
-    fun setAnimationSpeed(speed: Float): ILottieOption
 
     /**
      * 设置动画开始回调

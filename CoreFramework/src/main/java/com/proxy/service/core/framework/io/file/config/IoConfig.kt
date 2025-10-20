@@ -10,6 +10,6 @@ object IoConfig {
     /**
      * io 缓冲区大小
      * */
-    const val IO_BUFFER_SIZE = 8 * 1024
+    const val IO_BUFFER_SIZE = DEFAULT_BUFFER_SIZE
 
 }

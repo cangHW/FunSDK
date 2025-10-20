@@ -1,0 +1,17 @@
+package com.proxy.service.imageloader.info.lottie.info
+
+import android.animation.ValueAnimator
+
+/**
+ * @author: cangHX
+ * @data: 2024/6/5 09:30
+ * @desc:
+ */
+class LottieAnimatorUpdateListener(
+    private val info: LottieInfo
+) : ValueAnimator.AnimatorUpdateListener {
+
+    override fun onAnimationUpdate(p0: ValueAnimator) {
+        info.animationUpdateCallback?.onUpdate(p0)
+    }
+}

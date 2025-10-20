@@ -9,6 +9,7 @@ import com.proxy.service.imageloader.base.option.glide.IGlideOption
 import com.proxy.service.imageloader.base.option.glide.IWebpGlideOption
 import com.proxy.service.imageloader.base.request.glide.IGlideRequest
 import com.proxy.service.imageloader.base.request.lottie.ILottieRequest
+import com.proxy.service.imageloader.base.request.pag.IPagRequest
 
 /**
  * 加载转换器
@@ -43,4 +44,9 @@ interface IType<R> : IGlideRequest<IGlideOption<Drawable>, Drawable> {
      * 转换成 lottie 加载模式
      * */
     fun asLottieModel(): ILottieRequest
+
+    /**
+     * 转换成 pag 加载模式
+     * */
+    fun asPagModel(): IPagRequest
 }

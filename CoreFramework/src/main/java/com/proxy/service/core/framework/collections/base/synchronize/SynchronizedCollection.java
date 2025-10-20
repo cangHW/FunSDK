@@ -27,14 +27,26 @@ public class SynchronizedCollection<E> implements java.util.Collection<E>, Seria
     @java.io.Serial
     private static final long serialVersionUID = 3053995032091335093L;
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    protected final ReentrantReadWriteLock.ReadLock read = lock.readLock();
-    protected final ReentrantReadWriteLock.WriteLock write = lock.writeLock();
+    protected final ReentrantReadWriteLock.ReadLock read;
+    protected final ReentrantReadWriteLock.WriteLock write;
 
     protected final java.util.Collection<E> real;
 
     public SynchronizedCollection(@NonNull java.util.Collection<E> real) {
         this.real = real;
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        this.read = lock.readLock();
+        this.write = lock.writeLock();
+    }
+
+    public SynchronizedCollection(
+            @NonNull java.util.Collection<E> real,
+            ReentrantReadWriteLock.ReadLock read,
+            ReentrantReadWriteLock.WriteLock write
+    ) {
+        this.real = real;
+        this.read = read;
+        this.write = write;
     }
 
     @Override

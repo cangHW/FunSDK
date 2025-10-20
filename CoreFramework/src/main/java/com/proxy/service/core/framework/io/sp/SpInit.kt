@@ -17,7 +17,7 @@ object SpInit {
     private val isInit = AtomicBoolean(false)
 
     private var rootPath: String = ""
-    private val spMapper = HashMap<String, MMKV>()
+    private val spMapper = HashMap<String, ISpController>()
 
     private fun init() {
         if (isInit.compareAndSet(false, true)) {
@@ -30,7 +30,7 @@ object SpInit {
         return rootPath
     }
 
-    fun getSp(spName: String?, mode: SpMode, secretKey: String?): MMKV {
+    fun getSp(spName: String?, mode: SpMode, secretKey: String?): ISpController {
         init()
 
         val key = "CoreFw_${spName}"
@@ -47,28 +47,29 @@ object SpInit {
                 return doubleCheck
             }
 
-            val sp = if (spName.isNullOrEmpty() || spName.isBlank()) {
+            val mmkv = if (spName.isNullOrEmpty() || spName.isBlank()) {
                 MMKV.defaultMMKV(mode.mode, secretKey)
             } else {
                 MMKV.mmkvWithID(spName, mode.mode, secretKey)
             }
-            spMapper[key] = sp
-            return sp
+            val controller = SpControllerImpl(mmkv)
+            spMapper[key] = controller
+            return controller
         }
     }
 
-    fun getAllSp(): List<MMKV> {
+    fun getAllSp(): List<ISpController> {
         synchronized(spMapper) {
             return spMapper.values.toList()
         }
     }
 
-    fun remove(sp: MMKV) {
+    fun remove(controller: ISpController) {
         synchronized(spMapper) {
             val iterator = spMapper.entries.iterator()
             while (iterator.hasNext()) {
                 val entry = iterator.next()
-                if (entry.value == sp) {
+                if (entry.value == controller) {
                     iterator.remove()
                 }
             }

@@ -7,10 +7,8 @@ import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.util.WeakHashMap
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.locks.ReentrantReadWriteLock
 
 /**
  * 线程安全、支持异步操作以及有序、无序的 map
@@ -33,7 +31,7 @@ open class CsExcellentMap<K, V>(
         }
 
         Type.WEAK -> {
-            SynchronizedMap(WeakHashMap<K, V>())
+            SynchronizedMap(WeakHashMap())
         }
 
         Type.ORDER -> {
@@ -157,11 +155,11 @@ open class CsExcellentMap<K, V>(
 
     override fun forEachSync(observer: (K, V) -> Unit) {
         val temp: Map<K, V>
-        map.readLock.lock()
+        map.writeLock.lock()
         try {
             temp = map.toMap()
         } finally {
-            map.readLock.unlock()
+            map.writeLock.unlock()
         }
         temp.forEach {
             observer(it.key, it.value)
@@ -170,11 +168,11 @@ open class CsExcellentMap<K, V>(
 
     override fun filterSync(predicate: (K, V) -> Boolean): Map<K, V> {
         val temp: Map<K, V>
-        map.readLock.lock()
+        map.writeLock.lock()
         try {
             temp = map.toMap()
         } finally {
-            map.readLock.unlock()
+            map.writeLock.unlock()
         }
         return temp.filter {
             predicate(it.key, it.value)

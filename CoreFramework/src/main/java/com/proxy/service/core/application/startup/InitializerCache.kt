@@ -132,7 +132,7 @@ class InitializerCache<T> {
         }
 
         if (refresh) {
-            block.put(0)
+            block.put(1)
         }
     }
 

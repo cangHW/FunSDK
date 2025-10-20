@@ -8,9 +8,8 @@ import androidx.fragment.app.FragmentActivity
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.imageloader.base.ImageLoaderService
 import com.proxy.service.imageloader.base.type.IType
-import com.proxy.service.imageloader.info.info.glide.GlideInfo
-import com.proxy.service.imageloader.info.type.TypeImpl
-import com.proxy.service.imageloader.info.type.type.DrawableType
+import com.proxy.service.imageloader.info.glide.info.GlideInfo
+import com.proxy.service.imageloader.info.glide.type.DrawableType
 
 /**
  * @author: cangHX

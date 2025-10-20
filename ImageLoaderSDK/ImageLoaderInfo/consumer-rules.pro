@@ -55,3 +55,6 @@
 -dontwarn com.airbnb.lottie.**
 
 
+########################   pag   ###########################
+-keep class org.libpag.** {*;}
+-keep class androidx.exifinterface.** {*;}

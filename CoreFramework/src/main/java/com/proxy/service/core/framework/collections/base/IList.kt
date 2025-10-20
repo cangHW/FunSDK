@@ -13,6 +13,11 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     fun size(): Int
 
     /**
+     * 清空数据
+     * */
+    fun clear()
+
+    /**
      * 对应数据是否存在
      * */
     fun containsKey(v: V): Boolean

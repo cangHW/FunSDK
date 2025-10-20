@@ -3,7 +3,6 @@ package com.proxy.service.funsdk.imageloader
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,12 @@ import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityImageLoaderBinding
-import com.proxy.service.imageloader.base.drawable.CsGifDrawable
 import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
-import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
-import com.proxy.service.imageloader.base.target.CsCustomTarget
+import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationCallback
+import com.proxy.service.imageloader.base.option.pag.image.PagImageData
+import com.proxy.service.imageloader.base.option.pag.image.PagScaleMode
+import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
+import com.proxy.service.imageloader.base.option.pag.txt.PagTextFont
 
 /**
  * @author: cangHX
@@ -51,7 +52,8 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
             binding?.isPng1,
             binding?.isWebp1,
             binding?.isWebp2,
-            binding?.isLottie
+            binding?.isLottie,
+            binding?.isPag
         )
         setSelect(types)
         types[0]?.isChecked = true
@@ -102,10 +104,15 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
     )
 
     private val lottie = ResourceInfo(
-        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/%E5%9B%BE%E7%89%87/lottie_loading.json",
-//        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/test_lottie/motivate_3.1_lottie%202.zip",
+//        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/%E5%9B%BE%E7%89%87/lottie_loading.json",
+        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/test_lottie/loading.zip",
 //        "https://static0.xesimg.com/newgameresources/qd_cs_bx1/motivate_3.1_lottie.json",
         R.raw.lottie_loading
+    )
+
+    private val pag = ResourceInfo(
+        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/%E5%9B%BE%E7%89%87/one.pag",
+        R.raw.one
     )
 
     override fun onClick(view: View) {
@@ -126,6 +133,8 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
                     loadWebp2(webp2)
                 } else if (binding?.isLottie?.isChecked == true) {
                     loadLottie(lottie)
+                } else if (binding?.isPag?.isChecked == true) {
+                    loadPag(pag)
                 }
             }
         }
@@ -154,8 +163,7 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
             return
         }
 
-        option
-            ?.setLoopCount(1)
+        option?.setLoopCount(1)
 //            ?.setAnimationCallback(object : AnimationCallback<CsGifDrawable>{
 //                override fun onAnimationEnd(drawable: CsGifDrawable) {
 //                    CsLogger.i("onAnimationEnd. drawable=$drawable")
@@ -202,8 +210,7 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
             return
         }
 
-        option
-            ?.setLoopCount(1)
+        option?.setLoopCount(1)
 //            ?.setAnimationCallback(object :AnimationCallback<CsWebpDrawable>{
 //                override fun onAnimationEnd(drawable: CsWebpDrawable) {
 //                    CsLogger.i("onAnimationEnd. drawable=$drawable")
@@ -231,12 +238,52 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
         option
             ?.setLoopCount(1)
 //            ?.setLoopModel(LottieLoopModel.REVERSE)
-            ?.setLoadErrorCallback(object : LoadErrorCallback{
+            ?.setLoadErrorCallback(object : LoadErrorCallback {
                 override fun onLoadError() {
-                    CsLogger.tag("qqqqqqq").e("error")
+                    CsLogger.tag("qqqqqqq").e("lottie load error")
                 }
             })
             ?.into(binding?.layout)
+    }
+
+    private fun loadPag(info: ResourceInfo) {
+        binding?.layout?.visibility = View.VISIBLE
+        val loader = CsImageLoader.with(this)?.asPagModel()
+
+        val option = if (binding?.isFromNetWork?.isChecked == true) {
+            loader?.loadUrl(info.url)?.replaceText(
+                0,
+                PagTextData.builder("21")
+                    .setPagTextFont(
+                        PagTextFont.builderWithUrl("https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/%E5%9B%BE%E7%89%87/SourceHanSansCNBold.otf")
+                            .build()
+                    ).build()
+            )?.replaceImage(
+                0,
+                PagImageData.builderWithPath("/storage/emulated/0/Android/data/com.proxy.service.funsdk/files/jpg.jpg")
+//                PagImageData.builderWithPath("/storage/emulated/0/Android/data/com.proxy.service.funsdk/files/png.png")
+//                PagImageData.builderWithRes(0)
+                    .setScaleMode(PagScaleMode.CENTER_INSIDE)
+                    .build()
+            )
+        } else if (binding?.isFromRes?.isChecked == true) {
+            loader?.loadRes(info.res)?.replaceText(
+                0,
+                PagTextData.builder("31")
+                    .setPagTextFont(
+                        PagTextFont.builderWithPath("/sdcard/Android/data/com.proxy.service.funsdk/files/SourceHanSansCNBold.otf")
+                            .build()
+                    ).build()
+            )
+        } else {
+            return
+        }
+
+        option?.setLoadErrorCallback(object : LoadErrorCallback {
+            override fun onLoadError() {
+                CsLogger.tag("qqqqqqq").e("pag load error")
+            }
+        })?.into(binding?.layout)
     }
 
     private data class ResourceInfo(

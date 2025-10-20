@@ -3,6 +3,8 @@ package com.proxy.service.core.framework.collections.base.synchronize;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * @author: cangHX
  * @data: 2025/9/30 12:32
@@ -12,6 +14,14 @@ public class SynchronizedSet<E> extends SynchronizedCollection<E> implements jav
 
     public SynchronizedSet(@NonNull java.util.Set<E> cn) {
         super(cn);
+    }
+
+    public SynchronizedSet(
+            @NonNull java.util.Set<E> cn,
+            ReentrantReadWriteLock.ReadLock read,
+            ReentrantReadWriteLock.WriteLock write
+    ) {
+        super(cn, read, write);
     }
 
     @Override

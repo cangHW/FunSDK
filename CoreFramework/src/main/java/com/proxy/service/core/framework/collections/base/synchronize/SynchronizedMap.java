@@ -28,21 +28,33 @@ public class SynchronizedMap<K, V> extends AbstractMap<K, V> implements Map<K, V
     @java.io.Serial
     private static final long serialVersionUID = 1978198479659022715L;
 
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    private final ReentrantReadWriteLock.ReadLock read = lock.readLock();
-    private final ReentrantReadWriteLock.WriteLock write = lock.writeLock();
+    private final ReentrantReadWriteLock.ReadLock read;
+    private final ReentrantReadWriteLock.WriteLock write;
 
     private final Map<K, V> real;
 
     public SynchronizedMap(Map<K, V> real) {
         this.real = real;
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        this.read = lock.readLock();
+        this.write = lock.writeLock();
     }
 
-    public ReentrantReadWriteLock.ReadLock getReadLock(){
+    public SynchronizedMap(
+            Map<K, V> real,
+            ReentrantReadWriteLock.ReadLock read,
+            ReentrantReadWriteLock.WriteLock write
+    ) {
+        this.real = real;
+        this.read = read;
+        this.write = write;
+    }
+
+    public ReentrantReadWriteLock.ReadLock getReadLock() {
         return read;
     }
 
-    public ReentrantReadWriteLock.WriteLock getWriteLock(){
+    public ReentrantReadWriteLock.WriteLock getWriteLock() {
         return write;
     }
 
@@ -147,7 +159,7 @@ public class SynchronizedMap<K, V> extends AbstractMap<K, V> implements Map<K, V
         write.lock();
         try {
             if (keySet == null) {
-                keySet = new SynchronizedSet<>(real.keySet());
+                keySet = new SynchronizedSet<>(real.keySet(), read, write);
             }
             return keySet;
         } finally {
@@ -163,7 +175,7 @@ public class SynchronizedMap<K, V> extends AbstractMap<K, V> implements Map<K, V
         write.lock();
         try {
             if (values == null) {
-                values = new SynchronizedCollection<>(real.values());
+                values = new SynchronizedCollection<>(real.values(), read, write);
             }
             return values;
         } finally {
@@ -179,7 +191,7 @@ public class SynchronizedMap<K, V> extends AbstractMap<K, V> implements Map<K, V
         write.lock();
         try {
             if (entrySet == null) {
-                entrySet = new SynchronizedSet<>(real.entrySet());
+                entrySet = new SynchronizedSet<>(real.entrySet(), read, write);
             }
             return entrySet;
         } finally {

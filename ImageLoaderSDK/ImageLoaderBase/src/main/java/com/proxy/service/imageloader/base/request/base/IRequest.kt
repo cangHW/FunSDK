@@ -1,8 +1,5 @@
 package com.proxy.service.imageloader.base.request.base
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
-
 /**
  * 资源加载器
  *
@@ -24,13 +21,8 @@ interface IRequest<R> {
 
     /**
      * 加载 assets 目录文件.
-     * 例如：asd.png
+     * 例如：asd.png 或者 dir/asd.png
      * */
     fun loadAsset(fileName: String): R
-
-    /**
-     * 加载资源文件
-     * */
-    fun loadRes(@RawRes @DrawableRes resourceId: Int): R
 
 }
