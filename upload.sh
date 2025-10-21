@@ -9,8 +9,8 @@ upArray=(
 #  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
-  ":ImageLoaderSDK:ImageLoaderInfo"
-  ":ImageLoaderSDK:ImageLoaderBase"
+#  ":ImageLoaderSDK:ImageLoaderInfo"
+#  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpInfo"
@@ -26,7 +26,7 @@ upArray=(
 #  ":Permission:PermissionBase"
 
     # 日志文件库
-#  ":LogFileSDK:LogFileInfo"
+  ":LogFileSDK:LogFileInfo"
 
     # 性能监控库
 #  ":ApmSDK:ApmInfo"

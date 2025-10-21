@@ -8,6 +8,11 @@ package com.proxy.service.logfile.info.config
 interface IBuilderGet {
 
     /**
+     * 周期性自动刷磁盘的间隔
+     * */
+    fun getFlushEveryTime(): Long
+
+    /**
      * 获取是否同步
      * */
     fun getSyncMode(): Boolean

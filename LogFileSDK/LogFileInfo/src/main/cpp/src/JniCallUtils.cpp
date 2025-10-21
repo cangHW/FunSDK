@@ -65,3 +65,24 @@ jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name, const ch
     env->DeleteLocalRef(configClass);
     return result;
 }
+
+
+void releaseString(
+        JNIEnv *env,
+        jstring level,
+        const char *levelString,
+        jstring tag,
+        const char *tagString,
+        jstring msg,
+        const char *msgString
+) {
+    if (levelString != nullptr) {
+        env->ReleaseStringUTFChars(level, levelString);
+    }
+    if (tagString != nullptr) {
+        env->ReleaseStringUTFChars(tag, tagString);
+    }
+    if (msgString != nullptr) {
+        env->ReleaseStringUTFChars(msg, msgString);
+    }
+}

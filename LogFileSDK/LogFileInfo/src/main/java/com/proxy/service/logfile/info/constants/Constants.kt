@@ -10,6 +10,11 @@ object Constants {
     const val TAG = "LogFile"
 
     /**
+     * 周期性自动刷磁盘的间隔时间
+     * */
+    const val FLUSH_EVERY_TIME: Long = 0
+
+    /**
      * 默认配置
      * */
     const val TYPE_NORMAL = 0

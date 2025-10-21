@@ -11,6 +11,11 @@ class Strategy {
     var _pkg: String = ""
 
     /**
+     * 周期性自动刷磁盘的间隔时间
+     * */
+    var _flushEveryTime: Long = 0
+
+    /**
      * 同步模式
      * */
     var _isSyncMode: Boolean = false
@@ -51,6 +56,10 @@ class Strategy {
 
     fun getPackageName(): String {
         return _pkg
+    }
+
+    fun getFlushEveryTime(): Long {
+        return _flushEveryTime
     }
 
     fun isSyncMode(): Boolean {

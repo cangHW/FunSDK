@@ -30,6 +30,7 @@ class LogFileCore {
     fun init(application: Application, logConfig: LogConfig) {
         val config = Strategy()
         config._pkg = application.packageName
+        config._flushEveryTime = logConfig.getFlushEveryTime()
         config._isSyncMode = logConfig.getSyncMode()
         config._dir = if (TextUtils.isEmpty(logConfig.getLogDir())) {
             getDefaultDir(application)
@@ -68,7 +69,17 @@ class LogFileCore {
 
     private external fun initTask(logConfig: Strategy): Boolean
 
-    external fun log(level: String, tag: String, msg: String)
+    external fun logV(level: String, tag: String, msg: String)
+
+    external fun logD(level: String, tag: String, msg: String)
+
+    external fun logI(level: String, tag: String, msg: String)
+
+    external fun logW(level: String, tag: String, msg: String)
+
+    external fun logE(level: String, tag: String, msg: String)
+
+    external fun logA(level: String, tag: String, msg: String)
 
     external fun flush()
 }

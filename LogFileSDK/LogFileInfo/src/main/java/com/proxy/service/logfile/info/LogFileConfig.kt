@@ -48,32 +48,31 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
             when (priority) {
                 Log.VERBOSE -> {
-                    LogFileCore.getInstance().log("V", tag, message)
+                    LogFileCore.getInstance().logV("V", tag, message)
                 }
 
                 Log.DEBUG -> {
-                    LogFileCore.getInstance().log("D", tag, message)
+                    LogFileCore.getInstance().logD("D", tag, message)
                 }
 
                 Log.INFO -> {
-                    LogFileCore.getInstance().log("I", tag, message)
+                    LogFileCore.getInstance().logI("I", tag, message)
                 }
 
                 Log.WARN -> {
-                    LogFileCore.getInstance().log("W", tag, message)
+                    LogFileCore.getInstance().logW("W", tag, message)
                 }
 
                 Log.ERROR -> {
-                    LogFileCore.getInstance().log("E", tag, message)
-                    LogFileCore.getInstance().flush()
+                    LogFileCore.getInstance().logE("E", tag, message)
                 }
 
                 Log.ASSERT -> {
-                    LogFileCore.getInstance().log("A", tag, message)
+                    LogFileCore.getInstance().logA("A", tag, message)
                 }
 
                 else -> {
-                    LogFileCore.getInstance().log("UNKNOWN", tag, message)
+                    LogFileCore.getInstance().logV("UNKNOWN", tag, message)
                 }
             }
         }
@@ -86,7 +85,7 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
                     Utils.getStackTraceString(e)
 
             if (LogFileCore.getInstance().isInitSuccess()) {
-                LogFileCore.getInstance().log("E", "AndroidRuntime", msg)
+                LogFileCore.getInstance().logE("E", "AndroidRuntime", msg)
             }
         } catch (throwable: Throwable) {
             CsLogger.e(throwable)

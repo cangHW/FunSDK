@@ -12,6 +12,10 @@ import java.util.concurrent.TimeUnit
  */
 class LogConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
 
+    override fun getFlushEveryTime(): Long {
+        return builder.getFlushEveryTime()
+    }
+
     override fun getSyncMode(): Boolean {
         return builder.getSyncMode()
     }
@@ -63,6 +67,8 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
     }
 
     class Builder : IBuilder, IBuilderGet {
+        private var flushTime = Constants.FLUSH_EVERY_TIME
+
         private var isSyncMode: Boolean = Constants.IS_SYNC_MODE
 
         private var dir: String = ""
@@ -80,6 +86,15 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         private var hour: Int = Constants.HOUR
         private var minute: Int = Constants.MINUTE
+
+        override fun setFlushEveryTime(time: Long): IBuilder {
+            this.flushTime = if (time < 0) {
+                Constants.FLUSH_EVERY_TIME
+            } else {
+                time
+            }
+            return this
+        }
 
         override fun setLogMode(isSyncMode: Boolean): IBuilder {
             this.isSyncMode = isSyncMode
@@ -158,6 +173,10 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
                 minute
             }
             return LogConfig(this)
+        }
+
+        override fun getFlushEveryTime(): Long {
+            return flushTime
         }
 
         override fun getSyncMode(): Boolean {

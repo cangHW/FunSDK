@@ -113,7 +113,7 @@ ext {
             // 日志文件库
             LogFileInfo    : [
                     artifact          : "Service-LogFile-Spdlog",
-                    version           : "0.2.5",
+                    version           : "0.2.6",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

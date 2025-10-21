@@ -32,7 +32,7 @@ service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", v
 service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.5"}
 service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.5"}
 service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.4"}
-service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.5"}
+service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.6"}
 service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
 service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.4"}
 service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
