@@ -18,6 +18,12 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        val config = LogConfig.builder()
+            .setCacheTime(1, TimeUnit.SECONDS)
+            .setFlushEveryTime(5, TimeUnit.SECONDS)
+            .createNormalType()
+//            .createDailyType(0,0)
+        CsLogFile.setConfig(config)
         CsCore.init(this, true)
     }
 
