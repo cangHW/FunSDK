@@ -39,22 +39,60 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
 
     jboolean isSync = callBooleanFrom(env, config, "isSyncMode", "()Z");
     jint type = callIntFrom(env, config, "getType", "()I");
-    jboolean isCompress = callBooleanFrom(env, config, "isUseCompress", "()Z");
-    std::string cryptoKey = callStringFrom(env, config, "getCryptoKey", "()Ljava/lang/String;");
+    std::string compressionMode = callStringFrom(
+            env,
+            config,
+            "getCompressionMode",
+            "()Ljava/lang/String;"
+    );
+    std::string encryptionMode = callStringFrom(
+            env,
+            config,
+            "getEncryptionMode",
+            "()Ljava/lang/String;"
+    );
+    std::string encryptionKey = callStringFrom(
+            env,
+            config,
+            "getEncryptionKey",
+            "()Ljava/lang/String;"
+    );
 
     std::shared_ptr<spdlog::logger> logger;
     if (type == 0) {
-        logger = basic_logger(isSync, path, isCompress, cryptoKey);
+        logger = basic_logger(
+                isSync,
+                path,
+                compressionMode,
+                encryptionMode,
+                encryptionKey
+        );
     } else if (type == 1) {
         jlong maxFileSize = callLongFrom(env, config, "getSingleFileMaxSize", "()J");
         jint maxFiles = callIntFrom(env, config, "getMaxFileCount", "()I");
 
-        logger = rotating_logger(isSync, path, maxFileSize, maxFiles, isCompress, cryptoKey);
+        logger = rotating_logger(
+                isSync,
+                path,
+                maxFileSize,
+                maxFiles,
+                compressionMode,
+                encryptionMode,
+                encryptionKey
+        );
     } else if (type == 2) {
         jint hour = callIntFrom(env, config, "getHour", "()I");
         jint minute = callIntFrom(env, config, "getMinute", "()I");
 
-        logger = daily_logger(isSync, path, hour, minute, isCompress, cryptoKey);
+        logger = daily_logger(
+                isSync,
+                path,
+                hour,
+                minute,
+                compressionMode,
+                encryptionMode,
+                encryptionKey
+        );
     } else {
         return false;
     }

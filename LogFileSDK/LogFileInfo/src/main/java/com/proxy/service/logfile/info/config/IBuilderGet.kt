@@ -1,5 +1,8 @@
 package com.proxy.service.logfile.info.config
 
+import com.proxy.service.logfile.info.manager.CompressionMode
+import com.proxy.service.logfile.info.manager.EncryptionMode
+
 /**
  * @author: cangHX
  * @data: 2025/1/16 19:48
@@ -16,6 +19,12 @@ interface IBuilderGet {
      * 获取是否同步
      * */
     fun getSyncMode(): Boolean
+
+    fun getCompressionMode(): CompressionMode
+
+    fun getEncryptionMode(): EncryptionMode
+
+    fun getEncryptionKey(): String
 
     /**
      * 获取文件路径

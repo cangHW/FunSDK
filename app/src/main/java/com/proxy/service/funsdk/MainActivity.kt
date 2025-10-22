@@ -16,6 +16,7 @@ import com.proxy.service.funsdk.permission.PermissionActivity
 import com.proxy.service.funsdk.threadpool.ThreadPoolActivity
 import com.proxy.service.funsdk.webview.WebViewActivity
 import com.proxy.service.funsdk.widget.WidgetActivity
+import com.proxy.service.logfile.info.manager.LogFileCore
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -41,7 +42,16 @@ class MainActivity : AppCompatActivity() {
     fun onClick(view: View) {
         when (view.id) {
             R.id.core_framework -> {
-                FrameWorkActivity.launch(this)
+//                FrameWorkActivity.launch(this)
+
+                for (index in 0..1000){
+                    LogFileCore.getInstance().logV("V", "aa", "12444 dddd  测试压缩 $index")
+                    LogFileCore.getInstance().logD("D", "aa", "12444 dddd  测试压缩 $index")
+                    LogFileCore.getInstance().logI("I", "aa", "12444 dddd  测试压缩 $index")
+                    LogFileCore.getInstance().logW("W", "aa", "12444 dddd  测试压缩 $index")
+                    LogFileCore.getInstance().logE("E", "aa", "12444 dddd  测试压缩 $index")
+                    LogFileCore.getInstance().logA("A", "aa", "12444 dddd  测试压缩 $index")
+                }
             }
 
             R.id.image_loader -> {

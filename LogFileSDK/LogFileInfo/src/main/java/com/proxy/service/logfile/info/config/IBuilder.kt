@@ -3,6 +3,8 @@ package com.proxy.service.logfile.info.config
 import androidx.annotation.IntRange
 import java.util.concurrent.TimeUnit
 import com.proxy.service.logfile.info.constants.Constants
+import com.proxy.service.logfile.info.manager.CompressionMode
+import com.proxy.service.logfile.info.manager.EncryptionMode
 
 /**
  * @author: cangHX
@@ -22,6 +24,18 @@ interface IBuilder {
      * @desc 异步模式性能最高
      * */
     fun setLogMode(isSyncMode: Boolean): IBuilder
+
+    /**
+     * 设置日志压缩模式, 默认: [Constants.COMPRESSION_MODE]
+     * */
+    fun setCompressionMode(mode: CompressionMode): IBuilder
+
+    /**
+     * 设置日志加密模式, 默认: [Constants.ENCRYPTION_MODE]
+     *
+     * @param encryptionKey 加密密钥
+     * */
+    fun setEncryptionMode(mode: EncryptionMode, encryptionKey: String): IBuilder
 
     /**
      * 设置日志文件路径, 默认: /storage/emulated/0/Android/<app package>/file/logfile/
@@ -59,7 +73,10 @@ interface IBuilder {
      * @param singleFileMaxSize 单个文件最大长度, 默认: [Constants.SINGLE_FILE_MAX_SIZE]
      * @param maxFileCount      最大文件数量, 默认: [Constants.MAX_FILE_COUNT]
      * */
-    fun createRotatingType(@IntRange(from = 1) singleFileMaxSize: Long, @IntRange(from = 0, to = 200000) maxFileCount: Int): LogConfig
+    fun createRotatingType(
+        @IntRange(from = 1) singleFileMaxSize: Long,
+        @IntRange(from = 0, to = 200000) maxFileCount: Int
+    ): LogConfig
 
     /**
      * 创建一个按天分割文件配置

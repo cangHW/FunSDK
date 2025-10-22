@@ -32,6 +32,10 @@ class LogFileCore {
         config._pkg = application.packageName
         config._flushEveryTime = logConfig.getFlushEveryTime()
         config._isSyncMode = logConfig.getSyncMode()
+
+        config._compressionMode = logConfig.getCompressionMode().mode
+        config._encryptionMode = logConfig.getEncryptionMode().mode
+        config._encryptionKey = logConfig.getEncryptionKey()
         config._dir = if (TextUtils.isEmpty(logConfig.getLogDir())) {
             getDefaultDir(application)
         } else {

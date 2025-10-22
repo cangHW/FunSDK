@@ -21,14 +21,19 @@ class Strategy {
     var _isSyncMode: Boolean = false
 
     /**
-     * 是否使用压缩
+     * 压缩模式
      * */
-    var _isUseCompress: Boolean = false
+    var _compressionMode: String = ""
 
     /**
-     * 加密密钥, 为空则不开启加密
+     * 加密模式
      * */
-    var _cryptoKey: String = ""
+    var _encryptionMode: String = ""
+
+    /**
+     * 加密密钥
+     * */
+    var _encryptionKey: String = ""
 
     /**
      * 保存路径
@@ -76,12 +81,16 @@ class Strategy {
         return _isSyncMode
     }
 
-    fun isUseCompress(): Boolean {
-        return _isUseCompress
+    fun getCompressionMode(): String {
+        return _compressionMode
     }
 
-    fun getCryptoKey(): String {
-        return _cryptoKey
+    fun getEncryptionMode(): String {
+        return _encryptionMode
+    }
+
+    fun getEncryptionKey(): String {
+        return _encryptionKey
     }
 
     fun getDir(): String {
