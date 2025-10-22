@@ -7,14 +7,14 @@ import com.proxy.service.logfile.info.constants.Constants
 /**
  * @author: cangHX
  * @data: 2025/1/16 19:48
- * @desc: 千条日志耗时: 7 毫秒左右
+ * @desc: 千条日志耗时 7ms 左右
  */
 interface IBuilder {
 
     /**
      * 每隔多久刷入磁盘一次, 默认: [Constants.FLUSH_EVERY_TIME], 不执行周期性自动刷磁盘
      * */
-    fun setFlushEveryTime(@IntRange(from = 0) time: Long): IBuilder
+    fun setFlushEveryTime(@IntRange(from = 0) time: Long, unit: TimeUnit): IBuilder
 
     /**
      * 设置日志模式, 是否同步模式, 默认: [Constants.IS_SYNC_MODE]
@@ -46,7 +46,7 @@ interface IBuilder {
     /**
      * 设置清理任务执行间隔时长, 默认: [Constants.CLEAN_TASK_INTERVAL_TIME]
      * */
-    fun setCleanTaskIntervalTime(@IntRange(from = 0) time: Long, unit: TimeUnit): IBuilder
+    fun setCleanTaskIntervalTime(@IntRange(from = 1) time: Long, unit: TimeUnit): IBuilder
 
     /**
      * 创建一个默认配置
@@ -59,7 +59,7 @@ interface IBuilder {
      * @param singleFileMaxSize 单个文件最大长度, 默认: [Constants.SINGLE_FILE_MAX_SIZE]
      * @param maxFileCount      最大文件数量, 默认: [Constants.MAX_FILE_COUNT]
      * */
-    fun createRotatingType(@IntRange(from = 0) singleFileMaxSize: Long, @IntRange(from = 0) maxFileCount: Int): LogConfig
+    fun createRotatingType(@IntRange(from = 1) singleFileMaxSize: Long, @IntRange(from = 0, to = 200000) maxFileCount: Int): LogConfig
 
     /**
      * 创建一个按天分割文件配置

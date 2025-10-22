@@ -4,38 +4,120 @@
 #include "spdlog/sinks/daily_file_sink.h"
 
 #include "h/LogFileInit.h"
+#include "h/security_sink.h"
 
-std::shared_ptr<spdlog::logger> basic_logger(jboolean &isSync, const std::string &path) {
+std::shared_ptr<spdlog::logger> basic_logger(
+        jboolean &isSync,
+        const std::string &path,
+        jboolean &isCompress,
+        const std::string &cryptoKey
+) {
     if (isSync) {
-        auto logger = spdlog::basic_logger_st("basic_logger", path);
+        auto real_logger = spdlog::basic_logger_st(
+                "basic_logger",
+                path
+        );
+        auto logger = spdlog::enhanced_decorator_security_logger_st(
+                "security_logger",
+                real_logger,
+                isCompress,
+                cryptoKey
+        );
         spdlog::set_default_logger(logger);
         return logger;
     } else {
-        auto logger = spdlog::basic_logger_mt("basic_logger", path);
+        auto real_logger = spdlog::basic_logger_st(
+                "basic_logger",
+                path
+        );
+        auto logger = spdlog::enhanced_decorator_security_logger_mt(
+                "security_logger",
+                real_logger,
+                isCompress,
+                cryptoKey
+        );
         spdlog::set_default_logger(logger);
         return logger;
     }
 }
 
-std::shared_ptr<spdlog::logger> rotating_logger(jboolean &isSync, const std::string &path, jlong &maxFileSize, jint &maxFiles) {
+std::shared_ptr<spdlog::logger> rotating_logger(
+        jboolean &isSync,
+        const std::string &path,
+        jlong &maxFileSize,
+        jint &maxFiles,
+        jboolean &isCompress,
+        const std::string &cryptoKey
+) {
     if (isSync) {
-        auto logger = spdlog::rotating_logger_st("rotating_logger", path, maxFileSize, maxFiles);
+        auto real_logger = spdlog::rotating_logger_st(
+                "rotating_logger",
+                path,
+                maxFileSize,
+                maxFiles
+        );
+        auto logger = spdlog::enhanced_decorator_security_logger_st(
+                "security_logger",
+                real_logger,
+                isCompress,
+                cryptoKey
+        );
         spdlog::set_default_logger(logger);
         return logger;
     } else {
-        auto logger = spdlog::rotating_logger_mt("rotating_logger", path, maxFileSize, maxFiles);
+        auto real_logger = spdlog::rotating_logger_mt(
+                "rotating_logger",
+                path,
+                maxFileSize,
+                maxFiles
+        );
+        auto logger = spdlog::enhanced_decorator_security_logger_mt(
+                "security_logger",
+                real_logger,
+                isCompress,
+                cryptoKey
+        );
         spdlog::set_default_logger(logger);
         return logger;
     }
 }
 
-std::shared_ptr<spdlog::logger> daily_logger(jboolean &isSync, const std::string &path, jint &hour, jint &minute) {
+std::shared_ptr<spdlog::logger> daily_logger(
+        jboolean &isSync,
+        const std::string &path,
+        jint &hour,
+        jint &minute,
+        jboolean &isCompress,
+        const std::string &cryptoKey
+) {
     if (isSync) {
-        auto logger = spdlog::daily_logger_st("daily_logger", path, hour, minute);
+        auto real_logger = spdlog::daily_logger_st(
+                "daily_logger",
+                path,
+                hour,
+                minute
+        );
+        auto logger = spdlog::enhanced_decorator_security_logger_st(
+                "security_logger",
+                real_logger,
+                isCompress,
+                cryptoKey
+        );
         spdlog::set_default_logger(logger);
         return logger;
     } else {
-        auto logger = spdlog::daily_logger_mt("daily_logger", path, hour, minute);
+        auto real_logger = spdlog::daily_logger_mt(
+                "daily_logger",
+                path,
+                hour,
+                minute
+        );
+        auto logger = spdlog::enhanced_decorator_security_logger_mt(
+                "security_logger",
+                real_logger,
+                isCompress,
+                cryptoKey
+        );
         spdlog::set_default_logger(logger);
         return logger;
     }

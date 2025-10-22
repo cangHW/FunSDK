@@ -87,11 +87,11 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var hour: Int = Constants.HOUR
         private var minute: Int = Constants.MINUTE
 
-        override fun setFlushEveryTime(time: Long): IBuilder {
+        override fun setFlushEveryTime(time: Long, unit: TimeUnit): IBuilder {
             this.flushTime = if (time < 0) {
                 Constants.FLUSH_EVERY_TIME
             } else {
-                time
+                unit.toMillis(time)
             }
             return this
         }

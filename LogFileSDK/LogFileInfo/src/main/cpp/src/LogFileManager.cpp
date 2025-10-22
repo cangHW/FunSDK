@@ -39,21 +39,22 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
 
     jboolean isSync = callBooleanFrom(env, config, "isSyncMode", "()Z");
     jint type = callIntFrom(env, config, "getType", "()I");
+    jboolean isCompress = callBooleanFrom(env, config, "isUseCompress", "()Z");
+    std::string cryptoKey = callStringFrom(env, config, "getCryptoKey", "()Ljava/lang/String;");
 
     std::shared_ptr<spdlog::logger> logger;
-
     if (type == 0) {
-        logger = basic_logger(isSync, path);
+        logger = basic_logger(isSync, path, isCompress, cryptoKey);
     } else if (type == 1) {
         jlong maxFileSize = callLongFrom(env, config, "getSingleFileMaxSize", "()J");
         jint maxFiles = callIntFrom(env, config, "getMaxFileCount", "()I");
 
-        logger = rotating_logger(isSync, path, maxFileSize, maxFiles);
+        logger = rotating_logger(isSync, path, maxFileSize, maxFiles, isCompress, cryptoKey);
     } else if (type == 2) {
         jint hour = callIntFrom(env, config, "getHour", "()I");
         jint minute = callIntFrom(env, config, "getMinute", "()I");
 
-        logger = daily_logger(isSync, path, hour, minute);
+        logger = daily_logger(isSync, path, hour, minute, isCompress, cryptoKey);
     } else {
         return false;
     }
@@ -77,10 +78,6 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
     return true;
 }
 
-std::shared_ptr<spdlog::logger> getLogger() {
-    return spdlog::default_logger();
-}
-
 extern "C" JNIEXPORT void JNICALL
 Java_com_proxy_service_logfile_info_manager_LogFileCore_logV(
         JNIEnv *env,
@@ -94,7 +91,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_logV(
     const char *msgString = (*env).GetStringUTFChars(msg, nullptr);
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
-        getLogger()->log(spdlog::level::trace, "{}  [{}] {}", levelString, tagString, msgString);
+        spdlog::default_logger()->log(spdlog::level::trace, "{}  [{}] {}", levelString, tagString,
+                                      msgString);
     }
 
     releaseString(env, level, levelString, tag, tagString, msg, msgString);
@@ -113,7 +111,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_logD(
     const char *msgString = (*env).GetStringUTFChars(msg, nullptr);
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
-        getLogger()->log(spdlog::level::debug, "{}  [{}] {}", levelString, tagString, msgString);
+        spdlog::default_logger()->log(spdlog::level::debug, "{}  [{}] {}", levelString, tagString,
+                                      msgString);
     }
 
     releaseString(env, level, levelString, tag, tagString, msg, msgString);
@@ -132,7 +131,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_logI(
     const char *msgString = (*env).GetStringUTFChars(msg, nullptr);
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
-        getLogger()->log(spdlog::level::info, "{}  [{}] {}", levelString, tagString, msgString);
+        spdlog::default_logger()->log(spdlog::level::info, "{}  [{}] {}", levelString, tagString,
+                                      msgString);
     }
 
     releaseString(env, level, levelString, tag, tagString, msg, msgString);
@@ -151,7 +151,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_logW(
     const char *msgString = (*env).GetStringUTFChars(msg, nullptr);
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
-        getLogger()->log(spdlog::level::warn, "{}  [{}] {}", levelString, tagString, msgString);
+        spdlog::default_logger()->log(spdlog::level::warn, "{}  [{}] {}", levelString, tagString,
+                                      msgString);
     }
 
     releaseString(env, level, levelString, tag, tagString, msg, msgString);
@@ -170,7 +171,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_logE(
     const char *msgString = (*env).GetStringUTFChars(msg, nullptr);
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
-        getLogger()->log(spdlog::level::err, "{}  [{}] {}", levelString, tagString, msgString);
+        spdlog::default_logger()->log(spdlog::level::err, "{}  [{}] {}", levelString, tagString,
+                                      msgString);
     }
 
     releaseString(env, level, levelString, tag, tagString, msg, msgString);
@@ -189,7 +191,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_logA(
     const char *msgString = (*env).GetStringUTFChars(msg, nullptr);
 
     if (levelString != nullptr && tagString != nullptr && msgString != nullptr) {
-        getLogger()->log(spdlog::level::critical, "{}  [{}] {}", levelString, tagString, msgString);
+        spdlog::default_logger()->log(spdlog::level::critical, "{}  [{}] {}", levelString,
+                                      tagString, msgString);
     }
 
     releaseString(env, level, levelString, tag, tagString, msg, msgString);
@@ -200,7 +203,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_flush(
         JNIEnv *env,
         jobject job
 ) {
-    getLogger()->flush();
+    spdlog::default_logger()->flush();
 }
 
 

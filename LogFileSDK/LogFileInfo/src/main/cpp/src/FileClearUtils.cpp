@@ -11,8 +11,8 @@ namespace fs = std::__fs::filesystem;
 
 void pollingTask(const std::string &log_dir, jlong max_cache_time, jlong cleanTaskIntervalTime) {
     while (true) {
-        doWork(log_dir, max_cache_time, true);
         std::this_thread::sleep_for(std::chrono::milliseconds(cleanTaskIntervalTime));
+        doWork(log_dir, max_cache_time, true);
     }
 }
 
