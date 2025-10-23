@@ -10,13 +10,12 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiActivity
 import com.proxy.service.funsdk.document.DocumentActivity
-import com.proxy.service.funsdk.framework.FrameWorkActivity
 import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
 import com.proxy.service.funsdk.permission.PermissionActivity
 import com.proxy.service.funsdk.threadpool.ThreadPoolActivity
 import com.proxy.service.funsdk.webview.WebViewActivity
 import com.proxy.service.funsdk.widget.WidgetActivity
-import com.proxy.service.logfile.info.manager.LogFileCore
+import com.proxy.service.logfile.info.manager.LogFileDecompress
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -44,14 +43,29 @@ class MainActivity : AppCompatActivity() {
             R.id.core_framework -> {
 //                FrameWorkActivity.launch(this)
 
-                for (index in 0..1000){
-                    LogFileCore.getInstance().logV("V", "aa", "12444 dddd  测试压缩 $index")
-                    LogFileCore.getInstance().logD("D", "aa", "12444 dddd  测试压缩 $index")
-                    LogFileCore.getInstance().logI("I", "aa", "12444 dddd  测试压缩 $index")
-                    LogFileCore.getInstance().logW("W", "aa", "12444 dddd  测试压缩 $index")
-                    LogFileCore.getInstance().logE("E", "aa", "12444 dddd  测试压缩 $index")
-                    LogFileCore.getInstance().logA("A", "aa", "12444 dddd  测试压缩 $index")
-                }
+                val src_file = "/storage/sdcard0/Android/data/com.proxy.service.funsdk/files/logfile/log.log"
+                val dest_file = "/storage/sdcard0/Android/data/com.proxy.service.funsdk/files/xxx/dec.log"
+
+//                CsFileUtils.delete(dest_file)
+//
+//                val logInfo = LogFileDecompress.getInstance().decompressLogFile(
+//                    src_file,
+//                    dest_file,
+//                    "",
+//                )
+//                Log.e("aaaa", logInfo.toString())
+
+                val src_dir = File(src_file).parent?:""
+                val dest_dir = File(dest_file).parent?:""
+                CsFileUtils.createDir(src_dir)
+                CsFileUtils.createDir(dest_dir)
+
+                LogFileDecompress.getInstance().decompressLogDirectory(
+                    src_dir,
+                    dest_dir,
+                    ""
+                )
+
             }
 
             R.id.image_loader -> {

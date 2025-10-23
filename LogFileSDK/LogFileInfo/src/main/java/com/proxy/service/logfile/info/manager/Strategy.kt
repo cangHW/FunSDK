@@ -23,12 +23,12 @@ class Strategy {
     /**
      * 压缩模式
      * */
-    var _compressionMode: String = ""
+    var _compressionMode: Int = 0
 
     /**
      * 加密模式
      * */
-    var _encryptionMode: String = ""
+    var _encryptionMode: Int = 0
 
     /**
      * 加密密钥
@@ -81,11 +81,11 @@ class Strategy {
         return _isSyncMode
     }
 
-    fun getCompressionMode(): String {
+    fun getCompressionMode(): Int {
         return _compressionMode
     }
 
-    fun getEncryptionMode(): String {
+    fun getEncryptionMode(): Int {
         return _encryptionMode
     }
 

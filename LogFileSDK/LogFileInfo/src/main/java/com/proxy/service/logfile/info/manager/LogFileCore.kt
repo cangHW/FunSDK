@@ -9,19 +9,19 @@ import com.proxy.service.logfile.info.constants.Constants
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
-class LogFileCore {
+class LogFileCore private constructor() {
 
     companion object {
         init {
             System.loadLibrary("logfile")
         }
 
-        private val mInstance by lazy {
+        private val _instance by lazy {
             LogFileCore()
         }
 
         fun getInstance(): LogFileCore {
-            return mInstance
+            return _instance
         }
     }
 

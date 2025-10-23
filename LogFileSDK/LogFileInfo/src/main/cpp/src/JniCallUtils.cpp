@@ -10,12 +10,12 @@ std::string jStringToString(JNIEnv *env, jstring jStr) {
     return str;
 }
 
-std::string callStringFrom(JNIEnv *env, jobject config, const char *name, const char *sig) {
+std::string callStringFrom(JNIEnv *env, jobject config, const char *name) {
     jclass configClass = env->GetObjectClass(config);
     if (configClass == nullptr) {
         return "";
     }
-    jmethodID method = env->GetMethodID(configClass, name, sig);
+    jmethodID method = env->GetMethodID(configClass, name, "()Ljava/lang/String;");
     if (method == nullptr) {
         return "";
     }
@@ -24,12 +24,12 @@ std::string callStringFrom(JNIEnv *env, jobject config, const char *name, const 
     return jStringToString(env, obj);
 }
 
-jlong callLongFrom(JNIEnv *env, jobject config, const char *name, const char *sig) {
+jlong callLongFrom(JNIEnv *env, jobject config, const char *name) {
     jclass configClass = env->GetObjectClass(config);
     if (configClass == nullptr) {
         return -1;
     }
-    jmethodID method = env->GetMethodID(configClass, name, sig);
+    jmethodID method = env->GetMethodID(configClass, name, "()J");
     if (method == nullptr) {
         return -1;
     }
@@ -38,12 +38,12 @@ jlong callLongFrom(JNIEnv *env, jobject config, const char *name, const char *si
     return result;
 }
 
-jint callIntFrom(JNIEnv *env, jobject config, const char *name, const char *sig) {
+jint callIntFrom(JNIEnv *env, jobject config, const char *name) {
     jclass configClass = env->GetObjectClass(config);
     if (configClass == nullptr) {
         return 0;
     }
-    jmethodID method = env->GetMethodID(configClass, name, sig);
+    jmethodID method = env->GetMethodID(configClass, name, "()I");
     if (method == nullptr) {
         return 0;
     }
@@ -52,12 +52,12 @@ jint callIntFrom(JNIEnv *env, jobject config, const char *name, const char *sig)
     return result;
 }
 
-jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name, const char *sig) {
+jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name) {
     jclass configClass = env->GetObjectClass(config);
     if (configClass == nullptr) {
         return 0;
     }
-    jmethodID method = env->GetMethodID(configClass, name, sig);
+    jmethodID method = env->GetMethodID(configClass, name, "()Z");
     if (method == nullptr) {
         return 0;
     }

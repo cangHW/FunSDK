@@ -7,8 +7,8 @@
 std::shared_ptr<spdlog::logger> basic_logger(
         jboolean &isSync,
         const std::string &path,
-        const std::string &compressionMode,
-        const std::string &encryptionMode,
+        jint &compressionMode,
+        jint &encryptionMode,
         const std::string &encryptionKey
 );
 
@@ -17,8 +17,8 @@ std::shared_ptr<spdlog::logger> rotating_logger(
         const std::string &path,
         jlong &maxFileSize,
         jint &maxFiles,
-        const std::string &compressionMode,
-        const std::string &encryptionMode,
+        jint &compressionMode,
+        jint &encryptionMode,
         const std::string &encryptionKey
 );
 
@@ -27,8 +27,8 @@ std::shared_ptr<spdlog::logger> daily_logger(
         const std::string &path,
         jint &hour,
         jint &minute,
-        const std::string &compressionMode,
-        const std::string &encryptionMode,
+        jint &compressionMode,
+        jint &encryptionMode,
         const std::string &encryptionKey
 );
 
