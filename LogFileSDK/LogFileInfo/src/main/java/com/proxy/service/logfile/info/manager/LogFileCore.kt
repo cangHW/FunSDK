@@ -9,19 +9,19 @@ import com.proxy.service.logfile.info.constants.Constants
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
-class LogFileCore {
+class LogFileCore private constructor() {
 
     companion object {
         init {
             System.loadLibrary("logfile")
         }
 
-        private val mInstance by lazy {
+        private val _instance by lazy {
             LogFileCore()
         }
 
         fun getInstance(): LogFileCore {
-            return mInstance
+            return _instance
         }
     }
 
@@ -32,6 +32,10 @@ class LogFileCore {
         config._pkg = application.packageName
         config._flushEveryTime = logConfig.getFlushEveryTime()
         config._isSyncMode = logConfig.getSyncMode()
+
+        config._compressionMode = logConfig.getCompressionMode().mode
+        config._encryptionMode = logConfig.getEncryptionMode().mode
+        config._encryptionKey = logConfig.getEncryptionKey()
         config._dir = if (TextUtils.isEmpty(logConfig.getLogDir())) {
             getDefaultDir(application)
         } else {

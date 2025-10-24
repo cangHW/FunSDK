@@ -1,5 +1,8 @@
 package com.proxy.service.logfile.info.constants
 
+import com.proxy.service.logfile.info.manager.CompressionMode
+import com.proxy.service.logfile.info.manager.EncryptionMode
+
 /**
  * @author: cangHX
  * @data: 2025/1/16 20:19
@@ -33,6 +36,16 @@ object Constants {
      * 日志写入模式
      * */
     const val IS_SYNC_MODE = false
+
+    /**
+     * 默认压缩模式
+     * */
+    val COMPRESSION_MODE = CompressionMode.NONE
+
+    /**
+     * 默认加密模式
+     * */
+    val ENCRYPTION_MODE = EncryptionMode.NONE
 
     /**
      * 日志文件名称前后缀

@@ -7,8 +7,9 @@
 std::shared_ptr<spdlog::logger> basic_logger(
         jboolean &isSync,
         const std::string &path,
-        jboolean &isCompress,
-        const std::string &cryptoKey
+        jint &compressionMode,
+        jint &encryptionMode,
+        const std::string &encryptionKey
 );
 
 std::shared_ptr<spdlog::logger> rotating_logger(
@@ -16,8 +17,9 @@ std::shared_ptr<spdlog::logger> rotating_logger(
         const std::string &path,
         jlong &maxFileSize,
         jint &maxFiles,
-        jboolean &isCompress,
-        const std::string &cryptoKey
+        jint &compressionMode,
+        jint &encryptionMode,
+        const std::string &encryptionKey
 );
 
 std::shared_ptr<spdlog::logger> daily_logger(
@@ -25,8 +27,9 @@ std::shared_ptr<spdlog::logger> daily_logger(
         const std::string &path,
         jint &hour,
         jint &minute,
-        jboolean &isCompress,
-        const std::string &cryptoKey
+        jint &compressionMode,
+        jint &encryptionMode,
+        const std::string &encryptionKey
 );
 
 #endif //FUNSDK_LOGFILEINIT_H

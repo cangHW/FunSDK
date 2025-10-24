@@ -2,11 +2,8 @@ package com.proxy.service.funsdk
 
 import android.app.Application
 import com.proxy.service.core.CsCore
-import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.logfile.info.CsLogFile
 import com.proxy.service.logfile.info.config.LogConfig
-import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.util.concurrent.TimeUnit
 
 /**
@@ -22,7 +19,6 @@ class App : Application() {
             .setCacheTime(1, TimeUnit.SECONDS)
             .setFlushEveryTime(5, TimeUnit.SECONDS)
             .createNormalType()
-//            .createDailyType(0,0)
         CsLogFile.setConfig(config)
         CsCore.init(this, true)
     }

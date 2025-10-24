@@ -2,6 +2,8 @@ package com.proxy.service.logfile.info.config
 
 import android.text.TextUtils
 import com.proxy.service.logfile.info.constants.Constants
+import com.proxy.service.logfile.info.manager.CompressionMode
+import com.proxy.service.logfile.info.manager.EncryptionMode
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -18,6 +20,18 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
     override fun getSyncMode(): Boolean {
         return builder.getSyncMode()
+    }
+
+    override fun getCompressionMode(): CompressionMode {
+        return builder.getCompressionMode()
+    }
+
+    override fun getEncryptionMode(): EncryptionMode {
+        return builder.getEncryptionMode()
+    }
+
+    override fun getEncryptionKey(): String {
+        return builder.getEncryptionKey()
     }
 
     override fun getLogDir(): String {
@@ -70,6 +84,9 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var flushTime = Constants.FLUSH_EVERY_TIME
 
         private var isSyncMode: Boolean = Constants.IS_SYNC_MODE
+        private var compressionMode: CompressionMode = Constants.COMPRESSION_MODE
+        private var encryptionMode: EncryptionMode = Constants.ENCRYPTION_MODE
+        private var encryptionKey: String = ""
 
         private var dir: String = ""
 
@@ -98,6 +115,17 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setLogMode(isSyncMode: Boolean): IBuilder {
             this.isSyncMode = isSyncMode
+            return this
+        }
+
+        override fun setCompressionMode(mode: CompressionMode): IBuilder {
+            this.compressionMode = mode
+            return this
+        }
+
+        override fun setEncryptionMode(mode: EncryptionMode, encryptionKey: String): IBuilder {
+            this.encryptionMode = mode
+            this.encryptionKey = encryptionKey
             return this
         }
 
@@ -181,6 +209,18 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun getSyncMode(): Boolean {
             return isSyncMode
+        }
+
+        override fun getCompressionMode(): CompressionMode {
+            return compressionMode
+        }
+
+        override fun getEncryptionMode(): EncryptionMode {
+            return encryptionMode
+        }
+
+        override fun getEncryptionKey(): String {
+            return encryptionKey
         }
 
         override fun getLogDir(): String {

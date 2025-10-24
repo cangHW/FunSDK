@@ -6,13 +6,13 @@
 
 std::string jStringToString(JNIEnv *env, jstring jStr);
 
-std::string callStringFrom(JNIEnv *env, jobject config, const char *name, const char *sig);
+std::string callStringFrom(JNIEnv *env, jobject config, const char *name);
 
-jlong callLongFrom(JNIEnv *env, jobject config, const char *name, const char *sig);
+jlong callLongFrom(JNIEnv *env, jobject config, const char *name);
 
-jint callIntFrom(JNIEnv *env, jobject config, const char *name, const char *sig);
+jint callIntFrom(JNIEnv *env, jobject config, const char *name);
 
-jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name, const char *sig);
+jboolean callBooleanFrom(JNIEnv *env, jobject config, const char *name);
 
 void releaseString(
         JNIEnv *env,
