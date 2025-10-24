@@ -25,7 +25,13 @@ namespace spdlog {
             const std::string &encryptionKey
     ) {
         std::unique_ptr<spdlog::security::ICryptoProvider> provider = nullptr;
-        if (!encryptionKey.empty() && encryptionMode == SecurityBlockConstant::ENCRYPTION_AES) {
+        if (encryptionKey.empty()) {
+            return provider;
+        }
+
+        if (encryptionMode == SecurityBlockConstant::ENCRYPTION_CHACHA20) {
+            provider.reset(new ChaCha20CryptoProvider(encryptionKey));
+        } else if (encryptionMode == SecurityBlockConstant::ENCRYPTION_AES) {
             provider.reset(new AESCryptoProvider(encryptionKey));
         }
         return provider;

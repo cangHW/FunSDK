@@ -22,11 +22,11 @@ enum class CompressionMode(val mode: Int) {
     /**
      * 适合高频日志场景
      * */
-    LZ4(1),
+    LZ4(1);
 
-    /**
-     * 适合存储优化场景
-     * */
-    ZSTD(2);
+//    /**
+//     * 适合存储优化场景
+//     * */
+//    ZSTD(2);
 
 }

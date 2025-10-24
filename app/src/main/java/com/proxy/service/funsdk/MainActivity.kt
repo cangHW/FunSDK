@@ -10,12 +10,12 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiActivity
 import com.proxy.service.funsdk.document.DocumentActivity
+import com.proxy.service.funsdk.framework.FrameWorkActivity
 import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
 import com.proxy.service.funsdk.permission.PermissionActivity
 import com.proxy.service.funsdk.threadpool.ThreadPoolActivity
 import com.proxy.service.funsdk.webview.WebViewActivity
 import com.proxy.service.funsdk.widget.WidgetActivity
-import com.proxy.service.logfile.info.manager.LogFileDecompress
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -41,31 +41,7 @@ class MainActivity : AppCompatActivity() {
     fun onClick(view: View) {
         when (view.id) {
             R.id.core_framework -> {
-//                FrameWorkActivity.launch(this)
-
-                val src_file = "/storage/sdcard0/Android/data/com.proxy.service.funsdk/files/logfile/log.log"
-                val dest_file = "/storage/sdcard0/Android/data/com.proxy.service.funsdk/files/xxx/dec.log"
-
-//                CsFileUtils.delete(dest_file)
-//
-//                val logInfo = LogFileDecompress.getInstance().decompressLogFile(
-//                    src_file,
-//                    dest_file,
-//                    "",
-//                )
-//                Log.e("aaaa", logInfo.toString())
-
-                val src_dir = File(src_file).parent?:""
-                val dest_dir = File(dest_file).parent?:""
-                CsFileUtils.createDir(src_dir)
-                CsFileUtils.createDir(dest_dir)
-
-                LogFileDecompress.getInstance().decompressLogDirectory(
-                    src_dir,
-                    dest_dir,
-                    ""
-                )
-
+                FrameWorkActivity.launch(this)
             }
 
             R.id.image_loader -> {

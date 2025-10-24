@@ -5,8 +5,13 @@
 #include <cstdint>
 #include <memory>
 
-// LZ4 头文件
+// 压缩
 #include "lz4.h"
+
+// 加密
+#include "SecurityUtils.h"
+#include "chacha20.h"
+
 
 // 安全块 常量
 class SecurityBlockConstant {
@@ -21,7 +26,8 @@ public:
 
     //加密
     static constexpr uint32_t ENCRYPTION_NONE = 0;
-    static constexpr uint32_t ENCRYPTION_AES = 1;
+    static constexpr uint32_t ENCRYPTION_CHACHA20 = 1;
+    static constexpr uint32_t ENCRYPTION_AES = 2;
 };
 
 // 安全块头结构定义
@@ -156,6 +162,80 @@ public:
         // 模拟解压缩
         return data;
     }
+};
+
+// ChaCha20 加密提供程序
+class ChaCha20CryptoProvider : public spdlog::security::ICryptoProvider {
+private:
+    std::string key_;
+    uint8_t derived_key_[CHACHA20_KEY_SIZE];
+
+public:
+    explicit ChaCha20CryptoProvider(const std::string &key) : key_(key) {
+        // 使用安全的密钥派生算法
+        if (!SecurityUtils::deriveKeySecure(key, derived_key_, CHACHA20_KEY_SIZE)) {
+            // 如果安全派生失败，使用降级方案
+            SecurityUtils::deriveKeyFallback(key, derived_key_, CHACHA20_KEY_SIZE);
+        }
+    }
+
+    uint32_t getEncryption() override {
+        return SecurityBlockConstant::ENCRYPTION_CHACHA20;
+    }
+
+    std::vector<uint8_t> encrypt(const std::vector<uint8_t> &data) override {
+        if (data.empty()) {
+            return data;
+        }
+
+        // 生成密码学安全的 nonce
+        uint8_t nonce[CHACHA20_NONCE_SIZE];
+        if (!SecurityUtils::generateSecureNonce(nonce, CHACHA20_NONCE_SIZE)) {
+            // 如果安全随机数生成失败，使用降级方案
+            if (chacha20_generate_nonce(nonce) != 0) {
+                // 如果降级方案也失败，返回空数据（安全失败）
+                return data;
+            }
+        }
+
+        // 加密数据
+        std::vector<uint8_t> encrypted(data.size());
+        if (chacha20_encrypt(derived_key_, nonce, 0, data.data(), data.size(), encrypted.data()) != 0) {
+            // 加密失败，返回空数据（安全失败）
+            return data;
+        }
+
+        // 在加密数据前添加 nonce
+        std::vector<uint8_t> result;
+        result.reserve(CHACHA20_NONCE_SIZE + encrypted.size());
+        result.insert(result.end(), nonce, nonce + CHACHA20_NONCE_SIZE);
+        result.insert(result.end(), encrypted.begin(), encrypted.end());
+
+        return result;
+    }
+
+    std::vector<uint8_t> decrypt(const std::vector<uint8_t> &data) override {
+        if (data.size() < CHACHA20_NONCE_SIZE) {
+            return {};
+        }
+
+        // 提取 nonce
+        uint8_t nonce[CHACHA20_NONCE_SIZE];
+        memcpy(nonce, data.data(), CHACHA20_NONCE_SIZE);
+
+        // 提取加密数据
+        std::vector<uint8_t> encrypted_data(data.begin() + CHACHA20_NONCE_SIZE, data.end());
+
+        // 解密数据
+        std::vector<uint8_t> decrypted(encrypted_data.size());
+        if (chacha20_decrypt(derived_key_, nonce, 0, encrypted_data.data(), encrypted_data.size(), decrypted.data()) != 0) {
+            // 解密失败，返回空数据（安全失败）
+            return {};
+        }
+
+        return decrypted;
+    }
+
 };
 
 // 模拟加密实现

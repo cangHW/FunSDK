@@ -88,7 +88,10 @@ public:
         if (success && !buffer.empty()) {
             size_t remaining_processed = processBufferStream(buffer, output, total_output_bytes);
             if (remaining_processed == 0 && !buffer.empty()) {
-                LOGW("Warning: %zu bytes of data could not be processed", buffer.size());
+                output.write(
+                        reinterpret_cast<const char *>(buffer.data()),
+                        buffer.size()
+                );
             }
         }
 
@@ -184,8 +187,10 @@ private:
                         sizeof(SecurityBlockHeader) + header->compressed_size;
 
                 // 解压缩块
-                std::vector<uint8_t> block_data = decompressBlock(data_ptr + offset,
-                                                                  block_total_size);
+                std::vector<uint8_t> block_data = decompressBlock(
+                        data_ptr + offset,
+                        block_total_size
+                );
                 if (!block_data.empty()) {
                     // 写入输出文件
                     output.write(
@@ -266,6 +271,16 @@ private:
         }
 
         const SecurityBlockHeader *header = reinterpret_cast<const SecurityBlockHeader *>(block_data);
+
+        // 打印 SecurityBlockHeader 详细信息
+        LOGI(
+                "Find SecurityBlockHeader: magic=0x%08X, compressed_size=%u, original_size=%u, algorithm=%u, encryption=%u",
+                header->magic,
+                header->compressed_size,
+                header->original_size,
+                header->algorithm,
+                header->encryption
+        );
 
         // 计算负载偏移量
         const size_t payload_offset = sizeof(SecurityBlockHeader);

@@ -9,7 +9,7 @@ import com.proxy.service.logfile.info.manager.EncryptionMode
 /**
  * @author: cangHX
  * @data: 2025/1/16 19:48
- * @desc: 千条日志耗时 7ms 左右
+ * @desc: 压缩、加密全部开启时, 千条日志耗时 4ms 左右
  */
 interface IBuilder {
 
