@@ -24,4 +24,15 @@ object ImageLoaderConstants {
      * 当图像加载失败时，动画是否继续执行
      * */
     const val ALLOW_ANIMATION_ON_IMAGE_FAILURE = true
+
+    /**
+     * 文件缓存最大值
+     * */
+    const val CACHE_MAX_SIZE = 250 * 1024 * 1024
+
+    /**
+     * lottie 文件格式
+     * */
+    const val LOTTIE_TYPE_JSON: String = ".json"
+    const val LOTTIE_TYPE_ZIP: String = ".zip"
 }

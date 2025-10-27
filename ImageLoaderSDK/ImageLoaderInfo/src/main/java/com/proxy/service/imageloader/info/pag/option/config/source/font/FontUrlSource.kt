@@ -1,8 +1,8 @@
 package com.proxy.service.imageloader.info.pag.option.config.source.font
 
 import android.text.TextUtils
-import com.proxy.service.imageloader.info.pag.net.NetFactory
-import com.proxy.service.imageloader.info.pag.net.RequestCallback
+import com.proxy.service.imageloader.info.net.RequestCallback
+import com.proxy.service.imageloader.info.pag.net.PagNet
 import com.proxy.service.imageloader.info.pag.option.config.RequestFailedException
 import com.proxy.service.imageloader.info.utils.StringUtils
 import org.libpag.PAGFont
@@ -50,7 +50,7 @@ class FontUrlSource(
             "$CACHE_KEY_POSTFIX$cacheKey"
         }
         try {
-            NetFactory.enqueue(cacheKey, url, object : RequestCallback {
+            PagNet.request(cacheKey, url, object : RequestCallback {
                 override fun onSuccess(path: String) {
                     this@FontUrlSource.path = path
                     tryCall()

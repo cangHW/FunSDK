@@ -1,4 +1,4 @@
-package com.proxy.service.imageloader.info.pag.net.task
+package com.proxy.service.imageloader.info.net.task
 
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils

@@ -1,5 +1,6 @@
 package com.proxy.service.core.application
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseConfig
@@ -18,6 +19,7 @@ class CoreFrameworkConfig : CsBaseConfig() {
         return ModuleType.SDK
     }
 
+    @SuppressLint("Range")
     override fun priority(): Int {
         return -990
     }

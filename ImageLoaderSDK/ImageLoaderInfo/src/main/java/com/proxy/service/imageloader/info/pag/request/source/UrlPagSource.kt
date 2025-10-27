@@ -2,11 +2,9 @@ package com.proxy.service.imageloader.info.pag.request.source
 
 import android.content.Context
 import android.text.TextUtils
-import com.airbnb.lottie.network.FileExtension
-import com.proxy.service.imageloader.info.pag.net.NetFactory
-import com.proxy.service.imageloader.info.pag.net.RequestCallback
+import com.proxy.service.imageloader.info.net.RequestCallback
+import com.proxy.service.imageloader.info.pag.net.PagNet
 import com.proxy.service.imageloader.info.utils.StringUtils
-import org.libpag.PAGFile
 
 /**
  * @author: cangHX
@@ -29,18 +27,10 @@ class UrlPagSource(
             "${CACHE_KEY_POSTFIX}$cacheKey"
         }
         try {
-            NetFactory.enqueue(key, url, object : RequestCallback {
+            PagNet.request(key, url, object : RequestCallback {
                 override fun onSuccess(path: String) {
-                    try {
-                        val file = PAGFile.Load(path)
-                        if (file == null) {
-                            listener?.onError(null)
-                            return
-                        }
-                        listener?.onResult(file)
-                    } catch (throwable: Throwable) {
-                        listener?.onError(throwable)
-                    }
+                    val pathPagSource = PathPagSource(path)
+                    pathPagSource.load(context, listener)
                 }
 
                 override fun onFailed() {

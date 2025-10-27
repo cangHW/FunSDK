@@ -12,13 +12,6 @@ import com.proxy.service.imageloader.base.request.base.IRequest
 interface IPagRequest : IRequest<IPageOption> {
 
     /**
-     * 加载网络文件, 支持同一链接指向不同内容
-     *
-     * @param cacheKey   自定义资源唯一标识
-     * */
-    fun loadUrl(url: String, cacheKey: String): IPageOption
-
-    /**
      * 加载资源文件
      * */
     fun loadRes(@RawRes resourceId: Int): IPageOption

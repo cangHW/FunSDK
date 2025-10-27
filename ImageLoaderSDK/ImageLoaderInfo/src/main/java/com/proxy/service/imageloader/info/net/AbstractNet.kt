@@ -1,4 +1,4 @@
-package com.proxy.service.imageloader.info.pag.net
+package com.proxy.service.imageloader.info.net
 
 import com.proxy.service.core.framework.collections.CsExcellentList
 import com.proxy.service.core.framework.collections.CsExcellentMap
@@ -7,9 +7,9 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
-import com.proxy.service.imageloader.info.pag.net.cache.DiskLruCache
-import com.proxy.service.imageloader.info.pag.net.task.ITask
-import com.proxy.service.imageloader.info.pag.net.task.Task
+import com.proxy.service.imageloader.info.net.base.AbstractCacheAction
+import com.proxy.service.imageloader.info.net.task.ITask
+import com.proxy.service.imageloader.info.net.task.Task
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -21,77 +21,24 @@ import java.util.concurrent.atomic.AtomicInteger
  * @data: 2025/10/14 14:28
  * @desc:
  */
-object NetFactory {
+abstract class AbstractNet : AbstractCacheAction() {
 
-    private const val FILE_PREFIX = ".temp"
-
-    private class RequestInfo(private val key: String) {
-
-        companion object {
-            const val STATUS_UNKNOWN = 0
-            const val STATUS_RUNNING = 1
-            const val STATUS_SUCCESS = 2
-            const val STATUS_FAILED = 3
-        }
-
-        private val status = AtomicInteger(STATUS_UNKNOWN)
-        val callbacks = CsExcellentList<RequestCallback>()
-
-        fun isSuccess(): Boolean {
-            return status.get() == STATUS_SUCCESS
-        }
-
-        fun isRunning(): Boolean {
-            return status.get() == STATUS_RUNNING
-        }
-
-        fun setRunning() {
-            status.set(STATUS_RUNNING)
-        }
-
-        fun setSuccess() {
-            status.set(STATUS_SUCCESS)
-            if (callbacks.size() == 0) {
-                return
-            }
-            CsTask.mainThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    callbacks.forEachSync {
-                        it.onSuccess(cache.getFile(key).absolutePath)
-                    }
-                    callbacks.clear()
-                    return ""
-                }
-            })?.start()
-        }
-
-        fun setFailed() {
-            status.set(STATUS_FAILED)
-            if (callbacks.size() == 0){
-                return
-            }
-            CsTask.mainThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    callbacks.forEachSync {
-                        it.onFailed()
-                    }
-                    callbacks.clear()
-                    return ""
-                }
-            })?.start()
-        }
+    companion object {
+        private const val FILE_PREFIX = ".temp"
     }
 
-    private val cache = DiskLruCache()
     private val requests = CsExcellentMap<String, RequestInfo>()
 
+    /**
+     * 发起请求任务
+     * */
     fun enqueue(key: String, url: String, callback: RequestCallback) {
         var status = RequestInfo.STATUS_UNKNOWN
         requests.runInTransaction {
             var info = requests.get(key)
             if (info == null) {
-                info = RequestInfo(key)
-                if (CsFileUtils.isFile(cache.getFile(key))) {
+                info = RequestInfo(key, this)
+                if (CsFileUtils.isFile(getFileFromCache(key))) {
                     info.setSuccess()
                 }
                 requests.putSync(key, info)
@@ -102,7 +49,7 @@ object NetFactory {
                 return@runInTransaction
             }
             if (info.isSuccess()) {
-                if (CsFileUtils.isFile(cache.getFile(key))) {
+                if (CsFileUtils.isFile(getFileFromCache(key))) {
                     status = RequestInfo.STATUS_SUCCESS
                     return@runInTransaction
                 }
@@ -118,10 +65,13 @@ object NetFactory {
         }
 
         if (status == RequestInfo.STATUS_SUCCESS) {
-            callback.onSuccess(cache.getFile(key).absolutePath)
+            callback.onSuccess(getFileFromCache(key).absolutePath)
         }
     }
 
+    /**
+     * 回调成功
+     * */
     private fun callSuccess(key: String) {
         requests.runInTransaction {
             val info = requests.get(key) ?: return@runInTransaction
@@ -129,6 +79,9 @@ object NetFactory {
         }
     }
 
+    /**
+     * 回调失败
+     * */
     private fun callFailed(key: String, throwable: Throwable) {
         CsLogger.tag(ImageLoaderConstants.TAG).d(throwable)
         requests.runInTransaction {
@@ -137,12 +90,19 @@ object NetFactory {
         }
     }
 
+    /**
+     * 创建本地文件名称
+     * */
+    protected open fun createLocalFileName(key: String, url: String, contentType: String?): String {
+        return key
+    }
+
+    /**
+     * 执行请求
+     * */
     private fun doWorker(key: String, url: String) {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                val tempFile = cache.getFile("$key$FILE_PREFIX")
-                val realFile = cache.getFile(key)
-
                 var task: ITask? = null
                 try {
                     task = createTask(url)
@@ -150,15 +110,31 @@ object NetFactory {
                         callFailed(key, IllegalArgumentException(task.error()))
                         return ""
                     }
+                } catch (throwable: Throwable) {
+                    callFailed(key, throwable)
+                    CsFileUtils.close(task)
+                    task = null
+                }
 
-                    CsFileUtils.delete(tempFile)
+                if (task == null) {
+                    return ""
+                }
+
+                val localFileName = createLocalFileName(key, url, task.contentType())
+
+                val tempFile = getFileFromCache("$localFileName$FILE_PREFIX")
+                CsFileUtils.delete(tempFile)
+
+                val realFile = getFileFromCache(localFileName)
+
+                try {
                     CsFileWriteUtils.setSourceStream(task.bodyByteStream())
                         .writeSync(tempFile, shouldThrow = true)
-                    cache.update(tempFile.name)
+                    updateInfoForCache(tempFile.name)
 
                     CsFileUtils.delete(realFile)
                     if (CsFileUtils.rename(tempFile, realFile)) {
-                        cache.update(key)
+                        updateInfoForCache(realFile.name)
                         callSuccess(key)
                         return ""
                     }
@@ -188,4 +164,61 @@ object NetFactory {
         return Task(connection)
     }
 
+}
+
+private class RequestInfo(private val key: String, private val cache: AbstractCacheAction) {
+
+    companion object {
+        const val STATUS_UNKNOWN = 0
+        const val STATUS_RUNNING = 1
+        const val STATUS_SUCCESS = 2
+        const val STATUS_FAILED = 3
+    }
+
+    private val status = AtomicInteger(STATUS_UNKNOWN)
+    val callbacks = CsExcellentList<RequestCallback>()
+
+    fun isSuccess(): Boolean {
+        return status.get() == STATUS_SUCCESS
+    }
+
+    fun isRunning(): Boolean {
+        return status.get() == STATUS_RUNNING
+    }
+
+    fun setRunning() {
+        status.set(STATUS_RUNNING)
+    }
+
+    fun setSuccess() {
+        status.set(STATUS_SUCCESS)
+        if (callbacks.size() == 0) {
+            return
+        }
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                callbacks.forEachSync {
+                    it.onSuccess(cache.getFileFromCache(key).absolutePath)
+                }
+                callbacks.clear()
+                return ""
+            }
+        })?.start()
+    }
+
+    fun setFailed() {
+        status.set(STATUS_FAILED)
+        if (callbacks.size() == 0) {
+            return
+        }
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                callbacks.forEachSync {
+                    it.onFailed()
+                }
+                callbacks.clear()
+                return ""
+            }
+        })?.start()
+    }
 }

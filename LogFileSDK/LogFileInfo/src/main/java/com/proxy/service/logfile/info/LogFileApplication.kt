@@ -1,5 +1,6 @@
 package com.proxy.service.logfile.info
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
@@ -19,6 +20,7 @@ class LogFileApplication : CsBaseApplication(), OnAppShowStatusChangedCallback {
         return ModuleType.SDK
     }
 
+    @SuppressLint("Range")
     override fun priority(): Int {
         return -1000
     }

@@ -1,5 +1,6 @@
 package com.proxy.service.webview.info
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
 import android.webkit.WebView
@@ -25,6 +26,7 @@ class WebApplicationImpl : CsBaseApplication() {
         return ModuleType.SDK
     }
 
+    @SuppressLint("Range")
     override fun priority(): Int {
         return -550
     }

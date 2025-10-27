@@ -1,5 +1,6 @@
 package com.proxy.service.logfile.info
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Process
 import android.util.Log
@@ -26,6 +27,7 @@ class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
         return ModuleType.SDK
     }
 
+    @SuppressLint("Range")
     override fun priority(): Int {
         return -1000
     }

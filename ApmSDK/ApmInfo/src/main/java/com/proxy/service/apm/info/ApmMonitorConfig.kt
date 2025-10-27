@@ -1,5 +1,6 @@
 package com.proxy.service.apm.info
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apm.info.monitor.crash.java.JavaCrashMonitor
@@ -15,6 +16,7 @@ import com.proxy.service.core.application.base.CsBaseConfig
 @CloudApiService(serviceTag = "config/apm")
 class ApmMonitorConfig : CsBaseConfig() {
 
+    @SuppressLint("Range")
     override fun priority(): Int {
         return -999
     }

@@ -23,6 +23,11 @@ class LottieRequestImpl(
         return LottieOptionImpl(info)
     }
 
+    override fun loadUrl(url: String, key: String): ILottieOption {
+        info.sourceData = UrlLottieSource(url, key)
+        return LottieOptionImpl(info)
+    }
+
     override fun loadPath(path: String): ILottieOption {
         info.sourceData = PathLottieSource(path)
         return LottieOptionImpl(info)

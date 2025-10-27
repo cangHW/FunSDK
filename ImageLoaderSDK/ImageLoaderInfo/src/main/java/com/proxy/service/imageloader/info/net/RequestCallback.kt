@@ -1,4 +1,4 @@
-package com.proxy.service.imageloader.info.pag.net
+package com.proxy.service.imageloader.info.net
 
 /**
  * @author: cangHX

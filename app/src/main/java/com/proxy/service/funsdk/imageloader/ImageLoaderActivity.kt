@@ -13,7 +13,6 @@ import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityImageLoaderBinding
 import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
-import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationCallback
 import com.proxy.service.imageloader.base.option.pag.image.PagImageData
 import com.proxy.service.imageloader.base.option.pag.image.PagScaleMode
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
@@ -105,7 +104,8 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
 
     private val lottie = ResourceInfo(
 //        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/%E5%9B%BE%E7%89%87/lottie_loading.json",
-        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/test_lottie/loading.zip",
+//        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/test_lottie/loading.zip",
+        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/test_lottie/motivate_3.1_lottie.zip",
 //        "https://static0.xesimg.com/newgameresources/qd_cs_bx1/motivate_3.1_lottie.json",
         R.raw.lottie_loading
     )
@@ -229,6 +229,8 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
 
         val option = if (binding?.isFromNetWork?.isChecked == true) {
             loader?.loadUrl(info.url)
+//            loader?.loadAsset("image/motivate_3.1_lottie.zip")
+//            loader?.loadPath("/data/data/com.proxy.service.funsdk/cache/lottie_network_cache/lottie_cache_httpsreadbookstatictestosscnbeijingaliyuncscombizuploads20240507E99885E8AFBBE69CACtest_lottiemotivate_31_lottiezip.zip")
         } else if (binding?.isFromRes?.isChecked == true) {
             loader?.loadRes(info.res)
         } else {

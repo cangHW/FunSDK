@@ -5,7 +5,9 @@ import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieListener
 import com.airbnb.lottie.LottieTask
+import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import java.io.FileInputStream
+import java.util.zip.ZipInputStream
 
 /**
  * @author: cangHX
@@ -22,10 +24,22 @@ class PathLottieSource(
         var errorListener: LottieListener<Throwable>? = null
 
         try {
-            lottieTask = LottieCompositionFactory.fromJsonInputStream(FileInputStream(path), null)
+            lottieTask = if (path.endsWith(ImageLoaderConstants.LOTTIE_TYPE_JSON)) {
+                LottieCompositionFactory.fromJsonInputStream(FileInputStream(path), path)
+            } else if (path.endsWith(ImageLoaderConstants.LOTTIE_TYPE_ZIP)) {
+                LottieCompositionFactory.fromZipStream(ZipInputStream(FileInputStream(path)), path)
+            } else {
+                null
+            }
+
+            if (lottieTask == null) {
+                listener?.onError(IllegalArgumentException("The file path format is abnormal. path=$path"))
+                return
+            }
+
             successListener = LottieListener<LottieComposition> { result ->
                 removeLottieListener(lottieTask, successListener, errorListener)
-                if (result == null){
+                if (result == null) {
                     listener?.onError(null)
                     return@LottieListener
                 }
@@ -52,16 +66,5 @@ class PathLottieSource(
     ) {
         lottieTask?.removeListener(successListener)
         lottieTask?.removeFailureListener(errorListener)
-    }
-
-    override fun hashCode(): Int {
-        return path.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is PathLottieSource) {
-            return path == other.path
-        }
-        return false
     }
 }

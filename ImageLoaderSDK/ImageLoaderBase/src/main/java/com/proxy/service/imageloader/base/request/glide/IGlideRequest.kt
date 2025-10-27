@@ -17,13 +17,6 @@ import java.io.File
 interface IGlideRequest<L : IBaseOption<L, R>, R> : IRequest<L> {
 
     /**
-     * 加载网络文件, 支持同一链接指向不同内容
-     *
-     * @param key   自定义资源唯一标识
-     * */
-    fun loadUrl(url: String, key: String): L
-
-    /**
      * 加载资源文件
      * */
     fun loadRes(@RawRes @DrawableRes resourceId: Int): L

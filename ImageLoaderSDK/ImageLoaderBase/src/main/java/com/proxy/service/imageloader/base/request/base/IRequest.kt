@@ -15,6 +15,13 @@ interface IRequest<R> {
     fun loadUrl(url: String): R
 
     /**
+     * 加载网络文件, 支持同一链接指向不同内容
+     *
+     * @param key   自定义资源唯一标识
+     * */
+    fun loadUrl(url: String, key: String): R
+
+    /**
      * 加载本地文件
      * */
     fun loadPath(path: String): R

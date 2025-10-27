@@ -53,15 +53,4 @@ class ResLottieSource(
         lottieTask?.removeListener(successListener)
         lottieTask?.removeFailureListener(errorListener)
     }
-
-    override fun hashCode(): Int {
-        return "$resourceId".hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is ResLottieSource) {
-            return resourceId == other.resourceId
-        }
-        return false
-    }
 }

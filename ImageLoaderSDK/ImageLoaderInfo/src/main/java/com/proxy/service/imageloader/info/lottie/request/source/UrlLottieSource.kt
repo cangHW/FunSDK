@@ -1,10 +1,10 @@
 package com.proxy.service.imageloader.info.lottie.request.source
 
 import android.content.Context
-import com.airbnb.lottie.LottieComposition
-import com.airbnb.lottie.LottieCompositionFactory
-import com.airbnb.lottie.LottieListener
-import com.airbnb.lottie.LottieTask
+import android.text.TextUtils
+import com.proxy.service.imageloader.info.lottie.net.LottieNet
+import com.proxy.service.imageloader.info.net.RequestCallback
+import com.proxy.service.imageloader.info.utils.StringUtils
 
 /**
  * @author: cangHX
@@ -13,59 +13,33 @@ import com.airbnb.lottie.LottieTask
  */
 class UrlLottieSource(
     private val url: String,
-    private val key: String?
+    private val cacheKey: String?
 ) : BaseLottieSourceData() {
 
+    companion object {
+        private const val CACHE_KEY_POSTFIX = "lottie_cache_"
+    }
+
     override fun load(context: Context?, listener: ILottieLoadCallback?) {
-        var lottieTask: LottieTask<LottieComposition>? = null
-        var successListener: LottieListener<LottieComposition>? = null
-        var errorListener: LottieListener<Throwable>? = null
+        val key = if (TextUtils.isEmpty(cacheKey)) {
+            "${CACHE_KEY_POSTFIX}${StringUtils.urlToString(url)}"
+        } else {
+            "${CACHE_KEY_POSTFIX}$cacheKey"
+        }
 
         try {
-            lottieTask = if (key.isNullOrEmpty() || key.isBlank()) {
-                LottieCompositionFactory.fromUrl(context, url)
-            } else {
-                LottieCompositionFactory.fromUrl(context, url, key)
-            }
-            successListener = LottieListener<LottieComposition> { result ->
-                removeLottieListener(lottieTask, successListener, errorListener)
-                if (result == null){
-                    listener?.onError(null)
-                    return@LottieListener
+            LottieNet.request(key, url, object : RequestCallback {
+                override fun onSuccess(path: String) {
+                    val pathLottieSource = PathLottieSource(path)
+                    pathLottieSource.load(context, listener)
                 }
-                listener?.onResult(result)
-            }
 
-            errorListener = LottieListener<Throwable> { result ->
-                removeLottieListener(lottieTask, successListener, errorListener)
-                listener?.onError(result)
-            }
-
-            lottieTask.addListener(successListener)
-            lottieTask.addFailureListener(errorListener)
+                override fun onFailed() {
+                    listener?.onError(null)
+                }
+            })
         } catch (throwable: Throwable) {
             listener?.onError(throwable)
-            removeLottieListener(lottieTask, successListener, errorListener)
         }
-    }
-
-    private fun removeLottieListener(
-        lottieTask: LottieTask<LottieComposition>?,
-        successListener: LottieListener<LottieComposition>?,
-        errorListener: LottieListener<Throwable>?
-    ) {
-        lottieTask?.removeListener(successListener)
-        lottieTask?.removeFailureListener(errorListener)
-    }
-
-    override fun hashCode(): Int {
-        return (url + key).hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is UrlLottieSource) {
-            return url == other.url && key == other.key
-        }
-        return false
     }
 }

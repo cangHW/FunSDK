@@ -52,15 +52,4 @@ class AssetLottieSource(
         lottieTask?.removeListener(successListener)
         lottieTask?.removeFailureListener(errorListener)
     }
-
-    override fun hashCode(): Int {
-        return fileName.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is AssetLottieSource) {
-            return fileName == other.fileName
-        }
-        return false
-    }
 }

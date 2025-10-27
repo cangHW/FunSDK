@@ -1,4 +1,4 @@
-package com.proxy.service.imageloader.info.pag.net.task
+package com.proxy.service.imageloader.info.net.task
 
 import java.io.Closeable
 import java.io.IOException
