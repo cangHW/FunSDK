@@ -13,8 +13,6 @@ namespace spdlog {
         std::unique_ptr<spdlog::security::ICompressionProvider> provider = nullptr;
         if (compressionMode == SecurityBlockConstant::COMPRESSION_LZ4) {
             provider.reset(new LZ4CompressionProvider());
-        } else if (compressionMode == SecurityBlockConstant::COMPRESSION_GZIP) {
-            provider.reset(new GzipCompressionProvider());
         }
         return provider;
     }
@@ -31,8 +29,6 @@ namespace spdlog {
 
         if (encryptionMode == SecurityBlockConstant::ENCRYPTION_CHACHA20) {
             provider.reset(new ChaCha20CryptoProvider(encryptionKey));
-        } else if (encryptionMode == SecurityBlockConstant::ENCRYPTION_AES) {
-            provider.reset(new AESCryptoProvider(encryptionKey));
         }
         return provider;
     }

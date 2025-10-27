@@ -22,12 +22,10 @@ public:
     // 压缩
     static constexpr uint32_t COMPRESSION_NONE = 0;
     static constexpr uint32_t COMPRESSION_LZ4 = 1;
-    static constexpr uint32_t COMPRESSION_GZIP = 2;
 
     //加密
     static constexpr uint32_t ENCRYPTION_NONE = 0;
     static constexpr uint32_t ENCRYPTION_CHACHA20 = 1;
-    static constexpr uint32_t ENCRYPTION_AES = 2;
 };
 
 // 安全块头结构定义
@@ -100,8 +98,8 @@ public:
         );
 
         if (compressed_size <= 0) {
-            // 压缩失败，返回原始数据
-            return data;
+            // 压缩失败，返回空数据
+            return {};
         }
 
         // 调整 vector 大小到实际压缩后的大小
@@ -140,30 +138,6 @@ public:
     }
 };
 
-// 保留模拟压缩实现作为备用
-class GzipCompressionProvider : public spdlog::security::ICompressionProvider {
-public:
-
-    uint32_t getAlgorithm() override {
-        return SecurityBlockConstant::COMPRESSION_GZIP;
-    }
-
-    std::vector<uint8_t> compress(const std::vector<uint8_t> &data) override {
-        // 模拟压缩：添加标记
-        std::string compressed_marker = "[GZIP_COMPRESSED] ";
-        std::vector<uint8_t> result;
-        result.insert(result.end(), compressed_marker.begin(), compressed_marker.end());
-        result.insert(result.end(), data.begin(), data.end());
-        return result;
-    }
-
-    std::vector<uint8_t>
-    decompress(const std::vector<uint8_t> &data, uint32_t original_size) override {
-        // 模拟解压缩
-        return data;
-    }
-};
-
 // ChaCha20 加密提供程序
 class ChaCha20CryptoProvider : public spdlog::security::ICryptoProvider {
 private:
@@ -194,7 +168,7 @@ public:
             // 如果安全随机数生成失败，使用降级方案
             if (chacha20_generate_nonce(nonce) != 0) {
                 // 如果降级方案也失败，返回空数据（安全失败）
-                return data;
+                return {};
             }
         }
 
@@ -202,7 +176,7 @@ public:
         std::vector<uint8_t> encrypted(data.size());
         if (chacha20_encrypt(derived_key_, nonce, 0, data.data(), data.size(), encrypted.data()) != 0) {
             // 加密失败，返回空数据（安全失败）
-            return data;
+            return {};
         }
 
         // 在加密数据前添加 nonce
@@ -236,32 +210,5 @@ public:
         return decrypted;
     }
 
-};
-
-// 模拟加密实现
-class AESCryptoProvider : public spdlog::security::ICryptoProvider {
-private:
-    std::string key_;
-
-public:
-    explicit AESCryptoProvider(const std::string &key) : key_(key) {}
-
-    uint32_t getEncryption() override {
-        return SecurityBlockConstant::ENCRYPTION_AES;
-    }
-
-    std::vector<uint8_t> encrypt(const std::vector<uint8_t> &data) override {
-        // 模拟加密：添加标记和密钥信息
-        std::string encrypted_marker = "[AES_ENCRYPTED:" + key_ + "] ";
-        std::vector<uint8_t> result;
-        result.insert(result.end(), encrypted_marker.begin(), encrypted_marker.end());
-        result.insert(result.end(), data.begin(), data.end());
-        return result;
-    }
-
-    std::vector<uint8_t> decrypt(const std::vector<uint8_t> &data) override {
-        // 模拟解密
-        return data;
-    }
 };
 
