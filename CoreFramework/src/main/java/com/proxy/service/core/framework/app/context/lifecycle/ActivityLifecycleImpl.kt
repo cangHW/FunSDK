@@ -19,13 +19,13 @@ import java.util.WeakHashMap
  * @data: 2024/7/2 11:23
  * @desc:
  */
-class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
+class ActivityLifecycleImpl : ActivityLifecycleCallbacks {
 
     companion object {
         private const val TAG = "${CoreConfig.TAG}Activity"
-        private val mInstance by lazy { ActivityStatusLifecycleImpl() }
+        private val mInstance by lazy { ActivityLifecycleImpl() }
 
-        fun getInstance(): ActivityStatusLifecycleImpl {
+        fun getInstance(): ActivityLifecycleImpl {
             return mInstance
         }
     }
@@ -38,31 +38,31 @@ class ActivityStatusLifecycleImpl : ActivityLifecycleCallbacks {
     private val lifecycleSync: IMap<AbstractActivityLifecycle, Activity> = CsExcellentMap()
     private val lifecycleAsync: IMap<AbstractActivityLifecycle, Activity> = CsExcellentMap()
 
-    fun addActivityLifecycle(
+    fun addActivityLifecycleCallback(
         activity: Activity?,
-        isSync: Boolean,
-        activityLifecycle: AbstractActivityLifecycle
+        isSyncMode: Boolean,
+        lifecycleCallback: AbstractActivityLifecycle
     ) {
-        if (isSync) {
+        if (isSyncMode) {
             activity?.let {
-                lifecycleSync.putSync(activityLifecycle, it)
+                lifecycleSync.putSync(lifecycleCallback, it)
             } ?: let {
-                globalLifecycleSync.putSync(activityLifecycle)
+                globalLifecycleSync.putSync(lifecycleCallback)
             }
         } else {
             activity?.let {
-                lifecycleAsync.putSync(activityLifecycle, it)
+                lifecycleAsync.putSync(lifecycleCallback, it)
             } ?: let {
-                globalLifecycleAsync.putSync(activityLifecycle)
+                globalLifecycleAsync.putSync(lifecycleCallback)
             }
         }
     }
 
-    fun removeActivityLifecycle(activityLifecycle: AbstractActivityLifecycle) {
-        globalLifecycleSync.removeSync(activityLifecycle)
-        globalLifecycleAsync.removeSync(activityLifecycle)
-        lifecycleSync.removeSync(activityLifecycle)
-        lifecycleAsync.removeSync(activityLifecycle)
+    fun removeActivityLifecycleCallback(lifecycleCallback: AbstractActivityLifecycle) {
+        globalLifecycleSync.removeSync(lifecycleCallback)
+        globalLifecycleAsync.removeSync(lifecycleCallback)
+        lifecycleSync.removeSync(lifecycleCallback)
+        lifecycleAsync.removeSync(lifecycleCallback)
     }
 
 

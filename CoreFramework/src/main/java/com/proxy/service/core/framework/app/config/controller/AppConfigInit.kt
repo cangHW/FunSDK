@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.proxy.service.core.framework.app.config.CsConfigUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
-import com.proxy.service.core.framework.app.context.callback.AbstractAppStateChanged
+import com.proxy.service.core.framework.app.context.callback.AbstractAppConfigStateChanged
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -24,7 +24,7 @@ object AppConfigInit {
         }
         if (isInit.compareAndSet(false, true)) {
             CsContextManager.addActivityLifecycleCallback(null, true, activityLifecycle)
-            CsContextManager.addAppStateChangedCallback(appStateChanged)
+            CsContextManager.addAppConfigStateCallback(appStateChanged)
         }
     }
 
@@ -34,7 +34,7 @@ object AppConfigInit {
         }
         if (isInit.compareAndSet(true, false)) {
             CsContextManager.removeActivityLifecycleCallback(activityLifecycle)
-            CsContextManager.removeAppStateChangedCallback(appStateChanged)
+            CsContextManager.removeAppConfigStateCallback(appStateChanged)
         }
     }
 
@@ -45,7 +45,7 @@ object AppConfigInit {
         }
     }
 
-    private val appStateChanged = object : AbstractAppStateChanged() {
+    private val appStateChanged = object : AbstractAppConfigStateChanged() {
         override fun onConfigurationChanged(newConfig: Configuration) {
             ConfigurationManager.systemConfigurationChange(newConfig)
             ConfigurationManager.applyConfiguration(CsContextManager.getApplication())

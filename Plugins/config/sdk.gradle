@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.1.20",
+                    version           : "1.1.21",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -113,7 +113,7 @@ ext {
             // 日志文件库
             LogFileInfo    : [
                     artifact          : "Service-LogFile-Spdlog",
-                    version           : "0.2.6",
+                    version           : "0.2.7",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

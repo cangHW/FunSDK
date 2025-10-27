@@ -5,7 +5,7 @@ package com.proxy.service.core.framework.app.context.callback
  * @data: 2024/7/2 11:32
  * @desc:
  */
-interface OnAppShowStatusChangedCallback {
+interface OnAppVisibilityCallback {
 
     /**
      * 应用进入前台

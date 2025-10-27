@@ -5,7 +5,7 @@ import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
+import com.proxy.service.core.framework.app.context.callback.OnAppVisibilityCallback
 import com.proxy.service.logfile.info.manager.LogFileCore
 
 /**
@@ -14,7 +14,7 @@ import com.proxy.service.logfile.info.manager.LogFileCore
  * @desc:
  */
 @CloudApiService(serviceTag = "application/log_file")
-class LogFileApplication : CsBaseApplication(), OnAppShowStatusChangedCallback {
+class LogFileApplication : CsBaseApplication(), OnAppVisibilityCallback {
 
     override fun moduleType(): ModuleType {
         return ModuleType.SDK
@@ -26,7 +26,7 @@ class LogFileApplication : CsBaseApplication(), OnAppShowStatusChangedCallback {
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {
-        CsContextManager.addAppShowStatusChangedCallback(this)
+        CsContextManager.addAppVisibilityCallback(this)
     }
 
     override fun onAppBackground() {

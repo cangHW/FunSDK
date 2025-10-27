@@ -5,9 +5,9 @@ import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import com.proxy.service.core.framework.app.context.common.ComponentCallbacksImpl
-import com.proxy.service.core.framework.app.context.lifecycle.ActivityStatusLifecycleImpl
-import com.proxy.service.core.framework.app.context.lifecycle.AppShowStatusLifecycleImpl
-import com.proxy.service.core.framework.app.context.lifecycle.TopActivityLifecycleImpl
+import com.proxy.service.core.framework.app.context.lifecycle.ActivityLifecycleImpl
+import com.proxy.service.core.framework.app.context.lifecycle.AppVisibilityImpl
+import com.proxy.service.core.framework.app.context.lifecycle.TopActivityImpl
 
 /**
  * @author: cangHX
@@ -37,9 +37,9 @@ object ContextInit {
             }
         }
         ContextInit.application = application
-        ContextInit.application?.registerActivityLifecycleCallbacks(AppShowStatusLifecycleImpl.getInstance())
-        ContextInit.application?.registerActivityLifecycleCallbacks(ActivityStatusLifecycleImpl.getInstance())
-        ContextInit.application?.registerActivityLifecycleCallbacks(TopActivityLifecycleImpl.getInstance())
+        ContextInit.application?.registerActivityLifecycleCallbacks(AppVisibilityImpl.getInstance())
+        ContextInit.application?.registerActivityLifecycleCallbacks(ActivityLifecycleImpl.getInstance())
+        ContextInit.application?.registerActivityLifecycleCallbacks(TopActivityImpl.getInstance())
         ContextInit.application?.registerComponentCallbacks(ComponentCallbacksImpl.getInstance())
     }
 

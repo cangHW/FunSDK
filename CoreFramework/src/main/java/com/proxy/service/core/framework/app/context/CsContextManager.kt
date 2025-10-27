@@ -5,12 +5,12 @@ import android.app.Activity
 import android.app.Application
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.callback.AbstractActivityLifecycle
-import com.proxy.service.core.framework.app.context.callback.AbstractAppStateChanged
-import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
+import com.proxy.service.core.framework.app.context.callback.AbstractAppConfigStateChanged
+import com.proxy.service.core.framework.app.context.callback.OnAppVisibilityCallback
 import com.proxy.service.core.framework.app.context.common.ComponentCallbacksImpl
-import com.proxy.service.core.framework.app.context.lifecycle.ActivityStatusLifecycleImpl
-import com.proxy.service.core.framework.app.context.lifecycle.AppShowStatusLifecycleImpl
-import com.proxy.service.core.framework.app.context.lifecycle.TopActivityLifecycleImpl
+import com.proxy.service.core.framework.app.context.lifecycle.ActivityLifecycleImpl
+import com.proxy.service.core.framework.app.context.lifecycle.AppVisibilityImpl
+import com.proxy.service.core.framework.app.context.lifecycle.TopActivityImpl
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.callback.MultiRunnableEmitter
@@ -43,21 +43,21 @@ object CsContextManager {
      * 获取全部 activity
      * */
     fun getAllActivity(): List<Activity> {
-        return TopActivityLifecycleImpl.getInstance().getAllActivity()
+        return TopActivityImpl.getInstance().getAllActivity()
     }
 
     /**
      * 获取当前正在显示的最上层 activity
      * */
     fun getTopActivity(): Activity? {
-        return TopActivityLifecycleImpl.getInstance().getTopActivity()
+        return TopActivityImpl.getInstance().getTopActivity()
     }
 
     /**
      * 关闭所有 activity
      * */
     fun finishAllActivity() {
-        TopActivityLifecycleImpl.getInstance().getAllActivity().forEach {
+        TopActivityImpl.getInstance().getAllActivity().forEach {
             it.finish()
         }
     }
@@ -65,11 +65,11 @@ object CsContextManager {
     /**
      * 关闭除了指定 activity 之外的所有 activity
      * */
-    fun finishActivityWithOut(activityClassName: List<String>) {
+    fun finishAllActivitiesExcept(activityClassNames: List<String>) {
         CsTask.computationThread()?.call(object : IMultiRunnable<Activity> {
             override fun accept(emitter: MultiRunnableEmitter<Activity>) {
-                TopActivityLifecycleImpl.getInstance().getAllActivity().forEach {
-                    if (!activityClassName.contains(it.javaClass.name)) {
+                TopActivityImpl.getInstance().getAllActivity().forEach {
+                    if (!activityClassNames.contains(it.javaClass.name)) {
                         emitter.onNext(it)
                     }
                 }
@@ -85,11 +85,11 @@ object CsContextManager {
     /**
      * 关闭指定 activity
      * */
-    fun finishActivityBy(activityClassName: List<String>) {
+    fun finishSpecificActivities(activityClassNames: List<String>) {
         CsTask.computationThread()?.call(object : IMultiRunnable<Activity> {
             override fun accept(emitter: MultiRunnableEmitter<Activity>) {
-                TopActivityLifecycleImpl.getInstance().getAllActivity().forEach {
-                    if (activityClassName.contains(it.javaClass.name)) {
+                TopActivityImpl.getInstance().getAllActivity().forEach {
+                    if (activityClassNames.contains(it.javaClass.name)) {
                         emitter.onNext(it)
                     }
                 }
@@ -106,61 +106,61 @@ object CsContextManager {
      * 当前应用是否在后台
      * */
     fun isInBackground(): Boolean {
-        return AppShowStatusLifecycleImpl.getInstance().isInBackground()
+        return AppVisibilityImpl.getInstance().isInBackground()
     }
 
     /**
      * 添加应用显示状态变化监听
      * */
-    fun addAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        AppShowStatusLifecycleImpl.getInstance().addAppShowStatusChangedCallback(callback)
+    fun addAppVisibilityCallback(callback: OnAppVisibilityCallback) {
+        AppVisibilityImpl.getInstance().addAppVisibilityCallback(callback)
     }
 
     /**
      * 移除应用显示状态变化监听
      * */
-    fun removeAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        AppShowStatusLifecycleImpl.getInstance().removeAppShowStatusChangedCallback(callback)
+    fun removeAppVisibilityCallback(callback: OnAppVisibilityCallback) {
+        AppVisibilityImpl.getInstance().removeAppVisibilityCallback(callback)
     }
 
     /**
      * 添加 activity 生命周期变化监听
      *
-     * @param activity 准备监听的 activity, 如果为 null 则监听全部 activity
-     * @param isSync  是否同步模式, 同步模式可用于在某些生命周期节点修改 activity 状态
+     * @param activity      准备监听的 activity, 如果为 null 则监听全部 activity
+     * @param isSyncMode    是否同步模式, 同步模式可用于在某些生命周期节点修改 activity 状态
      * */
     fun addActivityLifecycleCallback(
         activity: Activity?,
-        isSync: Boolean = false,
-        activityLifecycle: AbstractActivityLifecycle
+        isSyncMode: Boolean = false,
+        lifecycleCallback: AbstractActivityLifecycle
     ) {
-        ActivityStatusLifecycleImpl.getInstance()
-            .addActivityLifecycle(
+        ActivityLifecycleImpl.getInstance()
+            .addActivityLifecycleCallback(
                 activity,
-                isSync,
-                activityLifecycle
+                isSyncMode,
+                lifecycleCallback
             )
     }
 
     /**
      * 移除 activity 生命周期变化监听
      * */
-    fun removeActivityLifecycleCallback(activityLifecycle: AbstractActivityLifecycle) {
-        ActivityStatusLifecycleImpl.getInstance()
-            .removeActivityLifecycle(activityLifecycle)
+    fun removeActivityLifecycleCallback(lifecycleCallback: AbstractActivityLifecycle) {
+        ActivityLifecycleImpl.getInstance()
+            .removeActivityLifecycleCallback(lifecycleCallback)
     }
 
     /**
-     * 添加 app 状态变化监听
+     * 添加 app 配置状态变化监听
      * */
-    fun addAppStateChangedCallback(appStateChanged: AbstractAppStateChanged) {
-        ComponentCallbacksImpl.getInstance().addAppStateChanged(appStateChanged)
+    fun addAppConfigStateCallback(appConfigStateChanged: AbstractAppConfigStateChanged) {
+        ComponentCallbacksImpl.getInstance().addAppConfigStateChanged(appConfigStateChanged)
     }
 
     /**
-     * 移除 app 状态变化监听
+     * 移除 app 配置状态变化监听
      * */
-    fun removeAppStateChangedCallback(appStateChanged: AbstractAppStateChanged) {
-        ComponentCallbacksImpl.getInstance().removeAppStateChanged(appStateChanged)
+    fun removeAppConfigStateCallback(appConfigStateChanged: AbstractAppConfigStateChanged) {
+        ComponentCallbacksImpl.getInstance().removeAppConfigStateChanged(appConfigStateChanged)
     }
 }

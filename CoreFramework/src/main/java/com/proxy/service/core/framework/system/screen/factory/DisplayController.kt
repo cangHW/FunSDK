@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.system.screen.factory
 import android.content.res.Configuration
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.app.context.callback.AbstractAppStateChanged
+import com.proxy.service.core.framework.app.context.callback.AbstractAppConfigStateChanged
 import com.proxy.service.core.framework.collections.CsExcellentSet
 import com.proxy.service.core.framework.collections.base.ISet
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
@@ -34,7 +34,7 @@ class DisplayController private constructor() {
     private var orientation: OrientationEnum? = null
 
 
-    private val appStateChanged = object : AbstractAppStateChanged() {
+    private val appConfigStateChanged = object : AbstractAppConfigStateChanged() {
         override fun onConfigurationChanged(newConfig: Configuration) {
             callbacks.forEachSync {
                 if (it is ScreenRotationCallback) {
@@ -47,7 +47,7 @@ class DisplayController private constructor() {
     }
 
     init {
-        CsContextManager.addAppStateChangedCallback(appStateChanged)
+        CsContextManager.addAppConfigStateCallback(appConfigStateChanged)
 
         this.rotation = CsScreenUtils.getScreenRotation(CsContextManager.getTopActivity())
         this.orientation = getScreenOrientationEnum()

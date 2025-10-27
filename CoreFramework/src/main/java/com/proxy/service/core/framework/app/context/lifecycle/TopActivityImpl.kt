@@ -12,12 +12,12 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @data: 2024/7/2 11:23
  * @desc:
  */
-class TopActivityLifecycleImpl : ActivityLifecycleCallbacks {
+class TopActivityImpl : ActivityLifecycleCallbacks {
 
     companion object {
         private const val TAG = "${CoreConfig.TAG}Activity"
-        private val mInstance by lazy { TopActivityLifecycleImpl() }
-        fun getInstance(): TopActivityLifecycleImpl {
+        private val mInstance by lazy { TopActivityImpl() }
+        fun getInstance(): TopActivityImpl {
             return mInstance
         }
     }

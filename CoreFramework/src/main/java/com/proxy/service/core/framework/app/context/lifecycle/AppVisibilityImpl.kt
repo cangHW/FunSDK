@@ -3,7 +3,7 @@ package com.proxy.service.core.framework.app.context.lifecycle
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
-import com.proxy.service.core.framework.app.context.callback.OnAppShowStatusChangedCallback
+import com.proxy.service.core.framework.app.context.callback.OnAppVisibilityCallback
 import com.proxy.service.core.framework.collections.CsExcellentSet
 import com.proxy.service.core.framework.collections.base.ISet
 import com.proxy.service.core.service.task.CsTask
@@ -15,23 +15,23 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/7/2 11:23
  * @desc:
  */
-class AppShowStatusLifecycleImpl : ActivityLifecycleCallbacks {
+class AppVisibilityImpl : ActivityLifecycleCallbacks {
 
     companion object {
-        private val mInstance by lazy { AppShowStatusLifecycleImpl() }
-        fun getInstance(): AppShowStatusLifecycleImpl {
+        private val mInstance by lazy { AppVisibilityImpl() }
+        fun getInstance(): AppVisibilityImpl {
             return mInstance
         }
     }
 
-    private val appShowStatusChangedCallbacks: ISet<OnAppShowStatusChangedCallback> = CsExcellentSet()
+    private val appVisibilityCallbacks: ISet<OnAppVisibilityCallback> = CsExcellentSet()
 
-    fun addAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        appShowStatusChangedCallbacks.putSync(callback)
+    fun addAppVisibilityCallback(callback: OnAppVisibilityCallback) {
+        appVisibilityCallbacks.putSync(callback)
     }
 
-    fun removeAppShowStatusChangedCallback(callback: OnAppShowStatusChangedCallback) {
-        appShowStatusChangedCallbacks.removeSync(callback)
+    fun removeAppVisibilityCallback(callback: OnAppVisibilityCallback) {
+        appVisibilityCallbacks.removeSync(callback)
     }
 
     fun isInBackground(): Boolean {
@@ -90,8 +90,8 @@ class AppShowStatusLifecycleImpl : ActivityLifecycleCallbacks {
 
     }
 
-    private fun forEach(callback: (OnAppShowStatusChangedCallback) -> Unit) {
-        appShowStatusChangedCallbacks.forEachAsync {
+    private fun forEach(callback: (OnAppVisibilityCallback) -> Unit) {
+        appVisibilityCallbacks.forEachAsync {
             CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
                     callback(it)

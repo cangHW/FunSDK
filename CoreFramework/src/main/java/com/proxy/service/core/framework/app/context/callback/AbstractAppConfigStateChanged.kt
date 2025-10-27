@@ -7,7 +7,7 @@ import android.content.res.Configuration
  * @data: 2025/9/15 15:44
  * @desc:
  */
-abstract class AbstractAppStateChanged {
+abstract class AbstractAppConfigStateChanged {
 
     /**
      * 应用配置变化
