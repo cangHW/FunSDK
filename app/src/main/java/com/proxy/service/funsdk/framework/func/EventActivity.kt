@@ -65,8 +65,8 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 CsEventManager.addWeakCallback(mainThreadEventCallback, this)
                 CsEventManager.addWeakCallback(workThreadEventCallback, this)
             } else {
-                CsEventManager.remove(mainThreadEventCallback)
-                CsEventManager.remove(workThreadEventCallback)
+                CsEventManager.removeCallback(mainThreadEventCallback)
+                CsEventManager.removeCallback(workThreadEventCallback)
             }
         }
 

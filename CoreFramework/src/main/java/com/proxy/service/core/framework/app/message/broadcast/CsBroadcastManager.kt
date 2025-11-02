@@ -73,8 +73,7 @@ object CsBroadcastManager {
     fun sendMessage(action: String, toPkg: String, uri: Uri?, extras: Bundle?) {
         if (!CsInstallUtils.isInstallApp(toPkg)) {
             CsLogger.tag(BroadcastReceiverImpl.TAG)
-                .e("The target app is not installed. package: $toPkg")
-            return
+                .w("The target app may not be installed. package: $toPkg")
         }
 
         BroadcastReceiverImpl.send(checkAction(action), toPkg, uri, extras)

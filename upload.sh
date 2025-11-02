@@ -26,7 +26,7 @@ upArray=(
 #  ":Permission:PermissionBase"
 
     # 日志文件库
-  ":LogFileSDK:LogFileInfo"
+#  ":LogFileSDK:LogFileInfo"
 
     # 性能监控库
 #  ":ApmSDK:ApmInfo"

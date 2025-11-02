@@ -62,7 +62,7 @@ object CsEventManager {
     /**
      * 移除监听
      * */
-    fun remove(callback: IEvent) {
+    fun removeCallback(callback: IEvent) {
         callbackMap.removeSync(callback)
     }
 

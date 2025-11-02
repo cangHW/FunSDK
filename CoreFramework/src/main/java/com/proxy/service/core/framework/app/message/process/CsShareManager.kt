@@ -48,6 +48,9 @@ class CsShareManager private constructor(private val toPkg: String, private val 
 
         /**
          * 创建消息发送器
+         *
+         * @param toPkg     目标应用包名
+         * @param method    目标方法
          * */
         fun create(toPkg: String, method: String): CsShareManager {
             return CsShareManager(toPkg, method)
@@ -82,7 +85,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     private var receiveChannel = ReceiveChannel.AUTO
 
     /**
-     * 设置版本号, 用于调用同一功能的不同版本, 需要 sever 端支持
+     * 设置版本号, 用于调用同一功能的不同版本, 需要 sever 端支持, 默认: [DEFAULT_VERSION]
      * */
     fun setVersion(version: String): CsShareManager {
         this.version = version
@@ -90,7 +93,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     }
 
     /**
-     * 设置超时时间
+     * 设置超时时间, 默认: [DEFAULT_TIMEOUT]
      * */
     fun setTimeout(timeout: Long, unit: TimeUnit): CsShareManager {
         this.timeout = unit.toMillis(timeout)

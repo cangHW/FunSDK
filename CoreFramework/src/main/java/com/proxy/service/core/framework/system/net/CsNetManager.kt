@@ -207,7 +207,7 @@ object CsNetManager {
     /**
      * 移除网络状态变化监听
      * */
-    fun removeWeakNetConnectChangedListener(listener: NetConnectChangedListener) {
+    fun removeNetConnectChangedListener(listener: NetConnectChangedListener) {
         synchronized(weakNetMapper) {
             weakNetMapper.remove(listener)
             checkWeakNetMapperState()

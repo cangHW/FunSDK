@@ -70,7 +70,7 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
         }
 
         /**
-         * 发送无序广播
+         * 发送有序广播
          *
          * @param action                发送意图
          * @param toPkg                 接收方包名

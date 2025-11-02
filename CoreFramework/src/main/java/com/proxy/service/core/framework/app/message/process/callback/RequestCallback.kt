@@ -34,7 +34,7 @@ abstract class RequestCallback {
      * 进度回调
      *
      * @param version   版本
-     * @param time      消息发送时间
+     * @param time      进度消息开始返回时间, 可用于性能统计, 13 位时间戳
      * @param method    功能名称
      * @param content   消息内容
      * */
@@ -44,7 +44,7 @@ abstract class RequestCallback {
      * 成功回调
      *
      * @param version   版本
-     * @param time      消息发送时间
+     * @param time      成功消息开始返回时间, 可用于性能统计, 13 位时间戳
      * @param method    功能名称
      * @param content   消息内容
      * */

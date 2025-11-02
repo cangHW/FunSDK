@@ -42,7 +42,7 @@ object CsProviderManager {
     fun sendMessage(toPkg: String, method: String, arg: String?, extras: Bundle?): Bundle? {
         if (!CsInstallUtils.isInstallApp(toPkg)) {
             CsLogger.tag(ContentProviderImpl.TAG)
-                .e("The target app is not installed. package: $toPkg")
+                .e("The target app may not be installed. package: $toPkg")
             return null
         }
 
