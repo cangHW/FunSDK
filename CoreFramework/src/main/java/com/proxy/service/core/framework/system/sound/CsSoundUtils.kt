@@ -2,6 +2,7 @@ package com.proxy.service.core.framework.system.sound
 
 import android.media.AudioAttributes
 import android.media.SoundPool
+import androidx.annotation.FloatRange
 import androidx.annotation.RawRes
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -28,7 +29,7 @@ object CsSoundUtils {
 
     /**
      * 初始化, 可以多次调用。
-     * 根据 [SoundConfig] 中的 name 信息, 可以初始化多套不同配置
+     * 根据 [SoundConfig] 中的 soundPoolName 信息, 可以初始化多套不同配置
      * */
     fun init(config: SoundConfig) {
         if (soundPoolMap.containsKey(config.getSoundPoolName())) {
@@ -211,8 +212,8 @@ object CsSoundUtils {
      * */
     fun play(
         soundTag: String,
-        leftVolume: Float,
-        rightVolume: Float,
+        @FloatRange(from = 0.0, to = 1.0) leftVolume: Float,
+        @FloatRange(from = 0.0, to = 1.0) rightVolume: Float,
         loop: Int,
         rate: Float
     ): Int {
@@ -221,7 +222,14 @@ object CsSoundUtils {
             return -1
         }
         val soundPool = getSoundPool(soundInfo.poolName) ?: return -1
-        return soundPool.play(soundInfo.soundId, leftVolume, rightVolume, 0, loop, rate)
+
+        val realLoop = if (loop < 0) {
+            -1
+        } else {
+            loop
+        }
+
+        return soundPool.play(soundInfo.soundId, leftVolume, rightVolume, 0, realLoop, rate)
     }
 
     /**
@@ -290,7 +298,7 @@ object CsSoundUtils {
     }
 
     /**
-     * 清除全部资源
+     * 释放目标音频池, 包括音频池内全部资源与音频池配置
      * */
     fun release(soundPoolName: String = Config.DEFAULT_POOL_NAME) {
         synchronized(soundPoolMap) {

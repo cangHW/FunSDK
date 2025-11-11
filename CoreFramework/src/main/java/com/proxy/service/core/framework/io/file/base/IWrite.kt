@@ -13,35 +13,47 @@ interface IWrite {
 
     /**
      * 同步写入文件
-     * @param append    是否追加写入
+     *
+     * @param append        是否追加写入
+     * @param shouldThrow   是否对外抛异常
      * */
     fun writeSync(file: String, append: Boolean = false, shouldThrow: Boolean = false): Boolean
 
     /**
      * 异步写入文件
+     *
+     * @param callback  结果回调
      * @param append    是否追加写入
      * */
     fun writeAsync(file: String, callback: IoCallback? = null, append: Boolean = false)
 
     /**
      * 同步写入文件
+     *
      * @param append    是否追加写入
+     * @param shouldThrow   是否对外抛异常
      * */
     fun writeSync(file: File, append: Boolean = false, shouldThrow: Boolean = false): Boolean
 
     /**
      * 异步写入文件
+     *
+     * @param callback  结果回调
      * @param append    是否追加写入
      * */
     fun writeAsync(file: File, callback: IoCallback? = null, append: Boolean = false)
 
     /**
      * 同步写入文件
+     *
+     * @param shouldThrow   是否对外抛异常
      * */
     fun writeSync(stream: OutputStream, shouldThrow: Boolean = false): Boolean
 
     /**
      * 异步写入文件
+     *
+     * @param callback  结果回调
      * */
     fun writeAsync(stream: OutputStream, callback: IoCallback? = null)
 

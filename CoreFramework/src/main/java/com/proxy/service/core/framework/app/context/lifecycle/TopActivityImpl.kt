@@ -103,7 +103,7 @@ class TopActivityImpl : ActivityLifecycleCallbacks {
             val activityThreadClass = Class.forName("android.app.ActivityThread")
             val currentActivityThreadMethod =
                 activityThreadClass.getMethod("currentActivityThread").invoke(null)
-            val mActivityListField = activityThreadClass.getDeclaredField("mActivityList")
+            val mActivityListField = activityThreadClass.getDeclaredField("mActivities")
             mActivityListField.isAccessible = true
             val activities = mActivityListField[currentActivityThreadMethod] as Map<*, *>
             for (activityRecord in activities.values) {

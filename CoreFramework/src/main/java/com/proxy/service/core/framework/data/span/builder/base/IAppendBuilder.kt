@@ -19,7 +19,7 @@ interface IAppendBuilder : IBaseBuilder {
     /**
      * 追加普通文本
      * */
-    fun appendTxt(text: CharSequence): ITextBuilder
+    fun appendText(text: CharSequence): ITextBuilder
 
     /*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***/
 
@@ -48,7 +48,7 @@ interface IAppendBuilder : IBaseBuilder {
     /**
      * 追加空格
      * */
-    fun appendSpace(@IntRange(from = 0) sizePx: Int): ISpaceBuilder
+    fun appendSpace(@IntRange(from = 0) widthPx: Int): ISpaceBuilder
 
     /*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***/
 

@@ -15,7 +15,7 @@ import com.proxy.service.core.framework.data.span.builder.base.IAppendBuilder
  */
 class SpanImpl : AbstractText(), IAppendBuilder {
 
-    override fun appendTxt(text: CharSequence): ITextBuilder {
+    override fun appendText(text: CharSequence): ITextBuilder {
         applyLast()
         this.mType = TYPE_TEXT
         this.text = text
@@ -50,10 +50,10 @@ class SpanImpl : AbstractText(), IAppendBuilder {
         return this
     }
 
-    override fun appendSpace(sizePx: Int): ISpaceBuilder {
+    override fun appendSpace(widthPx: Int): ISpaceBuilder {
         applyLast()
         this.mType = TYPE_SPACE
-        this.spaceSize = sizePx
+        this.spaceWidth = widthPx
         return this
     }
 

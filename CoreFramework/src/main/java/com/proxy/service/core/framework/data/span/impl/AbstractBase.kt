@@ -39,12 +39,12 @@ abstract class AbstractBase : IBaseBuilder {
         return isHasClick
     }
 
-    override fun create(): SpannableStringBuilder {
+    override fun build(): SpannableStringBuilder {
         applyLast()
         return mBuilder
     }
 
-    override fun createTo(textview: TextView) {
+    override fun buildTo(textview: TextView) {
         applyLast()
         if (isHasClick && textview.movementMethod == null) {
             textview.movementMethod = LinkMovementMethod.getInstance()

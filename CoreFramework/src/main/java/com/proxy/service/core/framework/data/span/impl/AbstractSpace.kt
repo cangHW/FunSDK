@@ -15,7 +15,7 @@ abstract class AbstractSpace : AbstractBase(), ISpaceBuilder {
         private const val DEFAULT_SPACE_COLOR = Color.TRANSPARENT
     }
 
-    protected var spaceSize: Int = 0
+    protected var spaceWidth: Int = 0
     private var spaceColor: Int = DEFAULT_SPACE_COLOR
 
     override fun setSpaceColor(color: Int): ISpaceBuilder {
@@ -29,10 +29,10 @@ abstract class AbstractSpace : AbstractBase(), ISpaceBuilder {
             val start = mBuilder.length
             mBuilder.append("< >")
             val end = mBuilder.length
-            mBuilder.setSpan(SpaceSpan(spaceSize, spaceColor), start, end, flag)
+            mBuilder.setSpan(SpaceSpan(spaceWidth, spaceColor), start, end, flag)
         }
 
-        spaceSize = 0
+        spaceWidth = 0
         spaceColor = DEFAULT_SPACE_COLOR
     }
 

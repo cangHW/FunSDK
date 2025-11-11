@@ -61,6 +61,15 @@ enum class TimeType {
         override fun update(calendar: Calendar, time: Int) {
             calendar.add(Calendar.SECOND, time)
         }
+    },
+
+    /**
+     * 毫秒
+     * */
+    MILLISECOND {
+        override fun update(calendar: Calendar, time: Int) {
+            calendar.add(Calendar.MILLISECOND, time)
+        }
     };
 
     abstract fun update(calendar: Calendar, time: Int)

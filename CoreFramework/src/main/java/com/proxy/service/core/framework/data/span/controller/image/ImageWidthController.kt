@@ -11,7 +11,7 @@ class ImageWidthController(
 ) : IImageSize() {
 
     private var finalWidth = widthPx
-    private var finalHeight = 0
+    private var finalHeight = 1
 
     override fun parseDrawableSize(width: Int, height: Int): Boolean {
         if (keepAspectRatio) {

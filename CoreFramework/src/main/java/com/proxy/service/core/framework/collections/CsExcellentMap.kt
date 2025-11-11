@@ -115,6 +115,35 @@ open class CsExcellentMap<K, V>(
         return map.get(key)
     }
 
+    override fun getOrWait(key: K): V? {
+        var value: V? = get(key)
+        if (value != null) {
+            return value
+        }
+
+        val launch = CountDownLatch(1)
+        val callback = object : OnDataChangedCallback<Map.Entry<K, V>>() {
+            override fun onDataAdd(t: Map.Entry<K, V>) {
+                super.onDataAdd(t)
+                if (t.key == key) {
+                    value = t.value
+                    launch.countDown()
+                }
+            }
+        }
+        addDataChangedCallback(callback)
+        value = get(key)
+        if (value != null) {
+            launch.countDown()
+        }
+        try {
+            launch.await()
+        } catch (_: Throwable) {
+        }
+        removeDataChangedCallback(callback)
+        return value
+    }
+
     override fun getOrWait(key: K, time: Long, unit: TimeUnit): V? {
         var value: V? = get(key)
         if (value != null) {

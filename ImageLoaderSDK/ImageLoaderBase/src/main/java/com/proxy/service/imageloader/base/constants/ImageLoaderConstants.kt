@@ -1,5 +1,7 @@
 package com.proxy.service.imageloader.base.constants
 
+import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
+
 /**
  * @author: cangHX
  * @data: 2025/6/25 18:25
@@ -29,6 +31,11 @@ object ImageLoaderConstants {
      * 文件缓存最大值
      * */
     const val CACHE_MAX_SIZE = 250 * 1024 * 1024
+
+    /**
+     * pag 动效默认场景模式
+     * */
+    val DEFAULT_PAG_SCENE_MODE = PagSceneMode.QUALITY
 
     /**
      * lottie 文件格式

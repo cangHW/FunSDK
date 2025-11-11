@@ -5,6 +5,7 @@ import com.proxy.service.imageloader.base.option.pag.IPageOption
 import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationCallback
 import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationUpdateCallback
 import com.proxy.service.imageloader.base.option.pag.image.PagImageData
+import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
 import com.proxy.service.imageloader.info.pag.info.PagInfo
 import com.proxy.service.imageloader.info.pag.loader.PagLoaderImpl
@@ -22,6 +23,11 @@ class PagOptionImpl(
 
     override fun setLoadErrorCallback(callback: LoadErrorCallback): IPageOption {
         info.loadErrorCallback = callback
+        return this
+    }
+
+    override fun setPagSceneMode(mode: PagSceneMode): IPageOption {
+        info.sceneMode = mode
         return this
     }
 

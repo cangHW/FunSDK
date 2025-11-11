@@ -1,8 +1,7 @@
 package com.proxy.service.imageloader.info.pag.loader.controller
 
 import com.proxy.service.imageloader.base.loader.pag.PagController
-import com.proxy.service.imageloader.info.pag.info.PagInfo
-import org.libpag.PAGView
+import com.proxy.service.imageloader.info.pag.loader.view.IView
 
 /**
  * @author: cangHX
@@ -10,22 +9,22 @@ import org.libpag.PAGView
  * @desc:
  */
 class PagControllerImpl(
-    private val view: PAGView
+    private val view: IView
 ) : PagController {
 
     override fun setAnimationProgress(progress: Double) {
-        view.progress = progress
+        view.setPagProgress(progress)
     }
 
     override fun setLoopCount(count: Int) {
-        view.setRepeatCount(count)
+        view.setPagRepeatCount(count)
     }
 
     override fun playAnimation() {
-        view.play()
+        view.playPag()
     }
 
     override fun cancelAnimation() {
-        view.stop()
+        view.stopPag()
     }
 }

@@ -20,7 +20,7 @@ interface ITextBuilder : IAppendBuilder {
     /**
      * 设置背景色
      * */
-    fun setBackgroundColor(@ColorInt color: Int): ITextBuilder
+    fun setTextBackgroundColor(@ColorInt color: Int): ITextBuilder
 
     /**
      * 设置字体颜色
@@ -48,52 +48,52 @@ interface ITextBuilder : IAppendBuilder {
     /**
      * 设置粗体
      * */
-    fun setBold(): ITextBuilder
+    fun setTextBold(): ITextBuilder
 
     /**
      * 设置斜体
      * */
-    fun setItalic(): ITextBuilder
+    fun setTextItalic(): ITextBuilder
 
     /**
      * 设置粗体 + 斜体
      * */
-    fun setBoldItalic(): ITextBuilder
+    fun setTextBoldItalic(): ITextBuilder
 
     /**
      * 设置下划线
      * */
-    fun setUnderline(): ITextBuilder
+    fun setTextUnderline(): ITextBuilder
 
     /**
      * 设置删除线
      * */
-    fun setStrikethrough(): ITextBuilder
+    fun setTextStrikethrough(): ITextBuilder
 
     /**
      * 设置上角标
      * */
-    fun setSuperscript(): ITextBuilder
+    fun setTextSuperscript(): ITextBuilder
 
     /**
      * 设置下角标
      * */
-    fun setSubscript(): ITextBuilder
+    fun setTextSubscript(): ITextBuilder
 
     /**
      * 设置字体
      * */
-    fun setFont(fontFamily: String): ITextBuilder
+    fun setTextFont(fontFamily: String): ITextBuilder
 
     /**
      * 设置字体
      * */
-    fun setFont(typeface: Typeface): ITextBuilder
+    fun setTextFont(typeface: Typeface): ITextBuilder
 
     /**
      * 设置超链接, 针对部分系统版本计算实际响应区域超出应该响应区域问题, 建议在前后各设置一个 space [appendSpace]
      * */
-    fun setUrl(url: String): ITextBuilder
+    fun setTextUrl(url: String): ITextBuilder
 
     /**
      * 设置点击效果, 针对部分系统版本计算实际响应区域超出应该响应区域问题, 建议在前后各设置一个 space [appendSpace]
@@ -106,7 +106,7 @@ interface ITextBuilder : IAppendBuilder {
      * @param radius    模糊强度, 建议 (0.0 - 20.0]
      * @param style     模糊模式
      * */
-    fun setBlur(
+    fun setTextBlur(
         @FloatRange(from = 0.0, fromInclusive = false) radius: Float,
         style: BlurUnit
     ): ITextBuilder
@@ -119,7 +119,7 @@ interface ITextBuilder : IAppendBuilder {
      * @param dy            阴影偏移方向
      * @param shadowColor   阴影颜色
      * */
-    fun setShadow(
+    fun setTextShadow(
         @FloatRange(from = 0.0, fromInclusive = false) radius: Float,
         dx: Float,
         dy: Float,
@@ -129,5 +129,5 @@ interface ITextBuilder : IAppendBuilder {
     /**
      * 设置渐变效果
      * */
-    fun setShader(shader: Shader): ITextBuilder
+    fun setTextShader(shader: Shader): ITextBuilder
 }

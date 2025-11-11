@@ -14,6 +14,11 @@
     public static final android.os.Parcelable$Creator *;
 }
 
+# 保留 Serializable 实现类的序列化 id 字段
+-keep class * implements java.io.Serializable {
+  private static final long serialVersionUID;
+}
+
 # 保留反射相关的类和方法
 -keepclassmembers class * {
     public <init>(...);

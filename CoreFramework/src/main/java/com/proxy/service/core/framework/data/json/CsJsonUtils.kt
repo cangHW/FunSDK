@@ -1,12 +1,14 @@
 package com.proxy.service.core.framework.data.json
 
 import com.google.gson.Gson
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonSerializer
 import com.google.gson.TypeAdapter
+import com.google.gson.TypeAdapterFactory
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
-import org.json.JSONArray
 import java.io.Reader
 import java.io.Writer
 import java.lang.reflect.Type
@@ -26,68 +28,184 @@ object CsJsonUtils {
     private var gson: Gson = Gson()
 
     /**
+     * 设置序列化与反序列化规则, 特定类型（精确匹配）, 处理具体类型（非泛型、无继承）
+     *
+     * @param type      适配器适配的类型
+     * @param adapter   适配器
+     * */
+    fun registerTypeAdapter(
+        type: Type,
+        @ObjectDef(value = [JsonSerializer::class, JsonDeserializer::class, TypeAdapter::class]) adapter: Any
+    ) {
+        val isJs = adapter is JsonSerializer<*>
+        val isJd = adapter is JsonDeserializer<*>
+        val isTa = adapter is TypeAdapter<*>
+
+        if (!isJs && !isJd && !isTa) {
+            return
+        }
+
+        gson = gson.newBuilder()
+            .registerTypeAdapter(type, adapter)
+            .create()
+    }
+
+    /**
+     * 设置序列化与反序列化规则, 动态判断任意类型（含泛型）, 泛型类型、需要运行时条件判断
+     *
+     * @param factory   适配器工厂
+     * */
+    fun registerTypeAdapterFactory(factory: TypeAdapterFactory) {
+        gson = gson.newBuilder()
+            .registerTypeAdapterFactory(factory)
+            .create()
+    }
+
+    /**
+     * 设置序列化与反序列化规则, 类型及其子类（继承链）, 统一处理继承体系
+     *
+     * @param baseType      适配器适配的基类类型
+     * @param typeAdapter   适配器
+     * */
+    fun registerTypeHierarchyAdapter(
+        baseType: Class<*>,
+        @ObjectDef(value = [JsonSerializer::class, JsonDeserializer::class, TypeAdapter::class]) typeAdapter: Any
+    ) {
+        val isJs = typeAdapter is JsonSerializer<*>
+        val isJd = typeAdapter is JsonDeserializer<*>
+        val isTa = typeAdapter is TypeAdapter<*>
+
+        if (!isJs && !isJd && !isTa) {
+            return
+        }
+
+        gson = gson.newBuilder()
+            .registerTypeHierarchyAdapter(baseType, typeAdapter)
+            .create()
+    }
+
+    /**
      * 解析数据
      * */
     fun <T> fromJson(json: String?, type: Type): T? {
+        try {
+            if (TypeUtils.getRawType(type) == String::class.java) {
+                @Suppress("UNCHECKED_CAST")
+                return json as? T?
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            return null
+        }
+
         if (json.isNullOrEmpty()) {
             return null
         }
-        return try {
-            gson.fromJson(json, type)
+
+        try {
+            return gson.fromJson(json, type)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            null
         }
+        return null
     }
 
     /**
      * 解析数据
      * */
     fun <T> fromJson(json: String?, tClass: Class<T>): T? {
+        try {
+            if (tClass == String::class.java) {
+                @Suppress("UNCHECKED_CAST")
+                return json as? T?
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            return null
+        }
+
         if (json.isNullOrEmpty()) {
             return null
         }
-        return try {
-            gson.fromJson(json, tClass)
+
+        try {
+            return gson.fromJson(json, tClass)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            null
         }
+        return null
+    }
+
+    /**
+     * 解析数据
+     * */
+    fun fromJsonToList(json: String?): MutableList<String>? {
+        return fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
     }
 
     /**
      * 解析数据
      * */
     fun <T> fromJsonToList(json: String?, tClass: Class<T>): MutableList<T>? {
-        val data = json ?: return null
-        return try {
-            val list = ArrayList<T>()
-            val array = JSONArray(data)
-            for (index in 0 until array.length()) {
-                fromJson(array.getString(index), tClass)?.let {
-                    list.add(it)
-                }
+        val listTemp = fromJsonToList(json) ?: return null
+
+        try {
+            if (tClass == String::class.java) {
+                @Suppress("UNCHECKED_CAST")
+                return listTemp as? MutableList<T>?
             }
-            list
+
+            val list: MutableList<T> = ArrayList(listTemp.size)
+            for (str in listTemp) {
+                val value = fromJson(str, tClass) ?: continue
+                list.add(value)
+            }
+            return list
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            null
         }
+
+        return null
     }
 
     /**
      * 解析数据
      * */
-    fun fromJsonToMap(json: String?): HashMap<String, String>? {
-        if (json.isNullOrEmpty()) {
-            return null
-        }
-        return try {
-            gson.fromJson(json, object : TypeToken<HashMap<String, String>>() {}.type)
+    fun fromJsonToMap(json: String?): MutableMap<String, String>? {
+        return fromJson(json, object : TypeToken<MutableMap<String, String>>() {}.type)
+    }
+
+    /**
+     * 解析数据
+     * */
+    fun <V> fromJsonToMap(json: String?, vClass: Class<V>): MutableMap<String, V>? {
+        return fromJsonToMap(json, String::class.java, vClass)
+    }
+
+    /**
+     * 解析数据
+     * */
+    fun <K, V> fromJsonToMap(json: String?, kClass: Class<K>, vClass: Class<V>): MutableMap<K, V>? {
+        val mapTemp: MutableMap<String, String> = fromJsonToMap(json) ?: return null
+
+        try {
+            if (kClass == String::class.java && vClass == String::class.java) {
+                @Suppress("UNCHECKED_CAST")
+                return mapTemp as? MutableMap<K, V>?
+            }
+
+            val map: MutableMap<K, V> = HashMap(mapTemp.size, 1.0f)
+            for (entry in mapTemp.entries) {
+                val key = fromJson(entry.key, kClass) ?: continue
+                val value = fromJson(entry.value, vClass) ?: continue
+                map.put(key, value)
+            }
+            return map
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            null
         }
+
+        return null
     }
 
     /**
@@ -97,12 +215,12 @@ object CsJsonUtils {
         if (src == null) {
             return null
         }
-        return try {
-            gson.toJson(src)
+        try {
+            return gson.toJson(src)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            null
         }
+        return null
     }
 
     /**
@@ -112,12 +230,12 @@ object CsJsonUtils {
         if (src == null) {
             return null
         }
-        return try {
-            gson.toJson(src, type)
+        try {
+            return gson.toJson(src, type)
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            null
         }
+        return null
     }
 
     /**

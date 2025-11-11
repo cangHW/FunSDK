@@ -10,7 +10,7 @@ class ImageHeightController(
     private val keepAspectRatio: Boolean
 ) : IImageSize() {
 
-    private var finalWidth = 0
+    private var finalWidth = 1
     private var finalHeight = heightPx
 
     override fun parseDrawableSize(width: Int, height: Int): Boolean {

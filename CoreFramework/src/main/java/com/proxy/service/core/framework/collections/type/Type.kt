@@ -18,7 +18,7 @@ enum class Type {
     WEAK,
 
     /**
-     * 顺序模式
+     * 顺序模式, 按插入顺序排序
      * */
     ORDER,
 

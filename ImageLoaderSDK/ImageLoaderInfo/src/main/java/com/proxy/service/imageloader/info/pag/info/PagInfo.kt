@@ -6,10 +6,10 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationCallback
 import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationUpdateCallback
-import com.proxy.service.imageloader.info.R
+import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
 import com.proxy.service.imageloader.info.base.BaseInfo
 import com.proxy.service.imageloader.info.pag.loader.controller.PagControllerImpl
-import com.proxy.service.imageloader.info.pag.loader.view.PagViewImpl
+import com.proxy.service.imageloader.info.pag.loader.view.IView
 import com.proxy.service.imageloader.info.pag.option.config.BaseConfig
 import com.proxy.service.imageloader.info.pag.request.source.BasePagSourceData
 import com.proxy.service.imageloader.info.pag.request.source.BasePagSourceData.IPagLoadCallback
@@ -25,14 +25,13 @@ class PagInfo : BaseInfo() {
     var sourceData: BasePagSourceData? = null
     val configData = ArrayList<BaseConfig>()
 
+    var sceneMode: PagSceneMode = ImageLoaderConstants.DEFAULT_PAG_SCENE_MODE
     var isAutoPlay: Boolean = ImageLoaderConstants.IS_AUTO_PLAY
     var loopCount: Int? = null
     var progress: Double = 0.0
 
     var width: Int = ViewGroup.LayoutParams.WRAP_CONTENT
     var height: Int = ViewGroup.LayoutParams.WRAP_CONTENT
-
-    private val pagViewListener = PagViewListenerImpl(this)
 
     var loadErrorCallback: LoadErrorCallback? = null
     var animationStartCallback: PagAnimationCallback? = null
@@ -42,18 +41,18 @@ class PagInfo : BaseInfo() {
     var animationUpdateCallback: PagAnimationUpdateCallback? = null
 
 
-    fun loadConfig(view: PagViewImpl, controller: PagControllerImpl) {
+    fun loadConfig(view: IView, controller: PagControllerImpl) {
         if (sourceData == null) {
             loadErrorCallback?.onLoadError()
             return
         }
 
-        checkListenerForView(view)
+        view.checkListener(this)
 
         sourceData?.load(getContext(), object : IPagLoadCallback {
             override fun onResult(result: PAGFile) {
-                loadResourceConfig(ArrayList(configData), view, result) {
-                    view.composition = result
+                loadResourceConfig(ArrayList(configData), result) {
+                    view.setPagComposition(result)
                     setConfig(controller)
                 }
             }
@@ -64,27 +63,8 @@ class PagInfo : BaseInfo() {
         })
     }
 
-
-    private fun checkListenerForView(view: PagViewImpl) {
-        val source = view.getTag(R.id.cs_imageload_info_pag_view_tag) as? PagInfo?
-        view.setTag(R.id.cs_imageload_info_pag_view_tag, this)
-
-        if (source != null) {
-            try {
-                view.removeListener(source.pagViewListener)
-            } catch (_: Throwable) {
-            }
-        }
-        try {
-            view.addListener(pagViewListener)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(ImageLoaderConstants.TAG).e(throwable)
-        }
-    }
-
     private fun loadResourceConfig(
         configs: ArrayList<BaseConfig>,
-        view: PagViewImpl,
         result: PAGFile,
         complete: () -> Unit
     ) {
@@ -95,7 +75,7 @@ class PagInfo : BaseInfo() {
         }
         cf.load(result, object : BaseConfig.IConfigLoadCallback {
             override fun onResult(result: PAGFile) {
-                loadResourceConfig(configs, view, result, complete)
+                loadResourceConfig(configs, result, complete)
             }
 
             override fun onError(result: Throwable?) {

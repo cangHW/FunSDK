@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.data.log
 
+import android.util.Log
 import com.proxy.service.api.log.base.IL
 import com.proxy.service.api.log.base.LogTree
 import com.proxy.service.api.log.tree.DebugTree
@@ -31,6 +32,9 @@ object CsLogger : IL {
         DebugTree.setPrintEnable(enable)
     }
 
+    /**
+     * 设置 tag
+     * */
     fun tag(tag: String): IL {
         tree.setTag(tag)
         return this
@@ -108,14 +112,23 @@ object CsLogger : IL {
         tree.wtf(throwable)
     }
 
+    /**
+     * @param priority 日志级别, 参考[Log]的级别
+     * */
     override fun log(priority: Int, message: String, vararg args: Any) {
         tree.log(priority, message, *args)
     }
 
+    /**
+     * @param priority 日志级别, 参考[Log]的级别
+     * */
     override fun log(priority: Int, throwable: Throwable, message: String, vararg args: Any) {
         tree.log(priority, throwable, message, *args)
     }
 
+    /**
+     * @param priority 日志级别, 参考[Log]的级别
+     * */
     override fun log(priority: Int, throwable: Throwable) {
         tree.log(priority, throwable)
     }

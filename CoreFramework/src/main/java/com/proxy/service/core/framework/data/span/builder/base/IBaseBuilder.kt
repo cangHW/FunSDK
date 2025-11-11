@@ -18,11 +18,11 @@ interface IBaseBuilder {
     /**
      * 构建数据
      * */
-    fun create(): SpannableStringBuilder
+    fun build(): SpannableStringBuilder
 
     /**
      * 构建数据并展示到 TextView
      * */
-    fun createTo(textview: TextView)
+    fun buildTo(textview: TextView)
 
 }

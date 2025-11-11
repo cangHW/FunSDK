@@ -10,14 +10,8 @@ import java.util.concurrent.TimeUnit
  * @desc:
  */
 @MustBeDocumented
-@Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.PROPERTY_SETTER
-)
-@Retention(
-    AnnotationRetention.RUNTIME
-)
+@Target(AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class CsExactTimeOut(
     /**
      * 超时时间

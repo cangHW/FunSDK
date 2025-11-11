@@ -80,12 +80,12 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
             .appendImage(R.drawable.jpg)
             .setImageAlign(align)
 //            .setImageSizeByWidth(300)
-            .setImageSize(60, 90, false)
+            .setImageSize(60, 90)
 
-            .appendTxt("结束\n结束")
-            .setBackgroundColor(Color.RED)
+            .appendText("结束\n结束")
+            .setTextBackgroundColor(Color.RED)
 //            .setBackgroundColor(Color.WHITE)
-            .setBold()
+            .setTextBold()
 //            .setTextSize(60, TextSizeUnit.UNIT_SP)
 //            .setSuperscript()
 
@@ -96,7 +96,7 @@ class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {
 //            .setShadow(2f, 10f, 10f, Color.RED)
 //            .setSubscript()
 
-            .createTo(view)
+            .buildTo(view)
     }
 
     override fun onClick(view: View) {

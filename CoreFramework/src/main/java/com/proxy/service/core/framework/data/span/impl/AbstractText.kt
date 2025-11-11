@@ -137,7 +137,7 @@ abstract class AbstractText : AbstractImage(), ITextBuilder {
      * */
     private var textListener: View.OnClickListener? = null
 
-    override fun setBackgroundColor(color: Int): ITextBuilder {
+    override fun setTextBackgroundColor(color: Int): ITextBuilder {
         this.textBackgroundColor = color
         return this
     }
@@ -174,52 +174,52 @@ abstract class AbstractText : AbstractImage(), ITextBuilder {
         return this
     }
 
-    override fun setBold(): ITextBuilder {
+    override fun setTextBold(): ITextBuilder {
         this.textIsBold = true
         return this
     }
 
-    override fun setItalic(): ITextBuilder {
+    override fun setTextItalic(): ITextBuilder {
         this.textIsItalic = true
         return this
     }
 
-    override fun setBoldItalic(): ITextBuilder {
+    override fun setTextBoldItalic(): ITextBuilder {
         this.textIsBoldItalic = true
         return this
     }
 
-    override fun setUnderline(): ITextBuilder {
+    override fun setTextUnderline(): ITextBuilder {
         this.textIsUnderline = true
         return this
     }
 
-    override fun setStrikethrough(): ITextBuilder {
+    override fun setTextStrikethrough(): ITextBuilder {
         this.textIsStrikethrough = true
         return this
     }
 
-    override fun setSuperscript(): ITextBuilder {
+    override fun setTextSuperscript(): ITextBuilder {
         this.textIsSuperscript = true
         return this
     }
 
-    override fun setSubscript(): ITextBuilder {
+    override fun setTextSubscript(): ITextBuilder {
         this.textIsSubscript = true
         return this
     }
 
-    override fun setFont(fontFamily: String): ITextBuilder {
+    override fun setTextFont(fontFamily: String): ITextBuilder {
         this.textFontFamily = fontFamily
         return this
     }
 
-    override fun setFont(typeface: Typeface): ITextBuilder {
+    override fun setTextFont(typeface: Typeface): ITextBuilder {
         this.textTypeface = typeface
         return this
     }
 
-    override fun setUrl(url: String): ITextBuilder {
+    override fun setTextUrl(url: String): ITextBuilder {
         this.textUrl = url
         return this
     }
@@ -229,13 +229,13 @@ abstract class AbstractText : AbstractImage(), ITextBuilder {
         return this
     }
 
-    override fun setBlur(radius: Float, style: BlurUnit): ITextBuilder {
+    override fun setTextBlur(radius: Float, style: BlurUnit): ITextBuilder {
         this.textBlurRadius = radius
         this.textBlurStyle = style
         return this
     }
 
-    override fun setShadow(radius: Float, dx: Float, dy: Float, shadowColor: Int): ITextBuilder {
+    override fun setTextShadow(radius: Float, dx: Float, dy: Float, shadowColor: Int): ITextBuilder {
         this.textShadowRadius = radius
         this.textShadowDx = dx
         this.textShadowDy = dy
@@ -243,7 +243,7 @@ abstract class AbstractText : AbstractImage(), ITextBuilder {
         return this
     }
 
-    override fun setShader(shader: Shader): ITextBuilder {
+    override fun setTextShader(shader: Shader): ITextBuilder {
         this.textShader = shader
         return this
     }

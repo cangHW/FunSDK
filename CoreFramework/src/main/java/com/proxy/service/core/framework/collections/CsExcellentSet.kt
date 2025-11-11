@@ -11,35 +11,35 @@ import com.proxy.service.core.framework.collections.type.Type
  * @data: 2025/5/23 18:40
  * @desc:
  */
-class CsExcellentSet<V>(
+class CsExcellentSet<K>(
     /**
      * 模式
      * */
     type: Type = Type.NORMAL
-) : ISet<V> {
+) : ISet<K> {
 
     companion object {
         private val any = Any()
     }
 
-    private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<V>>()
+    private val dataChangedCallbacks = CsExcellentList<OnDataChangedCallback<K>>()
     private val dataChangedCallbackImpl = DataChangedCallbackImpl(dataChangedCallbacks)
-    private val map = CsExcellentMap<V, Any>(type)
+    private val map = CsExcellentMap<K, Any>(type)
 
     init {
         map.addDataChangedCallback(dataChangedCallbackImpl)
     }
 
-    override fun removeDataChangedCallback(callback: OnDataChangedCallback<V>) {
+    override fun removeDataChangedCallback(callback: OnDataChangedCallback<K>) {
         dataChangedCallbacks.removeSync(callback)
     }
 
-    override fun addDataChangedCallback(callback: OnDataChangedCallback<V>) {
+    override fun addDataChangedCallback(callback: OnDataChangedCallback<K>) {
         dataChangedCallbacks.putSync(callback)
     }
 
-    override fun containsKey(v: V): Boolean {
-        return map.containsKey(v)
+    override fun containsKey(k: K): Boolean {
+        return map.containsKey(k)
     }
 
     override fun size(): Int {
@@ -50,26 +50,26 @@ class CsExcellentSet<V>(
         map.runInTransaction(runnable)
     }
 
-    override fun putSync(value: V) {
+    override fun putSync(key: K) {
         map.runInTransaction {
-            if (map.containsKey(value)) {
+            if (map.containsKey(key)) {
                 return@runInTransaction
             }
-            map.putSync(value, any)
+            map.putSync(key, any)
         }
     }
 
-    override fun removeSync(predicate: (V) -> Boolean) {
+    override fun removeSync(predicate: (K) -> Boolean) {
         map.removeSync { key, _ ->
             predicate(key)
         }
     }
 
-    override fun removeSync(value: V) {
-        map.removeSync(value)
+    override fun removeSync(key: K) {
+        map.removeSync(key)
     }
 
-    override fun filterAsync(predicate: (V) -> Boolean, observer: (V) -> Unit) {
+    override fun filterAsync(predicate: (K) -> Boolean, observer: (K) -> Unit) {
         map.filterAsync(
             predicate = { key, _ ->
                 predicate(key)
@@ -80,49 +80,49 @@ class CsExcellentSet<V>(
         )
     }
 
-    override fun filterSync(predicate: (V) -> Boolean): Set<V> {
+    override fun filterSync(predicate: (K) -> Boolean): Set<K> {
         return map.filterSync { key, _ ->
             predicate(key)
         }.keys
     }
 
-    override fun forEachAsync(observer: (V) -> Unit) {
+    override fun forEachAsync(observer: (K) -> Unit) {
         map.forEachAsync { key, _ ->
             observer(key)
         }
     }
 
-    override fun forEachSync(observer: (V) -> Unit) {
+    override fun forEachSync(observer: (K) -> Unit) {
         map.forEachSync { key, _ ->
             observer(key)
         }
     }
 
-    override fun removeAsync(predicate: (V) -> Boolean) {
+    override fun removeAsync(predicate: (K) -> Boolean) {
         map.removeAsync { key, _ ->
             predicate(key)
         }
     }
 
-    override fun removeAsync(value: V) {
-        map.removeAsync(value)
+    override fun removeAsync(key: K) {
+        map.removeAsync(key)
     }
 
-    override fun putAsync(value: V) {
-        map.putAsync(value, any)
+    override fun putAsync(key: K) {
+        map.putAsync(key, any)
     }
 
-    private class DataChangedCallbackImpl<V>(
-        private val list: CsExcellentList<OnDataChangedCallback<V>>
-    ) : OnDataChangedCallback<Map.Entry<V, Any>>() {
+    private class DataChangedCallbackImpl<K>(
+        private val list: CsExcellentList<OnDataChangedCallback<K>>
+    ) : OnDataChangedCallback<Map.Entry<K, Any>>() {
 
-        override fun onDataAdd(t: Map.Entry<V, Any>) {
+        override fun onDataAdd(t: Map.Entry<K, Any>) {
             list.forEachSync {
                 it.onDataAdd(t.key)
             }
         }
 
-        override fun onDataRemoved(t: Map.Entry<V, Any>) {
+        override fun onDataRemoved(t: Map.Entry<K, Any>) {
             list.forEachSync {
                 it.onDataRemoved(t.key)
             }

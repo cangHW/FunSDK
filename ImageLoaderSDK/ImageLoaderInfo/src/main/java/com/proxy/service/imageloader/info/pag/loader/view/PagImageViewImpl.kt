@@ -4,19 +4,19 @@ import android.content.Context
 import android.util.AttributeSet
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
+import com.proxy.service.imageloader.info.pag.info.PagImageViewListenerImpl
 import com.proxy.service.imageloader.info.pag.info.PagInfo
-import com.proxy.service.imageloader.info.pag.info.PagViewListenerImpl
 import org.libpag.PAGComposition
-import org.libpag.PAGView
+import org.libpag.PAGImageView
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 18:28
+ * @data: 2025/11/11 16:01
  * @desc:
  */
-class PagViewImpl : PAGView, IView {
+class PagImageViewImpl: PAGImageView, IView {
 
-    private var pagListener: PagViewListenerImpl? = null
+    private var pagListener: PagImageViewListenerImpl? = null
 
     constructor(context: Context) : super(context)
 
@@ -28,11 +28,6 @@ class PagViewImpl : PAGView, IView {
         defStyleAttr
     )
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        freeCache()
-    }
-
     override fun checkListener(pagInfo: PagInfo) {
         pagListener?.let {
             try {
@@ -40,7 +35,7 @@ class PagViewImpl : PAGView, IView {
             } catch (_: Throwable) {
             }
         }
-        pagListener = PagViewListenerImpl(pagInfo)
+        pagListener = PagImageViewListenerImpl(pagInfo)
         pagListener?.let {
             try {
                 addListener(it)
@@ -55,7 +50,7 @@ class PagViewImpl : PAGView, IView {
     }
 
     override fun setPagProgress(progress: Double) {
-        setProgress(progress)
+        setCurrentFrame((numFrames() * progress).toInt())
     }
 
     override fun setPagRepeatCount(count: Int) {

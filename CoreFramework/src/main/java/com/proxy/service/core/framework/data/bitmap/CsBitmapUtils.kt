@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.max
+import kotlin.math.min
 
 
 /**
@@ -47,8 +48,11 @@ object CsBitmapUtils {
             return null
         }
 
-        val cf =
-            config ?: if (drawable.alpha < 255) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+        val cf = config ?: if (drawable.alpha < 255) {
+            Bitmap.Config.ARGB_8888
+        } else {
+            Bitmap.Config.RGB_565
+        }
 
         return Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, cf).apply {
             Canvas(this).apply {
@@ -126,7 +130,7 @@ object CsBitmapUtils {
      *
      * @param maxWidth  最大宽度
      * @param maxHeight 最大高度
-     * @param isAdjust  是否保持纵横比
+     * @param isAdjust  是否保持宽高比
      * */
     @WorkerThread
     fun resizeBitmap(
@@ -138,6 +142,7 @@ object CsBitmapUtils {
         if (bitmap == null) {
             return null
         }
+
         if (maxWidth <= 0 || maxHeight <= 0) {
             return bitmap
         }
@@ -150,7 +155,7 @@ object CsBitmapUtils {
         var sy = maxHeight.toFloat() / bitmap.height
 
         if (isAdjust) {
-            val scale = max(sx.toDouble(), sy.toDouble()).toFloat()
+            val scale = min(sx.toDouble(), sy.toDouble()).toFloat()
             sy = scale
             sx = sy
         }
@@ -167,14 +172,18 @@ object CsBitmapUtils {
      * @param maxKb  最大 size
      * */
     @WorkerThread
-    fun resizeBitmap(bitmap: Bitmap, maxKb: Int): Bitmap {
-        val baos = ByteArrayOutputStream()
+    fun resizeBitmap(bitmap: Bitmap?, maxKb: Int): Bitmap? {
+        if (bitmap == null) {
+            return null
+        }
+
+        val bos = ByteArrayOutputStream()
 
         var quality = 100
-        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, bos)
 
-        if (baos.size() / 1024 <= maxKb) {
-            return BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.size())
+        if (bos.size() / 1024 <= maxKb) {
+            return BitmapFactory.decodeByteArray(bos.toByteArray(), 0, bos.size())
         }
 
         var minQuality = 0
@@ -182,9 +191,9 @@ object CsBitmapUtils {
 
         while (minQuality < maxQuality) {
             quality = (minQuality + maxQuality) / 2
-            baos.reset()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos)
-            val sizeInKb = baos.size() / 1024
+            bos.reset()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, bos)
+            val sizeInKb = bos.size() / 1024
             if (sizeInKb > maxKb) {
                 maxQuality = quality - 1
             } else {
@@ -192,14 +201,13 @@ object CsBitmapUtils {
             }
         }
 
-        if (baos.size() / 1024 > maxKb) {
-            baos.reset()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, maxQuality, baos)
+        if (bos.size() / 1024 > maxKb) {
+            bos.reset()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, maxQuality, bos)
         }
 
-        val compressedData = baos.toByteArray()
+        val compressedData = bos.toByteArray()
         return BitmapFactory.decodeByteArray(compressedData, 0, compressedData.size)
     }
-
 
 }

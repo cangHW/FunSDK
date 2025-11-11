@@ -65,14 +65,9 @@ abstract class AbstractImage : AbstractSpace(), IImageBuilder {
 
     override fun setImageSize(
         widthPx: Int,
-        heightPx: Int,
-        keepAspectRatio: Boolean
+        heightPx: Int
     ): IImageBuilder {
-        imageSize = ImageSizeController(
-            Math.max(widthPx, 1),
-            Math.max(heightPx, 1),
-            keepAspectRatio
-        )
+        imageSize = ImageSizeController(Math.max(widthPx, 1), Math.max(heightPx, 1))
         return this
     }
 

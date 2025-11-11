@@ -41,12 +41,12 @@ interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
     fun removeAsync(key: K)
 
     /**
-     * 同步移除数据
+     * 同步移除全部符合条件的数据
      * */
     fun removeSync(predicate: (K, V) -> Boolean)
 
     /**
-     * 异步移除数据
+     * 异步移除全部符合条件的数据
      * */
     fun removeAsync(predicate: (K, V) -> Boolean)
 
@@ -56,7 +56,12 @@ interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
     fun get(key: K): V?
 
     /**
-     * 获取数据
+     * 获取数据, 如果数据不存在则等待, 直到获取到数据
+     * */
+    fun getOrWait(key: K): V?
+
+    /**
+     * 获取数据, 如果数据不存在则等待, 直到获取到数据或者到达最大等待时间
      * */
     fun getOrWait(key: K, time: Long, unit: TimeUnit): V?
 
@@ -73,13 +78,10 @@ interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
     /**
      * 同步获取数据并进行过滤
      * */
-    fun filterSync(predicate: (K, V) -> Boolean = { _, _ -> true }): Map<K, V>
+    fun filterSync(predicate: (K, V) -> Boolean): Map<K, V>
 
     /**
      * 异步获取数据并进行过滤
      * */
-    fun filterAsync(
-        predicate: (K, V) -> Boolean = { _, _ -> true },
-        observer: (K, V) -> Unit
-    )
+    fun filterAsync(predicate: (K, V) -> Boolean, observer: (K, V) -> Unit)
 }

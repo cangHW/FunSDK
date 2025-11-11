@@ -26,14 +26,14 @@ object CsFileMediaUtils {
     }
 
     /**
-     * 获取媒体视频管理器
+     * 获取媒体视频管理器, 可用于向媒体插入视频
      * */
     fun getVideoManager(): IMediaStore.IVideo {
         return VideoStoreCompat()
     }
 
     /**
-     * 获取媒体音频管理器
+     * 获取媒体音频管理器, 可用于向媒体插入音频
      * */
     fun getAudioManager(): IMediaStore.IAudio {
         return AudioStoreCompat()

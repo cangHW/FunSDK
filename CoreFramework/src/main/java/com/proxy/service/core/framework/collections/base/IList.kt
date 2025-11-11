@@ -48,12 +48,12 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     fun removeAsync(value: V)
 
     /**
-     * 同步移除数据
+     * 同步移除全部符合条件的数据
      * */
     fun removeSync(predicate: (V) -> Boolean)
 
     /**
-     * 异步移除数据
+     * 异步移除全部符合条件的数据
      * */
     fun removeAsync(predicate: (V) -> Boolean)
 
@@ -70,14 +70,11 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     /**
      * 同步获取数据并进行过滤
      * */
-    fun filterSync(predicate: (V) -> Boolean = { true }): List<V>
+    fun filterSync(predicate: (V) -> Boolean): List<V>
 
     /**
      * 异步获取数据并进行过滤
      * */
-    fun filterAsync(
-        predicate: (V) -> Boolean = { true },
-        observer: (V) -> Unit
-    )
+    fun filterAsync(predicate: (V) -> Boolean, observer: (V) -> Unit)
 
 }

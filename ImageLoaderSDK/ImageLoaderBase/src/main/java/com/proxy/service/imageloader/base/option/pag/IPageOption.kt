@@ -6,6 +6,7 @@ import com.proxy.service.imageloader.base.option.base.IOption
 import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationCallback
 import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationUpdateCallback
 import com.proxy.service.imageloader.base.option.pag.image.PagImageData
+import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
 
 /**
@@ -14,6 +15,11 @@ import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
  * @desc:
  */
 interface IPageOption : IPagLoader, IOption<IPageOption>, IPagAction<IPageOption> {
+
+    /**
+     * 设置场景模式, 默认为 [ImageLoaderConstants.DEFAULT_PAG_SCENE_MODE]
+     * */
+    fun setPagSceneMode(mode: PagSceneMode): IPageOption
 
     /**
      * 设置是否自动播放

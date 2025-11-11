@@ -13,8 +13,10 @@ import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityImageLoaderBinding
 import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
+import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationUpdateCallback
 import com.proxy.service.imageloader.base.option.pag.image.PagImageData
 import com.proxy.service.imageloader.base.option.pag.image.PagScaleMode
+import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextFont
 
@@ -282,11 +284,15 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
             return
         }
 
-        option?.setLoadErrorCallback(object : LoadErrorCallback {
-            override fun onLoadError() {
-                CsLogger.tag("qqqqqqq").e("pag load error")
-            }
-        })?.into(binding?.layout)
+        option
+//            ?.setPagSceneMode(PagSceneMode.PERFORMANCE)
+//            ?.setAnimationProgress(0.5)
+//            ?.setAutoPlay(false)
+            ?.setLoadErrorCallback(object : LoadErrorCallback {
+                override fun onLoadError() {
+                    CsLogger.tag("qqqqqqq").e("pag load error")
+                }
+            })?.into(binding?.layout)
     }
 
     private data class ResourceInfo(
