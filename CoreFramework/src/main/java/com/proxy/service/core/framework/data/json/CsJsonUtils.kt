@@ -9,6 +9,8 @@ import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonToken
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.Reader
 import java.io.Writer
 import java.lang.reflect.Type
@@ -86,6 +88,8 @@ object CsJsonUtils {
 
     /**
      * 解析数据
+     *
+     * @param type 示例: object : TypeToken<MutableList<String>>() {}.type
      * */
     fun <T> fromJson(json: String?, type: Type): T? {
         try {
@@ -95,7 +99,6 @@ object CsJsonUtils {
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            return null
         }
 
         if (json.isNullOrEmpty()) {
@@ -121,7 +124,6 @@ object CsJsonUtils {
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
-            return null
         }
 
         if (json.isNullOrEmpty()) {
@@ -140,7 +142,20 @@ object CsJsonUtils {
      * 解析数据
      * */
     fun fromJsonToList(json: String?): MutableList<String>? {
-        return fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
+        if (json.isNullOrEmpty()) {
+            return null
+        }
+        try {
+            val array = JSONArray(json)
+            val list = ArrayList<String>()
+            for (index in 0 until array.length()) {
+                list.add(array.getString(index))
+            }
+            return list
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            return null
+        }
     }
 
     /**
@@ -172,7 +187,22 @@ object CsJsonUtils {
      * 解析数据
      * */
     fun fromJsonToMap(json: String?): MutableMap<String, String>? {
-        return fromJson(json, object : TypeToken<MutableMap<String, String>>() {}.type)
+        if (json.isNullOrEmpty()) {
+            return null
+        }
+
+        try {
+            val obj = JSONObject(json)
+            val map = HashMap<String, String>()
+            obj.keys().forEach {
+                map.put(it, obj.getString(it))
+            }
+            return map
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+
+        return null
     }
 
     /**
