@@ -13,6 +13,8 @@ namespace spdlog {
         std::unique_ptr<spdlog::security::ICompressionProvider> provider = nullptr;
         if (compressionMode == SecurityBlockConstant::COMPRESSION_LZ4) {
             provider.reset(new LZ4CompressionProvider());
+        } else if (compressionMode == SecurityBlockConstant::COMPRESSION_ZSTD) {
+            provider.reset(new ZSTDCompressionProvider());
         }
         return provider;
     }

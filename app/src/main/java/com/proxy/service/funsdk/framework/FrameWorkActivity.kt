@@ -14,6 +14,7 @@ import com.proxy.service.funsdk.framework.func.AppInstallActivity
 import com.proxy.service.funsdk.framework.func.DeviceActivity
 import com.proxy.service.funsdk.framework.func.EventActivity
 import com.proxy.service.funsdk.framework.func.FileActivity
+import com.proxy.service.funsdk.framework.func.LogActivity
 import com.proxy.service.funsdk.framework.func.MonitorActivity
 import com.proxy.service.funsdk.framework.func.ScreenActivity
 import com.proxy.service.funsdk.framework.func.SecurityActivity
@@ -90,6 +91,10 @@ class FrameWorkActivity : BaseActivity<ActivityFrameworkBinding>() {
 
             R.id.span -> {
                 SpanActivity.launch(this)
+            }
+
+            R.id.log -> {
+                LogActivity.launch(this)
             }
         }
     }

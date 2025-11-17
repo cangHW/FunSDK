@@ -4,6 +4,8 @@ import android.app.Application
 import com.proxy.service.core.CsCore
 import com.proxy.service.logfile.info.CsLogFile
 import com.proxy.service.logfile.info.config.LogConfig
+import com.proxy.service.logfile.info.manager.CompressionMode
+import com.proxy.service.logfile.info.manager.EncryptionMode
 import java.util.concurrent.TimeUnit
 
 /**
@@ -17,6 +19,8 @@ class App : Application() {
         super.onCreate()
         val config = LogConfig.builder()
             .setFlushEveryTime(5, TimeUnit.SECONDS)
+//            .setCompressionMode(CompressionMode.ZSTD)
+            .setEncryptionMode(EncryptionMode.CHACHA20, "111222")
             .createDailyType(0, 0)
         CsLogFile.setConfig(config)
         CsCore.init(this, BuildConfig.DEBUG)

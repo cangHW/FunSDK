@@ -7,6 +7,7 @@
 
 // 压缩
 #include "lz4.h"
+#include "zstd.h"
 
 // 加密
 #include "SecurityUtils.h"
@@ -22,6 +23,7 @@ public:
     // 压缩
     static constexpr uint32_t COMPRESSION_NONE = 0;
     static constexpr uint32_t COMPRESSION_LZ4 = 1;
+    static constexpr uint32_t COMPRESSION_ZSTD = 2;
 
     //加密
     static constexpr uint32_t ENCRYPTION_NONE = 0;
@@ -130,6 +132,74 @@ public:
         );
 
         if (decompressed_size != static_cast<int>(original_size)) {
+            // 解压缩失败，返回原始压缩数据
+            return data;
+        }
+
+        return decompressed;
+    }
+};
+
+// ZSTD 压缩提供程序（固定级别 3）
+class ZSTDCompressionProvider : public spdlog::security::ICompressionProvider {
+public:
+    uint32_t getAlgorithm() override {
+        return SecurityBlockConstant::COMPRESSION_ZSTD;
+    }
+
+    std::vector<uint8_t> compress(const std::vector<uint8_t> &data) override {
+        if (data.empty()) {
+            return data;
+        }
+
+        const size_t src_size = data.size();
+        size_t const max_dst_size = ZSTD_compressBound(src_size);
+        
+        std::vector<uint8_t> compressed(max_dst_size);
+
+        // 固定使用级别 3（平衡速度和压缩率）
+        size_t const compressed_size = ZSTD_compress(
+            compressed.data(), max_dst_size,
+            data.data(), src_size,
+            3  // 固定压缩级别
+        );
+
+        if (ZSTD_isError(compressed_size)) {
+            // 压缩失败，返回空数据
+            return {};
+        }
+
+        // 调整 vector 大小到实际压缩后的大小
+        compressed.resize(compressed_size);
+
+        return compressed;
+    }
+
+    std::vector<uint8_t> decompress(
+        const std::vector<uint8_t> &data, 
+        uint32_t original_size
+    ) override {
+        if (data.empty() || original_size == 0) {
+            return data;
+        }
+
+        // 限制最大 300MB（与 LZ4 保持一致）
+        if (original_size > 300 * 1024 * 1024) {
+            // 原始大小过大，返回压缩数据
+            return data;
+        }
+
+        std::vector<uint8_t> decompressed(original_size);
+
+        // ZSTD 解压缩
+        size_t const decompressed_size = ZSTD_decompress(
+            decompressed.data(), original_size,
+            data.data(), data.size()
+        );
+
+        // 检查解压结果
+        if (ZSTD_isError(decompressed_size) || 
+            decompressed_size != original_size) {
             // 解压缩失败，返回原始压缩数据
             return data;
         }

@@ -59,6 +59,7 @@
         <activity android:name=".framework.func.AppInfoActivity" />
         <activity android:name=".framework.func.AppConfigActivity" />
         <activity android:name=".framework.func.SpanActivity" />
+        <activity android:name=".framework.func.LogActivity" />
 
         <activity android:name=".permission.PermissionActivity" />
 
