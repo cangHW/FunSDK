@@ -120,21 +120,32 @@ namespace spdlog {
 
                 // 加密数据
                 uint32_t encryptionAlgorithm = SecurityBlockConstant::ENCRYPTION_NONE;
+                std::vector<uint8_t> salt;
                 if (encryption_) {
                     encryptionAlgorithm = encryption_->getEncryption();
                     processed_data = encryption_->encrypt(processed_data);
+                    // 获取加密时生成的盐
+                    salt = encryption_->getSalt();
                 }
 
-                // 创建压缩块头
+                // 创建安全块头
                 SecurityBlockHeader header;
                 header.magic = SecurityBlockConstant::MAGIC;
                 header.compressed_size = static_cast<uint32_t>(processed_data.size());
                 header.original_size = original_size;
                 header.algorithm = compressionAlgorithm;
                 header.encryption = encryptionAlgorithm;
+                
+                // 保存盐到 Header（如果有加密）
+                if (!salt.empty() && salt.size() == 32) {
+                    memcpy(header.salt, salt.data(), 32);
+                } else {
+                    memset(header.salt, 0, 32);
+                }
+                
                 header.reserved = 0;
 
-                // 组装最终数据：头部 + 压缩数据
+                // 组装最终数据：头部 + 压缩/加密数据
                 std::vector<uint8_t> final_data;
                 final_data.resize(sizeof(header) + processed_data.size());
 

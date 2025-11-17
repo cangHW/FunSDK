@@ -37,6 +37,7 @@ struct SecurityBlockHeader {
     uint32_t original_size;   // 原始大小
     uint32_t algorithm;       // 压缩算法
     uint32_t encryption;      // 加密类型
+    uint8_t salt[32];         // 密钥派生盐（加密时随机生成并保存）
     uint32_t reserved;        // 保留字段
 } __attribute__((packed));
 
@@ -66,11 +67,17 @@ namespace spdlog {
             // 加密标记
             virtual uint32_t getEncryption() = 0;
 
-            // 加密
+            // 加密（返回 nonce + 密文）
             virtual std::vector<uint8_t> encrypt(const std::vector<uint8_t> &data) = 0;
 
             // 解密
             virtual std::vector<uint8_t> decrypt(const std::vector<uint8_t> &data) = 0;
+            
+            // 获取盐（加密时生成的随机盐）
+            virtual std::vector<uint8_t> getSalt() const = 0;
+            
+            // 设置盐（解密时从 Header 读取）
+            virtual void setSalt(const uint8_t *salt, size_t salt_len) = 0;
         };
     }
 }
@@ -211,20 +218,28 @@ public:
 // ChaCha20 加密提供程序
 class ChaCha20CryptoProvider : public spdlog::security::ICryptoProvider {
 private:
-    std::string key_;
+    std::string password_;
     uint8_t derived_key_[CHACHA20_KEY_SIZE];
+    std::vector<uint8_t> salt_;  // 保存盐（加密时生成，解密时从外部设置）
 
 public:
-    explicit ChaCha20CryptoProvider(const std::string &key) : key_(key) {
-        // 使用安全的密钥派生算法
-        if (!SecurityUtils::deriveKeySecure(key, derived_key_, CHACHA20_KEY_SIZE)) {
-            // 如果安全派生失败，使用降级方案
-            SecurityUtils::deriveKeyFallback(key, derived_key_, CHACHA20_KEY_SIZE);
-        }
+    explicit ChaCha20CryptoProvider(const std::string &password) : password_(password), salt_(32) {
+        // 构造时不派生密钥，等待设置盐后再派生
     }
 
     uint32_t getEncryption() override {
         return SecurityBlockConstant::ENCRYPTION_CHACHA20;
+    }
+    
+    std::vector<uint8_t> getSalt() const override {
+        return salt_;
+    }
+    
+    void setSalt(const uint8_t *salt, size_t salt_len) override {
+        if (salt && salt_len == 32) {
+            salt_.assign(salt, salt + salt_len);
+            deriveKey();
+        }
     }
 
     std::vector<uint8_t> encrypt(const std::vector<uint8_t> &data) override {
@@ -232,12 +247,19 @@ public:
             return data;
         }
 
+        // 加密时生成新的随机盐
+        if (!SecurityUtils::generateSecureSalt(salt_, 32)) {
+            return {};
+        }
+        
+        // 使用生成的盐派生密钥
+        deriveKey();
+
         // 生成密码学安全的 nonce
         uint8_t nonce[CHACHA20_NONCE_SIZE];
         if (!SecurityUtils::generateSecureNonce(nonce, CHACHA20_NONCE_SIZE)) {
             // 如果安全随机数生成失败，使用降级方案
             if (chacha20_generate_nonce(nonce) != 0) {
-                // 如果降级方案也失败，返回空数据（安全失败）
                 return {};
             }
         }
@@ -245,11 +267,10 @@ public:
         // 加密数据
         std::vector<uint8_t> encrypted(data.size());
         if (chacha20_encrypt(derived_key_, nonce, 0, data.data(), data.size(), encrypted.data()) != 0) {
-            // 加密失败，返回空数据（安全失败）
             return {};
         }
 
-        // 在加密数据前添加 nonce
+        // 返回 nonce + 密文
         std::vector<uint8_t> result;
         result.reserve(CHACHA20_NONCE_SIZE + encrypted.size());
         result.insert(result.end(), nonce, nonce + CHACHA20_NONCE_SIZE);
@@ -273,12 +294,19 @@ public:
         // 解密数据
         std::vector<uint8_t> decrypted(encrypted_data.size());
         if (chacha20_decrypt(derived_key_, nonce, 0, encrypted_data.data(), encrypted_data.size(), decrypted.data()) != 0) {
-            // 解密失败，返回空数据（安全失败）
             return {};
         }
 
         return decrypted;
     }
 
+private:
+    void deriveKey() {
+        // 使用盐派生密钥
+        if (!SecurityUtils::deriveKeySecure(password_, salt_, derived_key_, CHACHA20_KEY_SIZE)) {
+            // 如果安全派生失败，使用降级方案
+            SecurityUtils::deriveKeyFallback(password_, derived_key_, CHACHA20_KEY_SIZE);
+        }
+    }
 };
 

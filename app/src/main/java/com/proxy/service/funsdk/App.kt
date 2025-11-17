@@ -19,7 +19,7 @@ class App : Application() {
         super.onCreate()
         val config = LogConfig.builder()
             .setFlushEveryTime(5, TimeUnit.SECONDS)
-//            .setCompressionMode(CompressionMode.ZSTD)
+            .setCompressionMode(CompressionMode.LZ4)
             .setEncryptionMode(EncryptionMode.CHACHA20, "111222")
             .createDailyType(0, 0)
         CsLogFile.setConfig(config)

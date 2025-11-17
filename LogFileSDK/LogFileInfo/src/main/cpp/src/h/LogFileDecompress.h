@@ -272,14 +272,16 @@ private:
 
         const SecurityBlockHeader *header = reinterpret_cast<const SecurityBlockHeader *>(block_data);
 
-        // 打印 SecurityBlockHeader 详细信息
+        // 打印 SecurityBlockHeader 详细信息（包含盐的前8字节）
         LOGI(
-                "Find SecurityBlockHeader: magic=0x%08X, compressed_size=%u, original_size=%u, algorithm=%u, encryption=%u",
+                "Find SecurityBlockHeader: magic=0x%08X, compressed_size=%u, original_size=%u, algorithm=%u, encryption=%u, salt=%02X%02X%02X%02X%02X%02X%02X%02X...",
                 header->magic,
                 header->compressed_size,
                 header->original_size,
                 header->algorithm,
-                header->encryption
+                header->encryption,
+                header->salt[0], header->salt[1], header->salt[2], header->salt[3],
+                header->salt[4], header->salt[5], header->salt[6], header->salt[7]
         );
 
         // 计算负载偏移量
@@ -304,6 +306,9 @@ private:
                 LOGE("No crypto provider available for encryption type: %u", header->encryption);
                 return {};
             }
+
+            // 从 Header 读取盐并设置给加密提供者
+            crypto_provider->setSalt(header->salt, 32);
 
             payload = crypto_provider->decrypt(payload);
             if (payload.empty()) {

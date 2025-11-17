@@ -42,7 +42,7 @@ class LogActivity : BaseActivity<ActivityFrameworkLogBinding>() {
                 val result = LogFileDecompress.getInstance().decompressLogFile(
                     logPath,
                     outPath,
-                    "333333"
+                    "111222"
                 )
                 CsToast.show("解密 $result")
                 CsLogger.e("解密 $result")
