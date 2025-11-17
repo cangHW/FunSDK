@@ -178,7 +178,7 @@ class CsExcellentList<V> : IList<V> {
         })?.start()
     }
 
-    override fun putAllAsync(list: MutableList<V>) {
+    override fun putAllAsync(list: List<V>) {
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 putAllSync(list)
@@ -200,11 +200,11 @@ class CsExcellentList<V> : IList<V> {
         }
     }
 
-    override fun putAllSync(list: MutableList<V>) {
+    override fun putAllSync(list: List<V>) {
         val state: Boolean
         write.lock()
         try {
-            state = list.addAll(list)
+            state = this.list.addAll(list)
         } finally {
             write.unlock()
         }
