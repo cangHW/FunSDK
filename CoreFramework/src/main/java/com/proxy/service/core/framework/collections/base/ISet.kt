@@ -28,9 +28,19 @@ interface ISet<K> : IDataChanged<K>, ITransaction {
     fun putSync(v: K)
 
     /**
+     * 同步存数据
+     * */
+    fun putAllSync(set: Set<K>)
+
+    /**
      * 异步存数据
      * */
     fun putAsync(v: K)
+
+    /**
+     * 异步存数据
+     * */
+    fun putAllAsync(set: Set<K>)
 
     /**
      * 同步移除数据

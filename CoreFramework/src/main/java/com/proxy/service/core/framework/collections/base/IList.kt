@@ -38,9 +38,19 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     fun putSync(value: V)
 
     /**
+     * 同步存数据
+     * */
+    fun putAllSync(list: MutableList<V>)
+
+    /**
      * 异步存数据
      * */
     fun putAsync(value: V)
+
+    /**
+     * 异步存数据
+     * */
+    fun putAllAsync(list: MutableList<V>)
 
     /**
      * 同步移除数据

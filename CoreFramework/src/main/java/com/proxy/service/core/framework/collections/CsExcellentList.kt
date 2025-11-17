@@ -178,6 +178,15 @@ class CsExcellentList<V> : IList<V> {
         })?.start()
     }
 
+    override fun putAllAsync(list: MutableList<V>) {
+        CsTask.computationThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                putAllSync(list)
+                return ""
+            }
+        })?.start()
+    }
+
     override fun putSync(value: V) {
         val state: Boolean
         write.lock()
@@ -188,6 +197,21 @@ class CsExcellentList<V> : IList<V> {
         }
         if (state) {
             sendDataAdd(value)
+        }
+    }
+
+    override fun putAllSync(list: MutableList<V>) {
+        val state: Boolean
+        write.lock()
+        try {
+            state = list.addAll(list)
+        } finally {
+            write.unlock()
+        }
+        if (state) {
+            list.forEach {
+                sendDataAdd(it)
+            }
         }
     }
 

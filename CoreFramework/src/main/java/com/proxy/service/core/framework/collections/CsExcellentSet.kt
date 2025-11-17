@@ -3,6 +3,8 @@ package com.proxy.service.core.framework.collections
 import com.proxy.service.core.framework.collections.base.ISet
 import com.proxy.service.core.framework.collections.callback.OnDataChangedCallback
 import com.proxy.service.core.framework.collections.type.Type
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * 线程安全、支持异步操作 set
@@ -55,11 +57,12 @@ class CsExcellentSet<K>(
     }
 
     override fun putSync(v: K) {
-        map.runInTransaction {
-            if (map.containsKey(v)) {
-                return@runInTransaction
-            }
-            map.putSync(v, any)
+        map.putSync(v, any)
+    }
+
+    override fun putAllSync(set: Set<K>) {
+        set.forEach {
+            map.putSync(it, any)
         }
     }
 
@@ -114,6 +117,15 @@ class CsExcellentSet<K>(
 
     override fun putAsync(v: K) {
         map.putAsync(v, any)
+    }
+
+    override fun putAllAsync(set: Set<K>) {
+        CsTask.computationThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                putAllSync(set)
+                return ""
+            }
+        })?.start()
     }
 
     private class DataChangedCallbackImpl<K>(

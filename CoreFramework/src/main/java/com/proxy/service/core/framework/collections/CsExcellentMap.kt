@@ -70,6 +70,14 @@ open class CsExcellentMap<K, V>(
         return true
     }
 
+    override fun putAllSync(map: Map<K, V>): Boolean {
+        for (entry: Map.Entry<K, V> in map.entries) {
+            this.map.put(entry.key, entry.value)
+            sendDataAdd(entry.key, entry.value)
+        }
+        return true
+    }
+
     override fun removeSync(predicate: (K, V) -> Boolean) {
         filterSync(predicate).forEach {
             removeSync(it.key)
@@ -88,6 +96,15 @@ open class CsExcellentMap<K, V>(
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 putSync(key, value)
+                return ""
+            }
+        })?.start()
+    }
+
+    override fun putAllAsync(map: Map<K, V>) {
+        CsTask.computationThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                putAllSync(map)
                 return ""
             }
         })?.start()

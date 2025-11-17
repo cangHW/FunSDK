@@ -26,9 +26,19 @@ interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
     fun putSync(key: K, value: V): Boolean
 
     /**
+     * 同步存数据
+     * */
+    fun putAllSync(map: Map<K, V>): Boolean
+
+    /**
      * 异步存数据
      * */
     fun putAsync(key: K, value: V)
+
+    /**
+     * 异步存数据
+     * */
+    fun putAllAsync(map: Map<K, V>)
 
     /**
      * 同步移除数据
