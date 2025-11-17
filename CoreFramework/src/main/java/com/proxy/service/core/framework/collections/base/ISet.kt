@@ -18,24 +18,29 @@ interface ISet<K> : IDataChanged<K>, ITransaction {
     fun containsKey(v: K): Boolean
 
     /**
+     * 获取全部数据
+     * */
+    fun getAll(): HashSet<K>
+
+    /**
      * 同步存数据
      * */
-    fun putSync(key: K)
+    fun putSync(v: K)
 
     /**
      * 异步存数据
      * */
-    fun putAsync(key: K)
+    fun putAsync(v: K)
 
     /**
      * 同步移除数据
      * */
-    fun removeSync(key: K)
+    fun removeSync(v: K)
 
     /**
      * 异步移除数据
      * */
-    fun removeAsync(key: K)
+    fun removeAsync(v: K)
 
     /**
      * 同步移除全部符合条件的数据

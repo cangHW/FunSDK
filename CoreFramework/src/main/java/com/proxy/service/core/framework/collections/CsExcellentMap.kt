@@ -111,8 +111,16 @@ open class CsExcellentMap<K, V>(
         })?.start()
     }
 
+    override fun keySet(): HashSet<K> {
+        return java.util.HashSet(map.keys)
+    }
+
     override fun get(key: K): V? {
         return map.get(key)
+    }
+
+    override fun getAll(): HashMap<K, V> {
+        return HashMap(map)
     }
 
     override fun getOrWait(key: K): V? {

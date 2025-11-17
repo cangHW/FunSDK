@@ -38,24 +38,28 @@ class CsExcellentSet<K>(
         dataChangedCallbacks.putSync(callback)
     }
 
-    override fun containsKey(k: K): Boolean {
-        return map.containsKey(k)
+    override fun containsKey(v: K): Boolean {
+        return map.containsKey(v)
     }
 
     override fun size(): Int {
         return map.size()
     }
 
+    override fun getAll(): HashSet<K> {
+        return map.keySet()
+    }
+
     override fun runInTransaction(runnable: Runnable) {
         map.runInTransaction(runnable)
     }
 
-    override fun putSync(key: K) {
+    override fun putSync(v: K) {
         map.runInTransaction {
-            if (map.containsKey(key)) {
+            if (map.containsKey(v)) {
                 return@runInTransaction
             }
-            map.putSync(key, any)
+            map.putSync(v, any)
         }
     }
 
@@ -65,8 +69,8 @@ class CsExcellentSet<K>(
         }
     }
 
-    override fun removeSync(key: K) {
-        map.removeSync(key)
+    override fun removeSync(v: K) {
+        map.removeSync(v)
     }
 
     override fun filterAsync(predicate: (K) -> Boolean, observer: (K) -> Unit) {
@@ -104,12 +108,12 @@ class CsExcellentSet<K>(
         }
     }
 
-    override fun removeAsync(key: K) {
-        map.removeAsync(key)
+    override fun removeAsync(v: K) {
+        map.removeAsync(v)
     }
 
-    override fun putAsync(key: K) {
-        map.putAsync(key, any)
+    override fun putAsync(v: K) {
+        map.putAsync(v, any)
     }
 
     private class DataChangedCallbackImpl<K>(

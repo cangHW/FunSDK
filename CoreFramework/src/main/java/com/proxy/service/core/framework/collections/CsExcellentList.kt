@@ -55,6 +55,15 @@ class CsExcellentList<V> : IList<V> {
         }
     }
 
+    override fun getAll(): MutableList<V> {
+        read.lock()
+        try {
+            return ArrayList(list)
+        } finally {
+            read.unlock()
+        }
+    }
+
     override fun runInTransaction(runnable: Runnable) {
         write.lock()
         try {

@@ -28,6 +28,11 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     fun get(position: Int): V?
 
     /**
+     * 获取全部数据
+     * */
+    fun getAll(): MutableList<V>
+
+    /**
      * 同步存数据
      * */
     fun putSync(value: V)

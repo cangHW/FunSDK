@@ -51,9 +51,19 @@ interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
     fun removeAsync(predicate: (K, V) -> Boolean)
 
     /**
+     * 获取全部 key
+     * */
+    fun keySet(): HashSet<K>
+
+    /**
      * 获取数据
      * */
     fun get(key: K): V?
+
+    /**
+     * 获取全部数据
+     * */
+    fun getAll(): HashMap<K, V>
 
     /**
      * 获取数据, 如果数据不存在则等待, 直到获取到数据
