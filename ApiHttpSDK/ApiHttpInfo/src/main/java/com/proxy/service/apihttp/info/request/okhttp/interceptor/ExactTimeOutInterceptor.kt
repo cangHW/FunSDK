@@ -28,31 +28,34 @@ class ExactTimeOutInterceptor : Interceptor {
         var response: Response? = null
         var error: Throwable? = null
         try {
-            request.tag(Invocation::class.java)
+            val exactTimeOut = request.tag(Invocation::class.java)
                 ?.method()
                 ?.getAnnotation(CsExactTimeOut::class.java)
-                ?.let {
-                    CsLogger.tag(TAG).d("ExactTimeOut = ${it.unit.toMillis(it.timeout)}毫秒. url = ${request.url}")
-                    response = CsTask.ioThread()?.call(object : ICallable<Response> {
-                        override fun accept(): Response {
-                            return chain.proceed(request)
+
+            if (exactTimeOut == null) {
+                response = chain.proceed(request)
+            } else {
+                CsLogger.tag(TAG)
+                    .d("ExactTimeOut = ${exactTimeOut.unit.toMillis(exactTimeOut.timeout)}毫秒. url = ${request.url}")
+                response = CsTask.ioThread()?.call(object : ICallable<Response> {
+                    override fun accept(): Response {
+                        return chain.proceed(request)
+                    }
+                })?.timeout(exactTimeOut.timeout, exactTimeOut.unit)
+                    ?.setOnFailedCallback(object : OnFailedCallback {
+                        override fun onCallback(throwable: Throwable) {
+                            CsLogger.tag(TAG).d("timeout. url = ${request.url}")
+                            error = throwable
                         }
-                    })?.timeout(it.timeout, it.unit)
-                        ?.setOnFailedCallback(object : OnFailedCallback {
-                            override fun onCallback(throwable: Throwable) {
-                                CsLogger.tag(TAG).d("timeout. url = ${request.url}")
-                                error = throwable
-                            }
-                        })
-                        ?.blockGetFirst()
-                }
+                    })?.blockGetFirst()
+            }
         } catch (throwable: Throwable) {
             error = throwable
             CsLogger.tag(TAG).e(throwable)
         }
 
         if (response != null) {
-            return response!!
+            return response
         }
 
         error?.let {

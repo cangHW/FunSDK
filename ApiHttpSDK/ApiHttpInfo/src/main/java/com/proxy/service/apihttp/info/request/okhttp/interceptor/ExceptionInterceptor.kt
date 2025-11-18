@@ -15,7 +15,11 @@ class ExceptionInterceptor : Interceptor {
             val request = chain.request()
             return chain.proceed(request)
         } catch (throwable: Throwable) {
-            throw IOException(throwable)
+            if (throwable is IOException) {
+                throw throwable
+            } else {
+                throw IOException(throwable)
+            }
         }
     }
 }
