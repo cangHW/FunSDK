@@ -72,7 +72,7 @@ class RetryWithDelayInterceptor : Interceptor {
                                 count++
                             }
 
-                            emitter.onError(IOException("The retry times are used up. url = ${request.url}"))
+                            emitter.onError(IOException("The retry count has been exhausted. url = ${request.url}"))
                             emitter.onComplete()
                         }
                     })?.blockGetFirst()
@@ -90,6 +90,6 @@ class RetryWithDelayInterceptor : Interceptor {
             throw it
         }
 
-        throw IOException("The retry times are used up. url = ${request.url}")
+        throw IOException("The retry count has been exhausted. url = ${request.url}")
     }
 }

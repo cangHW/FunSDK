@@ -48,8 +48,8 @@ class OkhttpConfigImpl(
         list.addAll(config.getInterceptor())
         list.add(NetworkInterceptor())
         list.add(RetryWithDelayInterceptor())
-        list.add(ExactTimeOutInterceptor())
         list.add(HttpLoggingInterceptor())
+        list.add(ExactTimeOutInterceptor())
         return list
     }
 

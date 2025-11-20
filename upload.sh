@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-  ":CoreFramework"
+#  ":CoreFramework"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolInfo"
@@ -26,7 +26,7 @@ upArray=(
 #  ":Permission:PermissionBase"
 
     # 日志文件库
-  ":LogFileSDK:LogFileInfo"
+#  ":LogFileSDK:LogFileInfo"
 
     # 性能监控库
 #  ":ApmSDK:ApmInfo"
