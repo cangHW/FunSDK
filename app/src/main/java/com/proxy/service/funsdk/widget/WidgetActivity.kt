@@ -3,9 +3,11 @@ package com.proxy.service.funsdk.widget
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
-import com.proxy.service.core.framework.system.page.CsSystemPageUtils
+import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -13,6 +15,7 @@ import com.proxy.service.funsdk.databinding.ActivityWidgetBinding
 import com.proxy.service.threadpool.base.thread.task.IConsumer
 import com.proxy.service.widget.info.toast.CsToast
 import java.util.concurrent.TimeUnit
+
 
 /**
  * @author: cangHX
@@ -70,6 +73,22 @@ class WidgetActivity: BaseActivity<ActivityWidgetBinding>() {
                     CsToast.show("错误页面点击")
 
                     statePage?.hideError()
+                }
+            }
+
+            R.id.show_dialog -> {
+//                if (!Settings.canDrawOverlays(this)) {
+//                    val intent = Intent(
+//                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                        Uri.parse("package:" + CsAppUtils.getPackageName())
+//                    )
+//                    startActivityForResult(intent, 100)
+//                }else {
+//                    TestDialog().show()
+//                }
+
+                for (index in 0..3) {
+                    TestDialog(index).show(this)
                 }
             }
         }

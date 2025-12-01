@@ -50,6 +50,19 @@ android {
     viewBinding {
         enable = true
     }
+
+    sourceSets {
+        getByName("main") {
+            res.srcDirs(
+                "src/main/res-widget",
+                "src/main/res-framework",
+                "src/main/res-imageloader",
+                "src/main/res-permission",
+                "src/main/res-api",
+                "src/main/res-document"
+            )
+        }
+    }
 }
 
 dependencies {

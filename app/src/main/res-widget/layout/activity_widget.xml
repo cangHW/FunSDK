@@ -29,6 +29,11 @@
             style="@style/button_style"
             android:text="显示错误页面" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/show_dialog"
+            style="@style/button_style"
+            android:text="显示弹窗" />
+
     </com.google.android.flexbox.FlexboxLayout>
 
 </ScrollView>
