@@ -73,7 +73,8 @@
         <activity android:name=".document.image.preview.ImagePreviewActivity" />
         <activity android:name=".document.image.crop.ImageCropActivity" />
 
-        <activity android:name=".widget.WidgetActivity" />
+        <activity android:name=".widget.WidgetActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

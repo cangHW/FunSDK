@@ -13,7 +13,7 @@ class DialogConfig {
     var focusable: Boolean? = false
 
     /**
-     * 屏幕方向
+     * 屏幕方向, 全局弹窗生效, 如果是页面内弹窗, 则横竖屏效果自动跟随页面的横竖屏
      * */
     var screenOrientation: ScreenOrientation = ScreenOrientation.ORIENTATION_DEFAULT
 

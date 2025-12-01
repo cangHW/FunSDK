@@ -15,7 +15,7 @@ import com.proxy.service.widget.info.dialog.window.manager.DialogManager
  * @data: 2025/11/27 10:55
  * @desc:
  */
-open class CsBaseDialog: AbstractLifecycleDialog() {
+abstract class CsBaseDialog : AbstractLifecycleDialog() {
 
     /**
      * 设置弹窗关闭回调
@@ -83,4 +83,17 @@ open class CsBaseDialog: AbstractLifecycleDialog() {
         DialogManager.requestDismiss(this)
     }
 
+    /**
+     * 是否已添加
+     * */
+    fun isAdded(): Boolean {
+        return isCreate.get()
+    }
+
+    /**
+     * 是否正在展示
+     * */
+    fun isShowing(): Boolean {
+        return isCreateView.get()
+    }
 }

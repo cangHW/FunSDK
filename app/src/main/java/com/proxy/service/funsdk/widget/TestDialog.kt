@@ -17,6 +17,7 @@ import com.proxy.service.widget.info.dialog.window.info.DialogConfig
 import com.proxy.service.widget.info.dialog.window.info.DialogGravity
 import com.proxy.service.widget.info.dialog.window.info.PostConditionStrategy
 import com.proxy.service.widget.info.dialog.window.info.PreConditionStrategy
+import com.proxy.service.widget.info.dialog.window.info.ScreenOrientation
 import java.util.concurrent.TimeUnit
 
 /**
@@ -38,6 +39,7 @@ class TestDialog(private val index: Int) : CsBaseDialog() {
         val config = DialogConfig()
 //        config.gravity = DialogGravity.BOTTOM
 //        config.focusable = true
+//        config.screenOrientation = ScreenOrientation.ORIENTATION_LANDSCAPE
         config.width = CsDpUtils.dp2px(320f)
         config.height = CsDpUtils.dp2px(72f)
 //        config.width = LayoutParams.MATCH_PARENT

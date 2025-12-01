@@ -21,8 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 abstract class AbstractLifecycleDialog : AbstractActionDialog(), ILifecycleDialog {
 
-    private val isCreate = AtomicBoolean(false)
-    private val isCreateView = AtomicBoolean(false)
+    protected val isCreate = AtomicBoolean(false)
+    protected val isCreateView = AtomicBoolean(false)
     private val isStart = AtomicBoolean(false)
 
 
@@ -44,6 +44,7 @@ abstract class AbstractLifecycleDialog : AbstractActionDialog(), ILifecycleDialo
                     val ctx = context ?: return ""
 
                     val dialogRootView = DialogRootView(ctx)
+                    CsLogger.tag(tag).i("onCreateView")
                     val view = onCreateView(ctx, dialogRootView)
                     if (view == null) {
                         rootView = null
@@ -128,12 +129,6 @@ abstract class AbstractLifecycleDialog : AbstractActionDialog(), ILifecycleDialo
     @CallSuper
     override fun onCreate(context: Context) {
         CsLogger.tag(tag).i("onCreate")
-    }
-
-    @CallSuper
-    override fun onCreateView(context: Context, parent: ViewGroup): View? {
-        CsLogger.tag(tag).i("onCreateView")
-        return null
     }
 
     @CallSuper

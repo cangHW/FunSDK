@@ -84,7 +84,7 @@ class WidgetActivity: BaseActivity<ActivityWidgetBinding>() {
 //                    )
 //                    startActivityForResult(intent, 100)
 //                }else {
-//                    TestDialog().show()
+//                    TestDialog(0).show()
 //                }
 
                 for (index in 0..3) {
