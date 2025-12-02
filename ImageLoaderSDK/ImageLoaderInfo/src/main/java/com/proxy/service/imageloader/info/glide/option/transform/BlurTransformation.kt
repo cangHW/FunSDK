@@ -3,7 +3,9 @@ package com.proxy.service.imageloader.info.glide.option.transform
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
 import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import java.security.MessageDigest
@@ -37,15 +39,18 @@ class BlurTransformation(val radius: Int = 25, val scaling: Int = 1) :
         val scaledWidth = width / scaling
         val scaledHeight = height / scaling
 
-        var bitmap: Bitmap = pool[scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888]
-
+        var bitmap = pool.get(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888)
+        bitmap.setHasAlpha(true)
         setCanvasBitmapDensity(toTransform, bitmap)
 
         val canvas = Canvas(bitmap)
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         canvas.scale(1 / scaling.toFloat(), 1 / scaling.toFloat())
         val paint = Paint()
         paint.flags = Paint.FILTER_BITMAP_FLAG
         canvas.drawBitmap(toTransform, 0f, 0f, paint)
+
+        canvas.setBitmap(null)
 
         bitmap = fastBlur(bitmap, radius)
         return bitmap

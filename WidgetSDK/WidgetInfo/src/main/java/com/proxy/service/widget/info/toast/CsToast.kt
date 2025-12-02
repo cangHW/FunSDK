@@ -8,9 +8,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.widget.info.toast.enums.ToastDuration
 import com.proxy.service.widget.info.toast.info.BaseViewInfo
-import com.proxy.service.widget.info.utils.ThreadUtils
 
 /**
  * @author: cangHX
@@ -74,13 +75,16 @@ object CsToast {
         duration: ToastDuration = ToastDuration.LENGTH_SHORT,
         tag: String = ""
     ) {
-        ThreadUtils.runOnMainThread {
-            val context = CsContextManager.getApplication()
-            val viewInfo = createViewInfo(context, tag, false)
-            viewInfo.updateTxt(content)
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                val context = CsContextManager.getApplication()
+                val viewInfo = createViewInfo(context, tag, false)
+                viewInfo.updateTxt(content)
 
-            showToast(createToast(context), viewInfo, duration.value)
-        }
+                showToast(createToast(context), viewInfo, duration.value)
+                return ""
+            }
+        })?.start()
     }
 
     /*** *** *** *** *** *** *** *** *** *** Icon文字吐司 *** *** *** *** *** *** *** *** *** *** ***/
@@ -144,14 +148,17 @@ object CsToast {
         duration: ToastDuration = ToastDuration.LENGTH_SHORT,
         tag: String = ""
     ) {
-        ThreadUtils.runOnMainThread {
-            val context = CsContextManager.getApplication()
-            val viewInfo = createViewInfo(context, tag, true)
-            viewInfo.updateIcon(icon)
-            viewInfo.updateTxt(content)
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                val context = CsContextManager.getApplication()
+                val viewInfo = createViewInfo(context, tag, true)
+                viewInfo.updateIcon(icon)
+                viewInfo.updateTxt(content)
 
-            showToast(createToast(context), viewInfo, duration.value)
-        }
+                showToast(createToast(context), viewInfo, duration.value)
+                return ""
+            }
+        })?.start()
     }
 
 
@@ -182,14 +189,17 @@ object CsToast {
         duration: ToastDuration = ToastDuration.LENGTH_SHORT,
         tag: String = ""
     ) {
-        ThreadUtils.runOnMainThread {
-            val context = CsContextManager.getApplication()
-            val viewInfo = createViewInfo(context, tag, true)
-            viewInfo.updateIcon(icon)
-            viewInfo.updateTxt(content)
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                val context = CsContextManager.getApplication()
+                val viewInfo = createViewInfo(context, tag, true)
+                viewInfo.updateIcon(icon)
+                viewInfo.updateTxt(content)
 
-            showToast(createToast(context), viewInfo, duration.value)
-        }
+                showToast(createToast(context), viewInfo, duration.value)
+                return ""
+            }
+        })?.start()
     }
 
     /*** *** *** *** *** *** *** *** *** *** 私有函数 *** *** *** *** *** *** *** *** *** *** ***/

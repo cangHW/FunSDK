@@ -3,7 +3,9 @@ package com.proxy.service.imageloader.info.glide.option.transform
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
 import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import java.security.MessageDigest
@@ -32,16 +34,19 @@ class AlphaTransformation(
         outWidth: Int,
         outHeight: Int
     ): Bitmap {
-        val result = Bitmap.createBitmap(
-            toTransform.width,
-            toTransform.height,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(result)
-        val paint = Paint()
+        val width: Int = toTransform.getWidth()
+        val height: Int = toTransform.getHeight()
+        val bitmap = pool.get(width, height, Bitmap.Config.ARGB_8888)
+        bitmap.setHasAlpha(true)
+        setCanvasBitmapDensity(toTransform, bitmap)
+
+        val canvas = Canvas(bitmap)
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.alpha = alpha
         canvas.drawBitmap(toTransform, 0f, 0f, paint)
-        return result
+        canvas.setBitmap(null)
+        return bitmap
     }
 
     override fun toString(): String {

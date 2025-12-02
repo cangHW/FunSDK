@@ -49,7 +49,6 @@ class TestDialog(private val index: Int) : CsBaseDialog() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(context: Context, parent: ViewGroup): View? {
-        super.onCreateView(context, parent)
         val view = LayoutInflater.from(context).inflate(R.layout.widget_dialog_test, parent, false)
         val content = view.findViewById<AppCompatTextView>(R.id.content)
         content.text = "$index"

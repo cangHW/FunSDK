@@ -3,11 +3,13 @@ package com.proxy.service.funsdk.imageloader
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatRadioButton
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -38,6 +40,7 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        CsBarUtils.setNavigationBarTransparent(this)
         super.onCreate(savedInstanceState)
 
         val from = arrayOf(
@@ -147,7 +150,17 @@ class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
         val loader = CsImageLoader.with(this)
 
         if (binding?.isFromNetWork?.isChecked == true) {
-            loader?.loadUrl(info.url)?.into(binding?.image)
+            loader?.loadUrl(info.url)
+//                ?.roundedCornersAndStroke(
+//                    50f,
+//                    0f,
+//                    50f,
+//                    0f,
+//                    Color.RED,
+//                    10f
+//                )
+//                ?.roundedCornersAndStroke(50, Color.RED, 10f)
+                ?.into(binding?.image)
         } else if (binding?.isFromRes?.isChecked == true) {
             loader?.loadRes(info.res)?.into(binding?.image)
         }

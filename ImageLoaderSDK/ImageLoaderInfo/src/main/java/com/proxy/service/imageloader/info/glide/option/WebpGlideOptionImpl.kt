@@ -22,8 +22,10 @@ import com.proxy.service.imageloader.info.glide.option.transform.AlphaTransforma
 import com.proxy.service.imageloader.info.glide.option.transform.BlurTransformation
 import com.proxy.service.imageloader.info.glide.option.transform.ColorFilterTransformation
 import com.proxy.service.imageloader.info.glide.option.transform.FitXYTransformation
+import com.proxy.service.imageloader.info.glide.option.transform.GranularRoundedCornersTransformation
 import com.proxy.service.imageloader.info.glide.option.transform.MaskTransformation
 import com.proxy.service.imageloader.info.glide.option.transform.OutTransformation
+import com.proxy.service.imageloader.info.glide.option.transform.RoundedCornersAndStrokeTransformation
 import com.proxy.service.imageloader.info.glide.option.transform.SaturationTransformation
 
 /**
@@ -124,23 +126,55 @@ class WebpGlideOptionImpl(
         if (roundingRadiusPx > 0) {
             val transform = RoundedCorners(roundingRadiusPx)
             info.transformList.add(transform)
-        } else {
-            CsLogger.tag(ImageLoaderConstants.TAG).e("roundingRadiusPx must be greater than 0.")
         }
         return this
     }
 
     override fun roundedCorners(
-        tfRoundingRadiusPx: Float,
+        tlRoundingRadiusPx: Float,
         trRoundingRadiusPx: Float,
         brRoundingRadiusPx: Float,
         blRoundingRadiusPx: Float
     ): IWebpGlideOption {
         val transform = GranularRoundedCorners(
-            tfRoundingRadiusPx.coerceAtLeast(0f),
+            tlRoundingRadiusPx.coerceAtLeast(0f),
             trRoundingRadiusPx.coerceAtLeast(0f),
             brRoundingRadiusPx.coerceAtLeast(0f),
             blRoundingRadiusPx.coerceAtLeast(0f)
+        )
+        info.transformList.add(transform)
+        return this
+    }
+
+    override fun roundedCornersAndStroke(
+        roundingRadiusPx: Int,
+        strokeColor: Int,
+        strokeWidth: Float
+    ): IWebpGlideOption {
+        val transform = RoundedCornersAndStrokeTransformation(
+            roundingRadiusPx.coerceAtLeast(0),
+            strokeColor,
+            strokeWidth.coerceAtLeast(0f)
+        )
+        info.transformList.add(transform)
+        return this
+    }
+
+    override fun roundedCornersAndStroke(
+        tlRoundingRadiusPx: Float,
+        trRoundingRadiusPx: Float,
+        brRoundingRadiusPx: Float,
+        blRoundingRadiusPx: Float,
+        strokeColor: Int,
+        strokeWidth: Float
+    ): IWebpGlideOption {
+        val transform = GranularRoundedCornersTransformation(
+            tlRoundingRadiusPx.coerceAtLeast(0f),
+            trRoundingRadiusPx.coerceAtLeast(0f),
+            brRoundingRadiusPx.coerceAtLeast(0f),
+            blRoundingRadiusPx.coerceAtLeast(0f),
+            strokeColor,
+            strokeWidth.coerceAtLeast(0f)
         )
         info.transformList.add(transform)
         return this

@@ -3,9 +3,9 @@ package com.proxy.service.imageloader.info.glide.option.transform
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.Key
@@ -24,14 +24,11 @@ class MaskTransformation(@DrawableRes val drawableId: Int) :
 
     companion object {
         private const val VERSION = 1
-        private const val ID = "com.proxy.service.imageloader.info.option.glide.transform.MaskTransformation.$VERSION"
+        private const val ID =
+            "com.proxy.service.imageloader.info.option.glide.transform.MaskTransformation.$VERSION"
     }
 
-    private val paint = Paint()
-
-    init {
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-    }
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     override fun transform(
         context: Context, pool: BitmapPool,
@@ -39,7 +36,7 @@ class MaskTransformation(@DrawableRes val drawableId: Int) :
     ): Bitmap {
         val width = toTransform.width
         val height = toTransform.height
-        val bitmap = pool[width, height, Bitmap.Config.ARGB_8888]
+        val bitmap = pool.get(width, height, Bitmap.Config.ARGB_8888)
         bitmap.setHasAlpha(true)
 
         val maskDrawable = ContextCompat.getDrawable(context, drawableId)
@@ -47,9 +44,13 @@ class MaskTransformation(@DrawableRes val drawableId: Int) :
         setCanvasBitmapDensity(toTransform, bitmap)
 
         val canvas = Canvas(bitmap)
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+        canvas.drawBitmap(toTransform, 0f, 0f, paint)
+
         maskDrawable?.setBounds(0, 0, width, height)
         maskDrawable?.draw(canvas)
-        canvas.drawBitmap(toTransform, 0f, 0f, paint)
+
+        canvas.setBitmap(null)
         return bitmap
     }
 

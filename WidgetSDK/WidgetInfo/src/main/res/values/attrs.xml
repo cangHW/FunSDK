@@ -7,6 +7,7 @@
         <attr name="round_radius_top_right" format="dimension" />
         <attr name="round_radius_bottom_left" format="dimension" />
         <attr name="round_radius_bottom_right" format="dimension" />
+        <attr name="max_height" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="CsFontStyleTextView" tools:ignore="ResourceName">

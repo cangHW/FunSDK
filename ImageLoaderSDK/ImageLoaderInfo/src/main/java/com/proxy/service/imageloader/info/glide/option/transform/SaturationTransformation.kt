@@ -3,9 +3,11 @@ package com.proxy.service.imageloader.info.glide.option.transform
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import android.graphics.PorterDuff
 import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import java.security.MessageDigest
@@ -36,17 +38,19 @@ class SaturationTransformation (
     ): Bitmap {
         val width = toTransform.width
         val height = toTransform.height
-        val config = toTransform.config
-        val bitmap = pool[width, height, config]
-
+        val bitmap = pool.get(width, height, Bitmap.Config.ARGB_8888)
+        bitmap.setHasAlpha(true)
         setCanvasBitmapDensity(toTransform, bitmap)
 
         val canvas = Canvas(bitmap)
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         val saturation = ColorMatrix()
         saturation.setSaturation(sat)
-        val paint = Paint()
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.colorFilter = ColorMatrixColorFilter(saturation)
         canvas.drawBitmap(toTransform, 0f, 0f, paint)
+
+        canvas.setBitmap(null)
 
         return bitmap
     }

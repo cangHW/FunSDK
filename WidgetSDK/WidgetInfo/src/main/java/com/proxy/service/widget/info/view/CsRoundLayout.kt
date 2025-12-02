@@ -56,6 +56,8 @@ class CsRoundLayout : RelativeLayout {
             array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius_bottom_right, -1)
         val radius_l_b =
             array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius_bottom_left, -1)
+        maxHeight =
+            array.getDimensionPixelSize(R.styleable.CsRoundLayout_max_height, -1)
         array.recycle()
 
         if (radius >= 0) {
@@ -91,10 +93,16 @@ class CsRoundLayout : RelativeLayout {
         radiusF[7] = radiusLB
     }
 
+    /**
+     * 设置圆角
+     * */
     fun setRadius(radius: Int) {
         setRadius(radius, radius, radius, radius)
     }
 
+    /**
+     * 设置圆角
+     * */
     fun setRadius(radiusLT: Int, radiusRT: Int, radiusRB: Int, radiusLB: Int) {
         radiusF[0] = radiusLT.toFloat()
         radiusF[1] = radiusLT.toFloat()
@@ -108,6 +116,9 @@ class CsRoundLayout : RelativeLayout {
         postInvalidate()
     }
 
+    /**
+     * 设置最大高度
+     * */
     fun setMaxHeight(maxHeight: Int) {
         this.maxHeight = maxHeight
         requestLayout()
