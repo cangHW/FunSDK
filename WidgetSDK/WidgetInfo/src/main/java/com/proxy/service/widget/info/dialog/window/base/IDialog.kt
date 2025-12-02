@@ -14,9 +14,9 @@ import com.proxy.service.widget.info.dialog.window.info.PreConditionStrategy
 interface IDialog {
 
     /**
-     * 获取弹窗优先级
+     * 获取弹窗优先级, 数字越小优先级越高
      * */
-    fun getDialogPriority(): Int
+    fun getDialogPriority(): Long
 
     /**
      * 获取弹窗配置

@@ -37,8 +37,8 @@ class GlideOptionImpl<R>(
     override fun size(width: Int, height: Int): IGlideOption<R> {
         info.requestOptions = info.requestOptions
             .override(
-                width.coerceAtLeast(0),
-                height.coerceAtLeast(0)
+                width.coerceAtLeast(1),
+                height.coerceAtLeast(1)
             )
         return this
     }
@@ -96,10 +96,8 @@ class GlideOptionImpl<R>(
     }
 
     override fun roundedCorners(roundingRadiusPx: Int): IGlideOption<R> {
-        if (roundingRadiusPx > 0) {
-            val transform = RoundedCorners(roundingRadiusPx)
-            info.transformList.add(transform)
-        }
+        val transform = RoundedCorners(roundingRadiusPx.coerceAtLeast(1))
+        info.transformList.add(transform)
         return this
     }
 
@@ -157,7 +155,7 @@ class GlideOptionImpl<R>(
     override fun blur(radius: Int, scaling: Int): IGlideOption<R> {
         val transform = BlurTransformation(
             radius.coerceAtLeast(0),
-            scaling.coerceAtLeast(0)
+            scaling.coerceAtLeast(1)
         )
         info.transformList.add(transform)
         return this
@@ -170,12 +168,7 @@ class GlideOptionImpl<R>(
     }
 
     override fun saturation(sat: Float): IGlideOption<R> {
-        val saturation = if (sat < 0) {
-            0f
-        } else {
-            sat
-        }
-        val transform = SaturationTransformation(saturation)
+        val transform = SaturationTransformation(sat.coerceAtLeast(0f))
         info.transformList.add(transform)
         return this
     }

@@ -29,6 +29,14 @@ object DialogManager {
         return handle
     }
 
+    fun getShowingDialogList(): ArrayList<IDialog> {
+        return ArrayList(showingList)
+    }
+
+    fun getWaitingDialogList(): ArrayList<IDialog> {
+        return ArrayList(waitingList)
+    }
+
     fun requestShow(dialog: IDialog) {
         val builder = StringBuilder()
         builder.append(dialog.toString()).append("\n")
@@ -57,7 +65,9 @@ object DialogManager {
                     it.checkStrategyWhenAdded(showingList, waitingList, dialog)
                     it.checkStrategyWhenShown(showingList, dialog)
                 }
-                checkVisibleWhenDialogShow(dialog)
+                showingList.lastOrNull()?.stop()
+                dialog.start()
+                showingList.add(dialog)
                 return@start
             }
 
@@ -96,43 +106,32 @@ object DialogManager {
     }
 
     private fun tryShowNextDialog() {
-        var selectDialog: IDialog? = null
         for (dialog in waitingList) {
-            if (dialog.isDialogShouldShow()) {
-                selectDialog = dialog
-                break
+            if (!dialog.isDialogShouldShow()) {
+                continue
             }
+
+            var isAllow = true
+            val lastShowDialog = showingList.lastOrNull()
+            lastShowDialog?.let {
+                isAllow = it.getDialogPostConditionStrategy().isAllowDialogShow(it, dialog)
+            }
+
+            // 该弹窗不被允许展示
+            if (!isAllow) {
+                continue
+            }
+
+            CsLogger.tag(DialogConstants.TAG).i("Show next dialog. $dialog")
+
+            dialog.getDialogPreConditionStrategy()
+                .checkStrategyWhenShown(showingList, dialog)
+
+            waitingList.remove(dialog)
+            lastShowDialog?.stop()
+            showingList.add(dialog)
         }
 
-        // 没有可以展示的弹窗
-        if (selectDialog == null) {
-            showingList.lastOrNull()?.start()
-            return
-        }
-
-        var isAllow = true
-        showingList.lastOrNull()?.let {
-            isAllow = it.getDialogPostConditionStrategy().isAllowDialogShow(it, selectDialog)
-        }
-
-        // 不允许展示下一个弹窗
-        if (!isAllow) {
-            showingList.lastOrNull()?.start()
-            return
-        }
-
-        CsLogger.tag(DialogConstants.TAG).i("Show next dialog. $selectDialog")
-
-        selectDialog.getDialogPreConditionStrategy()
-            .checkStrategyWhenShown(showingList, selectDialog)
-
-        waitingList.remove(selectDialog)
-        checkVisibleWhenDialogShow(selectDialog)
-    }
-
-    private fun checkVisibleWhenDialogShow(dialog: IDialog) {
-        showingList.lastOrNull()?.stop()
-        dialog.start()
-        showingList.add(dialog)
+        showingList.lastOrNull()?.start()
     }
 }

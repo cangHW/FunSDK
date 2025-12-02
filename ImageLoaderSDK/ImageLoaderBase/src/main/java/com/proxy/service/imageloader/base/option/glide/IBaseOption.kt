@@ -65,7 +65,7 @@ interface IBaseOption<L : IBaseOption<L, R>, R> : IGlideLoader<R> {
     /**
      * 圆角, 需要注意: 如果没有显示配置图片大小, 需要关注图片在显示时由于拉伸或缩放导致圆角不及预期的情况
      */
-    fun roundedCorners(@IntRange(from = 0) roundingRadiusPx: Int): L
+    fun roundedCorners(@IntRange(from = 1) roundingRadiusPx: Int): L
 
     /**
      * 圆角并设置描边, 需要注意: 如果没有显示配置图片大小, 需要关注图片在显示时由于拉伸或缩放导致描边或圆角不及预期的情况
@@ -103,7 +103,7 @@ interface IBaseOption<L : IBaseOption<L, R>, R> : IGlideLoader<R> {
      * @param radius    模糊的程度，值越大模糊效果越明显
      * @param scaling   缩放比例，值越大图越小，性能越好，但模糊效果可能会减轻
      */
-    fun blur(@IntRange(from = 0) radius: Int = 25, @IntRange(from = 0) scaling: Int = 1): L
+    fun blur(@IntRange(from = 0) radius: Int = 25, @IntRange(from = 1) scaling: Int = 1): L
 
     /**
      * 颜色过滤

@@ -19,7 +19,7 @@ import kotlin.math.abs
  * @data: 2024/5/18 11:30
  * @desc:
  */
-class BlurTransformation(val radius: Int = 25, val scaling: Int = 1) :
+class BlurTransformation(val radius: Int, val scaling: Int) :
     BaseBitmapTransformation() {
 
     companion object {

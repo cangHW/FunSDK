@@ -59,7 +59,7 @@ class TestDialog(private val index: Int) : CsBaseDialog() {
 
     override fun onStart() {
         super.onStart()
-        disposable = CsTask.delay(2, TimeUnit.SECONDS)?.doOnNext(object : IConsumer<Long> {
+        disposable = CsTask.delay(1, TimeUnit.SECONDS)?.doOnNext(object : IConsumer<Long> {
             override fun accept(value: Long) {
                 dismiss()
             }

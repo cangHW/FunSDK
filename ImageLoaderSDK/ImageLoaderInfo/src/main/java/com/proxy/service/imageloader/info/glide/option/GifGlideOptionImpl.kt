@@ -65,8 +65,8 @@ class GifGlideOptionImpl(
     override fun size(width: Int, height: Int): IGifGlideOption {
         info.requestOptions = info.requestOptions
             .override(
-                width.coerceAtLeast(0),
-                height.coerceAtLeast(0)
+                width.coerceAtLeast(1),
+                height.coerceAtLeast(1)
             )
         return this
     }
@@ -124,12 +124,8 @@ class GifGlideOptionImpl(
     }
 
     override fun roundedCorners(roundingRadiusPx: Int): IGifGlideOption {
-        if (roundingRadiusPx > 0) {
-            val transform = RoundedCorners(roundingRadiusPx)
-            info.transformList.add(transform)
-        } else {
-            CsLogger.tag(ImageLoaderConstants.TAG).e("roundingRadiusPx must be greater than 0.")
-        }
+        val transform = RoundedCorners(roundingRadiusPx.coerceAtLeast(1))
+        info.transformList.add(transform)
         return this
     }
 
@@ -187,7 +183,7 @@ class GifGlideOptionImpl(
     override fun blur(radius: Int, scaling: Int): IGifGlideOption {
         val transform = BlurTransformation(
             radius.coerceAtLeast(0),
-            scaling.coerceAtLeast(0)
+            scaling.coerceAtLeast(1)
         )
         info.transformList.add(transform)
         return this
@@ -200,12 +196,7 @@ class GifGlideOptionImpl(
     }
 
     override fun saturation(sat: Float): IGifGlideOption {
-        val saturation = if (sat < 0) {
-            0f
-        } else {
-            sat
-        }
-        val transform = SaturationTransformation(saturation)
+        val transform = SaturationTransformation(sat.coerceAtLeast(0f))
         info.transformList.add(transform)
         return this
     }

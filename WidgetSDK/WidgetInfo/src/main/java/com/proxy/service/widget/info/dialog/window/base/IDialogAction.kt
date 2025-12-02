@@ -16,9 +16,10 @@ interface IDialogAction {
     fun setOnDialogDismissListener(listener: OnDialogDismissListener)
 
     /**
-     * 展示全局弹窗. 需要权限 [android.permission.SYSTEM_ALERT_WINDOW] 或 [android.settings.action.MANAGE_OVERLAY_PERMISSION]
+     * 展示全局弹窗. 需要权限 [android.permission.SYSTEM_ALERT_WINDOW]
      *
      * android6.0 以上需要引导用户开启权限, 开启方式：
+     *
      * val REQUEST_CODE_OVERLAY_PERMISSION = 100
      * val intent = Intent(
      *     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,

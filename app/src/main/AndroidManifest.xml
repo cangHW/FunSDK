@@ -12,7 +12,6 @@
 
 <!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>-->
 
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -73,8 +72,7 @@
         <activity android:name=".document.image.preview.ImagePreviewActivity" />
         <activity android:name=".document.image.crop.ImageCropActivity" />
 
-        <activity android:name=".widget.WidgetActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".widget.WidgetActivity" />
 
     </application>
 
