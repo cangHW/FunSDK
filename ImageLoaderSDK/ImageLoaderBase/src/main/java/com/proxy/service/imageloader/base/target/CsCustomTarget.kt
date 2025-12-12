@@ -40,35 +40,35 @@ abstract class CsCustomTarget<R> {
     /**
      * 生命周期，start
      * */
-    fun onStart() {
+    open fun onStart() {
 
     }
 
     /**
      * 生命周期，stop
      * */
-    fun onStop() {
+    open fun onStop() {
 
     }
 
     /**
      * 生命周期，destroy
      * */
-    fun onDestroy() {
+    open fun onDestroy() {
 
     }
 
     /**
      * 资源开始加载
      * */
-    fun onLoadStarted(placeholder: Drawable?) {
+    open fun onLoadStarted(placeholder: Drawable?) {
 
     }
 
     /**
      * 资源加载失败
      * */
-    fun onLoadFailed(errorDrawable: Drawable?) {
+    open fun onLoadFailed(errorDrawable: Drawable?) {
 
     }
 
