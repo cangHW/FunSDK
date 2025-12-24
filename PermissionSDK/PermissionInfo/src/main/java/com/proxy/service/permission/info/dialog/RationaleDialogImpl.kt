@@ -36,6 +36,8 @@ class RationaleDialogImpl : IRationaleDialog {
     private var dialogInterface: DialogInterface? = null
     private var dialogDismissCallback: DialogDismissCallback? = null
 
+    private var deniedCallback: ActionCallback? = null
+
     /**
      * 设置标题
      * */
@@ -96,6 +98,7 @@ class RationaleDialogImpl : IRationaleDialog {
     }
 
     override fun setDeniedCallback(callback: ActionCallback): IRationaleDialog {
+        this.deniedCallback = callback
         permissionRequest.setDeniedCallback(callback)
         return this
     }
@@ -133,6 +136,7 @@ class RationaleDialogImpl : IRationaleDialog {
                         CsLogger.tag(tag).i("Left button click event has been taken over.")
                         return true
                     }
+                    deniedCallback?.onAction(permissionRequest.getPermissions())
                     dialog.dismiss()
                     return true
                 }

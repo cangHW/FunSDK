@@ -15,7 +15,12 @@ sealed class PostConditionStrategy {
      * 默认, 当前弹窗展示期间允许所有其他弹窗展示
      * */
     object Default : PostConditionStrategy() {
-        override fun isAllowDialogShow(preDialog: IDialog, nextDialog: IDialog): Boolean {
+        override fun isNextDialogAllowed(
+            currentDialogs: ArrayList<IDialog>,
+            topDialog: IDialog,
+            pendingDialogs: ArrayList<IDialog>,
+            nextDialog: IDialog
+        ): Boolean {
             return true
         }
     }
@@ -24,7 +29,12 @@ sealed class PostConditionStrategy {
      * 当前弹窗展示期间不允许任何其他弹窗展示
      * */
     object AllowNone : PostConditionStrategy() {
-        override fun isAllowDialogShow(preDialog: IDialog, nextDialog: IDialog): Boolean {
+        override fun isNextDialogAllowed(
+            currentDialogs: ArrayList<IDialog>,
+            topDialog: IDialog,
+            pendingDialogs: ArrayList<IDialog>,
+            nextDialog: IDialog
+        ): Boolean {
             return false
         }
     }
@@ -33,8 +43,13 @@ sealed class PostConditionStrategy {
      * 当前弹窗展示期间只允许其他更高优先级弹窗展示
      * */
     object AllowHighPriorityOnly : PostConditionStrategy() {
-        override fun isAllowDialogShow(preDialog: IDialog, nextDialog: IDialog): Boolean {
-            return nextDialog.getDialogPriority() < preDialog.getDialogPriority()
+        override fun isNextDialogAllowed(
+            currentDialogs: ArrayList<IDialog>,
+            topDialog: IDialog,
+            pendingDialogs: ArrayList<IDialog>,
+            nextDialog: IDialog
+        ): Boolean {
+            return nextDialog.getDialogPriority() < topDialog.getDialogPriority()
         }
     }
 
@@ -42,8 +57,13 @@ sealed class PostConditionStrategy {
      * 当前弹窗展示期间只允许其他相同与更高优先级弹窗展示
      * */
     object AllowEqualAndHighPriorityOnly : PostConditionStrategy() {
-        override fun isAllowDialogShow(preDialog: IDialog, nextDialog: IDialog): Boolean {
-            return nextDialog.getDialogPriority() <= preDialog.getDialogPriority()
+        override fun isNextDialogAllowed(
+            currentDialogs: ArrayList<IDialog>,
+            topDialog: IDialog,
+            pendingDialogs: ArrayList<IDialog>,
+            nextDialog: IDialog
+        ): Boolean {
+            return nextDialog.getDialogPriority() <= topDialog.getDialogPriority()
         }
     }
 
@@ -56,5 +76,10 @@ sealed class PostConditionStrategy {
     /**
      * 是否允许下一个弹窗展示, 返回: true 允许, false 不允许
      * */
-    abstract fun isAllowDialogShow(preDialog: IDialog, nextDialog: IDialog): Boolean
+    abstract fun isNextDialogAllowed(
+        currentDialogs: ArrayList<IDialog>,
+        topDialog: IDialog,
+        pendingDialogs: ArrayList<IDialog>,
+        nextDialog: IDialog
+    ): Boolean
 }

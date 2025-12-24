@@ -88,7 +88,6 @@ dependencies {
 
     implementation(libs.service.document.image)
     implementation(libs.service.document.pdf)
-//    implementation(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
 //    implementation(project(":WidgetSDK:WidgetInfo"))
     implementation(libs.service.widget)
 

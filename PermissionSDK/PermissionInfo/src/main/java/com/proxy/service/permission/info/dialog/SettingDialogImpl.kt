@@ -141,6 +141,7 @@ class SettingDialogImpl : ISettingDialog {
                         CsLogger.tag(tag).i("Left button click event has been taken over.")
                         return true
                     }
+                    deniedCallback?.onAction(permissions.toTypedArray())
                     dialog.dismiss()
                     return true
                 }

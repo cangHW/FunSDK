@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 /**
  * 网络状态相关工具
  *
- * android.Manifest.permission.READ_PHONE_STATE
- * android.Manifest.permission.ACCESS_NETWORK_STATE
+ * <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+ * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
  *
  * @author: cangHX
  * @data: 2024/4/28 15:34

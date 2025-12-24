@@ -25,6 +25,10 @@ class PermissionRequestImpl : IPermissionRequest {
     private var deniedCallback: ActionCallback? = null
     private var noPromptCallback: ActionCallback? = null
 
+    fun getPermissions(): Array<String> {
+        return permissions.toTypedArray()
+    }
+
     /**
      * 添加要申请的权限
      * */

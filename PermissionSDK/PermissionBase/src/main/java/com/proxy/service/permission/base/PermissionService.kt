@@ -24,17 +24,17 @@ interface PermissionService : BaseService {
     fun setDialogFactory(factory: DialogFactory)
 
     /**
-     * 创建权限请求器, 用于请求权限
+     * 创建权限请求器, 用于请求权限, 最好配置旋转屏幕时不重建当前页面, 避免横屏页面跳转竖屏设置后返回等问题。
      * */
     fun createRequest(): IPermissionRequest
 
     /**
-     * 创建一个用于展示所需权限理由的弹窗
+     * 创建一个用于展示所需权限理由的弹窗, 最好配置旋转屏幕时不重建当前页面, 避免横屏页面跳转竖屏设置后返回等问题。
      * */
     fun createRationaleDialog(): IRationaleDialog
 
     /**
-     * 创建一个用于展示跳转 setting 的弹窗
+     * 创建一个用于展示跳转 setting 的弹窗, 最好配置旋转屏幕时不重建当前页面, 避免横屏页面跳转竖屏设置后返回等问题。
      * */
     fun createSettingDialog(): ISettingDialog
 

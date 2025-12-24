@@ -24,19 +24,19 @@ sealed class PreConditionStrategy {
      */
     object ClearAllWhenAdded : PreConditionStrategy() {
         override fun checkStrategyWhenAdded(
-            showingList: ArrayList<IDialog>,
-            waitingList: ArrayList<IDialog>,
-            dialog: IDialog
+            currentDialogs: ArrayList<IDialog>,
+            pendingDialogs: ArrayList<IDialog>,
+            currentDialog: IDialog
         ) {
-            waitingList.forEach {
+            pendingDialogs.forEach {
                 dismissDialog(it)
             }
-            waitingList.clear()
+            pendingDialogs.clear()
 
-            showingList.forEach {
+            currentDialogs.forEach {
                 dismissDialog(it)
             }
-            showingList.clear()
+            currentDialogs.clear()
         }
     }
 
@@ -45,11 +45,11 @@ sealed class PreConditionStrategy {
      * 触发条件：当前弹窗被展示时
      */
     object ClearAllWhenShown : PreConditionStrategy() {
-        override fun checkStrategyWhenShown(showingList: ArrayList<IDialog>, dialog: IDialog) {
-            showingList.forEach {
+        override fun checkStrategyWhenShown(currentDialogs: ArrayList<IDialog>, currentDialog: IDialog) {
+            currentDialogs.forEach {
                 dismissDialog(it)
             }
-            showingList.clear()
+            currentDialogs.clear()
         }
     }
 
@@ -59,23 +59,23 @@ sealed class PreConditionStrategy {
      */
     object ClearEqualPriorityWhenAdded : PreConditionStrategy() {
         override fun checkStrategyWhenAdded(
-            showingList: ArrayList<IDialog>,
-            waitingList: ArrayList<IDialog>,
-            dialog: IDialog
+            currentDialogs: ArrayList<IDialog>,
+            pendingDialogs: ArrayList<IDialog>,
+            currentDialog: IDialog
         ) {
-            val waitingIterator = waitingList.iterator()
+            val waitingIterator = pendingDialogs.iterator()
             while (waitingIterator.hasNext()) {
                 val temp = waitingIterator.next()
-                if (temp.getDialogPriority() == dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() == currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     waitingIterator.remove()
                 }
             }
 
-            val showingIterator = showingList.iterator()
+            val showingIterator = currentDialogs.iterator()
             while (showingIterator.hasNext()) {
                 val temp = showingIterator.next()
-                if (temp.getDialogPriority() == dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() == currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     showingIterator.remove()
                 }
@@ -88,11 +88,11 @@ sealed class PreConditionStrategy {
      * 触发条件：当前弹窗被展示时
      */
     object ClearEqualPriorityWhenShown : PreConditionStrategy() {
-        override fun checkStrategyWhenShown(showingList: ArrayList<IDialog>, dialog: IDialog) {
-            val showingIterator = showingList.iterator()
+        override fun checkStrategyWhenShown(currentDialogs: ArrayList<IDialog>, currentDialog: IDialog) {
+            val showingIterator = currentDialogs.iterator()
             while (showingIterator.hasNext()) {
                 val temp = showingIterator.next()
-                if (temp.getDialogPriority() == dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() == currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     showingIterator.remove()
                 }
@@ -106,23 +106,23 @@ sealed class PreConditionStrategy {
      */
     object ClearLowAndEqualPriorityWhenAdded : PreConditionStrategy() {
         override fun checkStrategyWhenAdded(
-            showingList: ArrayList<IDialog>,
-            waitingList: ArrayList<IDialog>,
-            dialog: IDialog
+            currentDialogs: ArrayList<IDialog>,
+            pendingDialogs: ArrayList<IDialog>,
+            currentDialog: IDialog
         ) {
-            val waitingIterator = waitingList.iterator()
+            val waitingIterator = pendingDialogs.iterator()
             while (waitingIterator.hasNext()) {
                 val temp = waitingIterator.next()
-                if (temp.getDialogPriority() >= dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() >= currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     waitingIterator.remove()
                 }
             }
 
-            val showingIterator = showingList.iterator()
+            val showingIterator = currentDialogs.iterator()
             while (showingIterator.hasNext()) {
                 val temp = showingIterator.next()
-                if (temp.getDialogPriority() >= dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() >= currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     showingIterator.remove()
                 }
@@ -135,11 +135,11 @@ sealed class PreConditionStrategy {
      * 触发条件：当前弹窗被展示时
      */
     object ClearLowAndEqualPriorityWhenShown : PreConditionStrategy() {
-        override fun checkStrategyWhenShown(showingList: ArrayList<IDialog>, dialog: IDialog) {
-            val showingIterator = showingList.iterator()
+        override fun checkStrategyWhenShown(currentDialogs: ArrayList<IDialog>, currentDialog: IDialog) {
+            val showingIterator = currentDialogs.iterator()
             while (showingIterator.hasNext()) {
                 val temp = showingIterator.next()
-                if (temp.getDialogPriority() >= dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() >= currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     showingIterator.remove()
                 }
@@ -153,23 +153,23 @@ sealed class PreConditionStrategy {
      */
     object ClearLowPriorityWhenAdded : PreConditionStrategy() {
         override fun checkStrategyWhenAdded(
-            showingList: ArrayList<IDialog>,
-            waitingList: ArrayList<IDialog>,
-            dialog: IDialog
+            currentDialogs: ArrayList<IDialog>,
+            pendingDialogs: ArrayList<IDialog>,
+            currentDialog: IDialog
         ) {
-            val waitingIterator = waitingList.iterator()
+            val waitingIterator = pendingDialogs.iterator()
             while (waitingIterator.hasNext()) {
                 val temp = waitingIterator.next()
-                if (temp.getDialogPriority() > dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() > currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     waitingIterator.remove()
                 }
             }
 
-            val showingIterator = showingList.iterator()
+            val showingIterator = currentDialogs.iterator()
             while (showingIterator.hasNext()) {
                 val temp = showingIterator.next()
-                if (temp.getDialogPriority() > dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() > currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     showingIterator.remove()
                 }
@@ -182,11 +182,11 @@ sealed class PreConditionStrategy {
      * 触发条件：当前弹窗被展示时
      */
     object ClearLowPriorityWhenShown : PreConditionStrategy() {
-        override fun checkStrategyWhenShown(showingList: ArrayList<IDialog>, dialog: IDialog) {
-            val showingIterator = showingList.iterator()
+        override fun checkStrategyWhenShown(currentDialogs: ArrayList<IDialog>, currentDialog: IDialog) {
+            val showingIterator = currentDialogs.iterator()
             while (showingIterator.hasNext()) {
                 val temp = showingIterator.next()
-                if (temp.getDialogPriority() > dialog.getDialogPriority()) {
+                if (temp.getDialogPriority() > currentDialog.getDialogPriority()) {
                     dismissDialog(temp)
                     showingIterator.remove()
                 }
@@ -203,9 +203,9 @@ sealed class PreConditionStrategy {
      * 当被添加时检查策略
      * */
     open fun checkStrategyWhenAdded(
-        showingList: ArrayList<IDialog>,
-        waitingList: ArrayList<IDialog>,
-        dialog: IDialog
+        currentDialogs: ArrayList<IDialog>,
+        pendingDialogs: ArrayList<IDialog>,
+        currentDialog: IDialog
     ) {
     }
 
@@ -213,18 +213,18 @@ sealed class PreConditionStrategy {
      * 当被展示时检查策略
      * */
     open fun checkStrategyWhenShown(
-        showingList: ArrayList<IDialog>,
-        dialog: IDialog
+        currentDialogs: ArrayList<IDialog>,
+        currentDialog: IDialog
     ) {
     }
 
     /**
      * 关闭弹窗
      * */
-    protected fun dismissDialog(dialog: IDialog) {
+    protected fun dismissDialog(currentDialog: IDialog) {
         CsLogger.tag(DialogConstants.TAG)
-            .i("The strategy is ready to forcibly close the dialog. $dialog")
-        dialog.stop()
-        dialog.destroy()
+            .i("The strategy is ready to forcibly close the dialog. $currentDialog")
+        currentDialog.stop()
+        currentDialog.destroy()
     }
 }

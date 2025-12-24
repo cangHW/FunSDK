@@ -79,15 +79,20 @@ object CsAppUtils {
      * @param packageName : 包名，为空默认为当前应用
      * */
     fun getAppName(packageName: String? = null): String {
-        val context = CsContextManager.getApplication()
-        val pm = context.packageManager
+        try {
+            val context = CsContextManager.getApplication()
+            val pm = context.packageManager
 
-        if (packageName == null) {
-            return context.applicationInfo.loadLabel(pm).toString()
+            if (packageName.isNullOrEmpty() || packageName.isBlank()) {
+                return context.applicationInfo.loadLabel(pm).toString()
+            }
+
+            val packageInfo = pm.getPackageInfo(packageName, 0)
+            return packageInfo.applicationInfo.loadLabel(pm).toString()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
         }
-
-        val packageInfo = pm.getPackageInfo(packageName, 0)
-        return packageInfo.applicationInfo.loadLabel(pm).toString()
+        return ""
     }
 
     /**
@@ -168,16 +173,21 @@ object CsAppUtils {
      *
      * @param packageName : 包名，为空默认为当前应用
      * */
-    fun getIcon(packageName: String? = null): Drawable {
-        val context = CsContextManager.getApplication()
+    fun getIcon(packageName: String? = null): Drawable? {
+        try {
+            val context = CsContextManager.getApplication()
 
-        if (packageName == null) {
-            return context.applicationInfo.loadIcon(context.packageManager)
+            if (packageName.isNullOrEmpty() || packageName.isBlank()) {
+                return context.applicationInfo.loadIcon(context.packageManager)
+            }
+
+            val packageManager = context.packageManager
+            val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
+            return applicationInfo.loadIcon(packageManager)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
         }
-
-        val packageManager = context.packageManager
-        val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
-        return applicationInfo.loadIcon(packageManager)
+        return null
     }
 
     /**

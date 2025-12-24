@@ -16,8 +16,8 @@ object DialogManager {
 
     private const val TASK_NAME = "cs-dialog-loop"
 
-    private val showingList = ArrayList<IDialog>()
-    private val waitingList = ArrayList<IDialog>()
+    private val currentDialogs = ArrayList<IDialog>()
+    private val pendingDialogs = ArrayList<IDialog>()
 
     private var handle: IHandlerOption? = null
 
@@ -29,12 +29,12 @@ object DialogManager {
         return handle
     }
 
-    fun getShowingDialogList(): ArrayList<IDialog> {
-        return ArrayList(showingList)
+    fun getCurrentDialogs(): ArrayList<IDialog> {
+        return ArrayList(currentDialogs)
     }
 
-    fun getWaitingDialogList(): ArrayList<IDialog> {
-        return ArrayList(waitingList)
+    fun getPendingDialogs(): ArrayList<IDialog> {
+        return ArrayList(pendingDialogs)
     }
 
     fun requestShow(dialog: IDialog) {
@@ -53,7 +53,7 @@ object DialogManager {
         CsLogger.tag(DialogConstants.TAG).i("RequestShow $builder")
 
         getHandle()?.start {
-            if (showingList.contains(dialog)) {
+            if (currentDialogs.contains(dialog)) {
                 CsLogger.tag(DialogConstants.TAG).i("The dialog is showing. $dialog")
                 return@start
             }
@@ -62,20 +62,20 @@ object DialogManager {
                 CsLogger.tag(DialogConstants.TAG).i("ShowImmediate $dialog")
                 dialog.create()
                 dialog.getDialogPreConditionStrategy().let {
-                    it.checkStrategyWhenAdded(showingList, waitingList, dialog)
-                    it.checkStrategyWhenShown(showingList, dialog)
+                    it.checkStrategyWhenAdded(currentDialogs, pendingDialogs, dialog)
+                    it.checkStrategyWhenShown(currentDialogs, dialog)
                 }
-                showingList.lastOrNull()?.stop()
+                currentDialogs.lastOrNull()?.stop()
                 dialog.start()
-                showingList.add(dialog)
+                currentDialogs.add(dialog)
                 return@start
             }
 
-            if (!waitingList.contains(dialog)) {
+            if (!pendingDialogs.contains(dialog)) {
                 dialog.create()
                 dialog.getDialogPreConditionStrategy()
-                    .checkStrategyWhenAdded(showingList, waitingList, dialog)
-                waitingList.add(dialog)
+                    .checkStrategyWhenAdded(currentDialogs, pendingDialogs, dialog)
+                pendingDialogs.add(dialog)
             }
 
             tryShowNextDialog()
@@ -86,35 +86,38 @@ object DialogManager {
         CsLogger.tag(DialogConstants.TAG).i("RequestDismiss $dialog")
 
         getHandle()?.start {
-            if (waitingList.contains(dialog)) {
+            if (pendingDialogs.contains(dialog)) {
                 dialog.destroy()
-                waitingList.remove(dialog)
+                pendingDialogs.remove(dialog)
                 return@start
             }
 
-            val index = showingList.indexOf(dialog)
+            val index = currentDialogs.indexOf(dialog)
             if (index < 0) {
                 tryShowNextDialog()
                 return@start
             }
 
             dialog.stop()
-            showingList.remove(dialog)
+            currentDialogs.remove(dialog)
             tryShowNextDialog()
             dialog.destroy()
         }
     }
 
     private fun tryShowNextDialog() {
-        for (dialog in waitingList) {
+        for (dialog in pendingDialogs) {
             if (!dialog.isDialogShouldShow()) {
                 continue
             }
 
             var isAllow = true
-            val lastShowDialog = showingList.lastOrNull()
+            val lastShowDialog = currentDialogs.lastOrNull()
             lastShowDialog?.let {
-                isAllow = it.getDialogPostConditionStrategy().isAllowDialogShow(it, dialog)
+                isAllow = it.getDialogPostConditionStrategy().isNextDialogAllowed(
+                    currentDialogs, it,
+                    pendingDialogs, dialog
+                )
             }
 
             // 该弹窗不被允许展示
@@ -125,13 +128,13 @@ object DialogManager {
             CsLogger.tag(DialogConstants.TAG).i("Show next dialog. $dialog")
 
             dialog.getDialogPreConditionStrategy()
-                .checkStrategyWhenShown(showingList, dialog)
+                .checkStrategyWhenShown(currentDialogs, dialog)
 
-            waitingList.remove(dialog)
+            pendingDialogs.remove(dialog)
             lastShowDialog?.stop()
-            showingList.add(dialog)
+            currentDialogs.add(dialog)
         }
 
-        showingList.lastOrNull()?.start()
+        currentDialogs.lastOrNull()?.start()
     }
 }
