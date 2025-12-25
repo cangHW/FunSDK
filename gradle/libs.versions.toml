@@ -25,7 +25,7 @@ cloud-api = { group = "io.github.canghw", name = "Cloud-Api", version = "1.1.20"
 cloud-compiler = { group = "io.github.canghw", name = "Cloud-Compiler", version = "1.1.14" }
 cloud-plugin = { group = "io.github.canghw", name = "Cloud-Plugin", version = "1.1.13" }
 
-core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.26"}
+core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.1.27"}
 service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.8"}
 service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.8"}
 service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.18"}
@@ -36,7 +36,7 @@ service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", ve
 service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
 service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.4"}
 service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
-service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.12"}
+service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.13"}
 
 ##########################################  三方库  ############################################################################
 # 网络库

@@ -22,6 +22,11 @@ object CsNotificationManager {
 
     private const val MIN_NOTIFICATION_ID = 10000L
 
+    private fun getNotificationManager(): NotificationManager? {
+        return CsContextManager.getApplication()
+            .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager?
+    }
+
     /**
      * 注册通知渠道
      * */
@@ -35,7 +40,7 @@ object CsNotificationManager {
      * 需要权限
      * <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
      *
-     * @param notificationId    需要大于等于 [MIN_NOTIFICATION_ID], 前面留给组使用
+     * @param notificationId    通知 ID, 需要大于等于 [MIN_NOTIFICATION_ID], 前面留给组使用
      * */
     fun sendNotification(
         @IntRange(MIN_NOTIFICATION_ID) notificationId: Int,
@@ -53,8 +58,7 @@ object CsNotificationManager {
             return
         }
 
-        val manager = CsContextManager.getApplication()
-            .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager?
+        val manager = getNotificationManager()
 
         if (manager == null) {
             CsLogger.tag(NotificationConstants.TAG).e("NotificationManager failed to obtain.")
@@ -72,7 +76,7 @@ object CsNotificationManager {
      * 需要权限
      * <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
      *
-     * @param notificationId    需要大于等于 [MIN_NOTIFICATION_ID], 前面留给组使用
+     * @param notificationId    通知 ID, 需要大于等于 [MIN_NOTIFICATION_ID], 前面留给组使用
      * */
     fun sendGroupedNotification(
         @IntRange(MIN_NOTIFICATION_ID) notificationId: Int,
@@ -90,8 +94,7 @@ object CsNotificationManager {
             return
         }
 
-        val manager = CsContextManager.getApplication()
-            .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager?
+        val manager = getNotificationManager()
 
         if (manager == null) {
             CsLogger.tag(NotificationConstants.TAG).e("NotificationManager failed to obtain.")
@@ -112,6 +115,22 @@ object CsNotificationManager {
                 manager.notify(getGroupNotificationId(groupKey), it)
             }
         }
+    }
+
+    /**
+     * 清除全部通知
+     * */
+    fun cancelAll() {
+        getNotificationManager()?.cancelAll()
+    }
+
+    /**
+     * 清除对应通知
+     *
+     * @param notificationId 通知 ID
+     * */
+    fun cancel(notificationId: Int) {
+        getNotificationManager()?.cancel(notificationId)
     }
 
 }

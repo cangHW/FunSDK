@@ -1,6 +1,6 @@
 package com.proxy.service.widget.info.notification.constants
 
-import com.proxy.service.core.constants.CoreConfig
+import com.proxy.service.widget.info.constants.WidgetConstants
 import com.proxy.service.widget.info.notification.enums.NotificationPriority
 import com.proxy.service.widget.info.notification.enums.NotificationVisibility
 
@@ -11,7 +11,7 @@ import com.proxy.service.widget.info.notification.enums.NotificationVisibility
  */
 object NotificationConstants {
 
-    const val TAG = "${CoreConfig.TAG}Widget_Notify"
+    const val TAG = "${WidgetConstants.TAG}Notify"
 
     const val CHANNEL_ID_DEFAULT = "default_channel_id"
     const val CHANNEL_NAME_DEFAULT = "默认渠道"

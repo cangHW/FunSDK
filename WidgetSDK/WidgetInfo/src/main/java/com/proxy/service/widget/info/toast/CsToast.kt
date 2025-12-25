@@ -28,6 +28,7 @@ object CsToast {
     private var config: ToastConfig = ToastConfig()
     private var factory: ToastViewFactory = ToastViewFactory()
 
+    private var nativeToast: Toast? = null
     private var currentToast: Toast? = null
 
     /*** *** *** *** *** *** *** *** *** *** 全局配置 *** *** *** *** *** *** *** *** *** *** ***/
@@ -51,6 +52,66 @@ object CsToast {
      * */
     fun clearToastCache() {
         viewInfoCache.clear()
+    }
+
+    /*** *** *** *** *** *** *** *** *** *** 原生吐司 *** *** *** *** *** *** *** *** *** *** ***/
+
+    /**
+     * 显示原生 toast, 单例
+     * */
+    fun showNativeSingle(
+        @StringRes stringId: Int,
+        duration: ToastDuration = ToastDuration.LENGTH_SHORT
+    ) {
+        if (nativeToast == null) {
+            nativeToast = Toast.makeText(
+                CsContextManager.getApplication(),
+                stringId,
+                duration.value
+            )
+        }
+        nativeToast?.setText(stringId)
+        nativeToast?.duration = duration.value
+        nativeToast?.show()
+    }
+
+    /**
+     * 显示原生 toast
+     * */
+    fun showNative(
+        @StringRes stringId: Int,
+        duration: ToastDuration = ToastDuration.LENGTH_SHORT
+    ) {
+        Toast.makeText(CsContextManager.getApplication(), stringId, duration.value).show()
+    }
+
+    /**
+     * 显示原生 toast, 单例
+     * */
+    fun showNativeSingle(
+        content: String,
+        duration: ToastDuration = ToastDuration.LENGTH_SHORT
+    ) {
+        if (nativeToast == null) {
+            nativeToast = Toast.makeText(
+                CsContextManager.getApplication(),
+                content,
+                duration.value
+            )
+        }
+        nativeToast?.setText(content)
+        nativeToast?.duration = duration.value
+        nativeToast?.show()
+    }
+
+    /**
+     * 显示原生 toast
+     * */
+    fun showNative(
+        content: String,
+        duration: ToastDuration = ToastDuration.LENGTH_SHORT
+    ) {
+        Toast.makeText(CsContextManager.getApplication(), content, duration.value).show()
     }
 
     /*** *** *** *** *** *** *** *** *** *** 文字吐司 *** *** *** *** *** *** *** *** *** *** ***/

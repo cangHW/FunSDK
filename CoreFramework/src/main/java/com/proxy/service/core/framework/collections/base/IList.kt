@@ -28,6 +28,16 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     fun get(position: Int): V?
 
     /**
+     * 获取第一个数据
+     * */
+    fun getFirst(): V?
+
+    /**
+     * 获取最后一个数据
+     * */
+    fun getLast(): V?
+
+    /**
      * 获取全部数据
      * */
     fun getAll(): MutableList<V>
@@ -58,9 +68,19 @@ interface IList<V> : IDataChanged<V>, ITransaction {
     fun removeSync(value: V)
 
     /**
+     * 同步移除目标位置数据
+     * */
+    fun removeAtSync(position: Int): V?
+
+    /**
      * 异步移除数据
      * */
     fun removeAsync(value: V)
+
+    /**
+     * 同步移除目标位置数据
+     * */
+    fun removeAtAsync(position: Int)
 
     /**
      * 同步移除全部符合条件的数据

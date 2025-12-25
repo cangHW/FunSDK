@@ -41,7 +41,7 @@ class CsExcellentList<V> : IList<V> {
         write.lock()
         try {
             list.clear()
-        }finally {
+        } finally {
             write.unlock()
         }
     }
@@ -55,6 +55,24 @@ class CsExcellentList<V> : IList<V> {
         }
     }
 
+    override fun getFirst(): V? {
+        read.lock()
+        try {
+            return list.firstOrNull()
+        } finally {
+            read.unlock()
+        }
+    }
+
+    override fun getLast(): V? {
+        read.lock()
+        try {
+            return list.lastOrNull()
+        } finally {
+            read.unlock()
+        }
+    }
+
     override fun getAll(): MutableList<V> {
         read.lock()
         try {
@@ -62,6 +80,24 @@ class CsExcellentList<V> : IList<V> {
         } finally {
             read.unlock()
         }
+    }
+
+    override fun removeAtSync(position: Int): V? {
+        write.lock()
+        try {
+            return list.removeAt(position)
+        } finally {
+            write.unlock()
+        }
+    }
+
+    override fun removeAtAsync(position: Int) {
+        CsTask.computationThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                removeAtSync(position)
+                return ""
+            }
+        })?.start()
     }
 
     override fun runInTransaction(runnable: Runnable) {

@@ -1,11 +1,13 @@
 package com.proxy.service.funsdk.widget
 
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -73,6 +75,12 @@ class NotificationActivity : BaseActivity<ActivityWidgetNotificationBinding>() {
 
 //                CsNotificationManager.sendNotification(num, config)
                 CsNotificationManager.sendGroupedNotification(num, config2)
+            }
+
+            R.id.clear_notification -> {
+                val manager = CsContextManager.getApplication()
+                    .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager?
+                manager?.cancelAll()
             }
         }
     }
