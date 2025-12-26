@@ -65,7 +65,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                     binding?.content?.addData("预加载", "预加载完成, 等待执行上屏操作 url = $url")
                 }
             })
-            ?.load()
+            ?.create()
     }
 
     override fun onClick(view: View) {
@@ -101,7 +101,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                             binding?.content?.addData("加载", "加载完成 url = $url")
                         }
                     })
-                    ?.loadTo(binding?.group)
+                    ?.createTo(binding?.group)
             }
 
             R.id.show_baidu -> {

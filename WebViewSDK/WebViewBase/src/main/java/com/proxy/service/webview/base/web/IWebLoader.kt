@@ -14,7 +14,7 @@ import com.proxy.service.webview.base.listener.WebLoadCallback
 interface IWebLoader {
 
     /**
-     * 加载页面
+     * 设置加载页面
      * */
     fun loadUrl(url: String): IWebLoader
 
@@ -49,12 +49,12 @@ interface IWebLoader {
     fun setWebLifecycleCallback(callback: WebLifecycleCallback): IWebLoader
 
     /**
-     * 加载 web 容器到 ViewGroup
+     * 创建 web 容器到 ViewGroup
      * */
-    fun loadTo(viewGroup: ViewGroup?): IWeb
+    fun createTo(viewGroup: ViewGroup?): IWeb
 
     /**
-     * 加载 web 容器
+     * 创建 web 容器
      * */
-    fun load(): IWeb
+    fun create(): IWeb
 }

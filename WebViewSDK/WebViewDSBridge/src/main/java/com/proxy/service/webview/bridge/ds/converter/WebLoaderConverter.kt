@@ -35,12 +35,12 @@ class WebLoaderConverter(private val loader: IWebLoader) : IWebLoader {
         return this
     }
 
-    override fun load(): IWeb {
-        return loadTo(null)
+    override fun create(): IWeb {
+        return createTo(null)
     }
 
-    override fun loadTo(viewGroup: ViewGroup?): IWeb {
-        val web = loader.loadTo(viewGroup)
+    override fun createTo(viewGroup: ViewGroup?): IWeb {
+        val web = loader.createTo(viewGroup)
         bridge.setWeb(web)
         return web
     }

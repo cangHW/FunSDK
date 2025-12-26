@@ -83,14 +83,14 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
         return this
     }
 
-    override fun loadTo(viewGroup: ViewGroup?): IWeb {
+    override fun createTo(viewGroup: ViewGroup?): IWeb {
         if (viewGroup != null) {
             return WebImpl(createWebView(viewGroup), lifecycleOwner)
         }
-        return load()
+        return create()
     }
 
-    override fun load(): IWeb {
+    override fun create(): IWeb {
         return WebImpl(createWebView(null), lifecycleOwner)
     }
 
