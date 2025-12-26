@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ff0">
+    android:background="#ff0000">
 
     <com.proxy.service.widget.info.view.CsFontStyleTextView
         android:id="@+id/content"

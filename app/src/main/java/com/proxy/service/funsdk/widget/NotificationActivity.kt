@@ -66,21 +66,23 @@ class NotificationActivity : BaseActivity<ActivityWidgetNotificationBinding>() {
                 CsNotificationManager.sendNotification(num, config)
 //                CsNotificationManager.sendGroupedNotification(num, config)
 
-                num++
-                val config2 = NotificationConfig.builder("11")
-                    .setContentTitle("title")
-                    .setContentText("content")
-                    .setGroup("IM2")
-                    .build()
+//                num++
+//                val config2 = NotificationConfig.builder("11")
+//                    .setContentTitle("title")
+//                    .setContentText("content")
+//                    .setGroup("IM2")
+//                    .build()
+//
+////                CsNotificationManager.sendNotification(num, config)
+//                CsNotificationManager.sendGroupedNotification(num, config2)
+            }
 
-//                CsNotificationManager.sendNotification(num, config)
-                CsNotificationManager.sendGroupedNotification(num, config2)
+            R.id.close_one_notification -> {
+                CsNotificationManager.cancel(num)
             }
 
             R.id.clear_notification -> {
-                val manager = CsContextManager.getApplication()
-                    .getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager?
-                manager?.cancelAll()
+                CsNotificationManager.cancelAll()
             }
         }
     }

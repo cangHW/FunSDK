@@ -43,7 +43,7 @@ class TestDialog(private val index: Int) : CsBaseDialog() {
         config.width = CsDpUtils.dp2px(320f)
         config.height = CsDpUtils.dp2px(72f)
 //        config.width = LayoutParams.MATCH_PARENT
-//        config.height = LayoutParams.WRAP_CONTENT
+//        config.height = LayoutParams.MATCH_PARENT
         return config
     }
 
@@ -52,6 +52,10 @@ class TestDialog(private val index: Int) : CsBaseDialog() {
         val view = LayoutInflater.from(context).inflate(R.layout.widget_dialog_test, parent, false)
         val content = view.findViewById<AppCompatTextView>(R.id.content)
         content.text = "$index"
+
+        view.setOnClickListener {
+            dismiss()
+        }
         return view
     }
 

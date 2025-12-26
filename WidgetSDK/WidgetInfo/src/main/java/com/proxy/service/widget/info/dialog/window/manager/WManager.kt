@@ -3,6 +3,7 @@ package com.proxy.service.widget.info.dialog.window.manager
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.PixelFormat
+import android.os.Build
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -24,13 +25,19 @@ object WManager {
     }
 
     fun createParams(): WindowManager.LayoutParams {
-        return WindowManager.LayoutParams(
+        val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             getDefaultFlag() or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+        return params
     }
 
     fun addView(viewGroup: ViewGroup, params: WindowManager.LayoutParams) {

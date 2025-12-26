@@ -25,7 +25,10 @@ abstract class CsBaseDialog : AbstractLifecycleDialog() {
     }
 
     /**
-     * 展示全局弹窗. 需要权限 [android.permission.SYSTEM_ALERT_WINDOW]
+     * 展示全局弹窗.
+     *
+     * 需要权限
+     * <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
      *
      * android6.0 以上需要引导用户开启权限, 开启方式：
      *

@@ -15,6 +15,11 @@
             android:text="显示通知" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/close_one_notification"
+            style="@style/button_style"
+            android:text="关闭单个通知" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/clear_notification"
             style="@style/button_style"
             android:text="清空通知" />

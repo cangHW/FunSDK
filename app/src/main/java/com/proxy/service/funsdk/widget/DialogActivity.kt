@@ -3,8 +3,10 @@ package com.proxy.service.funsdk.widget
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityWidgetDialogBinding
@@ -26,6 +28,12 @@ class DialogActivity : BaseActivity<ActivityWidgetDialogBinding>() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        CsBarUtils.setNavigationBarTransparent(this)
+        CsBarUtils.setStatusBarTransparent(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun getViewBinding(inflater: LayoutInflater): ActivityWidgetDialogBinding {
         return ActivityWidgetDialogBinding.inflate(inflater)
     }
@@ -43,9 +51,10 @@ class DialogActivity : BaseActivity<ActivityWidgetDialogBinding>() {
 //                    TestDialog(0).show()
 //                }
 
-                for (index in 0..3) {
-                    TestDialog(index).show(this)
-                }
+//                for (index in 0..3) {
+                    TestDialog(0).show(this)
+//                TestDialog(0).show()
+//                }
             }
         }
     }
