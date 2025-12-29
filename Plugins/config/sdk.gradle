@@ -111,9 +111,18 @@ ext {
             ],
 
             // 日志文件库
-            LogFileInfo    : [
+            LogFileSpdlogInfo    : [
                     artifact          : "Service-LogFile-Spdlog",
                     version           : "0.2.9",
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
+            ],
+
+            // 日志文件库
+            LogFileXlogInfo    : [
+                    artifact          : "Service-LogFile-Xlog",
+                    version           : "0.0.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

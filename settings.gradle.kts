@@ -54,6 +54,9 @@ include(":DocumentsSDK:Pdf:DocumentPdfInfo")
 include(":DocumentsSDK:Image:DocumentImageBase")
 include(":DocumentsSDK:Image:DocumentImageInfo")
 
-include(":LogFileSDK:LogFileInfo")
+include(":LogFileSDK:LogFileSpdlogInfo")
+include(":LogFileSDK:LogFileXlogInfo")
+
 include(":ApmSDK:ApmInfo")
 include(":WidgetSDK:WidgetInfo")
+

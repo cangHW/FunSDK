@@ -1,0 +1,282 @@
+package com.proxy.service.logfile.info.config
+
+import android.text.TextUtils
+import com.proxy.service.logfile.info.constants.Constants
+import com.proxy.service.logfile.info.manager.CompressionMode
+import com.proxy.service.logfile.info.manager.EncryptionMode
+import com.proxy.service.logfile.info.manager.LogLevelMode
+import java.io.File
+import java.util.concurrent.TimeUnit
+
+/**
+ * @author: cangHX
+ * @data: 2025/1/16 19:39
+ * @desc:
+ */
+class LogConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
+
+    override fun getFlushEveryTime(): Long {
+        return builder.getFlushEveryTime()
+    }
+
+    override fun getLevelFilter(): LogLevelMode {
+        return builder.getLevelFilter()
+    }
+
+    override fun getSyncMode(): Boolean {
+        return builder.getSyncMode()
+    }
+
+    override fun getCompressionMode(): CompressionMode {
+        return builder.getCompressionMode()
+    }
+
+    override fun getEncryptionMode(): EncryptionMode {
+        return builder.getEncryptionMode()
+    }
+
+    override fun getEncryptionKey(): String {
+        return builder.getEncryptionKey()
+    }
+
+    override fun getLogDir(): String {
+        return builder.getLogDir()
+    }
+
+    override fun getFileNamePrefix(): String {
+        return builder.getFileNamePrefix()
+    }
+
+    override fun getFileNamePostfix(): String {
+        return builder.getFileNamePostfix()
+    }
+
+    override fun getCacheTime(): Long {
+        return builder.getCacheTime()
+    }
+
+    override fun getCleanTaskIntervalTime(): Long {
+        return builder.getCleanTaskIntervalTime()
+    }
+
+    override fun getLogType(): Int {
+        return builder.getLogType()
+    }
+
+    override fun getSingleFileMaxSize(): Long {
+        return builder.getSingleFileMaxSize()
+    }
+
+    override fun getMaxFileCount(): Int {
+        return builder.getMaxFileCount()
+    }
+
+    override fun getDailyHour(): Int {
+        return builder.getDailyHour()
+    }
+
+    override fun getDailyMinute(): Int {
+        return builder.getDailyMinute()
+    }
+
+    companion object {
+        fun builder(): IBuilder {
+            return Builder()
+        }
+    }
+
+    class Builder : IBuilder, IBuilderGet {
+        private var flushTime = Constants.FLUSH_EVERY_TIME
+        private var levelFilter: LogLevelMode = Constants.LEVEL_FILTER
+
+        private var isSyncMode: Boolean = Constants.IS_SYNC_MODE
+        private var compressionMode: CompressionMode = Constants.COMPRESSION_MODE
+        private var encryptionMode: EncryptionMode = Constants.ENCRYPTION_MODE
+        private var encryptionKey: String = ""
+
+        private var dir: String = ""
+
+        private var namePrefix: String = Constants.NAME_PREFIX
+        private var namePostfix: String = Constants.NAME_POSTFIX
+
+        private var cacheTime: Long = Constants.CACHE_TIME
+        private var cleanTaskIntervalTime: Long = Constants.CLEAN_TASK_INTERVAL_TIME
+
+        private var type: Int = Constants.TYPE_NORMAL
+
+        private var singleFileMaxSize: Long = Constants.SINGLE_FILE_MAX_SIZE
+        private var maxFileCount: Int = Constants.MAX_FILE_COUNT
+
+        private var hour: Int = Constants.HOUR
+        private var minute: Int = Constants.MINUTE
+
+        override fun setFlushEveryTime(time: Long, unit: TimeUnit): IBuilder {
+            this.flushTime = if (time < 0) {
+                Constants.FLUSH_EVERY_TIME
+            } else {
+                unit.toMillis(time)
+            }
+            return this
+        }
+
+        override fun setLevelFilter(level: LogLevelMode): IBuilder {
+            this.levelFilter = level
+            return this
+        }
+
+        override fun setLogMode(isSyncMode: Boolean): IBuilder {
+            this.isSyncMode = isSyncMode
+            return this
+        }
+
+        override fun setCompressionMode(mode: CompressionMode): IBuilder {
+            this.compressionMode = mode
+            return this
+        }
+
+        override fun setEncryptionMode(mode: EncryptionMode, encryptionKey: String): IBuilder {
+            this.encryptionMode = mode
+            this.encryptionKey = encryptionKey
+            return this
+        }
+
+        override fun setLogDir(dir: String): IBuilder {
+            this.dir = if (dir.endsWith(File.separator)) {
+                dir
+            } else {
+                "$dir${File.separator}"
+            }
+            return this
+        }
+
+        override fun setFileNamePrefix(namePrefix: String): IBuilder {
+            this.namePrefix = if (TextUtils.isEmpty(namePrefix)) {
+                Constants.NAME_PREFIX
+            } else {
+                namePrefix
+            }
+            return this
+        }
+
+        override fun setFileNamePostfix(namePostfix: String): IBuilder {
+            this.namePostfix = if (TextUtils.isEmpty(namePostfix)) {
+                Constants.NAME_POSTFIX
+            } else if (namePostfix.startsWith(".")) {
+                namePostfix
+            } else {
+                ".$namePostfix"
+            }
+            return this
+        }
+
+        override fun setCacheTime(time: Long, unit: TimeUnit): IBuilder {
+            this.cacheTime = unit.toMillis(time)
+            return this
+        }
+
+        override fun setCleanTaskIntervalTime(time: Long, unit: TimeUnit): IBuilder {
+            this.cleanTaskIntervalTime = unit.toMillis(time)
+            return this
+        }
+
+        override fun createNormalType(): LogConfig {
+            this.type = Constants.TYPE_NORMAL
+            return LogConfig(this)
+        }
+
+        override fun createRotatingType(singleFileMaxSize: Long, maxFileCount: Int): LogConfig {
+            this.type = Constants.TYPE_ROTATING
+            this.singleFileMaxSize = if (singleFileMaxSize < 0) {
+                Constants.SINGLE_FILE_MAX_SIZE
+            } else {
+                singleFileMaxSize
+            }
+            this.maxFileCount = if (maxFileCount < 0) {
+                Constants.MAX_FILE_COUNT
+            } else {
+                maxFileCount
+            }
+            return LogConfig(this)
+        }
+
+        override fun createDailyType(hour: Int, minute: Int): LogConfig {
+            this.type = Constants.TYPE_DAILY
+            this.hour = if (hour < 0) {
+                0
+            } else {
+                hour
+            }
+            this.minute = if (minute < 0) {
+                0
+            } else {
+                minute
+            }
+            return LogConfig(this)
+        }
+
+        override fun getFlushEveryTime(): Long {
+            return flushTime
+        }
+
+        override fun getLevelFilter(): LogLevelMode {
+            return levelFilter
+        }
+
+        override fun getSyncMode(): Boolean {
+            return isSyncMode
+        }
+
+        override fun getCompressionMode(): CompressionMode {
+            return compressionMode
+        }
+
+        override fun getEncryptionMode(): EncryptionMode {
+            return encryptionMode
+        }
+
+        override fun getEncryptionKey(): String {
+            return encryptionKey
+        }
+
+        override fun getLogDir(): String {
+            return dir
+        }
+
+        override fun getFileNamePrefix(): String {
+            return namePrefix
+        }
+
+        override fun getFileNamePostfix(): String {
+            return namePostfix
+        }
+
+        override fun getCacheTime(): Long {
+            return cacheTime
+        }
+
+        override fun getCleanTaskIntervalTime(): Long {
+            return cleanTaskIntervalTime
+        }
+
+        override fun getLogType(): Int {
+            return type
+        }
+
+        override fun getSingleFileMaxSize(): Long {
+            return singleFileMaxSize
+        }
+
+        override fun getMaxFileCount(): Int {
+            return maxFileCount
+        }
+
+        override fun getDailyHour(): Int {
+            return hour
+        }
+
+        override fun getDailyMinute(): Int {
+            return minute
+        }
+    }
+
+}

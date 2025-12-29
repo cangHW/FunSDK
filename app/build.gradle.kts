@@ -83,7 +83,9 @@ dependencies {
     implementation(libs.service.webview)
     implementation(libs.service.webview.bridge)
     implementation(libs.service.permission)
-    implementation(libs.service.logfile)
+
+    implementation(project(":LogFileSDK:LogFileXlogInfo"))
+//    implementation(libs.service.logfile)
 //    implementation(libs.service.apm)
 
     implementation(libs.service.document.image)
