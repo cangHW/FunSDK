@@ -18,27 +18,22 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object GlobalPageCache {
 
-    private val GLOBAL_PAGE_LOADING: ConcurrentHashMap<String, LoadingController> =
-        ConcurrentHashMap<String, LoadingController>()
-
-    private val GLOBAL_PAGE_ERROR: ConcurrentHashMap<String, ErrorController> =
-        ConcurrentHashMap<String, ErrorController>()
-
-    private val GLOBAL_PAGE_EMPTY: ConcurrentHashMap<String, EmptyController> =
-        ConcurrentHashMap<String, EmptyController>()
+    private val GLOBAL_PAGE_LOADING = ConcurrentHashMap<String, Class<LoadingController>>()
+    private val GLOBAL_PAGE_ERROR = ConcurrentHashMap<String, Class<ErrorController>>()
+    private val GLOBAL_PAGE_EMPTY = ConcurrentHashMap<String, Class<EmptyController>>()
 
     /*** *** *** *** *** *** *** *** *** *** Loading *** *** *** *** *** *** *** *** *** ***/
 
-    fun putLoadingPage(key: String, controller: LoadingController) {
-        GLOBAL_PAGE_LOADING[key] = controller
+    fun putLoadingPage(key: String, clazz: Class<LoadingController>) {
+        GLOBAL_PAGE_LOADING[key] = clazz
     }
 
     fun getLoadingPage(key: String): LoadingController? {
-        var controller: LoadingController? = GLOBAL_PAGE_LOADING[key]
-        if (controller == null) {
-            controller = getDefaultLoading(key)
+        val clazz: Class<LoadingController>? = GLOBAL_PAGE_LOADING[key]
+        if (clazz != null) {
+            return clazz.getDeclaredConstructor().newInstance()
         }
-        return controller
+        return getDefaultLoading(key)
     }
 
     fun removeLoadingPage(key: String) {
@@ -54,16 +49,16 @@ object GlobalPageCache {
 
     /*** *** *** *** *** *** *** *** *** *** Error *** *** *** *** *** *** *** *** *** ***/
 
-    fun putErrorPage(key: String, controller: ErrorController) {
-        GLOBAL_PAGE_ERROR[key] = controller
+    fun putErrorPage(key: String, clazz: Class<ErrorController>) {
+        GLOBAL_PAGE_ERROR[key] = clazz
     }
 
     fun getErrorPage(key: String): ErrorController? {
-        var controller: ErrorController? = GLOBAL_PAGE_ERROR[key]
-        if (controller == null) {
-            controller = getDefaultError(key)
+        val clazz: Class<ErrorController>? = GLOBAL_PAGE_ERROR[key]
+        if (clazz != null) {
+            return clazz.getDeclaredConstructor().newInstance()
         }
-        return controller
+        return getDefaultError(key)
     }
 
     fun removeErrorPage(key: String) {
@@ -79,16 +74,16 @@ object GlobalPageCache {
 
     /*** *** *** *** *** *** *** *** *** *** Empty *** *** *** *** *** *** *** *** *** ***/
 
-    fun putEmptyPage(key: String, controller: EmptyController) {
-        GLOBAL_PAGE_EMPTY[key] = controller
+    fun putEmptyPage(key: String, clazz: Class<EmptyController>) {
+        GLOBAL_PAGE_EMPTY[key] = clazz
     }
 
     fun getEmptyPage(key: String): EmptyController? {
-        var controller: EmptyController? = GLOBAL_PAGE_EMPTY[key]
-        if (controller == null) {
-            controller = getDefaultEmpty(key)
+        val clazz: Class<EmptyController>? = GLOBAL_PAGE_EMPTY[key]
+        if (clazz != null) {
+            return clazz.getDeclaredConstructor().newInstance()
         }
-        return controller
+        return getDefaultEmpty(key)
     }
 
     fun removeEmptyPage(key: String) {
