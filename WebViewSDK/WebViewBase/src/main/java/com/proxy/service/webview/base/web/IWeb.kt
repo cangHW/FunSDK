@@ -70,9 +70,29 @@ interface IWeb {
     fun loadUrl(url: String)
 
     /**
+     * 加载页面并添加请求头
+     * */
+    fun loadUrl(url: String, additionalHttpHeaders: Map<String, String>)
+
+    /**
+     * 停止加载
+     * */
+    fun stopLoading()
+
+    /**
      * 重新加载
      * */
     fun reload()
+
+    /**
+     * 获取当前加载的 url
+     * */
+    fun getUrl(): String
+
+    /**
+     * 获取最初加载的 url, 无论是否发生了重定向
+     * */
+    fun getOriginalUrl(): String
 
     /**
      * 是否可以回到上一页

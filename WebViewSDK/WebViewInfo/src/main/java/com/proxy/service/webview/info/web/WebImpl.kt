@@ -116,6 +116,14 @@ class WebImpl(
         webView.loadUrl(url)
     }
 
+    override fun loadUrl(url: String, additionalHttpHeaders: Map<String, String>) {
+        webView.loadUrl(url, additionalHttpHeaders)
+    }
+
+    override fun stopLoading() {
+        webView.stopLoading()
+    }
+
     override fun reload() {
         CsLogger.tag(tag).d("reload")
         if (isDestroy.get()) {
@@ -123,6 +131,14 @@ class WebImpl(
             return
         }
         webView.reload()
+    }
+
+    override fun getUrl(): String {
+        return webView.url ?: ""
+    }
+
+    override fun getOriginalUrl(): String {
+        return webView.originalUrl ?: ""
     }
 
     override fun canGoBack(): Boolean {

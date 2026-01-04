@@ -20,21 +20,35 @@ import com.proxy.service.webview.base.web.request.WebResourceResponse
 interface WebInterceptCallback {
 
     /**
-     * 是否应该进行对应 url 加载
+     * 是否拦截对应 url 加载.
+     *
+     * 触发场景:
+     * 1. 用户点击链接。
+     * 2. 页面发生重定向。
+     * 3. 表单提交触发 URL 请求。
+     * 4. HTML 中的 <a> 标签跳转
+     * 5. 其他场景
      * */
     fun shouldOverrideUrlLoading(url: String): Boolean {
         return false
     }
 
     /**
-     * 是否应该进行对应 url 加载
+     * 是否拦截对应 url 加载
+     *
+     * 触发场景:
+     * 1. 用户点击链接。
+     * 2. 页面发生重定向。
+     * 3. 表单提交触发 URL 请求。
+     * 4. HTML 中的 <a> 标签跳转
+     * 5. 其他场景
      * */
     fun shouldOverrideUrlLoading(request: WebResourceRequest): Boolean {
         return shouldOverrideUrlLoading(request.getUrl().toString())
     }
 
     /**
-     * 是否应该拦截键盘事件
+     * 是否拦截键盘事件
      * */
     fun shouldOverrideKeyEvent(keyEvent: KeyEvent): Boolean {
         return false
