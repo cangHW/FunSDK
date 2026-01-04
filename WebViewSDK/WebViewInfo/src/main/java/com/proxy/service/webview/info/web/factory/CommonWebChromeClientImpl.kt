@@ -18,6 +18,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
+import com.proxy.service.webview.info.web.chooser.FileChooserParamsImpl
 import com.proxy.service.webview.info.web.dialog.JsPromptResultImpl
 import com.proxy.service.webview.info.web.dialog.JsResultImpl
 import com.proxy.service.webview.info.web.permissions.GeolocationPermissionsCallbackImpl
@@ -237,6 +238,21 @@ class CommonWebChromeClientImpl(
     ): Boolean {
         CsLogger.tag(tag)
             .d("onShowFileChooser(webView: WebView?, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?)")
+        if (interceptCallback != null) {
+            val chooserParams = FileChooserParamsImpl(fileChooserParams)
+            val result = interceptCallback.onShowFileChooser(
+                filePathCallback = object :
+                    com.proxy.service.webview.base.web.callback.ValueCallback<Array<Uri>> {
+                    override fun onReceiveValue(value: Array<Uri>) {
+                        filePathCallback?.onReceiveValue(value)
+                    }
+                },
+                chooserParams
+            )
+            if (result) {
+                return true
+            }
+        }
         return super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
     }
 

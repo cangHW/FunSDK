@@ -1,7 +1,10 @@
 package com.proxy.service.webview.base.listener
 
+import android.net.Uri
 import android.os.Message
 import android.view.KeyEvent
+import com.proxy.service.webview.base.web.callback.ValueCallback
+import com.proxy.service.webview.base.web.chooser.FileChooserParams
 import com.proxy.service.webview.base.web.dialog.JsPromptResult
 import com.proxy.service.webview.base.web.dialog.JsResult
 import com.proxy.service.webview.base.web.permissions.GeolocationPermissionsCallback
@@ -95,7 +98,8 @@ interface WebInterceptCallback {
     fun onGeolocationPermissionsShowPrompt(
         origin: String,
         callback: GeolocationPermissionsCallback
-    ){}
+    ) {
+    }
 
     /**
      * 处理地理位置权限请求的隐藏提示
@@ -113,6 +117,16 @@ interface WebInterceptCallback {
      * 取消处理 WebView 中的权限请求。
      * */
     fun onPermissionRequestCanceled(request: PermissionRequest) {
+    }
+
+    /**
+     * 展示文件选择器
+     * */
+    fun onShowFileChooser(
+        filePathCallback: ValueCallback<Array<Uri>>,
+        fileChooserParams: FileChooserParams
+    ): Boolean {
+        return false
     }
 
 }
