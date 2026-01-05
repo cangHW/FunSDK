@@ -2,6 +2,7 @@ package com.proxy.service.webview.bridge.ds.converter
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.webview.base.listener.WebDownloadListener
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
@@ -52,6 +53,11 @@ class WebLoaderConverter(private val loader: IWebLoader) : IWebLoader {
 
     override fun setWebInterceptCallback(callback: WebInterceptCallback): IWebLoader {
         loader.setWebInterceptCallback(callback)
+        return this
+    }
+
+    override fun setWebDownloadCallback(callback: WebDownloadListener): IWebLoader {
+        loader.setWebDownloadCallback(callback)
         return this
     }
 
