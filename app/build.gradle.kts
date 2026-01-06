@@ -59,7 +59,8 @@ android {
                 "src/main/res-imageloader",
                 "src/main/res-permission",
                 "src/main/res-api",
-                "src/main/res-document"
+                "src/main/res-document",
+                "src/main/res-web"
             )
         }
     }

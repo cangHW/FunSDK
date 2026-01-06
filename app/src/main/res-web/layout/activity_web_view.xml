@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/load_baidu"
+            style="@style/button_style"
+            android:text="普通加载" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/create_baidu"
+            style="@style/button_style"
+            android:text="后台加载" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/show_baidu"
+            style="@style/button_style"
+            android:text="容器上屏" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/change_group"
+            style="@style/button_style"
+            android:text="容器换位置" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/change_app_window"
+            style="@style/button_style"
+            android:text="容器切换应用内window" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/change_application_window"
+            style="@style/button_style"
+            android:text="容器切换全局window" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <FrameLayout
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:id="@+id/group2"
+            android:layout_width="300dp"
+            android:layout_height="300dp" />
+    </FrameLayout>
+
+    <com.proxy.service.testview.DemoTestView
+        android:id="@+id/content"
+        style="@style/content_style" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
