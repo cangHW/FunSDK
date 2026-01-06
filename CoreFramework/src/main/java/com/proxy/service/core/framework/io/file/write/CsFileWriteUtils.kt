@@ -5,10 +5,12 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IWrite
+import com.proxy.service.core.framework.io.file.write.source.AssetsSource
 import com.proxy.service.core.framework.io.file.write.source.ByteSource
 import com.proxy.service.core.framework.io.file.write.source.InputStreamSource
 import com.proxy.service.core.framework.io.file.write.source.PathSource
 import com.proxy.service.core.framework.io.file.write.source.ReaderSource
+import com.proxy.service.core.framework.io.file.write.source.UriSource
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -45,17 +47,14 @@ object CsFileWriteUtils : IWrite.Source {
      * assetPath 示例：asd/xxx.txt
      * */
     override fun setSourceAssetPath(assetPath: String): IWrite {
-        val context = CsContextManager.getApplication()
-        return setSourceStream(context.assets.open(assetPath))
+        return AssetsSource(assetPath)
     }
 
     /**
      * 设置源数据
      * */
     override fun setSourceUri(uri: Uri): IWrite {
-        val contentResolver = CsContextManager.getApplication().contentResolver
-        val inputStream = contentResolver.openInputStream(uri)
-        return setSourceStream(inputStream!!)
+        return UriSource(uri)
     }
 
     /**

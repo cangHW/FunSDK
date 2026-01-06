@@ -16,16 +16,25 @@ import java.nio.charset.Charset
  * @data: 2024/9/25 10:27
  * @desc:
  */
-open class InputStreamSource(protected val stream: InputStream) : IRead {
+open class InputStreamSource(private val stream: InputStream?) : IRead {
 
     companion object {
         private const val TAG = "${CoreConfig.TAG}FileRead_InputStream"
     }
 
     /**
+     * 用于兼容其他来源
+     * */
+    open fun getSourceStream(): InputStream? {
+        return stream
+    }
+
+    /**
      * 读取全部数据
      * */
     override fun readString(charset: Charset): String {
+        val stream = getSourceStream() ?: return ""
+
         try {
             val content = StringBuilder()
             Channels.newChannel(stream).use { channel ->
@@ -47,6 +56,8 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
     }
 
     override fun readLines(charset: Charset): List<String> {
+        val stream = getSourceStream() ?: return emptyList()
+
         return try {
             stream.bufferedReader(charset).use { reader ->
                 reader.readLines()
@@ -60,6 +71,8 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
     }
 
     override fun readBytes(): ByteArray {
+        val stream = getSourceStream() ?: return ByteArray(0)
+
         return try {
             stream.readBytes()
         } catch (throwable: Throwable) {
@@ -69,6 +82,5 @@ open class InputStreamSource(protected val stream: InputStream) : IRead {
             CsFileUtils.close(stream)
         }
     }
-
 
 }

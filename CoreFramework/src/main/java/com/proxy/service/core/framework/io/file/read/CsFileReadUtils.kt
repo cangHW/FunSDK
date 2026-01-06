@@ -5,9 +5,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.io.file.base.IRead
+import com.proxy.service.core.framework.io.file.read.source.AssetsSource
 import com.proxy.service.core.framework.io.file.read.source.InputStreamSource
 import com.proxy.service.core.framework.io.file.read.source.PathSource
 import com.proxy.service.core.framework.io.file.read.source.ReaderSource
+import com.proxy.service.core.framework.io.file.read.source.UriSource
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -30,17 +32,14 @@ object CsFileReadUtils : IRead.Source {
      * assetPath 示例：asd/xxx.txt
      * */
     override fun setSourceAssetPath(assetPath: String): IRead {
-        val context = CsContextManager.getApplication()
-        return setSourceStream(context.assets.open(assetPath))
+        return AssetsSource(assetPath)
     }
 
     /**
      * 设置源数据
      * */
     override fun setSourceUri(uri: Uri): IRead {
-        val contentResolver = CsContextManager.getApplication().contentResolver
-        val inputStream = contentResolver.openInputStream(uri)
-        return setSourceStream(inputStream!!)
+        return UriSource(uri)
     }
 
     /**

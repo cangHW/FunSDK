@@ -11,7 +11,7 @@ import java.io.OutputStream
  * @data: 2024/12/31 17:23
  * @desc:
  */
-open class InputStreamSource(protected val inputStream: InputStream) : ISourceWrite {
+class InputStreamSource(private val inputStream: InputStream) : ISourceWrite {
 
     override fun write(file: File): Boolean {
         return CsFileWriteUtils.setSourceStream(inputStream).writeSync(file)

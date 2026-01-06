@@ -30,7 +30,7 @@ object ScriptFactory {
             return null
         }
         if (list.size == 1){
-            return list[0]
+            return list[0].getObj()
         }
         val annotation = AnnotationDescription.Builder
             .ofType(JavascriptInterface::class.java)

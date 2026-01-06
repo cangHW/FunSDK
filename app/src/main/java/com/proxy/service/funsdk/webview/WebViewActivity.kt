@@ -38,7 +38,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         }
     }
 
-    private val url = "https://www.baidu.com"
+    private val url = "file:///android_asset/test.html"
 
     private var webView: IWeb? = null
 
@@ -67,6 +67,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                 CsWeb.createWebLoader(getWebConfig())
                     ?.setLifecycleOwner(this)
                     ?.loadUrl(url)
+                    ?.addJavascriptInterface("xxx", WebBridge())
                     ?.setWebLoadCallback(WebLoadCallbackImpl(binding, "加载"))
                     ?.createTo(binding?.group)
             }
