@@ -18,18 +18,18 @@ import java.util.concurrent.ConcurrentHashMap
  */
 object GlobalPageCache {
 
-    private val GLOBAL_PAGE_LOADING = ConcurrentHashMap<String, Class<LoadingController>>()
-    private val GLOBAL_PAGE_ERROR = ConcurrentHashMap<String, Class<ErrorController>>()
-    private val GLOBAL_PAGE_EMPTY = ConcurrentHashMap<String, Class<EmptyController>>()
+    private val GLOBAL_PAGE_LOADING = ConcurrentHashMap<String, Class<out LoadingController>>()
+    private val GLOBAL_PAGE_ERROR = ConcurrentHashMap<String, Class<out ErrorController>>()
+    private val GLOBAL_PAGE_EMPTY = ConcurrentHashMap<String, Class<out EmptyController>>()
 
     /*** *** *** *** *** *** *** *** *** *** Loading *** *** *** *** *** *** *** *** *** ***/
 
-    fun putLoadingPage(key: String, clazz: Class<LoadingController>) {
+    fun putLoadingPage(key: String, clazz: Class<out LoadingController>) {
         GLOBAL_PAGE_LOADING[key] = clazz
     }
 
     fun getLoadingPage(key: String): LoadingController? {
-        val clazz: Class<LoadingController>? = GLOBAL_PAGE_LOADING[key]
+        val clazz: Class<out LoadingController>? = GLOBAL_PAGE_LOADING[key]
         if (clazz != null) {
             return clazz.getDeclaredConstructor().newInstance()
         }
@@ -49,12 +49,12 @@ object GlobalPageCache {
 
     /*** *** *** *** *** *** *** *** *** *** Error *** *** *** *** *** *** *** *** *** ***/
 
-    fun putErrorPage(key: String, clazz: Class<ErrorController>) {
+    fun putErrorPage(key: String, clazz: Class<out ErrorController>) {
         GLOBAL_PAGE_ERROR[key] = clazz
     }
 
     fun getErrorPage(key: String): ErrorController? {
-        val clazz: Class<ErrorController>? = GLOBAL_PAGE_ERROR[key]
+        val clazz: Class<out ErrorController>? = GLOBAL_PAGE_ERROR[key]
         if (clazz != null) {
             return clazz.getDeclaredConstructor().newInstance()
         }
@@ -74,12 +74,12 @@ object GlobalPageCache {
 
     /*** *** *** *** *** *** *** *** *** *** Empty *** *** *** *** *** *** *** *** *** ***/
 
-    fun putEmptyPage(key: String, clazz: Class<EmptyController>) {
+    fun putEmptyPage(key: String, clazz: Class<out EmptyController>) {
         GLOBAL_PAGE_EMPTY[key] = clazz
     }
 
     fun getEmptyPage(key: String): EmptyController? {
-        val clazz: Class<EmptyController>? = GLOBAL_PAGE_EMPTY[key]
+        val clazz: Class<out EmptyController>? = GLOBAL_PAGE_EMPTY[key]
         if (clazz != null) {
             return clazz.getDeclaredConstructor().newInstance()
         }

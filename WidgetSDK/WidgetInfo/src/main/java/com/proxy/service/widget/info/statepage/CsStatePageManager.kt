@@ -23,7 +23,7 @@ object CsStatePageManager {
      *
      * @param key 唯一标识, 重复则覆盖
      * */
-    fun registerGlobalLoadingPage(key: String, clazz: Class<LoadingController>) {
+    fun registerGlobalLoadingPage(key: String, clazz: Class<out LoadingController>) {
         GlobalPageCache.putLoadingPage(key, clazz)
     }
 
@@ -32,7 +32,7 @@ object CsStatePageManager {
      *
      * @param key 唯一标识, 重复则覆盖
      * */
-    fun registerGlobalErrorPage(key: String, clazz: Class<ErrorController>) {
+    fun registerGlobalErrorPage(key: String, clazz: Class<out ErrorController>) {
         GlobalPageCache.putErrorPage(key, clazz)
     }
 
@@ -41,7 +41,7 @@ object CsStatePageManager {
      *
      * @param key 唯一标识, 重复则覆盖
      * */
-    fun registerGlobalEmptyPage(key: String, clazz: Class<EmptyController>) {
+    fun registerGlobalEmptyPage(key: String, clazz: Class<out EmptyController>) {
         GlobalPageCache.putEmptyPage(key, clazz)
     }
 

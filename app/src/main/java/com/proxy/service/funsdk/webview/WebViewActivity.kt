@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.core.service.web.CsWeb
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -38,9 +41,28 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         }
     }
 
-    private val url = "file:///android_asset/test.html"
+//    private val url = "file:///android_asset/web/test_bridge.html"
+    private val url = "file:///android_asset/web/test_edittext.html"
 
     private var webView: IWeb? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+//        CsBarUtils.setNavigationBarTransparent(this)
+//        CsBarUtils.setStatusBarTransparent(this)
+        super.onCreate(savedInstanceState)
+        enterFullscreen()
+    }
+
+    private fun enterFullscreen() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        @Suppress("DEPRECATION")
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                )
+    }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityWebViewBinding {
         return ActivityWebViewBinding.inflate(inflater)

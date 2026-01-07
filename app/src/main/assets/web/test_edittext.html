@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Field Adjustment</title>
+    <style>
+        /* 页面样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh; /* 让页面高度充满视口 */
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f1f1f1;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h1>Welcome to the Page</h1>
+    <p>Type something in the input field below.</p>
+</div>
+
+<div class="footer">
+    <input type="text" id="inputField" placeholder="Type here...">
+</div>
+
+<script>
+    // JavaScript 用于监听键盘弹出事件
+    const inputField = document.getElementById('inputField');
+
+    // 监听键盘弹出事件
+    window.addEventListener('resize', () => {
+        // 检测视口高度变化
+        const viewportHeight = window.innerHeight;
+
+        // 如果视口高度变小，说明键盘弹出
+        if (document.activeElement === inputField) {
+            document.querySelector('.footer').style.bottom = `${viewportHeight - window.innerHeight}px`;
+        } else {
+            // 恢复原始位置
+            document.querySelector('.footer').style.bottom = '0';
+        }
+    });
+</script>
+</body>
+</html>
