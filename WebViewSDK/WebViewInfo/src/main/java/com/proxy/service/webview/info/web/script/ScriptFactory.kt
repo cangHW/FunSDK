@@ -25,11 +25,11 @@ object ScriptFactory {
 
     private const val TAG = "${WebViewConstants.LOG_TAG_START}Script"
 
-    fun getJavaScript(list: ArrayList<JavascriptInterfaceInfo>): Any? {
-        if (list.size ==0){
+    fun getJavaScript(nameSpace: String, list: ArrayList<JavascriptInterfaceInfo>): Any? {
+        if (list.size == 0) {
             return null
         }
-        if (list.size == 1){
+        if (list.size == 1) {
             return list[0].getObj()
         }
         val annotation = AnnotationDescription.Builder
@@ -62,7 +62,7 @@ object ScriptFactory {
 
         if (CoreConfig.isDebug) {
             try {
-                writeToFile(dynamicType.bytes)
+                writeToFile(nameSpace, dynamicType.bytes)
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).e(throwable)
             }
@@ -77,11 +77,11 @@ object ScriptFactory {
     }
 
     @Throws(IOException::class)
-    private fun writeToFile(data: ByteArray) {
+    private fun writeToFile(nameSpace: String, data: ByteArray) {
         var fos: FileOutputStream? = null
         try {
             fos = CsContextManager.getApplication()
-                .openFileOutput("JavaScriptBridge.class", Context.MODE_PRIVATE)
+                .openFileOutput("${nameSpace}_JavaScriptBridge.class", Context.MODE_PRIVATE)
             fos.write(data)
         } finally {
             fos?.close()

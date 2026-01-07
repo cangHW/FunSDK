@@ -43,7 +43,7 @@ interface IStatePageController {
         message: String? = null,
         buttonTxt: String? = null,
         any: Any? = null,
-        buttonClick: (() -> Unit)? = null
+        buttonClick: ((any: Any?) -> Unit)? = null
     )
 
     /**
@@ -58,7 +58,11 @@ interface IStatePageController {
      * @param any           自定义数据
      * @param buttonClick   按钮点击
      * */
-    fun showEmpty(message: String? = null, any: Any? = null, buttonClick: (() -> Unit)? = null)
+    fun showEmpty(
+        message: String? = null,
+        any: Any? = null,
+        buttonClick: ((any: Any?) -> Unit)? = null
+    )
 
     /**
      * 隐藏空数据页面

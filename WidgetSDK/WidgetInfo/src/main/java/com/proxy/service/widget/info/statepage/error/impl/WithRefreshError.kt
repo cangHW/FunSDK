@@ -29,7 +29,7 @@ class WithRefreshError : ErrorController {
         message: String?,
         buttonTxt: String?,
         any: Any?,
-        buttonClick: (() -> Unit)?
+        buttonClick: ((any: Any?) -> Unit)?
     ) {
         binding?.root?.visibility = View.VISIBLE
 
@@ -43,7 +43,7 @@ class WithRefreshError : ErrorController {
 
         binding?.csStatePageErrorButton?.setOnClickListener {
             if (buttonClick != null) {
-                buttonClick()
+                buttonClick(null)
             }
         }
     }

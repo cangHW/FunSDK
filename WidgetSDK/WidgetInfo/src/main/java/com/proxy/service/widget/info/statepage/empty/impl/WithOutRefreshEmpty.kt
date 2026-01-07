@@ -25,7 +25,7 @@ class WithOutRefreshEmpty : EmptyController {
         hide()
     }
 
-    override fun show(message: String?, any: Any?, buttonClick: (() -> Unit)?) {
+    override fun show(message: String?, any: Any?, buttonClick: ((any: Any?) -> Unit)?) {
         binding?.root?.visibility = View.VISIBLE
 
         message?.let {

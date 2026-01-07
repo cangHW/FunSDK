@@ -50,16 +50,16 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
     override fun addJavascriptInterface(nameSpace: String, any: Any): IWebLoader {
         val cacheKey = "${nameSpace}_${any.javaClass.name.replace(".", "_")}"
         if (cache.contains(cacheKey)) {
-            CsLogger.tag(tag).d("重复加载，any = $any")
+            CsLogger.tag(tag).d("重复加载. any = $any")
             return this
         }
         cache.add(cacheKey)
         WebUtils.addJavascriptInterfaceToMap(nameSpace, any, javascriptInterfaceMap,
             error = {
-                CsLogger.tag(tag).e(it, "加载 JavascriptInterface 失败，any = $any")
+                CsLogger.tag(tag).e(it, "加载 JavascriptInterface 失败. nameSpace = $nameSpace, any = $any")
             },
             success = {
-                CsLogger.tag(tag).d("加载 JavascriptInterface 成功，any = $any")
+                CsLogger.tag(tag).d("加载 JavascriptInterface 成功. nameSpace = $nameSpace, any = $any")
             }
         )
         return this
@@ -111,7 +111,7 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
             .createWeb(config)
 
         WebUtils.merge(JavaScriptManager.getNameMethods(), javascriptInterfaceMap).forEach {
-            ScriptFactory.getJavaScript(it.value)?.let { bridge ->
+            ScriptFactory.getJavaScript(it.key, it.value)?.let { bridge ->
                 try {
                     webView.addJavascriptInterface(bridge, it.key)
                 } catch (throwable: Throwable) {

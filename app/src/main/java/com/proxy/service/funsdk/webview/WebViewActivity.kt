@@ -68,6 +68,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                     ?.setLifecycleOwner(this)
                     ?.loadUrl(url)
                     ?.addJavascriptInterface("xxx", WebBridge())
+                    ?.addJavascriptInterface("xxx", WebBridge2())
                     ?.setWebLoadCallback(WebLoadCallbackImpl(binding, "加载"))
                     ?.createTo(binding?.group)
             }

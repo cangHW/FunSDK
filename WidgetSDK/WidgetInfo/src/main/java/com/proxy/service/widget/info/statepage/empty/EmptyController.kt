@@ -21,7 +21,11 @@ interface EmptyController {
      * @param any           自定义数据
      * @param buttonClick   按钮点击
      * */
-    fun show(message: String? = null, any: Any? = null, buttonClick: (() -> Unit)? = null)
+    fun show(
+        message: String? = null,
+        any: Any? = null,
+        buttonClick: ((any: Any?) -> Unit)? = null
+    )
 
     /**
      * 隐藏页面

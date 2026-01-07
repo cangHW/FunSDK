@@ -25,16 +25,16 @@ object JavaScriptManager {
     fun addGlobalJavascriptInterface(nameSpace: String, any: Any) {
         val cacheKey = "${nameSpace}_${any.javaClass.name.replace(".", "_")}"
         if (cache.contains(cacheKey)) {
-            CsLogger.tag(TAG).d("重复加载，any = $any")
+            CsLogger.tag(TAG).d("重复加载. nameSpace = $nameSpace, any = $any")
             return
         }
         cache.add(cacheKey)
         WebUtils.addJavascriptInterfaceToMap(nameSpace, any, globalJavascriptInterfaceMap,
             error = {
-                CsLogger.tag(TAG).e(it, "加载 GlobalJavascriptInterface 失败，any = $any")
+                CsLogger.tag(TAG).e(it, "加载 GlobalJavascriptInterface 失败. nameSpace = $nameSpace, any = $any")
             },
             success = {
-                CsLogger.tag(TAG).d("加载 GlobalJavascriptInterface 成功，any = $any")
+                CsLogger.tag(TAG).d("加载 GlobalJavascriptInterface 成功. nameSpace = $nameSpace, any = $any")
             }
         )
     }

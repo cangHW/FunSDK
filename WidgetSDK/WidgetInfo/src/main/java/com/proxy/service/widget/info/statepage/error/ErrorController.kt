@@ -26,7 +26,7 @@ interface ErrorController {
         message: String? = null,
         buttonTxt: String? = null,
         any: Any? = null,
-        buttonClick: (() -> Unit)? = null
+        buttonClick: ((any: Any?) -> Unit)? = null
     )
 
     /**

@@ -83,7 +83,7 @@ class StatePageControllerImpl(
         message: String?,
         buttonTxt: String?,
         any: Any?,
-        buttonClick: (() -> Unit)?
+        buttonClick: ((any: Any?) -> Unit)?
     ) {
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -104,7 +104,7 @@ class StatePageControllerImpl(
         })?.start()
     }
 
-    override fun showEmpty(message: String?, any: Any?, buttonClick: (() -> Unit)?) {
+    override fun showEmpty(message: String?, any: Any?, buttonClick: ((any: Any?) -> Unit)?) {
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 emptyController?.show(message, any, buttonClick)
