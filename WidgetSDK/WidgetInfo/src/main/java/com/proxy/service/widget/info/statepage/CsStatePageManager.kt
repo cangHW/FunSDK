@@ -1,6 +1,9 @@
 package com.proxy.service.widget.info.statepage
 
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.LayoutRes
 import com.proxy.service.widget.info.statepage.config.EmptyPageType
 import com.proxy.service.widget.info.statepage.config.ErrorPageType
 import com.proxy.service.widget.info.statepage.config.IStatePageController
@@ -69,103 +72,23 @@ object CsStatePageManager {
     /**
      * 构造一个状态页面控制器
      *
-     * @param view  正常视图
-     * */
-    fun inflate(view: View): IStatePageController {
-        return inflate(
-            view,
-            LoadingPageType.buildDefaultPage(),
-            EmptyPageType.buildDefaultPage(),
-            ErrorPageType.buildDefaultPage()
-        )
-    }
-
-    /**
-     * 构造一个状态页面控制器
-     *
-     * @param view              正常视图
-     * @param loadingPageType   loading 页面类型
-     * */
-    fun inflate(view: View, loadingPageType: LoadingPageType): IStatePageController {
-        return inflate(
-            view,
-            loadingPageType,
-            EmptyPageType.buildDefaultPage(),
-            ErrorPageType.buildDefaultPage()
-        )
-    }
-
-    /**
-     * 构造一个状态页面控制器
-     *
      * @param view              正常视图
      * @param loadingPageType   loading 页面类型
      * @param emptyPageType     空数据页面类型
-     * */
-    fun inflate(
-        view: View,
-        loadingPageType: LoadingPageType,
-        emptyPageType: EmptyPageType
-    ): IStatePageController {
-        return inflate(view, loadingPageType, emptyPageType, ErrorPageType.buildDefaultPage())
-    }
-
-    /**
-     * 构造一个状态页面控制器
-     *
-     * @param view              正常视图
-     * @param loadingPageType   loading 页面类型
      * @param errorPageType     错误页面类型
      * */
     fun inflate(
         view: View,
-        loadingPageType: LoadingPageType,
-        errorPageType: ErrorPageType
+        loadingPageType: LoadingPageType = LoadingPageType.buildDefaultPage(),
+        emptyPageType: EmptyPageType = EmptyPageType.buildDefaultPage(),
+        errorPageType: ErrorPageType = ErrorPageType.buildDefaultPage()
     ): IStatePageController {
-        return inflate(view, loadingPageType, EmptyPageType.buildDefaultPage(), errorPageType)
-    }
-
-    /**
-     * 构造一个状态页面控制器
-     *
-     * @param view          正常视图
-     * @param emptyPageType 空数据页面类型
-     * */
-    fun inflate(view: View, emptyPageType: EmptyPageType): IStatePageController {
-        return inflate(
+        return StatePageControllerImpl(
+            LayoutInflater.from(view.context),
             view,
-            LoadingPageType.buildDefaultPage(),
+            0,
+            loadingPageType,
             emptyPageType,
-            ErrorPageType.buildDefaultPage()
-        )
-    }
-
-    /**
-     * 构造一个状态页面控制器
-     *
-     * @param view          正常视图
-     * @param emptyPageType 空数据页面类型
-     * @param errorPageType 错误页面类型
-     * */
-    fun inflate(
-        view: View,
-        emptyPageType: EmptyPageType,
-        errorPageType: ErrorPageType
-    ): IStatePageController {
-        return inflate(view, LoadingPageType.buildDefaultPage(), emptyPageType, errorPageType)
-    }
-
-    /**
-     * 构造一个状态页面控制器
-     *
-     * @param view          正常视图
-     * @param errorPageType 错误页面类型
-     * */
-    fun inflate(view: View, errorPageType: ErrorPageType): IStatePageController {
-        return inflate(
-            view,
-            LoadingPageType.buildDefaultPage(),
-            EmptyPageType.buildDefaultPage(),
             errorPageType
         )
     }
@@ -173,18 +96,27 @@ object CsStatePageManager {
     /**
      * 构造一个状态页面控制器
      *
-     * @param view              正常视图
+     * @param context           上下文环境
+     * @param resource          正常视图 layout ID
      * @param loadingPageType   loading 页面类型
      * @param emptyPageType     空数据页面类型
      * @param errorPageType     错误页面类型
      * */
     fun inflate(
-        view: View,
-        loadingPageType: LoadingPageType,
-        emptyPageType: EmptyPageType,
-        errorPageType: ErrorPageType
+        context: Context,
+        @LayoutRes resource: Int,
+        loadingPageType: LoadingPageType = LoadingPageType.buildDefaultPage(),
+        emptyPageType: EmptyPageType = EmptyPageType.buildDefaultPage(),
+        errorPageType: ErrorPageType = ErrorPageType.buildDefaultPage()
     ): IStatePageController {
-        return StatePageControllerImpl(view, loadingPageType, emptyPageType, errorPageType)
+        return StatePageControllerImpl(
+            LayoutInflater.from(context),
+            null,
+            resource,
+            loadingPageType,
+            emptyPageType,
+            errorPageType
+        )
     }
 
 }

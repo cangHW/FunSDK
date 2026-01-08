@@ -20,6 +20,18 @@ interface IStatePageController {
     fun showSuccess()
 
     /**
+     * 隐藏内容页面
+     * */
+    fun hideContent()
+
+    /**
+     * 显示 loading, 不隐藏其他状态页面
+     *
+     * @param any   自定义数据
+     * */
+    fun showLoadingOnly(any: Any? = null)
+
+    /**
      * 显示 loading
      *
      * @param any   自定义数据

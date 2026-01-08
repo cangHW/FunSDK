@@ -20,28 +20,40 @@ import com.proxy.service.widget.info.statepage.loading.LoadingController
  * @desc:
  */
 class StatePageControllerImpl(
-    view: View,
+    inflater: LayoutInflater,
+    view: View?,
+    resource: Int,
     loadingPageType: LoadingPageType,
     emptyPageType: EmptyPageType,
     errorPageType: ErrorPageType
 ) : IStatePageController {
 
-    private val rootView: FrameLayout = LayoutInflater.from(view.context)
-        .inflate(R.layout.cs_widget_state_page_basic, null, false) as FrameLayout
+    private val rootView: FrameLayout = inflater.inflate(
+        R.layout.cs_widget_state_page_basic,
+        null,
+        false
+    ) as FrameLayout
+
+    private var contentView: View? = null
 
     private var loadingController: LoadingController? = null
     private var emptyController: EmptyController? = null
     private var errorController: ErrorController? = null
 
     init {
-        loadingController = GlobalPageCache.getLoadingPage(loadingPageType.key)
         emptyController = GlobalPageCache.getEmptyPage(emptyPageType.key)
         errorController = GlobalPageCache.getErrorPage(errorPageType.key)
+        loadingController = GlobalPageCache.getLoadingPage(loadingPageType.key)
 
-        rootView.addView(view)
-        loadingController?.initView(rootView)
+        if (view != null) {
+            contentView = view
+            rootView.addView(contentView)
+        } else if (resource != 0) {
+            contentView = inflater.inflate(resource, rootView, true)
+        }
         emptyController?.initView(rootView)
         errorController?.initView(rootView)
+        loadingController?.initView(rootView)
     }
 
     override fun getRootView(): View {
@@ -51,9 +63,28 @@ class StatePageControllerImpl(
     override fun showSuccess() {
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
+                contentView?.visibility = View.VISIBLE
                 hideLoading()
                 hideEmpty()
                 hideError()
+                return ""
+            }
+        })?.start()
+    }
+
+    override fun hideContent() {
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                contentView?.visibility = View.INVISIBLE
+                return ""
+            }
+        })?.start()
+    }
+
+    override fun showLoadingOnly(any: Any?) {
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                loadingController?.show(any)
                 return ""
             }
         })?.start()
