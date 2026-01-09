@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.ui.monitor.visible.callback
+package com.proxy.service.core.framework.ui.view.monitor.visible.callback
 
 /**
  * @author: cangHX

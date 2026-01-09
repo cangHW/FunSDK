@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.ui.view
+package com.proxy.service.core.framework.ui.view.edittext
 
 import android.content.Context
 import android.text.method.HideReturnsTransformationMethod

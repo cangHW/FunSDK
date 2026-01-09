@@ -1,12 +1,12 @@
-package com.proxy.service.core.framework.ui.monitor.visible.impl
+package com.proxy.service.core.framework.ui.view.monitor.visible.impl
 
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorHelper
-import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleConfig
-import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
+import com.proxy.service.core.framework.ui.view.monitor.visible.base.IVisibleMonitorHelper
+import com.proxy.service.core.framework.ui.view.monitor.visible.config.VisibleConfig
+import com.proxy.service.core.framework.ui.view.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 import java.lang.ref.WeakReference

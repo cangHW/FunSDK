@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.ui.monitor.visible.config
+package com.proxy.service.core.framework.ui.view.monitor.visible.config
 
 import com.proxy.service.core.constants.CoreConfig
 

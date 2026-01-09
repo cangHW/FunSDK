@@ -1,10 +1,10 @@
-package com.proxy.service.core.framework.ui.monitor.visible.config
+package com.proxy.service.core.framework.ui.view.monitor.visible.config
 
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleBuilder
-import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleBuilderGet
-import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
+import com.proxy.service.core.framework.ui.view.monitor.visible.base.IVisibleBuilder
+import com.proxy.service.core.framework.ui.view.monitor.visible.base.IVisibleBuilderGet
+import com.proxy.service.core.framework.ui.view.monitor.visible.callback.VisibleMonitorCallback
 import java.util.concurrent.TimeUnit
 
 /**

@@ -1,13 +1,13 @@
-package com.proxy.service.core.framework.ui.monitor.visible.impl
+package com.proxy.service.core.framework.ui.view.monitor.visible.impl
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorHelper
-import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
-import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleConfig
-import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
+import com.proxy.service.core.framework.ui.view.monitor.visible.base.IVisibleMonitorHelper
+import com.proxy.service.core.framework.ui.view.monitor.visible.callback.VisibleMonitorCallback
+import com.proxy.service.core.framework.ui.view.monitor.visible.config.VisibleConfig
+import com.proxy.service.core.framework.ui.view.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.handler.controller.ITaskDisposable
 import java.lang.ref.WeakReference

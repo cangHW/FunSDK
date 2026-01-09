@@ -11,6 +11,30 @@ import com.proxy.service.webview.base.enums.MixedContentMode
  */
 class WebConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
 
+    override fun isSupportMultipleWindows(): Boolean {
+        return builder.isSupportMultipleWindows()
+    }
+
+    override fun getTextZoom(): Int {
+        return builder.getTextZoom()
+    }
+
+    override fun isSupportZoom(): Boolean {
+        return builder.isSupportZoom()
+    }
+
+    override fun isBuiltInZoomControls(): Boolean {
+        return builder.isBuiltInZoomControls()
+    }
+
+    override fun isDisplayZoomControls(): Boolean {
+        return builder.isDisplayZoomControls()
+    }
+
+    override fun isDomStorageEnabled(): Boolean {
+        return builder.isDomStorageEnabled()
+    }
+
     override fun isAcceptThirdPartyCookies(): Boolean {
         return builder.isAcceptThirdPartyCookies()
     }
@@ -21,6 +45,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
     override fun isJavaScriptEnabled(): Boolean {
         return builder.isJavaScriptEnabled()
+    }
+
+    override fun isMediaPlaybackRequiresUserGesture(): Boolean {
+        return builder.isMediaPlaybackRequiresUserGesture()
     }
 
     override fun getCacheMode(): CacheMode {
@@ -87,9 +115,16 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
     class Builder : IBuilder, IBuilderGet {
 
+        private var isSupportMultipleWindows = false
+        private var textZoom = 100
+        private var isSupportZoom = false
+        private var isBuiltInZoomControls = false
+        private var isDisplayZoomControls = true
+        private var domStorageEnabled = true
         private var isAcceptThirdPartyCookies: Boolean = true
         private var mixedContentMode: MixedContentMode = MixedContentMode.MIXED_CONTENT_NEVER_ALLOW
         private var javaScriptEnabled: Boolean = true
+        private var mediaPlaybackRequiresUserGesture: Boolean = true
         private var cacheMode: CacheMode = CacheMode.LOAD_DEFAULT
         private var isUseWideViewPort: Boolean = false
         private var isLoadWithOverviewMode: Boolean = true
@@ -100,10 +135,40 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var isAllowContentAccess: Boolean = false
         private var isAllowFileAccessFromFileURLs: Boolean = false
         private var isAllowUniversalAccessFromFileURLs: Boolean = false
-        private var webResourceAssetLoader: WebViewAssetLoader?=null
-        private var verticalScrollBarEnabled:Boolean = true
-        private var horizontalScrollBarEnabled:Boolean = true
-        private var horizontalFadingEdgeEnabled:Boolean = false
+        private var webResourceAssetLoader: WebViewAssetLoader? = null
+        private var verticalScrollBarEnabled: Boolean = true
+        private var horizontalScrollBarEnabled: Boolean = true
+        private var horizontalFadingEdgeEnabled: Boolean = false
+
+        override fun setSupportMultipleWindows(support: Boolean): IBuilder {
+            this.isSupportMultipleWindows = support
+            return this
+        }
+
+        override fun setTextZoom(textZoom: Int): IBuilder {
+            this.textZoom = textZoom
+            return this
+        }
+
+        override fun setSupportZoom(support: Boolean): IBuilder {
+            this.isSupportZoom = support
+            return this
+        }
+
+        override fun setBuiltInZoomControls(enabled: Boolean): IBuilder {
+            this.isBuiltInZoomControls = enabled
+            return this
+        }
+
+        override fun setDisplayZoomControls(enabled: Boolean): IBuilder {
+            this.isDisplayZoomControls = enabled
+            return this
+        }
+
+        override fun setDomStorageEnabled(flag: Boolean): IBuilder {
+            this.domStorageEnabled = flag
+            return this
+        }
 
         override fun setAcceptThirdPartyCookies(accept: Boolean): IBuilder {
             this.isAcceptThirdPartyCookies = accept
@@ -117,6 +182,11 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setJavaScriptEnabled(enabled: Boolean): IBuilder {
             this.javaScriptEnabled = enabled
+            return this
+        }
+
+        override fun setMediaPlaybackRequiresUserGesture(require: Boolean): IBuilder {
+            this.mediaPlaybackRequiresUserGesture = require
             return this
         }
 
@@ -190,6 +260,30 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return WebConfig(this)
         }
 
+        override fun isSupportMultipleWindows(): Boolean {
+            return isSupportMultipleWindows
+        }
+
+        override fun getTextZoom(): Int {
+            return textZoom
+        }
+
+        override fun isSupportZoom(): Boolean {
+            return isSupportZoom
+        }
+
+        override fun isBuiltInZoomControls(): Boolean {
+            return isBuiltInZoomControls
+        }
+
+        override fun isDisplayZoomControls(): Boolean {
+            return isDisplayZoomControls
+        }
+
+        override fun isDomStorageEnabled(): Boolean {
+            return domStorageEnabled
+        }
+
         override fun isAcceptThirdPartyCookies(): Boolean {
             return isAcceptThirdPartyCookies
         }
@@ -200,6 +294,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun isJavaScriptEnabled(): Boolean {
             return javaScriptEnabled
+        }
+
+        override fun isMediaPlaybackRequiresUserGesture(): Boolean {
+            return mediaPlaybackRequiresUserGesture
         }
 
         override fun getCacheMode(): CacheMode {

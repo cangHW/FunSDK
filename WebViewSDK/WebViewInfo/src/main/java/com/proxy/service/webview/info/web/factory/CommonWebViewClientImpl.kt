@@ -123,7 +123,7 @@ class CommonWebViewClientImpl(
     }
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        super.onPageStarted(view, url, favicon)
+//        super.onPageStarted(view, url, favicon)
         CsLogger.tag(tag)
             .d("onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) url = $url")
         CsTask.mainThread()?.call(object : ICallable<String> {
@@ -135,7 +135,7 @@ class CommonWebViewClientImpl(
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
+//        super.onPageFinished(view, url)
         CsLogger.tag(tag).d("onPageFinished(view: WebView?, url: String?) url = $url")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -146,7 +146,7 @@ class CommonWebViewClientImpl(
     }
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {
-        super.onPageCommitVisible(view, url)
+//        super.onPageCommitVisible(view, url)
         CsLogger.tag(tag).d("onPageCommitVisible(view: WebView?, url: String?) url = $url")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -154,6 +154,17 @@ class CommonWebViewClientImpl(
                 return ""
             }
         })?.start()
+    }
+
+    override fun onReceivedError(
+        view: WebView?,
+        errorCode: Int,
+        description: String?,
+        failingUrl: String?
+    ) {
+//        super.onReceivedError(view, errorCode, description, failingUrl)
+        CsLogger.tag(tag)
+            .d("onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) url = $failingUrl, errorCode = $errorCode, description = $description")
     }
 
     override fun onReceivedError(
@@ -166,19 +177,11 @@ class CommonWebViewClientImpl(
             .d("onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) url = ${request.url}, error = ${error.errorCode}:${error.description}")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (request.isForMainFrame) {
-                    loadCallback?.onPageError(
-                        url = request.url?.toString() ?: "",
-                        isMainFrameError = true,
-                        isHttpError = false
-                    )
-                } else {
-                    loadCallback?.onPageError(
-                        url = request.url?.toString() ?: "",
-                        isMainFrameError = false,
-                        isHttpError = false
-                    )
-                }
+                loadCallback?.onPageError(
+                    url = request.url?.toString() ?: "",
+                    isMainFrameError = request.isForMainFrame,
+                    isHttpError = false
+                )
                 return ""
             }
         })?.start()
@@ -189,24 +192,16 @@ class CommonWebViewClientImpl(
         request: WebResourceRequest,
         error: WebResourceResponse
     ) {
-        super.onReceivedHttpError(view, request, error)
+//        super.onReceivedHttpError(view, request, error)
         CsLogger.tag(tag)
             .d("onReceivedHttpError(view: WebView, request: WebResourceRequest, error: WebResourceResponse) url = ${request.url}, error = ${error.statusCode}:${error.responseHeaders}")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                if (request.isForMainFrame) {
-                    loadCallback?.onPageError(
-                        url = request.url?.toString() ?: "",
-                        isMainFrameError = true,
-                        isHttpError = true
-                    )
-                } else {
-                    loadCallback?.onPageError(
-                        url = request.url?.toString() ?: "",
-                        isMainFrameError = false,
-                        isHttpError = true
-                    )
-                }
+                loadCallback?.onPageError(
+                    url = request.url?.toString() ?: "",
+                    isMainFrameError = request.isForMainFrame,
+                    isHttpError = true
+                )
                 return ""
             }
         })?.start()
@@ -226,7 +221,7 @@ class CommonWebViewClientImpl(
     }
 
     override fun onLoadResource(view: WebView?, url: String?) {
-        super.onLoadResource(view, url)
+//        super.onLoadResource(view, url)
         CsLogger.tag(tag).d("onLoadResource(view: WebView?, url: String?) url = $url")
     }
 
@@ -253,7 +248,7 @@ class CommonWebViewClientImpl(
         account: String?,
         args: String?
     ) {
-        super.onReceivedLoginRequest(view, realm, account, args)
+//        super.onReceivedLoginRequest(view, realm, account, args)
         CsLogger.tag(tag)
             .d("onReceivedLoginRequest(view: WebView?, realm: String?, account: String?, args: String?) realm = $realm, account = $account, args = $args")
     }

@@ -12,6 +12,36 @@ import com.proxy.service.webview.base.enums.MixedContentMode
 interface IBuilderGet {
 
     /**
+     * 是否支持多窗口模式。
+     * */
+    fun isSupportMultipleWindows(): Boolean
+
+    /**
+     * 获取文本的缩放比例
+     * */
+    fun getTextZoom(): Int
+
+    /**
+     * 是否支持缩放
+     * */
+    fun isSupportZoom(): Boolean
+
+    /**
+     * 是否使用系统默认的缩放功能
+     * */
+    fun isBuiltInZoomControls(): Boolean
+
+    /**
+     * 是否显示系统默认的缩放控件（放大/缩小按钮）
+     * */
+    fun isDisplayZoomControls(): Boolean
+
+    /**
+     * 是否启用 DOM Storage
+     * */
+    fun isDomStorageEnabled(): Boolean
+
+    /**
      * 获取 WebView 是否接受第三方 Cookie, 这个方法在 Android API 级别 21（Lollipop）及以上有效。
      * */
     fun isAcceptThirdPartyCookies(): Boolean
@@ -25,6 +55,11 @@ interface IBuilderGet {
      * 是否应该启用 JavaScript 执行。
      * */
     fun isJavaScriptEnabled(): Boolean
+
+    /**
+     * 媒体内容（如音频和视频）是否需要用户手势才能播放
+     * */
+    fun isMediaPlaybackRequiresUserGesture(): Boolean
 
     /**
      * 缓存模式。

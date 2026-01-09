@@ -12,6 +12,45 @@ import com.proxy.service.webview.base.enums.MixedContentMode
 interface IBuilder {
 
     /**
+     * 是否支持多窗口模式。
+     * 默认为 false
+     * */
+    fun setSupportMultipleWindows(support: Boolean): IBuilder
+
+    /**
+     * 设置文本的缩放比例（百分比）。
+     *
+     * 默认值为 100，表示正常大小（即 100%）。
+     * 设置为 150 表示文字放大到 150%。
+     * 设置为 50 表示文字缩小到 50%。
+     * */
+    fun setTextZoom(textZoom: Int): IBuilder
+
+    /**
+     * 设置是否支持缩放。
+     * 默认为 false
+     * */
+    fun setSupportZoom(support: Boolean): IBuilder
+
+    /**
+     * 是否使用系统默认的缩放功能
+     * 默认为 false
+     * */
+    fun setBuiltInZoomControls(enabled: Boolean): IBuilder
+
+    /**
+     * 是否显示系统默认的缩放控件（放大/缩小按钮）。依赖于 setBuiltInZoomControls(true)，否则不会显示缩放控件。
+     * 默认为 true
+     * */
+    fun setDisplayZoomControls(enabled: Boolean): IBuilder
+
+    /**
+     * 启用或禁用 DOM Storage（文档对象模型存储）。
+     * 默认为 true
+     * */
+    fun setDomStorageEnabled(flag: Boolean): IBuilder
+
+    /**
      * 设置 WebView 是否接受第三方 Cookie, 这个方法在 Android API 级别 21（Lollipop）及以上有效。
      * 默认为 true 接受
      * */
@@ -28,6 +67,12 @@ interface IBuilder {
      * 默认为 true
      * */
     fun setJavaScriptEnabled(enabled: Boolean): IBuilder
+
+    /**
+     * 设置媒体内容（如音频和视频）是否需要用户手势才能播放
+     * 默认为 true
+     * */
+    fun setMediaPlaybackRequiresUserGesture(require: Boolean): IBuilder
 
     /**
      * 设置缓存模式，不同的缓存模式可能会受到浏览器实现和版本的影响。

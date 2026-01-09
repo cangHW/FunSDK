@@ -1,8 +1,8 @@
-package com.proxy.service.core.framework.ui.monitor.visible.base
+package com.proxy.service.core.framework.ui.view.monitor.visible.base
 
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
+import com.proxy.service.core.framework.ui.view.monitor.visible.callback.VisibleMonitorCallback
 
 /**
  * @author: cangHX

@@ -63,26 +63,39 @@ class WebFactory {
     }
 
     private fun initWeb(config: WebConfig, webView: WebViewImpl) {
-        webView.settings.domStorageEnabled = true
+        val webViewSetting = webView.settings
+
+        webViewSetting.setSupportMultipleWindows(config.isSupportMultipleWindows())
+
+        webViewSetting.textZoom = config.getTextZoom()
+
+        webViewSetting.setSupportZoom(config.isSupportZoom())
+        webViewSetting.builtInZoomControls = config.isBuiltInZoomControls()
+        webViewSetting.displayZoomControls = config.isDisplayZoomControls()
+
+        webViewSetting.domStorageEnabled = config.isDomStorageEnabled()
+        webViewSetting.mixedContentMode = config.getMixedContentMode().mode
+        webViewSetting.javaScriptEnabled = config.isJavaScriptEnabled()
+        webViewSetting.cacheMode = config.getCacheMode().mode
+        webViewSetting.useWideViewPort = config.isUseWideViewPort()
+        webViewSetting.loadWithOverviewMode = config.isLoadWithOverviewMode()
+        if (config.isUserAgentAppend()) {
+            webViewSetting.userAgentString =
+                "${webViewSetting.userAgentString} ${config.getUserAgent()}"
+        } else {
+            webViewSetting.userAgentString = config.getUserAgent()
+        }
+        webViewSetting.savePassword = config.isSavePassword()
+        webViewSetting.allowFileAccess = config.isAllowFileAccess()
+        webViewSetting.allowContentAccess = config.isAllowContentAccess()
+        webViewSetting.allowFileAccessFromFileURLs = config.isAllowFileAccessFromFileURLs()
+        webViewSetting.allowUniversalAccessFromFileURLs =
+            config.isAllowUniversalAccessFromFileURLs()
+        webViewSetting.mediaPlaybackRequiresUserGesture =
+            config.isMediaPlaybackRequiresUserGesture()
+
         CookieManager.getInstance()
             .setAcceptThirdPartyCookies(webView, config.isAcceptThirdPartyCookies())
-        webView.settings.mixedContentMode = config.getMixedContentMode().mode
-        webView.settings.javaScriptEnabled = config.isJavaScriptEnabled()
-        webView.settings.cacheMode = config.getCacheMode().mode
-        webView.settings.useWideViewPort = config.isUseWideViewPort()
-        webView.settings.loadWithOverviewMode = config.isLoadWithOverviewMode()
-        if (config.isUserAgentAppend()) {
-            webView.settings.userAgentString =
-                "${webView.settings.userAgentString} ${config.getUserAgent()}"
-        } else {
-            webView.settings.userAgentString = config.getUserAgent()
-        }
-        webView.settings.savePassword = config.isSavePassword()
-        webView.settings.allowFileAccess = config.isAllowFileAccess()
-        webView.settings.allowContentAccess = config.isAllowContentAccess()
-        webView.settings.allowFileAccessFromFileURLs = config.isAllowFileAccessFromFileURLs()
-        webView.settings.allowUniversalAccessFromFileURLs =
-            config.isAllowUniversalAccessFromFileURLs()
 
         webView.isVerticalScrollBarEnabled = config.isVerticalScrollBarEnabled()
         webView.isHorizontalScrollBarEnabled = config.isHorizontalScrollBarEnabled()

@@ -37,7 +37,7 @@ class CommonWebChromeClientImpl(
     private val tag = "${WebViewConstants.LOG_TAG_START}ChromeClient"
 
     override fun onProgressChanged(view: WebView?, newProgress: Int) {
-        super.onProgressChanged(view, newProgress)
+//        super.onProgressChanged(view, newProgress)
         CsLogger.tag(tag)
             .d("onProgressChanged(view: WebView?, newProgress: Int) newProgress = $newProgress")
         CsTask.mainThread()?.call(object : ICallable<String> {
@@ -49,7 +49,7 @@ class CommonWebChromeClientImpl(
     }
 
     override fun onReceivedTitle(view: WebView?, title: String?) {
-        super.onReceivedTitle(view, title)
+//        super.onReceivedTitle(view, title)
         CsLogger.tag(tag).d("onReceivedTitle(view: WebView?, title: String?) title = $title")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -60,7 +60,7 @@ class CommonWebChromeClientImpl(
     }
 
     override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
-        super.onReceivedIcon(view, icon)
+//        super.onReceivedIcon(view, icon)
         CsLogger.tag(tag).d("onReceivedIcon(view: WebView?, icon: Bitmap?)")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -85,13 +85,13 @@ class CommonWebChromeClientImpl(
     }
 
     override fun onRequestFocus(view: WebView?) {
-        super.onRequestFocus(view)
+//        super.onRequestFocus(view)
         CsLogger.tag(tag).d("onRequestFocus(view: WebView?)")
         view?.requestFocus()
     }
 
     override fun onCloseWindow(view: WebView?) {
-        super.onCloseWindow(view)
+//        super.onCloseWindow(view)
         CsLogger.tag(tag).d("onCloseWindow(view: WebView?)")
         interceptCallback?.onCloseWindow()
     }
@@ -171,7 +171,7 @@ class CommonWebChromeClientImpl(
     ) {
         CsLogger.tag(tag)
             .d("onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissionsCallback?) origin = $origin")
-        super.onGeolocationPermissionsShowPrompt(origin, callback)
+//        super.onGeolocationPermissionsShowPrompt(origin, callback)
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 if (interceptCallback != null) {
@@ -187,7 +187,7 @@ class CommonWebChromeClientImpl(
     }
 
     override fun onGeolocationPermissionsHidePrompt() {
-        super.onGeolocationPermissionsHidePrompt()
+//        super.onGeolocationPermissionsHidePrompt()
         CsLogger.tag(tag).d("onGeolocationPermissionsHidePrompt()")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
@@ -199,7 +199,7 @@ class CommonWebChromeClientImpl(
 
     override fun onPermissionRequest(request: PermissionRequest?) {
         CsLogger.tag(tag).d("onPermissionRequest(request: PermissionRequest?)")
-        super.onPermissionRequest(request)
+//        super.onPermissionRequest(request)
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 if (interceptCallback != null) {
@@ -213,7 +213,7 @@ class CommonWebChromeClientImpl(
 
     override fun onPermissionRequestCanceled(request: PermissionRequest?) {
         CsLogger.tag(tag).d("onPermissionRequestCanceled(request: PermissionRequest?)")
-        super.onPermissionRequestCanceled(request)
+//        super.onPermissionRequestCanceled(request)
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 if (interceptCallback != null) {
@@ -257,13 +257,13 @@ class CommonWebChromeClientImpl(
     }
 
     override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
-        super.onShowCustomView(view, callback)
+//        super.onShowCustomView(view, callback)
         CsLogger.tag(tag)
             .d("onShowCustomView(webView: View?, callback: CustomViewCallback?)")
     }
 
     override fun onHideCustomView() {
-        super.onHideCustomView()
+//        super.onHideCustomView()
         CsLogger.tag(tag)
             .d("onHideCustomView()")
     }

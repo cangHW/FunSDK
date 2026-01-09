@@ -21,6 +21,7 @@ import com.proxy.service.funsdk.framework.func.SecurityActivity
 import com.proxy.service.funsdk.framework.func.SoundActivity
 import com.proxy.service.funsdk.framework.func.SpanActivity
 import com.proxy.service.funsdk.framework.func.SystemPageActivity
+import com.proxy.service.funsdk.framework.func.UiActivity
 
 /**
  * @author: cangHX
@@ -95,6 +96,10 @@ class FrameWorkActivity : BaseActivity<ActivityFrameworkBinding>() {
 
             R.id.log -> {
                 LogActivity.launch(this)
+            }
+
+            R.id.view -> {
+                UiActivity.launch(this)
             }
         }
     }

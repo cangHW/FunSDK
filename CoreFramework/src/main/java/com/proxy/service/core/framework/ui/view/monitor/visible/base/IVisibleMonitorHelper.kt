@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.ui.monitor.visible.base
+package com.proxy.service.core.framework.ui.view.monitor.visible.base
 
 /**
  * @author: cangHX

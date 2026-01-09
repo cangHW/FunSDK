@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
-import com.proxy.service.core.framework.ui.monitor.CsViewMonitorUtils
-import com.proxy.service.core.framework.ui.monitor.visible.base.IVisibleMonitorHelper
-import com.proxy.service.core.framework.ui.monitor.visible.callback.VisibleMonitorCallback
-import com.proxy.service.core.framework.ui.monitor.visible.config.VisibleMonitorConfig
+import com.proxy.service.core.framework.ui.view.monitor.CsViewMonitorUtils
+import com.proxy.service.core.framework.ui.view.monitor.visible.base.IVisibleMonitorHelper
+import com.proxy.service.core.framework.ui.view.monitor.visible.callback.VisibleMonitorCallback
+import com.proxy.service.core.framework.ui.view.monitor.visible.config.VisibleMonitorConfig
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkMonitorBinding
@@ -77,7 +77,7 @@ class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {
         }
     }
 
-    private val monitorCallback = object : VisibleMonitorCallback{
+    private val monitorCallback = object : VisibleMonitorCallback {
         override fun onGone(tag: Any?) {
             binding?.content?.addData("Monitor", "view 隐藏, tag = $tag")
         }
