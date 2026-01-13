@@ -17,8 +17,8 @@ class MainThreadAlwaysSendImpl(
 ) : BaseAlwaysActiveSend<MainThreadEventCallback>(callback) {
 
     override fun onActive() {
-        handler?.clearAllTask()
-        handler?.start{
+        handler?.clearAllTaskWithTag(tag)
+        handler?.start(tag){
             controller?.forEachCache { value ->
                 CsTask.mainThread()
                     ?.call(object : ICallable<String> {

@@ -5,6 +5,7 @@ import android.os.Build
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.uri.provider.ProxyProvider
 import java.io.File
 
 /**
@@ -50,6 +51,7 @@ object CsUriManager {
      * */
     fun getUriByFile(file: File?): Uri? {
         if (!CsFileUtils.isFile(file)) {
+            CsLogger.tag(TAG).w("The target file does not exist. file: ${file?.absolutePath}")
             return null
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {

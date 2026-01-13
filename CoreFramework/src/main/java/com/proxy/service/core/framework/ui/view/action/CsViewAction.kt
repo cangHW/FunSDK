@@ -3,8 +3,8 @@ package com.proxy.service.core.framework.ui.view.action
 import android.view.View
 import com.proxy.service.core.framework.ui.view.action.click.ClickActionImpl
 import com.proxy.service.core.framework.ui.view.action.click.IClickAction
-import com.proxy.service.core.framework.ui.view.action.exposure.ExposureActionImpl
-import com.proxy.service.core.framework.ui.view.action.exposure.IExposureAction
+import com.proxy.service.core.framework.ui.view.action.exposure.action.ExposureActionImpl
+import com.proxy.service.core.framework.ui.view.action.exposure.action.IExposureAction
 import com.proxy.service.core.framework.ui.view.action.longclick.ILongClickAction
 import com.proxy.service.core.framework.ui.view.action.longclick.LongClickActionImpl
 

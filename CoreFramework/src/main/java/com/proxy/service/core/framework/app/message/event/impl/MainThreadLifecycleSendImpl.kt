@@ -19,8 +19,8 @@ class MainThreadLifecycleSendImpl(
 ) : BaseLifecycleActiveSend<MainThreadEventCallback>(callback, lifecycleOwner) {
 
     override fun onActive() {
-        handler?.clearAllTask()
-        handler?.start {
+        handler?.clearAllTaskWithTag(tag)
+        handler?.start(tag) {
             controller?.forEachCache { value ->
                 CsTask.mainThread()?.call(object : ICallable<String> {
                     override fun accept(): String {
@@ -39,6 +39,6 @@ class MainThreadLifecycleSendImpl(
     }
 
     override fun onInActive() {
-        handler?.clearAllTask()
+        handler?.clearAllTaskWithTag(tag)
     }
 }

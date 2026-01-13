@@ -17,8 +17,8 @@ class WorkThreadLifecycleSendImpl(
 ) : BaseLifecycleActiveSend<WorkThreadEventCallback>(callback, lifecycleOwner) {
 
     override fun onActive() {
-        handler?.clearAllTask()
-        handler?.start{
+        handler?.clearAllTaskWithTag(tag)
+        handler?.start(tag){
             controller?.forEachCache { value ->
                 try {
                     if (controller.use(value)) {
@@ -32,6 +32,6 @@ class WorkThreadLifecycleSendImpl(
     }
 
     override fun onInActive() {
-        handler?.clearAllTask()
+        handler?.clearAllTaskWithTag(tag)
     }
 }

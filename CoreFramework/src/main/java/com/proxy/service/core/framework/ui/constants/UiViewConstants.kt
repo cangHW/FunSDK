@@ -20,12 +20,12 @@ object UiViewConstants {
     /**
      * 显示状态检查任务
      * */
-    const val EXPOSURE_LOOP_NAME_FOR_CHECK = "exposure-monitor-task"
+    const val EXPOSURE_LOOP_NAME_FOR_CHECK = "exposure-monitor-check-task"
 
     /**
      * 显示状态回调任务
      * */
-    const val EXPOSURE_LOOP_NAME_FOR_CALL = "visible-monitor-call-task"
+    const val EXPOSURE_LOOP_NAME_FOR_CALL = "exposure-monitor-call-task"
 
     /**
      * 默认曝光的有效区域比例

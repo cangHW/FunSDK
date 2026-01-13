@@ -18,22 +18,22 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/monitor_start"
                 style="@style/button_style"
-                android:text="监控开始" />
+                android:text="开始检测" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/monitor_reset"
                 style="@style/button_style"
-                android:text="监控重置" />
+                android:text="重置检测" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/monitor_stop"
                 style="@style/button_style"
-                android:text="监控暂停" />
+                android:text="暂停检测" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/monitor_destroy"
                 style="@style/button_style"
-                android:text="监控关闭" />
+                android:text="关闭检测" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/view_visible"

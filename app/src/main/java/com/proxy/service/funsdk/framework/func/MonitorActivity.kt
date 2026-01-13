@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
-import com.proxy.service.core.framework.ui.view.monitor.CsViewMonitorUtils
-import com.proxy.service.core.framework.ui.view.monitor.visible.base.IVisibleMonitorHelper
-import com.proxy.service.core.framework.ui.view.monitor.visible.callback.VisibleMonitorCallback
-import com.proxy.service.core.framework.ui.view.monitor.visible.config.VisibleMonitorConfig
+import com.proxy.service.core.framework.ui.view.action.CsViewAction
+import com.proxy.service.core.framework.ui.view.action.base.IViewActionCallback
+import com.proxy.service.core.framework.ui.view.action.exposure.controller.ExposureController
+import com.proxy.service.core.framework.ui.view.action.exposure.params.ExposureParams
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkMonitorBinding
@@ -30,7 +30,7 @@ class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {
         }
     }
 
-    private var helper: IVisibleMonitorHelper? = null
+    private var helper: ExposureController? = null
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkMonitorBinding {
         return ActivityFrameworkMonitorBinding.inflate(inflater)
@@ -40,31 +40,28 @@ class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {
         when (view.id) {
             R.id.monitor_start -> {
                 if (helper == null) {
-                    val config = VisibleMonitorConfig.builder(binding?.checkView!!)
+                    helper = CsViewAction.exposure(binding?.checkView)
                         .setTag("222")
-                        .setLifecycle(this)
-                        .build()
-
-                    helper = CsViewMonitorUtils.createVisibleMonitor(config, monitorCallback)
+                        .call(viewActionCallback)
                 }
                 helper?.start()
-                binding?.content?.addData("Monitor", "开始监控")
+                binding?.content?.addData("Monitor", "开始检测")
             }
 
             R.id.monitor_reset -> {
                 helper?.reset()
-                binding?.content?.addData("Monitor", "重置监控状态")
+                binding?.content?.addData("Monitor", "重置检测状态")
             }
 
             R.id.monitor_stop -> {
                 helper?.stop()
-                binding?.content?.addData("Monitor", "暂停监控")
+                binding?.content?.addData("Monitor", "暂停检测")
             }
 
             R.id.monitor_destroy -> {
-                helper?.destroy()
+                helper?.release()
                 helper = null
-                binding?.content?.addData("Monitor", "关闭监控")
+                binding?.content?.addData("Monitor", "关闭检测")
             }
 
             R.id.view_visible -> {
@@ -77,13 +74,11 @@ class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {
         }
     }
 
-    private val monitorCallback = object : VisibleMonitorCallback {
-        override fun onGone(tag: Any?) {
-            binding?.content?.addData("Monitor", "view 隐藏, tag = $tag")
-        }
-
-        override fun onShow(tag: Any?) {
-            binding?.content?.addData("Monitor", "view 显示, tag = $tag")
+    private val viewActionCallback = IViewActionCallback<ExposureParams> { value ->
+        if (value.isExposureState()) {
+            binding?.content?.addData("Monitor", "view 显示, tag = ${value.getTag()}")
+        } else {
+            binding?.content?.addData("Monitor", "view 隐藏, tag = ${value.getTag()}")
         }
     }
 

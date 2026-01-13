@@ -19,7 +19,7 @@ abstract class IClickAction : IAction<IClickAction>(), ICall<Unit, Unit> {
     /**
      * 配置防抖间隔, 用于限制快速重复操作
      * */
-    fun setDebounceTime(time: Long, unit: TimeUnit): IAction<IClickAction> {
+    fun setDebounceTime(time: Long, unit: TimeUnit): IClickAction {
         debounceTime = unit.toMillis(time)
         return this
     }

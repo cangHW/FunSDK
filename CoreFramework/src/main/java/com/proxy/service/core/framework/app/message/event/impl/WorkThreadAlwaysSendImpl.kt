@@ -4,6 +4,7 @@ import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEve
 import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.framework.app.message.event.impl.base.BaseAlwaysActiveSend
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 
 /**
  * @author: cangHX
@@ -15,8 +16,8 @@ class WorkThreadAlwaysSendImpl(
 ) : BaseAlwaysActiveSend<WorkThreadEventCallback>(callback) {
 
     override fun onActive() {
-        handler?.clearAllTask()
-        handler?.start {
+        handler?.clearAllTaskWithTag(tag)
+        handler?.start(tag) {
             controller?.forEachCache { value ->
                 try {
                     if (controller.use(value)) {

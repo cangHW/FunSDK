@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.io.uri
+package com.proxy.service.core.framework.io.uri.provider
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -241,8 +241,9 @@ class ProxyProvider : ContentProvider() {
             try {
                 path = file.canonicalPath
             } catch (throwable: Throwable) {
-                CsLogger.tag(TAG).d(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
+
             if (TextUtils.isEmpty(path)) {
                 return null
             }
@@ -261,11 +262,20 @@ class ProxyProvider : ContentProvider() {
                 return null
             }
 
-            return Uri.Builder().scheme("content").authority(mAuthority).encodedPath(path).build()
+            try {
+                path = File(file.parentFile, Uri.encode(file.name)).canonicalPath
+                return Uri.Builder().scheme("content")
+                    .authority(mAuthority)
+                    .encodedPath(path)
+                    .build()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+            }
+            return null
         }
 
         override fun getFileForUri(uri: Uri): File? {
-            val path = uri.encodedPath
+            var path = uri.encodedPath
             CsLogger.tag(TAG).i("path = $path")
 
             if (TextUtils.isEmpty(path)) {
@@ -286,7 +296,14 @@ class ProxyProvider : ContentProvider() {
                 return null
             }
 
-            return path?.let { File(it) }
+            try {
+                val tempFile = File(path)
+                path = File(tempFile.parentFile, Uri.decode(tempFile.name)).canonicalPath
+                return path?.let { File(it) }
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+            }
+            return null
         }
     }
 

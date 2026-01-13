@@ -10,6 +10,6 @@ fun interface IViewActionCallback<T> {
     /**
      * view 事件回调
      * */
-    fun onViewActionCall(t: T)
+    fun onViewActionCall(value: T)
 
 }

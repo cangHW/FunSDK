@@ -64,9 +64,11 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
             if (isChecked) {
                 CsEventManager.addWeakCallback(mainThreadEventCallback, this)
                 CsEventManager.addWeakCallback(workThreadEventCallback, this)
+                CsEventManager.addWeakCallback(workThreadEventCallback2, this)
             } else {
                 CsEventManager.removeCallback(mainThreadEventCallback)
                 CsEventManager.removeCallback(workThreadEventCallback)
+                CsEventManager.removeCallback(workThreadEventCallback2)
             }
         }
 
@@ -94,6 +96,8 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
         binding?.checkProcess?.isChecked = true
     }
 
+    var index = 0
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.send_broadcast_msg -> {
@@ -115,9 +119,11 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
             R.id.send_thread_event_msg -> {
                 binding?.content?.addData("event", "发送 work event")
 
-                for (index in 0..10) {
-                    CsEventManager.sendEventValue(WorkBean("$index"))
-                }
+//                for (index in 0..10) {
+//                    CsEventManager.sendEventValue(WorkBean("$index"))
+//                }
+                index++
+                CsEventManager.sendEventValue(WorkBean("$index"))
             }
 
             R.id.send_content_provider_msg -> {
@@ -221,6 +227,16 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     }
 
     private val workThreadEventCallback = object : WorkThreadEventCallback {
+        override fun getSupportTypes(): Set<Class<*>> {
+            return setOf(WorkBean::class.java)
+        }
+
+        override fun onWorkEvent(any: Any) {
+            binding?.content?.addData("event", "接收 WorkEvent, any = $any")
+        }
+    }
+
+    private val workThreadEventCallback2 = object : WorkThreadEventCallback {
         override fun getSupportTypes(): Set<Class<*>> {
             return setOf(WorkBean::class.java)
         }

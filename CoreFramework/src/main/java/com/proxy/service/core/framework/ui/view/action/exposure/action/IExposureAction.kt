@@ -1,8 +1,11 @@
-package com.proxy.service.core.framework.ui.view.action.exposure
+package com.proxy.service.core.framework.ui.view.action.exposure.action
 
 import com.proxy.service.core.framework.ui.constants.UiViewConstants
 import com.proxy.service.core.framework.ui.view.action.base.IAction
 import com.proxy.service.core.framework.ui.view.action.base.ICall
+import com.proxy.service.core.framework.ui.view.action.base.IViewActionCallback
+import com.proxy.service.core.framework.ui.view.action.exposure.params.ExposureParams
+import com.proxy.service.core.framework.ui.view.action.exposure.controller.ExposureController
 import java.util.concurrent.TimeUnit
 
 /**
@@ -10,7 +13,8 @@ import java.util.concurrent.TimeUnit
  * @data: 2026/1/9 14:10
  * @desc:
  */
-abstract class IExposureAction : IAction<IExposureAction>(), ICall<ExposureParams, ExposureController?> {
+abstract class IExposureAction : IAction<IExposureAction>(),
+    ICall<ExposureParams, ExposureController?> {
 
     protected var area: Float = UiViewConstants.EXPOSURE_DEFAULT_AREA
     protected var duration: Long = UiViewConstants.EXPOSURE_DEFAULT_DURATION
@@ -73,5 +77,10 @@ abstract class IExposureAction : IAction<IExposureAction>(), ICall<ExposureParam
         this.tag = tag
         return this
     }
+
+    /**
+     * 配置回调, 不自动开启检测
+     * */
+    abstract fun callOnly(callback: IViewActionCallback<ExposureParams>): ExposureController?
 
 }

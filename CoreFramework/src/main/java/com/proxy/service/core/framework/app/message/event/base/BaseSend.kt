@@ -1,8 +1,11 @@
 package com.proxy.service.core.framework.app.message.event.base
 
+import android.text.TextUtils
 import com.proxy.service.core.framework.app.message.event.controller.ListDataController
 import com.proxy.service.core.framework.app.message.event.controller.SingleDataController
+import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 import java.util.WeakHashMap
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author: cangHX
@@ -14,6 +17,7 @@ abstract class BaseSend<T : IEvent>(
 ) : ISend {
 
     companion object {
+        private val TEMP_TAG = AtomicInteger(0)
         private val ANY = Any()
     }
 
@@ -27,6 +31,8 @@ abstract class BaseSend<T : IEvent>(
             ListDataController()
         }
     }
+
+    protected val tag = createTag()
 
     override fun sendEventValue(any: Any) {
         if (temp.containsKey(any.javaClass)) {
@@ -47,6 +53,18 @@ abstract class BaseSend<T : IEvent>(
     private fun checkSend(any: Any) {
         controller?.addCache(any)
         checkState()
+    }
+
+    /**
+     * 创建唯一标识
+     * */
+    private fun createTag(): String {
+        var tag = CsMd5Utils.getMD5(this.hashCode().toString() + System.currentTimeMillis())
+
+        if (TextUtils.isEmpty(tag)) {
+            tag = TEMP_TAG.getAndIncrement().toString()
+        }
+        return tag
     }
 
     /**

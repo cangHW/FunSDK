@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.ui.view.action.exposure
+package com.proxy.service.core.framework.ui.view.action.exposure.controller
 
 /**
  * @author: cangHX
@@ -13,7 +13,7 @@ interface ExposureController {
     fun start()
 
     /**
-     * 还原数据，重置为原始状态
+     * 还原数据，重置为原始状态, 需要重新调用 [start]
      */
     fun reset()
 
