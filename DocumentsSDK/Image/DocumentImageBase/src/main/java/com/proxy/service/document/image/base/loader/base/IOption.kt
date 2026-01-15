@@ -19,16 +19,16 @@ import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
 interface IOption : ILoader<IController> {
 
     /**
-     * 设置缩放倍数
+     * 设置最小缩放倍数
      *
      * @param minScale  最小缩放倍数, 默认: [ImageConstants.DEFAULT_MIN_SCALE]
      * */
     fun setMinScale(minScale: Float): IOption
 
     /**
-     * 设置缩放倍数
+     * 设置最大缩放倍数
      *
-     * @param maxScale  最小缩放倍数, 默认: [ImageConstants.DEFAULT_MAX_SCALE]
+     * @param maxScale  最大缩放倍数, 默认: [ImageConstants.DEFAULT_MAX_SCALE]
      * */
     fun setMaxScale(maxScale: Float): IOption
 
@@ -159,7 +159,7 @@ interface IOption : ILoader<IController> {
     fun setScaleCallback(callback: OnScaleCallback): IOption
 
     /**
-     * 设置缩放时回调
+     * 设置绘制时回调
      * */
     fun setDrawCallback(callback: OnDrawCallback): IOption
 

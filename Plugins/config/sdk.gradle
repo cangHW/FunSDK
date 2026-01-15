@@ -131,14 +131,14 @@ ext {
             // 文档库
             DocumentImageBase    : [
                     artifact          : "Service-Document-Image",
-                    version           : "0.2.4",
+                    version           : "0.2.5",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             DocumentImageInfo    : [
                     artifact          : "Service-Document-Image-Info",
-                    version           : "0.2.4",
+                    version           : "0.2.5",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

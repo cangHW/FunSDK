@@ -34,7 +34,7 @@ service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds
 service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.5"}
 service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.9"}
 service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
-service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.4"}
+service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.5"}
 service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
 service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.18"}
 
