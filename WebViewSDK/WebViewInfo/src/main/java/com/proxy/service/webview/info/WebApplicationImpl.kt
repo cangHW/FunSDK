@@ -34,13 +34,11 @@ class WebApplicationImpl : CsBaseApplication() {
     override fun onCreate(application: Application, isDebug: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             WebView.setDataDirectorySuffix(CsAppUtils.getProcessName())
-            if (isDebug) {
-                CsTask.startWhenIdle {
-                    if (CsAppUtils.isMainProcess()) {
-                        CsLogger.tag(webTag).i("web 调试模式开启")
-                        WebView.setWebContentsDebuggingEnabled(true)
-                    }
-                }
+        }
+        if (isDebug) {
+            CsTask.startWhenIdle {
+                CsLogger.tag(webTag).i("web 调试模式开启")
+                WebView.setWebContentsDebuggingEnabled(true)
             }
         }
     }

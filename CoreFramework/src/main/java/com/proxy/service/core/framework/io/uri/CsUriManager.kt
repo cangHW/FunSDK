@@ -24,8 +24,18 @@ object CsUriManager {
      * 如果不设置，默认所有路径都是非安全路径，建议设置
      * */
     fun addProviderResourcePath(filePath: String) {
-        CsLogger.tag(TAG).i("add Security Path. : $filePath")
-        ProxyProvider.addSecurityPaths(filePath)
+        addProviderResourcePath(filePath, filePath)
+    }
+
+    /**
+     * 添加允许通过 provider 共享的文件路径，用于对外提供资源 Uri 等
+     * 如果不设置，默认所有路径都是非安全路径，建议设置
+     *
+     * @param name  可以用来隐藏真实的路径, 提高安全性
+     * */
+    fun addProviderResourcePath(name: String, filePath: String) {
+        CsLogger.tag(TAG).i("add Security Path. $name : $filePath")
+        ProxyProvider.addSecurityPaths(name, filePath)
     }
 
     /**

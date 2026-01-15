@@ -3,14 +3,9 @@ package com.proxy.service.funsdk.framework.func
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.res.XmlResourceParser
-import android.net.Uri
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.app.CsAppUtils
-import com.proxy.service.core.framework.app.resource.CsResUtils
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.media.CsFileMediaUtils
 import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
@@ -19,12 +14,9 @@ import com.proxy.service.core.framework.io.file.media.config.DataInfo
 import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.read.CsFileReadUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
-import com.proxy.service.core.framework.io.uri.CsUriManager
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkFileBinding
-import org.xmlpull.v1.XmlPullParser
-import java.io.File
 
 /**
  * @author: cangHX
@@ -48,50 +40,6 @@ class FileActivity : BaseActivity<ActivityFrameworkFileBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkFileBinding {
         return ActivityFrameworkFileBinding.inflate(inflater)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val path = "/storage/emulated/0/Download/photo #.png"
-        CsUriManager.addProviderResourcePath(path)
-
-        val uri1= Uri.fromFile(File(path))
-        CsLogger.tag("qqqqqqqq").e("uri1 = $uri1")
-
-        val uri2= CsUriManager.getUriByPath(path)
-        CsLogger.tag("qqqqqqqq").e("uri2 = $uri2")
-
-
-        val id =    CsResUtils.getXmlIdByName("file.xml")
-
-        try {
-            var parser: XmlResourceParser? = resources.getXml(id)
-            var eventType = parser?.eventType
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                when (eventType) {
-                    XmlPullParser.START_TAG -> {
-                        // 获取标签名
-                        val tagName = parser?.name
-                        if (tagName == "files-path" || tagName == "cache-path" || tagName == "external-path") {
-                            // 获取属性值
-                            val name = parser?.getAttributeValue(null, "name")
-                            val path = parser?.getAttributeValue(null, "path")
-                            CsLogger.tag("qqqqqqqq").e("Tag: $tagName, Name: $name, Path: $path")
-                        }
-                    }
-                }
-                // 移动到下一个事件
-                eventType = parser?.next()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            // 关闭解析器
-//            parser?.close()
-        }
-
-
     }
 
     override fun onClick(view: View) {

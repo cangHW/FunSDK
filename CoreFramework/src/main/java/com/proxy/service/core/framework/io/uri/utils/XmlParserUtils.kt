@@ -2,8 +2,7 @@ package com.proxy.service.core.framework.io.uri.utils
 
 import android.content.Context
 import android.content.res.XmlResourceParser
-import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.app.resource.CsResUtils
+import android.text.TextUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.uri.info.SharePathInfo
 import org.xmlpull.v1.XmlPullParser
@@ -17,12 +16,13 @@ import java.io.File
 object XmlParserUtils {
 
     // CsProxyProvider.xml
-    private const val XML_FILE_NAME = "CsProxyProvider"
+    private const val XML_FILE_NAME = "cs_proxy_provider"
 
     private const val XML_TAG_FILES_PATH = "proxy-files-path"
     private const val XML_TAG_CACHE_PATH = "proxy-cache-path"
     private const val XML_TAG_EXTERNAL_FILES_PATH = "proxy-external-files-path"
     private const val XML_TAG_EXTERNAL_CACHE_PATH = "proxy-external-cache-path"
+    private const val XML_TAG_CUSTOM_PATH = "proxy-custom-path"
 
     private const val XML_TAG_ATTR_NAME = "name"
     private const val XML_TAG_ATTR_PATH = "path"
@@ -32,13 +32,14 @@ object XmlParserUtils {
 
         var parser: XmlResourceParser? = null
         try {
-            val id = CsResUtils.getXmlIdByName(XML_FILE_NAME)
+            val resources = context.resources
+            val id = resources.getIdentifier(XML_FILE_NAME, "xml", context.packageName)
             if (id == 0) {
                 CsLogger.tag(logTag).w("The default shared path has not been configured.")
                 return list
             }
 
-            parser = context.resources.getXml(id)
+            parser = resources.getXml(id)
             var eventType = parser.eventType
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 try {
@@ -46,7 +47,7 @@ object XmlParserUtils {
                         continue
                     }
 
-                    parserAttr(logTag, parser)?.let {
+                    parserAttr(context, logTag, parser)?.let {
                         list.add(it)
                     }
                 } finally {
@@ -56,55 +57,93 @@ object XmlParserUtils {
         } catch (throwable: Throwable) {
             CsLogger.tag(logTag).e(throwable)
         } finally {
-            // 关闭解析器
             parser?.close()
         }
 
         return list
     }
 
-    private fun parserAttr(logTag: String, parser: XmlResourceParser): SharePathInfo? {
+    private fun parserAttr(
+        context: Context,
+        logTag: String,
+        parser: XmlResourceParser
+    ): SharePathInfo? {
         var pathInfo: SharePathInfo? = null
 
         when (parser.name) {
             XML_TAG_FILES_PATH -> {
-                val name = parser.getAttributeValue(null, XML_TAG_ATTR_NAME)
-                val path = parser.getAttributeValue(null, XML_TAG_ATTR_PATH)
-
-                val prefix = CsContextManager.getApplication().filesDir.absolutePath
-                pathInfo = SharePathInfo.create(name, File(prefix, path).absolutePath)
+                val prefix = context.filesDir.absolutePath
+                pathInfo = createSharePath(parser, logTag, parserDirPath(prefix))
             }
 
             XML_TAG_CACHE_PATH -> {
-                val name = parser.getAttributeValue(null, XML_TAG_ATTR_NAME)
-                val path = parser.getAttributeValue(null, XML_TAG_ATTR_PATH)
-
-                val prefix = CsContextManager.getApplication().cacheDir.absolutePath
-                pathInfo = SharePathInfo.create(name, File(prefix, path).absolutePath)
+                val prefix = context.cacheDir.absolutePath
+                pathInfo = createSharePath(parser, logTag, parserDirPath(prefix))
             }
 
             XML_TAG_EXTERNAL_FILES_PATH -> {
-                val name = parser.getAttributeValue(null, XML_TAG_ATTR_NAME)
-                val path = parser.getAttributeValue(null, XML_TAG_ATTR_PATH)
-
-                val prefix =
-                    CsContextManager.getApplication().getExternalFilesDir(null)?.absolutePath
-                pathInfo = SharePathInfo.create(name, File(prefix, path).absolutePath)
+                val prefix = context.getExternalFilesDir(null)?.absolutePath
+                if (prefix != null) {
+                    pathInfo = createSharePath(parser, logTag, parserDirPath(prefix))
+                } else {
+                    CsLogger.tag(logTag)
+                        .w("The current device does not support external paths. tag=${parser.name}")
+                }
             }
 
             XML_TAG_EXTERNAL_CACHE_PATH -> {
-                val name = parser.getAttributeValue(null, XML_TAG_ATTR_NAME)
-                val path = parser.getAttributeValue(null, XML_TAG_ATTR_PATH)
-
-                val prefix = CsContextManager.getApplication().externalCacheDir?.absolutePath
-                pathInfo = SharePathInfo.create(name, File(prefix, path).absolutePath)
+                val prefix = context.externalCacheDir?.absolutePath
+                if (prefix != null) {
+                    pathInfo = createSharePath(parser, logTag, parserDirPath(prefix))
+                } else {
+                    CsLogger.tag(logTag)
+                        .w("The current device does not support external paths. tag=${parser.name}")
+                }
             }
-        }
 
-        pathInfo?.let {
-            CsLogger.tag(logTag).e("Tag: $it")
+            XML_TAG_CUSTOM_PATH -> {
+                pathInfo = createSharePath(parser, logTag, "")
+            }
         }
         return pathInfo
     }
 
+    private fun createSharePath(
+        parser: XmlResourceParser,
+        logTag: String,
+        prefix: String
+    ): SharePathInfo? {
+        val name = parser.getAttributeValue(null, XML_TAG_ATTR_NAME)
+        val path = parser.getAttributeValue(null, XML_TAG_ATTR_PATH)
+
+        if (path.isNullOrEmpty() || path.isBlank() || path == "." || path == File.separator) {
+            if (TextUtils.isEmpty(prefix)) {
+                CsLogger.tag(logTag)
+                    .e("There is a lack of meaningful paths. name=$name, path=$path, prefix=$prefix")
+                return null
+            }
+            return SharePathInfo.create(name, prefix)
+        }
+
+        if (TextUtils.isEmpty(prefix)) {
+            return SharePathInfo.create(name, path)
+        }
+
+        var tempPath = File(prefix, path).absolutePath
+        if (path.endsWith(File.separator)) {
+            tempPath = "$tempPath${File.separator}"
+        }
+
+        return SharePathInfo.create(name, tempPath)
+    }
+
+    private fun parserDirPath(path: String): String {
+        if (TextUtils.isEmpty(path)) {
+            return ""
+        }
+        if (path.endsWith(File.separator)) {
+            return path
+        }
+        return "$path${File.separator}"
+    }
 }

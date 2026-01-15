@@ -1,0 +1,28 @@
+<paths>
+
+<!--    &lt;!&ndash; 共享应用的私有文件目录 &ndash;&gt;-->
+<!--    <proxy-files-path-->
+<!--        name="internal_file"-->
+<!--        path="." />-->
+
+<!--    &lt;!&ndash; 共享应用的私有文件目录 &ndash;&gt;-->
+<!--    <proxy-cache-path-->
+<!--        name="internal_cache"-->
+<!--        path=".." />-->
+
+<!--    &lt;!&ndash; 共享外部存储的私有文件目录 &ndash;&gt;-->
+<!--    <proxy-external-files-path-->
+<!--        name="external_file"-->
+<!--        path="Pictures/" />-->
+
+<!--    &lt;!&ndash; 共享外部存储的私有文件目录 &ndash;&gt;-->
+<!--    <proxy-external-cache-path-->
+<!--        name="external_cache"-->
+<!--        path="Pictures/" />-->
+
+    <!-- 共享自定义目录 -->
+    <proxy-custom-path
+        name="custom_file"
+        path="/storage/emulated/0/" />
+
+</paths>

@@ -8,36 +8,50 @@ import java.io.File
  * @desc:
  */
 class SharePathInfo private constructor(
-    private val name: String,
-    private val path: String
+    private val isShareFile: Boolean,
+    val name: String,
+    val path: String
 ) {
 
     companion object {
         fun create(name: String, path: String): SharePathInfo {
-            return SharePathInfo(name, path)
+            val isShareFile = !path.endsWith(File.separator)
+            var realName = name
+            if (!realName.startsWith(File.separator)) {
+                realName = "${File.separator}$realName"
+            }
+            if (realName.endsWith(File.separator)) {
+                realName = realName.substring(0, realName.length - 1)
+            }
+            var realPath = path
+            if (realPath.endsWith(File.separator)) {
+                realPath = realPath.substring(0, realPath.length - 1)
+            }
+            return SharePathInfo(isShareFile, realName, realPath)
         }
     }
 
-    private var isShareFile = false
-
-    init {
-        isShareFile = !path.endsWith(File.separator)
+    private fun isMatched(filePath: String, target: String): Boolean {
+        if (isShareFile) {
+            return filePath == target
+        }
+        return filePath.startsWith(target)
     }
 
     /**
      * 是否匹配当前规则
      * */
     fun isMatchedWithEncode(filePath: String): Boolean {
-        if (isShareFile) {
-            return filePath == path
-        }
-        return filePath.startsWith(path)
+        return isMatched(filePath, path)
     }
 
     /**
      * 路径转码
      * */
     fun encode(filePath: String): String {
+        if (isShareFile) {
+            return name
+        }
         return filePath.replaceFirst(path, name)
     }
 
@@ -45,21 +59,29 @@ class SharePathInfo private constructor(
      * 是否匹配当前规则
      * */
     fun isMatchedWithDecode(filePath: String): Boolean {
-        if (isShareFile) {
-            return filePath == name
-        }
-        return filePath.startsWith(name)
+        return isMatched(filePath, name)
     }
 
     /**
      * 路径转码
      * */
     fun decode(filePath: String): String {
+        if (isShareFile) {
+            return path
+        }
         return filePath.replaceFirst(name, path)
     }
 
-    override fun toString(): String {
-        return "SharePathInfo(name='$name', path='$path', isShareFile=$isShareFile)"
+    /**
+     * 是否完全相同
+     * */
+    fun isSame(info: SharePathInfo): Boolean {
+        val isNameSame = name == info.name
+        val isPathSame = path == info.path
+        return isNameSame && isPathSame
     }
 
+    override fun toString(): String {
+        return "SharePathInfo(isShareFile=$isShareFile, name='$name', path='$path')"
+    }
 }

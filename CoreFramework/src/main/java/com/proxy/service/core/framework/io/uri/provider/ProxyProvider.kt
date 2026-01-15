@@ -12,16 +12,51 @@ import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.webkit.MimeTypeMap
 import androidx.annotation.GuardedBy
+import com.proxy.service.api.log.LogInit
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
+import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.uri.info.SharePathInfo
+import com.proxy.service.core.framework.io.uri.utils.XmlParserUtils
 import java.io.File
 import java.io.FileNotFoundException
 
 /**
  * @author: cangHX
  * @data: 2024/9/20 18:03
- * @desc:
+ * @desc: 如果需要配置默认共享路径可以按以下方式进行配置.
+ *
+ * 在项目的 src/main/res/xml 文件夹下(如果不存在对应文件夹则自行创建)创建 cs_proxy_provider.xml 文件, 文件内容如下:
+ * <paths> // 固定标签
+ *
+ *     <!-- 共享应用的私有文件目录, 可选 -->
+ *     <proxy-files-path // 可选标签, 标识当前配置为应用的私有文件目录
+ *         name="internal_file" // 不能为空, 自定义名称, 用于替换对应路径的名称, 用来隐藏真实的路径, 提高安全性
+ *         path="." /> // 准备共享的路径, 如果为 <空>、<.>、</>, 则使用标签对应的路径, 如果不为空则与标签对应路径进行拼接, 如果以 / 结尾则代表共享文件夹, 否则代表共享对应文件
+ *
+ *     <!-- 共享应用的私有缓存目录, 可选 -->
+ *     <proxy-cache-path // 同上
+ *         name="internal_cache" // 同上
+ *         path=".." /> // 同上
+ *
+ *     <!-- 共享外部存储的应用私有文件目录, 可选 -->
+ *     <proxy-external-files-path // 同上
+ *         name="external_file" // 同上
+ *         path="Pictures/" /> // 同上
+ *
+ *     <!-- 共享外部存储的应用私有缓存目录, 可选 -->
+ *     <proxy-external-cache-path // 同上
+ *         name="external_cache" // 同上
+ *         path="Pictures/" /> // 同上
+ *
+ *     <!-- 共享自定义目录, 可选 -->
+ *     <proxy-custom-path // 可选标签, 标识当前配置为自定义目录
+ *         name="custom_file" // 同上
+ *         path="/storage/emulated/0/" /> // 准备共享的路径, 不能为空, 需要是待共享的全路径
+ *
+ * </paths>
+ *
  */
 class ProxyProvider : ContentProvider() {
 
@@ -45,7 +80,7 @@ class ProxyProvider : ContentProvider() {
          * 安全路径
          */
         @GuardedBy("sCache")
-        private val SECURITY_PATHS: MutableSet<String> = HashSet()
+        private val SECURITY_PATHS = LinkedHashMap<String, SharePathInfo>()
 
         @GuardedBy("sCache")
         private val sCache: HashMap<String, PathStrategy> = HashMap()
@@ -53,11 +88,16 @@ class ProxyProvider : ContentProvider() {
         /**
          * 添加安全路径
          */
-        fun addSecurityPaths(filePath: String) {
+        fun addSecurityPaths(name: String, filePath: String) {
             if (TextUtils.isEmpty(filePath)) {
                 return
             }
-            SECURITY_PATHS.add(filePath)
+            if (TextUtils.isEmpty(name)) {
+                return
+            }
+            synchronized(sCache) {
+                addSharePathInfoToMap(SharePathInfo.create(name, filePath))
+            }
         }
 
         /**
@@ -67,9 +107,11 @@ class ProxyProvider : ContentProvider() {
             if (TextUtils.isEmpty(filePath)) {
                 return
             }
-            HashSet(SECURITY_PATHS).forEach {
-                if (it.startsWith(filePath)) {
-                    SECURITY_PATHS.remove(it)
+            synchronized(sCache) {
+                LinkedHashMap(SECURITY_PATHS).values.forEach {
+                    if (it.path == filePath) {
+                        SECURITY_PATHS.remove(it.name)
+                    }
                 }
             }
         }
@@ -81,23 +123,46 @@ class ProxyProvider : ContentProvider() {
             if (file == null) {
                 return null
             }
-            val strategy = getPathStrategy("${CsAppUtils.getPackageName()}$AUTHORITY_SUFFIX")
+            val strategy = getPathStrategy(
+                CsContextManager.getApplication(),
+                "${CsAppUtils.getPackageName()}$AUTHORITY_SUFFIX"
+            )
             return strategy.getUriForFile(file)
         }
 
-        private fun getPathStrategy(authority: String): PathStrategy {
-            var strategy = sCache[authority]
-            if (strategy == null) {
-                strategy = SimplePathStrategy(authority)
-                sCache[authority] = strategy
+        private fun getPathStrategy(context: Context, authority: String): PathStrategy {
+            var strategy: PathStrategy?
+            synchronized(sCache) {
+                strategy = sCache[authority]
+                if (strategy == null) {
+                    strategy = SimplePathStrategy(authority)
+                    sCache[authority] = strategy!!
+
+                    XmlParserUtils.parser(context, TAG).forEach {
+                        addSharePathInfoToMap(it)
+                    }
+                }
             }
-            return strategy
+            return strategy!!
+        }
+
+        private fun addSharePathInfoToMap(sharePathInfo: SharePathInfo) {
+            if (SECURITY_PATHS.containsKey(sharePathInfo.name)) {
+                val info = SECURITY_PATHS[sharePathInfo.name]
+                if (info?.isSame(sharePathInfo) == true) {
+                    return
+                }
+                throw SecurityException("Provider does not allow the configuration of security path policies with the same name. $sharePathInfo, $info")
+            }
+            CsLogger.tag(TAG).i("Add a secure sharing path. $sharePathInfo")
+            SECURITY_PATHS[sharePathInfo.name] = sharePathInfo
         }
     }
 
     private var mStrategy: PathStrategy? = null
 
     override fun onCreate(): Boolean {
+//        LogInit.setIsDebug(true)
         return true
     }
 
@@ -108,7 +173,7 @@ class ProxyProvider : ContentProvider() {
             throw SecurityException("Provider must grant uri permissions")
         }
 
-        mStrategy = SimplePathStrategy(info.authority)
+        mStrategy = getPathStrategy(context, info.authority)
     }
 
     override fun query(
@@ -248,22 +313,24 @@ class ProxyProvider : ContentProvider() {
                 return null
             }
 
-            var isPermission = false
-            for (securityPath in HashSet(SECURITY_PATHS)) {
-                if (path.startsWith(securityPath)) {
-                    isPermission = true
+            var sharePathInfo: SharePathInfo? = null
+            for (value in LinkedHashMap(SECURITY_PATHS).values) {
+                if (value.isMatchedWithEncode(path)) {
+                    sharePathInfo = value
                     break
                 }
             }
 
-            if (!isPermission) {
+            if (sharePathInfo == null) {
                 CsLogger.tag(TAG)
                     .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriManager.addProviderResourcePath\" method.")
                 return null
             }
 
             try {
-                path = File(file.parentFile, Uri.encode(file.name)).canonicalPath
+                path = sharePathInfo.encode(path)
+                val tempFile = File(path)
+                path = File(tempFile.parentFile, Uri.encode(tempFile.name)).canonicalPath
                 return Uri.Builder().scheme("content")
                     .authority(mAuthority)
                     .encodedPath(path)
@@ -276,30 +343,32 @@ class ProxyProvider : ContentProvider() {
 
         override fun getFileForUri(uri: Uri): File? {
             var path = uri.encodedPath
-            CsLogger.tag(TAG).i("path = $path")
+            CsLogger.tag(TAG).i("FileForUri. path = $path")
 
-            if (TextUtils.isEmpty(path)) {
+            if (path.isNullOrEmpty()) {
                 return null
             }
 
-            var isPermission = false
-            for (securityPath in HashSet(SECURITY_PATHS)) {
-                if (path!!.startsWith(securityPath)) {
-                    isPermission = true
+            val tempFile = File(path)
+            path = File(tempFile.parentFile, Uri.decode(tempFile.name)).canonicalPath
+
+            var sharePathInfo: SharePathInfo? = null
+            for (value in LinkedHashMap(SECURITY_PATHS).values) {
+                if (value.isMatchedWithDecode(path ?: "")) {
+                    sharePathInfo = value
                     break
                 }
             }
 
-            if (!isPermission) {
+            if (sharePathInfo == null) {
                 CsLogger.tag(TAG)
                     .e("The current path is an illegal path and is not allowed to share files，You can try to set it to a safe path by \"CsUriManager.addProviderResourcePath\" method.")
                 return null
             }
 
             try {
-                val tempFile = File(path)
-                path = File(tempFile.parentFile, Uri.decode(tempFile.name)).canonicalPath
-                return path?.let { File(it) }
+                path = sharePathInfo.decode(path ?: "")
+                return File(path)
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).e(throwable)
             }

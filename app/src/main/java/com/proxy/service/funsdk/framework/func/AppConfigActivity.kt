@@ -1,16 +1,14 @@
 package com.proxy.service.funsdk.framework.func
 
 import android.app.Application
-import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import com.proxy.service.core.framework.app.config.CsConfigUtils
 import com.proxy.service.funsdk.R
+import com.proxy.service.funsdk.base.BaseActivity
+import com.proxy.service.funsdk.databinding.ActivityFrameworkAppconfigBinding
 import java.util.Locale
 
 
@@ -19,7 +17,7 @@ import java.util.Locale
  * @data: 2024/12/25 16:18
  * @desc:
  */
-class AppConfigActivity : AppCompatActivity() {
+class AppConfigActivity : BaseActivity<ActivityFrameworkAppconfigBinding>() {
 
     companion object {
         fun launch(context: Context) {
@@ -31,16 +29,11 @@ class AppConfigActivity : AppCompatActivity() {
         }
     }
 
-    private var uiModeManager:UiModeManager? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_framework_appconfig)
-        uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
+    override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkAppconfigBinding {
+        return ActivityFrameworkAppconfigBinding.inflate(inflater)
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    fun onClick(view: View) {
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.app_follow_system_mode -> {
                 CsConfigUtils.getLocaleManager().setFollowSystemLocale(this)
