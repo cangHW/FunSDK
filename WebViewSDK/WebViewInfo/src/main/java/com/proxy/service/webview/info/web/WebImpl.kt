@@ -11,10 +11,14 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.base.web.callback.ValueCallback
+import com.proxy.service.webview.base.web.history.IWebBackForwardList
+import com.proxy.service.webview.base.web.setting.ISetting
 import com.proxy.service.webview.info.view.WebViewImpl
 import com.proxy.service.webview.info.view.group.IFactory
 import com.proxy.service.webview.info.web.callback.ValueCallbackImpl
+import com.proxy.service.webview.info.web.history.WebBackForwardListImpl
 import com.proxy.service.webview.info.web.lifecycle.LifecycleObserverImpl
+import com.proxy.service.webview.info.web.setting.SettingImpl
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -34,6 +38,10 @@ class WebImpl(
 
     init {
         lifecycleOwner?.lifecycle?.addObserver(lifecycleObserver)
+    }
+
+    override fun getSetting(): ISetting {
+        return SettingImpl(webView.settings)
     }
 
     override fun removeFromParent() {
@@ -118,6 +126,18 @@ class WebImpl(
 
     override fun loadUrl(url: String, additionalHttpHeaders: Map<String, String>) {
         webView.loadUrl(url, additionalHttpHeaders)
+    }
+
+    override fun pageUp(top: Boolean): Boolean {
+        return webView.pageUp(top)
+    }
+
+    override fun pageDown(bottom: Boolean): Boolean {
+        return webView.pageDown(bottom)
+    }
+
+    override fun getBackForwardList(): IWebBackForwardList {
+        return WebBackForwardListImpl(webView.copyBackForwardList())
     }
 
     override fun stopLoading() {

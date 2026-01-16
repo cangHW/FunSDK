@@ -27,9 +27,16 @@ interface WebLoadCallback {
     fun onPageCommitVisible(url: String) {}
 
     /**
-     * 页面加载结束
+     * 页面加载结束, 当页面的主要资源（HTML 文档）加载完成时触发。
+     * 但此时页面的视觉状态可能尚未完全渲染完成（例如 CSS 或 JavaScript 的渲染可能还在进行中）,
+     * 如果需要监听页面渲染完成事件可以使用 [onPageFirstFrameRendered]
      * */
     fun onPageFinished(url: String) {}
+
+    /**
+     * 页面首帧渲染完成
+     * */
+    fun onPageFirstFrameRendered(url: String) {}
 
     /**
      * 接收到页面标题

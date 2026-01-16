@@ -1,17 +1,14 @@
 package com.proxy.service.webview.info.web.factory
 
 import android.webkit.CookieManager
-import android.webkit.DownloadListener
 import android.webkit.URLUtil
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.constants.WebViewConstants
-import com.proxy.service.webview.base.listener.WebDownloadListener
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
-import com.proxy.service.webview.base.web.IWebLoader
 import com.proxy.service.webview.info.view.WebViewImpl
 
 /**
@@ -32,16 +29,10 @@ class WebFactory {
 
     private var webLoadCallback: WebLoadCallback? = null
     private var webInterceptCallback: WebInterceptCallback? = null
-    private var webDownloadListener: WebDownloadListener? = null
     private var webLifecycleCallback: WebLifecycleCallback? = null
 
     fun setWebLoadCallback(webLoadCallback: WebLoadCallback?): WebFactory {
         this.webLoadCallback = webLoadCallback
-        return this
-    }
-
-    fun setWebDownloadCallback(webDownloadListener: WebDownloadListener?): WebFactory {
-        this.webDownloadListener = webDownloadListener
         return this
     }
 
@@ -101,7 +92,7 @@ class WebFactory {
         webView.isHorizontalScrollBarEnabled = config.isHorizontalScrollBarEnabled()
         webView.isHorizontalFadingEdgeEnabled = config.isHorizontalFadingEdgeEnabled()
 
-        webDownloadListener?.let {
+        config.getWebDownloadListener()?.let {
             webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
                 var fileName: String? = null
                 try {

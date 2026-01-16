@@ -1,15 +1,14 @@
 package com.proxy.service.core.framework.system.screen
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Build
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.WindowManager
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.app.resource.CsResUtils
 import com.proxy.service.core.framework.system.screen.callback.ScreenOrientationCallback
 import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
 import com.proxy.service.core.framework.system.screen.enums.RotationEnum
@@ -51,15 +50,8 @@ object CsScreenUtils {
      *
      * @return 状态栏高度
      */
-    @SuppressLint("DiscouragedApi", "InternalInsetResource")
     fun getStatusBarHeight(): Int {
-        var statusBarHeight = 0
-        val res = CsContextManager.getApplication().resources
-        val resourceId = res.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            statusBarHeight = res.getDimensionPixelSize(resourceId)
-        }
-        return statusBarHeight
+        return CsResUtils.getDimenPxByName("status_bar_height", "android")
     }
 
     /**
@@ -67,13 +59,8 @@ object CsScreenUtils {
      *
      * @return 导航栏高度
      */
-    @SuppressLint("DiscouragedApi", "InternalInsetResource")
     fun getNavigationBarHeight(): Int {
-        val resources = CsContextManager.getApplication().resources
-        val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        return if (resourceId > 0) {
-            resources.getDimensionPixelSize(resourceId)
-        } else 0
+        return CsResUtils.getDimenPxByName("navigation_bar_height", "android")
     }
 
     /**
@@ -108,7 +95,8 @@ object CsScreenUtils {
         info.navigationBarHeight = getNavigationBarHeight()
         info.actionBarHeight = getActionBarHeight()
 
-        val service = CsContextManager.getApplication().getSystemService(Context.WINDOW_SERVICE)
+        val service = CsContextManager.getApplication()
+            .getSystemService(Context.WINDOW_SERVICE)
             ?: return info
         val windowManager = service as WindowManager
 
@@ -117,17 +105,10 @@ object CsScreenUtils {
             info.screenHeight = windowManager.maximumWindowMetrics.bounds.height()
         } else {
             val display = windowManager.defaultDisplay
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                val size = Point()
-                display.getRealSize(size)
-                info.screenWidth = size.x
-                info.screenHeight = size.y
-            } else {
-                val metrics = DisplayMetrics()
-                display.getMetrics(metrics)
-                info.screenWidth = metrics.widthPixels
-                info.screenHeight = metrics.heightPixels
-            }
+            val size = Point()
+            display.getRealSize(size)
+            info.screenWidth = size.x
+            info.screenHeight = size.y
         }
 
         return info

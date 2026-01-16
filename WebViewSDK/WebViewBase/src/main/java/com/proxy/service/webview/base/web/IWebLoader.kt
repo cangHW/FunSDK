@@ -2,7 +2,6 @@ package com.proxy.service.webview.base.web
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.webview.base.listener.WebDownloadListener
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
@@ -43,11 +42,6 @@ interface IWebLoader {
      * 设置加载拦截器，用于拦截请求、键盘事件等
      * */
     fun setWebInterceptCallback(callback: WebInterceptCallback): IWebLoader
-
-    /**
-     * 设置下载回调，用于处理下载事件
-     * */
-    fun setWebDownloadCallback(callback: WebDownloadListener): IWebLoader
 
     /**
      * 设置 web 容器的生命周期回调，用于监听进入屏幕、离开屏幕等

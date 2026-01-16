@@ -6,7 +6,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.constants.WebViewConstants
-import com.proxy.service.webview.base.listener.WebDownloadListener
 import com.proxy.service.webview.base.listener.WebInterceptCallback
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
@@ -30,10 +29,11 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
 
     private var url: String = ""
     private var lifecycleOwner: LifecycleOwner? = null
+
     private var webLoadCallback: WebLoadCallback? = null
     private var webInterceptCallback: WebInterceptCallback? = null
-    private var webDownloadListener:  WebDownloadListener? = null
     private var webLifecycleCallback: WebLifecycleCallback? = null
+
     private val cache = HashSet<String>()
     private val javascriptInterfaceMap = HashMap<String, HashMap<Class<*>, Any>?>()
 
@@ -56,10 +56,12 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
         cache.add(cacheKey)
         WebUtils.addJavascriptInterfaceToMap(nameSpace, any, javascriptInterfaceMap,
             error = {
-                CsLogger.tag(tag).e(it, "加载 JavascriptInterface 失败. nameSpace = $nameSpace, any = $any")
+                CsLogger.tag(tag)
+                    .e(it, "加载 JavascriptInterface 失败. nameSpace = $nameSpace, any = $any")
             },
             success = {
-                CsLogger.tag(tag).d("加载 JavascriptInterface 成功. nameSpace = $nameSpace, any = $any")
+                CsLogger.tag(tag)
+                    .d("加载 JavascriptInterface 成功. nameSpace = $nameSpace, any = $any")
             }
         )
         return this
@@ -77,11 +79,6 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
 
     override fun setWebInterceptCallback(callback: WebInterceptCallback): IWebLoader {
         this.webInterceptCallback = callback
-        return this
-    }
-
-    override fun setWebDownloadCallback(callback: WebDownloadListener): IWebLoader {
-        this.webDownloadListener = callback
         return this
     }
 
@@ -107,7 +104,6 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
             .setWebLoadCallback(webLoadCallback)
             .setWebInterceptCallback(webInterceptCallback)
             .setWebLifecycleCallback(webLifecycleCallback)
-            .setWebDownloadCallback(webDownloadListener)
             .createWeb(config)
 
         WebUtils.merge(JavaScriptManager.getNameMethods(), javascriptInterfaceMap).forEach {

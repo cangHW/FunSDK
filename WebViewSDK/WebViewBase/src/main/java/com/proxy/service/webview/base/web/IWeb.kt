@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntDef
 import com.proxy.service.webview.base.web.callback.ValueCallback
+import com.proxy.service.webview.base.web.history.IWebBackForwardList
+import com.proxy.service.webview.base.web.setting.ISetting
 
 /**
  * @author: cangHX
@@ -33,6 +35,11 @@ interface IWeb {
     )
     @Retention(AnnotationRetention.SOURCE)
     annotation class Visibility
+
+    /**
+     * 获取 web 的 setting 管理器
+     * */
+    fun getSetting(): ISetting
 
     /**
      * 从父布局中移除，可以用于 Web 容器复用。[changeParentView]
@@ -73,6 +80,25 @@ interface IWeb {
      * 加载页面并添加请求头
      * */
     fun loadUrl(url: String, additionalHttpHeaders: Map<String, String>)
+
+    /**
+     * 页面向上滚动
+     *
+     * @param top   是否滚动到页面顶部, 如果为 false 则向上滚动一半的视图大小
+     * */
+    fun pageUp(top: Boolean): Boolean
+
+    /**
+     * 页面向下滚动
+     *
+     * @param bottom   是否滚动到页面底部, 如果为 false 则向下滚动一半的视图大小
+     * */
+    fun pageDown(bottom: Boolean): Boolean
+
+    /**
+     * 获取历史记录
+     * */
+    fun getBackForwardList(): IWebBackForwardList
 
     /**
      * 停止加载

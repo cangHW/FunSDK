@@ -24,4 +24,24 @@ enum class MixedContentMode(val mode: Int) {
      * */
     MIXED_CONTENT_COMPATIBILITY_MODE(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
 
+
+    companion object {
+        fun value(mode: Int): MixedContentMode {
+            var mixedContentMode = MIXED_CONTENT_NEVER_ALLOW
+            when (mode) {
+                WebSettings.MIXED_CONTENT_NEVER_ALLOW -> {
+                    mixedContentMode = MIXED_CONTENT_NEVER_ALLOW
+                }
+
+                WebSettings.MIXED_CONTENT_ALWAYS_ALLOW -> {
+                    mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
+                }
+
+                WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE -> {
+                    mixedContentMode = MIXED_CONTENT_COMPATIBILITY_MODE
+                }
+            }
+            return mixedContentMode
+        }
+    }
 }

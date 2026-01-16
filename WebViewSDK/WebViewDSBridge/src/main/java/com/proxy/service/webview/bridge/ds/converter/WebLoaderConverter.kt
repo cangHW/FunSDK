@@ -56,11 +56,6 @@ class WebLoaderConverter(private val loader: IWebLoader) : IWebLoader {
         return this
     }
 
-    override fun setWebDownloadCallback(callback: WebDownloadListener): IWebLoader {
-        loader.setWebDownloadCallback(callback)
-        return this
-    }
-
     override fun setWebLifecycleCallback(callback: WebLifecycleCallback): IWebLoader {
         loader.setWebLifecycleCallback(callback)
         return this

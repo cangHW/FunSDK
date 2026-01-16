@@ -3,6 +3,7 @@ package com.proxy.service.webview.base.config
 import androidx.webkit.WebViewAssetLoader
 import com.proxy.service.webview.base.enums.CacheMode
 import com.proxy.service.webview.base.enums.MixedContentMode
+import com.proxy.service.webview.base.listener.WebDownloadListener
 
 /**
  * @author: cangHX
@@ -107,6 +108,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.isHorizontalFadingEdgeEnabled()
     }
 
+    override fun getWebDownloadListener(): WebDownloadListener? {
+        return builder.getWebDownloadListener()
+    }
+
     companion object {
         fun builder(): IBuilder {
             return Builder()
@@ -139,6 +144,8 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var verticalScrollBarEnabled: Boolean = true
         private var horizontalScrollBarEnabled: Boolean = true
         private var horizontalFadingEdgeEnabled: Boolean = false
+
+        private var webDownloadListener:  WebDownloadListener? = null
 
         override fun setSupportMultipleWindows(support: Boolean): IBuilder {
             this.isSupportMultipleWindows = support
@@ -256,6 +263,11 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return this
         }
 
+        override fun setWebDownloadCallback(callback: WebDownloadListener?): IBuilder {
+            this.webDownloadListener = callback
+            return this
+        }
+
         override fun build(): WebConfig {
             return WebConfig(this)
         }
@@ -354,6 +366,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun isHorizontalFadingEdgeEnabled(): Boolean {
             return horizontalFadingEdgeEnabled
+        }
+
+        override fun getWebDownloadListener(): WebDownloadListener? {
+            return webDownloadListener
         }
     }
 

@@ -36,7 +36,14 @@ class CommonWebViewClientImpl(
     private val interceptCallback: WebInterceptCallback?
 ) : WebViewClient() {
 
+    companion object {
+        private const val DEFAULT_FRAME_TIME = -1L
+    }
+
     private val tag = "${WebViewConstants.LOG_TAG_START}Client"
+
+    private var loadTimeFrame: Long = DEFAULT_FRAME_TIME
+    private var renderTimeFrame: Long = DEFAULT_FRAME_TIME
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         CsLogger.tag(tag).d("shouldOverrideUrlLoading(view: WebView, url: String) url = $url")
@@ -132,6 +139,8 @@ class CommonWebViewClientImpl(
                 return ""
             }
         })?.start()
+
+        loadTimeFrame = System.currentTimeMillis()
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
@@ -143,6 +152,27 @@ class CommonWebViewClientImpl(
                 return ""
             }
         })?.start()
+
+        if (renderTimeFrame == loadTimeFrame) {
+            return
+        }
+        renderTimeFrame = loadTimeFrame
+
+        view?.postVisualStateCallback(renderTimeFrame, object : WebView.VisualStateCallback() {
+            override fun onComplete(requestId: Long) {
+                if (requestId != loadTimeFrame) {
+                    return
+                }
+
+                CsLogger.tag(tag).d("onPageFirstFrameRendered url = $url")
+                CsTask.mainThread()?.call(object : ICallable<String> {
+                    override fun accept(): String {
+                        loadCallback?.onPageFirstFrameRendered(url ?: "")
+                        return ""
+                    }
+                })?.start()
+            }
+        })
     }
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {

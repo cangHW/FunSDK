@@ -42,7 +42,8 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
     }
 
 //    private val url = "file:///android_asset/web/test_bridge.html"
-    private val url = "file:///android_asset/web/test_edittext.html"
+//    private val url = "file:///android_asset/web/test_edittext.html"
+    private val url = "https://www.baidu.com"
 
     private var webView: IWeb? = null
 

@@ -29,4 +29,28 @@ enum class CacheMode(val mode: Int) {
      * */
     LOAD_CACHE_ONLY(WebSettings.LOAD_CACHE_ONLY);
 
+
+    companion object {
+        fun value(mode: Int): CacheMode {
+            var cacheMode = LOAD_DEFAULT
+            when (mode) {
+                WebSettings.LOAD_DEFAULT -> {
+                    cacheMode = LOAD_DEFAULT
+                }
+
+                WebSettings.LOAD_CACHE_ELSE_NETWORK -> {
+                    cacheMode = LOAD_CACHE_ELSE_NETWORK
+                }
+
+                WebSettings.LOAD_NO_CACHE -> {
+                    cacheMode = LOAD_NO_CACHE
+                }
+
+                WebSettings.LOAD_CACHE_ONLY -> {
+                    cacheMode = LOAD_CACHE_ONLY
+                }
+            }
+            return cacheMode
+        }
+    }
 }
