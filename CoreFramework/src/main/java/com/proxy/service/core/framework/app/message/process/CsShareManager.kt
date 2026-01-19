@@ -1,6 +1,6 @@
 package com.proxy.service.core.framework.app.message.process
 
-import com.proxy.service.core.framework.app.message.broadcast.BroadcastReceiverImpl
+import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
 import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
@@ -40,7 +40,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
                 ShareDataConstants.SHARE_DATA_PROVIDER_METHOD_NAME,
                 ProviderFactory.getInstance()
             )
-            BroadcastReceiverImpl.addWeakReceiverListener(
+            CallbackController.addWeakReceiverListener(
                 ShareDataConstants.SHARE_DATA_BROADCAST_ACTION_NAME,
                 BroadcastFactory.getInstance()
             )

@@ -8,14 +8,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.core.framework.app.CsAppUtils
-import com.proxy.service.core.framework.app.message.broadcast.BroadcastMessageListener
 import com.proxy.service.core.framework.app.message.broadcast.CsBroadcastManager
+import com.proxy.service.core.framework.app.message.broadcast.callback.BroadcastMsgListener
 import com.proxy.service.core.framework.app.message.event.CsEventManager
 import com.proxy.service.core.framework.app.message.event.callback.MainThreadEventCallback
 import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEventCallback
 import com.proxy.service.core.framework.app.message.process.CsShareManager
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.callback.RequestCallback
+import com.proxy.service.core.framework.app.message.process.channel.ReceiveChannel
 import com.proxy.service.core.framework.app.message.process.woker.AbstractAsyncWorker
 import com.proxy.service.core.framework.app.message.process.woker.AbstractSyncWorker
 import com.proxy.service.core.framework.app.message.provider.CsProviderManager
@@ -64,11 +65,9 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
             if (isChecked) {
                 CsEventManager.addWeakCallback(mainThreadEventCallback, this)
                 CsEventManager.addWeakCallback(workThreadEventCallback, this)
-                CsEventManager.addWeakCallback(workThreadEventCallback2, this)
             } else {
                 CsEventManager.removeCallback(mainThreadEventCallback)
                 CsEventManager.removeCallback(workThreadEventCallback)
-                CsEventManager.removeCallback(workThreadEventCallback2)
             }
         }
 
@@ -96,7 +95,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
         binding?.checkProcess?.isChecked = true
     }
 
-    var index = 0
+    private var index = 0
 
     override fun onClick(view: View) {
         when (view.id) {
@@ -105,7 +104,10 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 bundle.putString("ss", "sss")
 
                 binding?.content?.addData("broadcast", "发送广播 bundle = $bundle")
-                CsBroadcastManager.sendMessage(CsAppUtils.getPackageName(), null, bundle)
+                CsBroadcastManager.createDynamicBroadcast(BROADCAST_ACTION)
+                    .setExtras(bundle)
+//                    .setToPackage(CsAppUtils.getPackageName())
+                    .send()
             }
 
             R.id.send_main_event_msg -> {
@@ -143,7 +145,9 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 val pkg = "com.proxy.service.funsdk2"
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_SYNC_METHOD")
-                val syncResult = CsShareManager.create(pkg, WORKER_SYNC_METHOD).execute()
+                val syncResult = CsShareManager.create(pkg, WORKER_SYNC_METHOD)
+//                    .setReceiveChannel(ReceiveChannel.BROADCAST)
+                    .execute()
                 binding?.content?.addData("worker", "返回值 $syncResult")
             }
 
@@ -192,8 +196,14 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     }
 
 
-    private val broadcastMessageListener = object : BroadcastMessageListener {
-        override fun onReceive(context: Context, fromPkg: String, data: Uri?, extras: Bundle?) {
+    private val broadcastMessageListener = object : BroadcastMsgListener {
+        override fun onReceive(
+            context: Context,
+            fromPkg: String,
+            processName: String,
+            data: Uri?,
+            extras: Bundle?
+        ) {
             binding?.content?.addData("broadcast", "接收广播 fromPkg = $fromPkg, data = $data, extras = $extras")
         }
     }
@@ -227,16 +237,6 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     }
 
     private val workThreadEventCallback = object : WorkThreadEventCallback {
-        override fun getSupportTypes(): Set<Class<*>> {
-            return setOf(WorkBean::class.java)
-        }
-
-        override fun onWorkEvent(any: Any) {
-            binding?.content?.addData("event", "接收 WorkEvent, any = $any")
-        }
-    }
-
-    private val workThreadEventCallback2 = object : WorkThreadEventCallback {
         override fun getSupportTypes(): Set<Class<*>> {
             return setOf(WorkBean::class.java)
         }

@@ -4,24 +4,22 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import com.proxy.service.core.framework.app.install.CsInstallUtils
-import com.proxy.service.core.framework.app.message.broadcast.BroadcastMessageListener
-import com.proxy.service.core.framework.app.message.broadcast.BroadcastReceiverImpl
-import com.proxy.service.core.framework.app.message.broadcast.OrderedBroadcastMessageListener
-import com.proxy.service.core.framework.app.message.process.bean.MessageType
+import com.proxy.service.core.framework.app.message.broadcast.factory.StaticBroadcast
+import com.proxy.service.core.framework.app.message.broadcast.callback.OrderBroadcastCallback
+import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
-import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
-import com.proxy.service.core.framework.app.message.process.channel.ChannelManager
 import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
 import com.proxy.service.core.framework.app.message.process.request.RequestDispatch
 import com.proxy.service.core.framework.app.message.process.response.ResponseDispatch
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.util.concurrent.CountDownLatch
 
 /**
  * @author: cangHX
  * @data: 2025/9/30 10:55
  * @desc:
  */
-class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMessageListener {
+class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMsgListener {
 
     companion object {
         private val _instance by lazy { BroadcastFactory() }
@@ -45,22 +43,34 @@ class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMe
         CsLogger.tag(ShareDataConstants.TAG)
             .d("BroadcastFactory send msg. toPkg=$toPkg, message=$message")
 
+        val latch = CountDownLatch(1)
+
+        var responseBundle: Bundle? = null
         val requestBundle = createBundleByShareMessage(message)
-        val responseBundle = BroadcastReceiverImpl.sendOrder(
-            ShareDataConstants.SHARE_DATA_BROADCAST_ACTION_NAME,
-            toPkg,
-            null,
-            requestBundle
-        )
-        val result = getShareMessageFromBundle(responseBundle)
+        StaticBroadcast(ShareDataConstants.SHARE_DATA_BROADCAST_ACTION_NAME)
+            .setToPackage(toPkg)
+            .setExtras(requestBundle)
+            .sendOrder(object : OrderBroadcastCallback {
+                override fun onFinal(bundle: Bundle) {
+                    responseBundle = bundle
+                    latch.countDown()
+                }
+            })
+
+
+        latch.await()
+
+        val result = getShareMessageFromBundle(responseBundle ?: Bundle())
         CsLogger.tag(ShareDataConstants.TAG)
             .d("BroadcastFactory call msg. fromPkg=$toPkg, message=$result")
+
         return result
     }
 
     override fun onOrderReceive(
         context: Context,
         fromPkg: String,
+        processName: String,
         data: Uri?,
         extras: Bundle?
     ): Bundle? {
