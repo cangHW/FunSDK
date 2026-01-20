@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2025/9/17 18:53
  * @desc:
  */
-class CsShareManager private constructor(private val toPkg: String, private val method: String) {
+class CsProcessMsgManager private constructor(private val toPkg: String, private val method: String) {
 
     companion object {
         private const val DEFAULT_VERSION: String = "V1"
@@ -52,8 +52,8 @@ class CsShareManager private constructor(private val toPkg: String, private val 
          * @param toPkg     目标应用包名
          * @param method    目标方法
          * */
-        fun create(toPkg: String, method: String): CsShareManager {
-            return CsShareManager(toPkg, method)
+        fun create(toPkg: String, method: String): CsProcessMsgManager {
+            return CsProcessMsgManager(toPkg, method)
         }
 
         /**
@@ -87,7 +87,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     /**
      * 设置版本号, 用于调用同一功能的不同版本, 需要 sever 端支持, 默认: [DEFAULT_VERSION]
      * */
-    fun setVersion(version: String): CsShareManager {
+    fun setVersion(version: String): CsProcessMsgManager {
         this.version = version
         return this
     }
@@ -95,7 +95,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     /**
      * 设置超时时间, 默认: [DEFAULT_TIMEOUT]
      * */
-    fun setTimeout(timeout: Long, unit: TimeUnit): CsShareManager {
+    fun setTimeout(timeout: Long, unit: TimeUnit): CsProcessMsgManager {
         this.timeout = unit.toMillis(timeout)
         return this
     }
@@ -103,7 +103,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     /**
      * 设置请求参数
      * */
-    fun setParams(params: String): CsShareManager {
+    fun setParams(params: String): CsProcessMsgManager {
         this.params = params
         return this
     }
@@ -111,7 +111,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     /**
      * 设置发送渠道, 默认: [SendChannel.AUTO]
      * */
-    fun setSendChannel(channel: SendChannel): CsShareManager {
+    fun setSendChannel(channel: SendChannel): CsProcessMsgManager {
         this.sendChannel = channel
         return this
     }
@@ -119,7 +119,7 @@ class CsShareManager private constructor(private val toPkg: String, private val 
     /**
      * 设置接收渠道, 默认: [ReceiveChannel.AUTO]
      * */
-    fun setReceiveChannel(channel: ReceiveChannel): CsShareManager {
+    fun setReceiveChannel(channel: ReceiveChannel): CsProcessMsgManager {
         this.receiveChannel = channel
         return this
     }
