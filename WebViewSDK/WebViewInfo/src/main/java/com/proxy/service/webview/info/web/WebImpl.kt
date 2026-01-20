@@ -1,8 +1,12 @@
 package com.proxy.service.webview.info.web
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Picture
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -20,6 +24,7 @@ import com.proxy.service.webview.info.web.history.WebBackForwardListImpl
 import com.proxy.service.webview.info.web.lifecycle.LifecycleObserverImpl
 import com.proxy.service.webview.info.web.setting.SettingImpl
 import java.util.concurrent.atomic.AtomicBoolean
+
 
 /**
  * @author: cangHX
@@ -72,6 +77,26 @@ class WebImpl(
             }
         }
         IFactory.of(viewGroup, webView)
+    }
+
+    override fun getParentView(): View? {
+        return webView.parent as? View?
+    }
+
+    override fun getWebView(): View {
+        return webView
+    }
+
+    @Deprecated("It is recommended to use \"screenshot()\". It has higher performance")
+    override fun capturePicture(): Picture? {
+        return webView.capturePicture()
+    }
+
+    override fun screenshot(config: Bitmap.Config): Bitmap {
+        val bitmap = Bitmap.createBitmap(webView.width, webView.height, config)
+        val canvas = Canvas(bitmap)
+        webView.draw(canvas)
+        return bitmap
     }
 
     override fun setBackgroundColor(color: Int) {

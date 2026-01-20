@@ -1,6 +1,8 @@
 package com.proxy.service.webview.base.web
 
+import android.graphics.Bitmap
 import android.graphics.Paint
+import android.graphics.Picture
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +52,28 @@ interface IWeb {
      * 修改父布局
      * */
     fun changeParentView(viewGroup: ViewGroup?)
+
+    /**
+     * 获取父 view, 如果存在
+     * */
+    fun getParentView(): View?
+
+    /**
+     * 获取 Webview
+     * */
+    fun getWebView(): View
+
+    /**
+     * 获取 web 内容的截图, 可以捕获整个页面，包括不可见部分。
+     * 页面加载完成前可能返回 null
+     * */
+    @kotlin.Deprecated(message = "It is recommended to use \"screenshot()\". It has higher performance")
+    fun capturePicture(): Picture?
+
+    /**
+     * 对 web 可见区域进行截图
+     * */
+    fun screenshot(config: Bitmap.Config = Bitmap.Config.ARGB_8888): Bitmap
 
     /**
      * 设置背景颜色
