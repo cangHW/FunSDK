@@ -13,7 +13,7 @@ import com.proxy.service.core.framework.app.message.broadcast.callback.Broadcast
 import com.proxy.service.core.framework.app.message.event.CsEventManager
 import com.proxy.service.core.framework.app.message.event.callback.MainThreadEventCallback
 import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEventCallback
-import com.proxy.service.core.framework.app.message.process.CsShareManager
+import com.proxy.service.core.framework.app.message.process.CsProcessMsgManager
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.callback.RequestCallback
 import com.proxy.service.core.framework.app.message.process.channel.ReceiveChannel
@@ -81,11 +81,11 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
 
         binding?.checkProcess?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CsShareManager.addWorker(syncWorker)
-                CsShareManager.addWorker(asyncWorker)
+                CsProcessMsgManager.addWorker(syncWorker)
+                CsProcessMsgManager.addWorker(asyncWorker)
             } else {
-                CsShareManager.removeWorker(syncWorker)
-                CsShareManager.removeWorker(asyncWorker)
+                CsProcessMsgManager.removeWorker(syncWorker)
+                CsProcessMsgManager.removeWorker(asyncWorker)
             }
         }
 
@@ -145,7 +145,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 val pkg = "com.proxy.service.funsdk2"
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_SYNC_METHOD")
-                val syncResult = CsShareManager.create(pkg, WORKER_SYNC_METHOD)
+                val syncResult = CsProcessMsgManager.create(pkg, WORKER_SYNC_METHOD)
 //                    .setReceiveChannel(ReceiveChannel.BROADCAST)
                     .execute()
                 binding?.content?.addData("worker", "返回值 $syncResult")
@@ -155,7 +155,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 val pkg = "com.proxy.service.funsdk2"
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_ASYNC_METHOD")
-                CsShareManager.create(pkg, WORKER_ASYNC_METHOD).enqueue(object : RequestCallback() {
+                CsProcessMsgManager.create(pkg, WORKER_ASYNC_METHOD).enqueue(object : RequestCallback() {
                     override fun onFailed(code: Int, throwable: Throwable) {
                         binding?.content?.addData(
                             "worker",
