@@ -70,9 +70,10 @@ class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMs
     override fun onOrderReceive(
         context: Context,
         fromPkg: String,
-        processName: String,
+        fromProcessName: String,
         data: Uri?,
-        extras: Bundle?
+        extras: Bundle?,
+        resultExtras: Bundle?
     ): Bundle? {
         val message: ShareMessage = getShareMessageFromBundle(extras) ?: return null
         CsLogger.tag(ShareDataConstants.TAG)

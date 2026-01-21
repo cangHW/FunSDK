@@ -48,6 +48,11 @@
                 android:text="发送广播消息" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/send_order_broadcast_msg"
+                style="@style/button_style"
+                android:text="发送有序广播消息" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/send_main_event_msg"
                 style="@style/button_style"
                 android:text="发送主线程 event 消息" />

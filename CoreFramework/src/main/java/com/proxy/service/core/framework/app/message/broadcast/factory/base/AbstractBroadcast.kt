@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.text.TextUtils
+import androidx.annotation.Keep
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -73,8 +74,13 @@ abstract class AbstractBroadcast<T>(
         }
 
         val finalReceiver = object : BroadcastReceiver() {
+            @Keep
             override fun onReceive(context: Context, intent: Intent) {
                 val bundle = getResultExtras(true)
+                if (bundle.classLoader == null) {
+                    bundle.classLoader = javaClass.classLoader
+                }
+                bundle.getString("miracle")
                 callback.onFinal(bundle)
             }
         }

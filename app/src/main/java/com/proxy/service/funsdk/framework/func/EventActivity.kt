@@ -10,6 +10,8 @@ import android.view.View
 import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.message.broadcast.CsBroadcastManager
 import com.proxy.service.core.framework.app.message.broadcast.callback.BroadcastMsgListener
+import com.proxy.service.core.framework.app.message.broadcast.callback.OrderBroadcastCallback
+import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.event.CsEventManager
 import com.proxy.service.core.framework.app.message.event.callback.MainThreadEventCallback
 import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEventCallback
@@ -17,6 +19,7 @@ import com.proxy.service.core.framework.app.message.process.CsProcessMsgManager
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.callback.RequestCallback
 import com.proxy.service.core.framework.app.message.process.channel.ReceiveChannel
+import com.proxy.service.core.framework.app.message.process.channel.SendChannel
 import com.proxy.service.core.framework.app.message.process.woker.AbstractAsyncWorker
 import com.proxy.service.core.framework.app.message.process.woker.AbstractSyncWorker
 import com.proxy.service.core.framework.app.message.provider.CsProviderManager
@@ -34,6 +37,7 @@ import java.lang.StringBuilder
 class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
 
     companion object {
+        private const val BROADCAST_ORDERED_ACTION = "ordered_broadcast_action"
         private const val BROADCAST_ACTION = "broadcast_action"
         private const val PROVIDER_METHOD = "test_message"
         private const val WORKER_SYNC_METHOD = "sync_method"
@@ -55,9 +59,23 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     override fun initView() {
         binding?.checkBroadcast?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CsBroadcastManager.addWeakReceiverListener(BROADCAST_ACTION, broadcastMessageListener)
+                CsBroadcastManager.addWeakReceiverListener(
+                    BROADCAST_ACTION,
+                    broadcastMessageListener
+                )
+                CsBroadcastManager.addWeakReceiverListener(
+                    BROADCAST_ORDERED_ACTION,
+                    orderedBroadcastMsgListener
+                )
             } else {
-                CsBroadcastManager.removeReceiverListener(BROADCAST_ACTION, broadcastMessageListener)
+                CsBroadcastManager.removeReceiverListener(
+                    BROADCAST_ACTION,
+                    broadcastMessageListener
+                )
+                CsBroadcastManager.removeReceiverListener(
+                    BROADCAST_ORDERED_ACTION,
+                    orderedBroadcastMsgListener
+                )
             }
         }
 
@@ -106,8 +124,23 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 binding?.content?.addData("broadcast", "发送广播 bundle = $bundle")
                 CsBroadcastManager.createDynamicBroadcast(BROADCAST_ACTION)
                     .setExtras(bundle)
-//                    .setToPackage(CsAppUtils.getPackageName())
+                    .setToPackage(CsAppUtils.getPackageName())
                     .send()
+            }
+
+            R.id.send_order_broadcast_msg -> {
+                val bundle = Bundle()
+                bundle.putString("ss", "sss")
+
+                binding?.content?.addData("broadcast", "发送有序广播 bundle = $bundle")
+                CsBroadcastManager.createDynamicBroadcast(BROADCAST_ORDERED_ACTION)
+                    .setExtras(bundle)
+                    .setToPackage(CsAppUtils.getPackageName())
+                    .sendOrder(object : OrderBroadcastCallback {
+                        override fun onFinal(bundle: Bundle) {
+                            binding?.content?.addData("broadcast", "有序广播返回 bundle = $bundle")
+                        }
+                    })
             }
 
             R.id.send_main_event_msg -> {
@@ -146,6 +179,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_SYNC_METHOD")
                 val syncResult = CsProcessMsgManager.create(pkg, WORKER_SYNC_METHOD)
+//                    .setSendChannel(SendChannel.BROADCAST)
 //                    .setReceiveChannel(ReceiveChannel.BROADCAST)
                     .execute()
                 binding?.content?.addData("worker", "返回值 $syncResult")
@@ -155,46 +189,65 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                 val pkg = "com.proxy.service.funsdk2"
 
                 binding?.content?.addData("worker", "发送消息 $WORKER_ASYNC_METHOD")
-                CsProcessMsgManager.create(pkg, WORKER_ASYNC_METHOD).enqueue(object : RequestCallback() {
-                    override fun onFailed(code: Int, throwable: Throwable) {
-                        binding?.content?.addData(
-                            "worker",
-                            "onFailed 返回值 code = $code $throwable"
-                        )
-                    }
+                CsProcessMsgManager.create(pkg, WORKER_ASYNC_METHOD)
+                    .enqueue(object : RequestCallback() {
+                        override fun onFailed(code: Int, throwable: Throwable) {
+                            binding?.content?.addData(
+                                "worker",
+                                "onFailed 返回值 code = $code $throwable"
+                            )
+                        }
 
-                    override fun onProgress(
-                        version: String,
-                        time: Long,
-                        method: String,
-                        content: String
-                    ) {
-                        val builder = StringBuilder()
-                        builder.append("version=").append(version).append(", ")
-                        builder.append("time=").append(time).append(", ")
-                        builder.append("method=").append(method).append(", ")
-                        builder.append("content=").append(content)
-                        binding?.content?.addData("worker", "onProgress 返回值 $builder")
-                    }
+                        override fun onProgress(
+                            version: String,
+                            time: Long,
+                            method: String,
+                            content: String
+                        ) {
+                            val builder = StringBuilder()
+                            builder.append("version=").append(version).append(", ")
+                            builder.append("time=").append(time).append(", ")
+                            builder.append("method=").append(method).append(", ")
+                            builder.append("content=").append(content)
+                            binding?.content?.addData("worker", "onProgress 返回值 $builder")
+                        }
 
-                    override fun onSuccess(
-                        version: String,
-                        time: Long,
-                        method: String,
-                        content: String
-                    ) {
-                        val builder = StringBuilder()
-                        builder.append("version=").append(version).append(", ")
-                        builder.append("time=").append(time).append(", ")
-                        builder.append("method=").append(method).append(", ")
-                        builder.append("content=").append(content)
-                        binding?.content?.addData("worker", "onSuccess 返回值 $builder")
-                    }
-                })
+                        override fun onSuccess(
+                            version: String,
+                            time: Long,
+                            method: String,
+                            content: String
+                        ) {
+                            val builder = StringBuilder()
+                            builder.append("version=").append(version).append(", ")
+                            builder.append("time=").append(time).append(", ")
+                            builder.append("method=").append(method).append(", ")
+                            builder.append("content=").append(content)
+                            binding?.content?.addData("worker", "onSuccess 返回值 $builder")
+                        }
+                    })
             }
         }
     }
 
+    private val orderedBroadcastMsgListener = object : OrderedBroadcastMsgListener {
+        override fun onOrderReceive(
+            context: Context,
+            fromPkg: String,
+            fromProcessName: String,
+            data: Uri?,
+            extras: Bundle?,
+            resultExtras: Bundle?
+        ): Bundle {
+            binding?.content?.addData(
+                "broadcast",
+                "接收有序广播 fromPkg = $fromPkg, data = $data, extras = $extras"
+            )
+            val bundle = Bundle()
+            bundle.putString("sss", "qqqq")
+            return bundle
+        }
+    }
 
     private val broadcastMessageListener = object : BroadcastMsgListener {
         override fun onReceive(
@@ -204,7 +257,10 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
             data: Uri?,
             extras: Bundle?
         ) {
-            binding?.content?.addData("broadcast", "接收广播 fromPkg = $fromPkg, data = $data, extras = $extras")
+            binding?.content?.addData(
+                "broadcast",
+                "接收广播 fromPkg = $fromPkg, data = $data, extras = $extras"
+            )
         }
     }
 

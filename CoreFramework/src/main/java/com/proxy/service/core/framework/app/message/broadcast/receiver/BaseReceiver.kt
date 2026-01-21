@@ -3,6 +3,7 @@ package com.proxy.service.core.framework.app.message.broadcast.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
 import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.constants.BroadcastConstants
@@ -50,15 +51,18 @@ abstract class BaseReceiver : BroadcastReceiver() {
         CsLogger.tag(getLogTag())
             .d("onReceive action=${intent.categories} extras=$extras, data=$data")
 
+        var result: Bundle? = getResultExtras(false)
+
         CallbackController.getReceiverList(action ?: "")?.forEachSync {
             try {
                 if (it is OrderedBroadcastMsgListener) {
-                    val result = it.onOrderReceive(
+                    result = it.onOrderReceive(
                         context,
                         fromPkg ?: "",
                         processName ?: "",
                         data,
-                        extras
+                        extras,
+                        result
                     )
                     setResultExtras(result)
                 } else {

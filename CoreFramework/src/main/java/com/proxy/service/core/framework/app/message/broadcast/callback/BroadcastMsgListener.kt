@@ -16,9 +16,17 @@ interface BroadcastMsgListener {
     /**
      * 接收到消息
      *
-     * @param fromPkg       消息来源包名
-     * @param processName   消息来源进程名
+     * @param fromPkg           广播发送方的包名
+     * @param fromProcessName   广播发送方的进程名
+     * @param data              广播发送方传递的数据
+     * @param extras            广播发送方传递的数据
      */
-    fun onReceive(context: Context, fromPkg: String, processName: String, data: Uri?, extras: Bundle?)
+    fun onReceive(
+        context: Context,
+        fromPkg: String,
+        fromProcessName: String,
+        data: Uri?,
+        extras: Bundle?
+    )
 
 }
