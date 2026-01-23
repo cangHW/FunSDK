@@ -137,7 +137,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
                     .setExtras(bundle)
                     .setToPackage(CsAppUtils.getPackageName())
                     .sendOrder(object : OrderBroadcastCallback {
-                        override fun onFinal(bundle: Bundle) {
+                        override fun onFinal(isReceiverAvailable: Boolean, bundle: Bundle) {
                             binding?.content?.addData("broadcast", "有序广播返回 bundle = $bundle")
                         }
                     })

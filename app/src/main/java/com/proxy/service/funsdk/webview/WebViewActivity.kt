@@ -20,6 +20,8 @@ import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.enums.MixedContentMode
 import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.base.web.IWeb
+import com.proxy.service.webview.monitor.CsWebMonitor
+import com.proxy.service.webview.monitor.config.MonitorConfig
 import com.proxy.service.widget.info.dialog.window.CsBaseDialog
 import com.proxy.service.widget.info.dialog.window.info.DialogConfig
 import com.proxy.service.widget.info.toast.CsToast
@@ -67,6 +69,19 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityWebViewBinding {
         return ActivityWebViewBinding.inflate(inflater)
+    }
+
+    override fun initView() {
+        super.initView()
+        CsWeb.setGlobalCookie("url", "sssss")
+
+
+        CsWebMonitor.setConfig(
+            MonitorConfig.builder()
+                .enableLogCookie(true)
+                .enableLogAjaxRequest(true)
+                .build()
+        )
     }
 
     @SuppressLint("SetJavaScriptEnabled")

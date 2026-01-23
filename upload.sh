@@ -17,9 +17,9 @@ upArray=(
 #  ":ApiHttpSDK:ApiHttpBase"
 
   # web 容器库
-  ":WebViewSDK:WebViewInfo"
-  ":WebViewSDK:WebViewBase"
-  ":WebViewSDK:WebViewDSBridge"
+#  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewBase"
+#  ":WebViewSDK:WebViewDSBridge"
   ":WebViewSDK:WebViewMonitor"
 
     # 权限库

@@ -21,7 +21,7 @@ object CookieMonitor : BaseMonitor() {
     }
 
     override fun getJs(nameSpace: String): String {
-        return "javascript:window.${nameSpace}.logCookies($TAG, document.cookie);"
+        return "javascript:window.${nameSpace}.logCookies(\"$TAG\", document.cookie);"
     }
 
 }

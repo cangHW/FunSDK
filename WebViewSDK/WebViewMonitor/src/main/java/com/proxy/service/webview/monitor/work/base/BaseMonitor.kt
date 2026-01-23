@@ -1,5 +1,6 @@
 package com.proxy.service.webview.monitor.work.base
 
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.CsWebMonitor
 import com.proxy.service.webview.monitor.config.MonitorConfig
@@ -20,7 +21,8 @@ abstract class BaseMonitor {
             return
         }
 
-        web?.evaluateJavascript(getJs(WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE), null)
+        val js = getJs(WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE)
+        web?.evaluateJavascript(js, null)
     }
 
     protected abstract fun shouldRun(config: MonitorConfig): Boolean

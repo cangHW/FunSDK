@@ -37,7 +37,7 @@ object AjaxRequestMonitor: BaseMonitor() {
                 "                responseHeaders: headers," +
                 "                responseBody: body" +
                 "            };" +
-                "            $nameSpace.logAjaxRequest($TAG, JSON.stringify(log));" +
+                "            $nameSpace.logAjaxRequest(\"$TAG\", JSON.stringify(log));" +
                 "        }" +
                 "    });" +
                 "    this._requestHeaders = {};" +
