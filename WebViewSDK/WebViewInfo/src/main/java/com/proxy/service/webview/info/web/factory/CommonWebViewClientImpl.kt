@@ -24,6 +24,7 @@ import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.info.web.error.SslErrorHandlerImpl
 import com.proxy.service.webview.info.web.error.SslErrorImpl
 import com.proxy.service.webview.info.web.intercept.WebResourceRequestImpl
+import com.proxy.service.webview.info.web.permissions.PermissionRequestImpl
 
 /**
  * @author: cangHX
@@ -133,12 +134,12 @@ class CommonWebViewClientImpl(
 //        super.onPageStarted(view, url, favicon)
         CsLogger.tag(tag)
             .d("onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) url = $url")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onPageStarted(url ?: "")
-                return ""
-            }
-        })?.start()
+
+        try {
+            loadCallback?.onPageStarted(url ?: "")
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
 
         loadTimeFrame = System.currentTimeMillis()
     }
@@ -146,12 +147,12 @@ class CommonWebViewClientImpl(
     override fun onPageFinished(view: WebView?, url: String?) {
 //        super.onPageFinished(view, url)
         CsLogger.tag(tag).d("onPageFinished(view: WebView?, url: String?) url = $url")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onPageFinished(url ?: "")
-                return ""
-            }
-        })?.start()
+
+        try {
+            loadCallback?.onPageFinished(url ?: "")
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
 
         if (renderTimeFrame == loadTimeFrame) {
             return
@@ -178,12 +179,12 @@ class CommonWebViewClientImpl(
     override fun onPageCommitVisible(view: WebView?, url: String?) {
 //        super.onPageCommitVisible(view, url)
         CsLogger.tag(tag).d("onPageCommitVisible(view: WebView?, url: String?) url = $url")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onPageCommitVisible(url ?: "")
-                return ""
-            }
-        })?.start()
+
+        try {
+            loadCallback?.onPageCommitVisible(url ?: "")
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onReceivedError(
@@ -205,16 +206,16 @@ class CommonWebViewClientImpl(
         super.onReceivedError(view, request, error)
         CsLogger.tag(tag)
             .d("onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) url = ${request.url}, error = ${error.errorCode}:${error.description}")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onPageError(
-                    url = request.url?.toString() ?: "",
-                    isMainFrameError = request.isForMainFrame,
-                    isHttpError = false
-                )
-                return ""
-            }
-        })?.start()
+
+        try {
+            loadCallback?.onPageError(
+                url = request.url?.toString() ?: "",
+                isMainFrameError = request.isForMainFrame,
+                isHttpError = false
+            )
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onReceivedHttpError(
@@ -225,29 +226,29 @@ class CommonWebViewClientImpl(
 //        super.onReceivedHttpError(view, request, error)
         CsLogger.tag(tag)
             .d("onReceivedHttpError(view: WebView, request: WebResourceRequest, error: WebResourceResponse) url = ${request.url}, error = ${error.statusCode}:${error.responseHeaders}")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onPageError(
-                    url = request.url?.toString() ?: "",
-                    isMainFrameError = request.isForMainFrame,
-                    isHttpError = true
-                )
-                return ""
-            }
-        })?.start()
+
+        try {
+            loadCallback?.onPageError(
+                url = request.url?.toString() ?: "",
+                isMainFrameError = request.isForMainFrame,
+                isHttpError = true
+            )
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
         CsLogger.tag(tag)
             .d("onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) url = ${error.url}")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                val sslError = SslErrorImpl(error)
-                val sslErrorHandler = SslErrorHandlerImpl(handler)
-                loadCallback?.onPageSslError(sslError, sslErrorHandler)
-                return ""
-            }
-        })?.start()
+
+        try {
+            val sslError = SslErrorImpl(error)
+            val sslErrorHandler = SslErrorHandlerImpl(handler)
+            loadCallback?.onPageSslError(sslError, sslErrorHandler)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onLoadResource(view: WebView?, url: String?) {

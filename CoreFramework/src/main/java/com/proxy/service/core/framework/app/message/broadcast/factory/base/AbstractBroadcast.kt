@@ -81,7 +81,10 @@ abstract class AbstractBroadcast<T>(
                     bundle.classLoader = javaClass.classLoader
                 }
                 bundle.getString("miracle")
-                callback.onFinal(bundle)
+                callback.onFinal(
+                    resultData == BroadcastConstants.ORDER_RESPONSE,
+                    bundle
+                )
             }
         }
 
@@ -91,7 +94,7 @@ abstract class AbstractBroadcast<T>(
             finalReceiver,
             handler,
             0,
-            null,
+            BroadcastConstants.ORDER_REQUEST,
             null
         )
     }

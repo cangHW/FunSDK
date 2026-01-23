@@ -51,7 +51,7 @@ class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMs
             .setToPackage(toPkg)
             .setExtras(requestBundle)
             .sendOrder(object : OrderBroadcastCallback {
-                override fun onFinal(bundle: Bundle) {
+                override fun onFinal(isReceiverAvailable: Boolean, bundle: Bundle) {
                     responseBundle = bundle
                     latch.countDown()
                 }

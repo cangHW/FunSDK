@@ -9,6 +9,12 @@ import android.os.Bundle
  */
 interface OrderBroadcastCallback {
 
-    fun onFinal(bundle: Bundle)
+    /**
+     * 有序广播结束回调
+     *
+     * @param isReceiverAvailable   是否存在接收方, 如果存在一个或多个则该值为 true
+     * @param bundle                返回值
+     * */
+    fun onFinal(isReceiverAvailable: Boolean, bundle: Bundle)
 
 }

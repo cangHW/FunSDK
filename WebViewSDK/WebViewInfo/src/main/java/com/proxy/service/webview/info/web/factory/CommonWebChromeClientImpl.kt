@@ -40,34 +40,31 @@ class CommonWebChromeClientImpl(
 //        super.onProgressChanged(view, newProgress)
         CsLogger.tag(tag)
             .d("onProgressChanged(view: WebView?, newProgress: Int) newProgress = $newProgress")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onProgressChanged(newProgress)
-                return ""
-            }
-        })?.start()
+        try {
+            loadCallback?.onProgressChanged(newProgress)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onReceivedTitle(view: WebView?, title: String?) {
 //        super.onReceivedTitle(view, title)
         CsLogger.tag(tag).d("onReceivedTitle(view: WebView?, title: String?) title = $title")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onReceivedTitle(title ?: "")
-                return ""
-            }
-        })?.start()
+        try {
+            loadCallback?.onReceivedTitle(title ?: "")
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
 //        super.onReceivedIcon(view, icon)
         CsLogger.tag(tag).d("onReceivedIcon(view: WebView?, icon: Bitmap?)")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadCallback?.onReceivedIcon(icon)
-                return ""
-            }
-        })?.start()
+        try {
+            loadCallback?.onReceivedIcon(icon)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onCreateWindow(
@@ -172,57 +169,55 @@ class CommonWebChromeClientImpl(
         CsLogger.tag(tag)
             .d("onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissionsCallback?) origin = $origin")
 //        super.onGeolocationPermissionsShowPrompt(origin, callback)
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                if (interceptCallback != null) {
-                    val permissionsCallback = GeolocationPermissionsCallbackImpl(callback)
-                    interceptCallback.onGeolocationPermissionsShowPrompt(
-                        origin ?: "",
-                        permissionsCallback
-                    )
-                }
-                return ""
+        try {
+            if (interceptCallback != null) {
+                val permissionsCallback = GeolocationPermissionsCallbackImpl(callback)
+                interceptCallback.onGeolocationPermissionsShowPrompt(
+                    origin ?: "",
+                    permissionsCallback
+                )
             }
-        })?.start()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onGeolocationPermissionsHidePrompt() {
 //        super.onGeolocationPermissionsHidePrompt()
         CsLogger.tag(tag).d("onGeolocationPermissionsHidePrompt()")
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                interceptCallback?.onGeolocationPermissionsHidePrompt()
-                return ""
-            }
-        })?.start()
+        try {
+            interceptCallback?.onGeolocationPermissionsHidePrompt()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onPermissionRequest(request: PermissionRequest?) {
         CsLogger.tag(tag).d("onPermissionRequest(request: PermissionRequest?)")
 //        super.onPermissionRequest(request)
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                if (interceptCallback != null) {
-                    val permissionsCallback = PermissionRequestImpl(request)
-                    interceptCallback.onPermissionRequest(permissionsCallback)
-                }
-                return ""
+
+        try {
+            if (interceptCallback != null) {
+                val permissionsCallback = PermissionRequestImpl(request)
+                interceptCallback.onPermissionRequest(permissionsCallback)
             }
-        })?.start()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onPermissionRequestCanceled(request: PermissionRequest?) {
         CsLogger.tag(tag).d("onPermissionRequestCanceled(request: PermissionRequest?)")
 //        super.onPermissionRequestCanceled(request)
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                if (interceptCallback != null) {
-                    val permissionsCallback = PermissionRequestImpl(request)
-                    interceptCallback.onPermissionRequestCanceled(permissionsCallback)
-                }
-                return ""
+
+        try {
+            if (interceptCallback != null) {
+                val permissionsCallback = PermissionRequestImpl(request)
+                interceptCallback.onPermissionRequestCanceled(permissionsCallback)
             }
-        })?.start()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).e(throwable)
+        }
     }
 
     override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {

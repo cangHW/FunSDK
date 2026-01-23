@@ -44,6 +44,7 @@ include(":ImageLoaderSDK:ImageLoaderInfo")
 include(":WebViewSDK:WebViewBase")
 include(":WebViewSDK:WebViewInfo")
 include(":WebViewSDK:WebViewDSBridge")
+include(":WebViewSDK:WebViewMonitor")
 
 include(":PermissionSDK:PermissionBase")
 include(":PermissionSDK:PermissionInfo")
@@ -59,4 +60,5 @@ include(":LogFileSDK:LogFileXlogInfo")
 
 include(":ApmSDK:ApmInfo")
 include(":WidgetSDK:WidgetInfo")
+
 

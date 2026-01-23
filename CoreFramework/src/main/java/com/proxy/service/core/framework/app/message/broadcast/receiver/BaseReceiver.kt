@@ -49,11 +49,12 @@ abstract class BaseReceiver : BroadcastReceiver() {
         val extras = intent.extras
 
         CsLogger.tag(getLogTag())
-            .d("onReceive action=${intent.categories} extras=$extras, data=$data")
+            .d("onReceive action=$action, fromPkg=$fromPkg, processName=$processName, extras=$extras, data=$data")
 
         var result: Bundle? = getResultExtras(false)
-
         CallbackController.getReceiverList(action ?: "")?.forEachSync {
+            CsLogger.tag(getLogTag()).d("receiver dispatch listener=$it")
+
             try {
                 if (it is OrderedBroadcastMsgListener) {
                     result = it.onOrderReceive(
@@ -64,6 +65,7 @@ abstract class BaseReceiver : BroadcastReceiver() {
                         extras,
                         result
                     )
+                    resultData = BroadcastConstants.ORDER_RESPONSE
                     setResultExtras(result)
                 } else {
                     it.onReceive(context, fromPkg ?: "", processName ?: "", data, extras)
