@@ -25,8 +25,18 @@ interface IMonitorBuilderGet {
     fun isLogAjaxRequestEnable(): Boolean
 
     /**
-     * Ajax 请求 回调
+     * Ajax 请求回调
      * */
     fun getLogAjaxRequestCallback(): ValueCallback<String>?
+
+    /**
+     * 是否打印加载耗时统计
+     * */
+    fun isLogLoadTimeEnable(): Boolean
+
+    /**
+     * 加载耗时统计回调
+     * */
+    fun getLogLoadTimeCallback(): ValueCallback<String>?
 
 }

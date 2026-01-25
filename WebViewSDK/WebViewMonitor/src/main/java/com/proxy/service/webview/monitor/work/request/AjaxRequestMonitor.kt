@@ -1,6 +1,6 @@
 package com.proxy.service.webview.monitor.work.request
 
-import com.proxy.service.webview.monitor.config.MonitorConfig
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
 
@@ -9,18 +9,18 @@ import com.proxy.service.webview.monitor.work.base.BaseMonitor
  * @data: 2026/1/23 14:07
  * @desc:
  */
-object AjaxRequestMonitor: BaseMonitor() {
+object AjaxRequestMonitor : BaseMonitor() {
 
     private const val TAG = "${WebMonitorConstants.TAG}AjaxRequest"
 
-    override fun shouldRun(config: MonitorConfig): Boolean {
+    override fun shouldRun(): Boolean {
         val enableLog = config.isLogAjaxRequestEnable()
         val callback = config.getLogAjaxRequestCallback()
 
         return enableLog || callback != null
     }
 
-    override fun getJs(nameSpace: String): String {
+    override fun getJs(): String {
         val js = "var originalOpen = XMLHttpRequest.prototype.open;" +
                 "XMLHttpRequest.prototype.open = function(method, url) {" +
                 "    this.addEventListener('readystatechange', function() {" +
@@ -37,7 +37,7 @@ object AjaxRequestMonitor: BaseMonitor() {
                 "                responseHeaders: headers," +
                 "                responseBody: body" +
                 "            };" +
-                "            $nameSpace.logAjaxRequest(\"$TAG\", JSON.stringify(log));" +
+                createLog(TAG, "JSON.stringify(log)") +
                 "        }" +
                 "    });" +
                 "    this._requestHeaders = {};" +
@@ -56,5 +56,17 @@ object AjaxRequestMonitor: BaseMonitor() {
                 "};"
 
         return js
+    }
+
+    override fun dispatchLog(tag: String, log: String) {
+        if (tag != TAG){
+            return
+        }
+
+        if (config.isLogAjaxRequestEnable()) {
+            CsLogger.tag(tag).d("Ajax Request: $log")
+        }
+
+        config.getLogAjaxRequestCallback()?.onReceiveValue(log)
     }
 }

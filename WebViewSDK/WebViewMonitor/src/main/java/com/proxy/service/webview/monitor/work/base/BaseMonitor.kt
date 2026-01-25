@@ -1,10 +1,12 @@
 package com.proxy.service.webview.monitor.work.base
 
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.CsWebMonitor
 import com.proxy.service.webview.monitor.config.MonitorConfig
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
+import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
+import com.proxy.service.webview.monitor.work.request.AjaxRequestMonitor
+import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
  * @author: cangHX
@@ -13,20 +15,59 @@ import com.proxy.service.webview.monitor.constant.WebMonitorConstants
  */
 abstract class BaseMonitor {
 
+    companion object {
+
+        private val allMonitors = ArrayList<BaseMonitor>().apply {
+            add(CookieMonitor)
+            add(AjaxRequestMonitor)
+            add(PerformanceMonitor)
+        }
+
+        fun runMonitor(web: IWeb?) {
+            allMonitors.forEach {
+                it.runMonitor(web)
+            }
+        }
+
+        fun dispatchLog(tag: String, log: String) {
+            allMonitors.forEach {
+                it.dispatchLog(tag, log)
+            }
+        }
+
+    }
+
+    protected val config: MonitorConfig = CsWebMonitor.getMonitorConfig()
+
     /**
      * 执行监控
      * */
-    fun doMonitor(web: IWeb?) {
-        if (!shouldRun(CsWebMonitor.getMonitorConfig())) {
+    fun runMonitor(web: IWeb?) {
+        if (!shouldRun()) {
             return
         }
 
-        val js = getJs(WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE)
-        web?.evaluateJavascript(js, null)
+        web?.evaluateJavascript(getJs(), null)
     }
 
-    protected abstract fun shouldRun(config: MonitorConfig): Boolean
+    /**
+     * 是否应该执行
+     * */
+    protected abstract fun shouldRun(): Boolean
 
-    protected abstract fun getJs(nameSpace: String): String
+    /**
+     * 获取执行脚本
+     * */
+    protected abstract fun getJs(): String
+
+    /**
+     * 处理日志
+     * */
+    abstract fun dispatchLog(tag: String, log: String)
+
+
+    protected fun createLog(tag: String, content: String): String {
+        return "window.${WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE}.logMonitorData(\"$tag\", $content);"
+    }
 
 }

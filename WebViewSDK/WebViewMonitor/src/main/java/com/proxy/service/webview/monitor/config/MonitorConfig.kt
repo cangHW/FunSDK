@@ -1,6 +1,7 @@
 package com.proxy.service.webview.monitor.config
 
 import com.proxy.service.webview.base.web.callback.ValueCallback
+import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 
 /**
  * @author: cangHX
@@ -27,6 +28,14 @@ class MonitorConfig private constructor(
         return builder.getLogAjaxRequestCallback()
     }
 
+    override fun isLogLoadTimeEnable(): Boolean {
+        return builder.isLogLoadTimeEnable()
+    }
+
+    override fun getLogLoadTimeCallback(): ValueCallback<String>? {
+        return builder.getLogLoadTimeCallback()
+    }
+
     companion object {
         fun builder(): IMonitorBuilder {
             return Builder()
@@ -35,11 +44,14 @@ class MonitorConfig private constructor(
 
     class Builder : IMonitorBuilder, IMonitorBuilderGet {
 
-        private var logCookieEnable = false
+        private var logCookieEnable = WebMonitorConstants.ENABLE_LOG_COOKIE
         private var logCookieCallback: ValueCallback<String>? = null
 
-        private var logAjaxRequestEnable = false
+        private var logAjaxRequestEnable = WebMonitorConstants.ENABLE_LOG_AJAX_REQUEST
         private var logAjaxRequestCallback: ValueCallback<String>? = null
+
+        private var logLoadTimeEnable = WebMonitorConstants.ENABLE_LOG_LOAD_TIME
+        private var logLoadTimeCallback: ValueCallback<String>? = null
 
         override fun enableLogCookie(
             enable: Boolean,
@@ -56,6 +68,15 @@ class MonitorConfig private constructor(
         ): IMonitorBuilder {
             this.logAjaxRequestEnable = enable
             this.logAjaxRequestCallback = callback
+            return this
+        }
+
+        override fun enableLogLoadTime(
+            enable: Boolean,
+            callback: ValueCallback<String>?
+        ): IMonitorBuilder {
+            this.logLoadTimeEnable = enable
+            this.logLoadTimeCallback = callback
             return this
         }
 
@@ -77,6 +98,14 @@ class MonitorConfig private constructor(
 
         override fun getLogAjaxRequestCallback(): ValueCallback<String>? {
             return logAjaxRequestCallback
+        }
+
+        override fun isLogLoadTimeEnable(): Boolean {
+            return logLoadTimeEnable
+        }
+
+        override fun getLogLoadTimeCallback(): ValueCallback<String>? {
+            return logLoadTimeCallback
         }
     }
 
