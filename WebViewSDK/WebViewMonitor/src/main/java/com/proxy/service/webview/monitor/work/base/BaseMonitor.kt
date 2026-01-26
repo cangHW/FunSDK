@@ -15,28 +15,6 @@ import com.proxy.service.webview.monitor.work.request.CookieMonitor
  */
 abstract class BaseMonitor {
 
-    companion object {
-
-        private val allMonitors = ArrayList<BaseMonitor>().apply {
-            add(CookieMonitor)
-            add(AjaxRequestMonitor)
-            add(PerformanceMonitor)
-        }
-
-        fun runMonitor(web: IWeb?) {
-            allMonitors.forEach {
-                it.runMonitor(web)
-            }
-        }
-
-        fun dispatchLog(tag: String, log: String) {
-            allMonitors.forEach {
-                it.dispatchLog(tag, log)
-            }
-        }
-
-    }
-
     protected val config: MonitorConfig = CsWebMonitor.getMonitorConfig()
 
     /**
@@ -63,11 +41,11 @@ abstract class BaseMonitor {
     /**
      * 处理日志
      * */
-    abstract fun dispatchLog(tag: String, log: String)
+    abstract fun dispatchLog(url: String, log: String)
 
 
-    protected fun createLog(tag: String, content: String): String {
-        return "window.${WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE}.logMonitorData(\"$tag\", $content);"
+    protected fun createLog(method: String, content: String): String {
+        return "window.${WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE}.${method}(window.location.href, $content);"
     }
 
 }

@@ -1,5 +1,7 @@
 package com.proxy.service.webview.monitor.constant
 
+import com.proxy.service.webview.base.constants.WebViewConstants
+
 /**
  * @author: cangHX
  * @data: 2026/1/23 13:59
@@ -7,7 +9,7 @@ package com.proxy.service.webview.monitor.constant
  */
 object WebMonitorConstants {
 
-    const val TAG = "WebMonitor_"
+    const val TAG = "${WebViewConstants.LOG_TAG_START}Monitor_"
 
     const val WEB_MONITOR_LOG_BRIDGE_NAME_SPACE = "CsWebMonitor"
 

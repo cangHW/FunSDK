@@ -1,6 +1,6 @@
 package com.proxy.service.webview.monitor.config
 
-import com.proxy.service.webview.base.web.callback.ValueCallback
+import com.proxy.service.webview.monitor.callback.MonitorCallback
 
 /**
  * @author: cangHX
@@ -17,7 +17,7 @@ interface IMonitorBuilderGet {
     /**
      * cookie 回调
      * */
-    fun getLogCookieCallback(): ValueCallback<String>?
+    fun getLogCookieCallback(): MonitorCallback?
 
     /**
      * 是否打印 Ajax 请求
@@ -27,7 +27,7 @@ interface IMonitorBuilderGet {
     /**
      * Ajax 请求回调
      * */
-    fun getLogAjaxRequestCallback(): ValueCallback<String>?
+    fun getLogAjaxRequestCallback(): MonitorCallback?
 
     /**
      * 是否打印加载耗时统计
@@ -37,6 +37,6 @@ interface IMonitorBuilderGet {
     /**
      * 加载耗时统计回调
      * */
-    fun getLogLoadTimeCallback(): ValueCallback<String>?
+    fun getLogLoadTimeCallback(): MonitorCallback?
 
 }

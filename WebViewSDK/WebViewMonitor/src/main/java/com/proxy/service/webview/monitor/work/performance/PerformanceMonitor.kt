@@ -11,9 +11,9 @@ import java.lang.StringBuilder
  * @data: 2026/1/25 19:50
  * @desc:
  */
-object PerformanceMonitor: BaseMonitor() {
+object PerformanceMonitor : BaseMonitor() {
 
-    private const val TAG = "${WebMonitorConstants.TAG}Performance"
+    private const val TAG = "${WebMonitorConstants.TAG}Perform"
 
     override fun shouldRun(): Boolean {
         val enableLog = config.isLogLoadTimeEnable()
@@ -41,25 +41,19 @@ object PerformanceMonitor: BaseMonitor() {
                 "       loadEventStart: timing.loadEventStart," +
                 "       loadEventEnd: timing.loadEventEnd" +
                 "   };" +
-                createLog(TAG, "JSON.stringify(performanceData)") +
-//                "   window.${nameSpace}.logPerformance(\"${TAG}\", JSON.stringify(performanceData));" +
+                createLog("logMonitorPerformance", "JSON.stringify(performanceData)") +
                 "})()"
     }
 
-    override fun dispatchLog(tag: String, log: String) {
-        if (tag != TAG){
-            return
-        }
-
+    override fun dispatchLog(url: String, log: String) {
         if (config.isLogLoadTimeEnable()) {
             val data = CsJsonUtils.fromJson(log, PerformanceData::class.java)
             val value: String
             if (data == null) {
                 value = log
             } else {
-                // 计算关键时间点
                 val builder = StringBuilder()
-                builder.append("\n")
+                builder.append(url).append("\n")
 
                 builder.append("    DNS 查询时间: ")
                     .append(data.domainLookupEnd - data.domainLookupStart)
@@ -98,10 +92,10 @@ object PerformanceMonitor: BaseMonitor() {
 
                 value = builder.toString()
             }
-            CsLogger.tag(tag).d("Performance Data: $value")
+            CsLogger.tag(TAG).d("Performance Data: $value")
         }
 
-        config.getLogLoadTimeCallback()?.onReceiveValue(log)
+        config.getLogLoadTimeCallback()?.onMonitorCall(url, log)
     }
 
 }

@@ -95,7 +95,7 @@ ext {
             ],
             WebViewMonitor    : [
                     artifact          : "Service-WebMonitor",
-                    version           : "0.2.15",
+                    version           : "0.2.15.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

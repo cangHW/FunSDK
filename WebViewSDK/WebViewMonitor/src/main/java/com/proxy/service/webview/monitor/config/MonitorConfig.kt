@@ -1,6 +1,6 @@
 package com.proxy.service.webview.monitor.config
 
-import com.proxy.service.webview.base.web.callback.ValueCallback
+import com.proxy.service.webview.monitor.callback.MonitorCallback
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 
 /**
@@ -16,7 +16,7 @@ class MonitorConfig private constructor(
         return builder.isLogCookieEnable()
     }
 
-    override fun getLogCookieCallback(): ValueCallback<String>? {
+    override fun getLogCookieCallback(): MonitorCallback? {
         return builder.getLogCookieCallback()
     }
 
@@ -24,7 +24,7 @@ class MonitorConfig private constructor(
         return builder.isLogAjaxRequestEnable()
     }
 
-    override fun getLogAjaxRequestCallback(): ValueCallback<String>? {
+    override fun getLogAjaxRequestCallback(): MonitorCallback? {
         return builder.getLogAjaxRequestCallback()
     }
 
@@ -32,7 +32,7 @@ class MonitorConfig private constructor(
         return builder.isLogLoadTimeEnable()
     }
 
-    override fun getLogLoadTimeCallback(): ValueCallback<String>? {
+    override fun getLogLoadTimeCallback(): MonitorCallback? {
         return builder.getLogLoadTimeCallback()
     }
 
@@ -45,17 +45,17 @@ class MonitorConfig private constructor(
     class Builder : IMonitorBuilder, IMonitorBuilderGet {
 
         private var logCookieEnable = WebMonitorConstants.ENABLE_LOG_COOKIE
-        private var logCookieCallback: ValueCallback<String>? = null
+        private var logCookieCallback: MonitorCallback? = null
 
         private var logAjaxRequestEnable = WebMonitorConstants.ENABLE_LOG_AJAX_REQUEST
-        private var logAjaxRequestCallback: ValueCallback<String>? = null
+        private var logAjaxRequestCallback: MonitorCallback? = null
 
         private var logLoadTimeEnable = WebMonitorConstants.ENABLE_LOG_LOAD_TIME
-        private var logLoadTimeCallback: ValueCallback<String>? = null
+        private var logLoadTimeCallback: MonitorCallback? = null
 
         override fun enableLogCookie(
             enable: Boolean,
-            callback: ValueCallback<String>?
+            callback: MonitorCallback?
         ): IMonitorBuilder {
             this.logCookieEnable = enable
             this.logCookieCallback = callback
@@ -64,7 +64,7 @@ class MonitorConfig private constructor(
 
         override fun enableLogAjaxRequest(
             enable: Boolean,
-            callback: ValueCallback<String>?
+            callback: MonitorCallback?
         ): IMonitorBuilder {
             this.logAjaxRequestEnable = enable
             this.logAjaxRequestCallback = callback
@@ -73,7 +73,7 @@ class MonitorConfig private constructor(
 
         override fun enableLogLoadTime(
             enable: Boolean,
-            callback: ValueCallback<String>?
+            callback: MonitorCallback?
         ): IMonitorBuilder {
             this.logLoadTimeEnable = enable
             this.logLoadTimeCallback = callback
@@ -88,7 +88,7 @@ class MonitorConfig private constructor(
             return logCookieEnable
         }
 
-        override fun getLogCookieCallback(): ValueCallback<String>? {
+        override fun getLogCookieCallback(): MonitorCallback? {
             return logCookieCallback
         }
 
@@ -96,7 +96,7 @@ class MonitorConfig private constructor(
             return logAjaxRequestEnable
         }
 
-        override fun getLogAjaxRequestCallback(): ValueCallback<String>? {
+        override fun getLogAjaxRequestCallback(): MonitorCallback? {
             return logAjaxRequestCallback
         }
 
@@ -104,7 +104,7 @@ class MonitorConfig private constructor(
             return logLoadTimeEnable
         }
 
-        override fun getLogLoadTimeCallback(): ValueCallback<String>? {
+        override fun getLogLoadTimeCallback(): MonitorCallback? {
             return logLoadTimeCallback
         }
     }

@@ -1,7 +1,7 @@
 package com.proxy.service.webview.monitor.config
 
+import com.proxy.service.webview.monitor.callback.MonitorCallback
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
-import com.proxy.service.webview.base.web.callback.ValueCallback
 
 /**
  * @author: cangHX
@@ -17,7 +17,7 @@ interface IMonitorBuilder {
      * */
     fun enableLogCookie(
         enable: Boolean,
-        callback: ValueCallback<String>? = null
+        callback: MonitorCallback? = null
     ): IMonitorBuilder
 
     /**
@@ -27,7 +27,7 @@ interface IMonitorBuilder {
      * */
     fun enableLogAjaxRequest(
         enable: Boolean,
-        callback: ValueCallback<String>? = null
+        callback: MonitorCallback? = null
     ): IMonitorBuilder
 
     /**
@@ -37,7 +37,7 @@ interface IMonitorBuilder {
      * */
     fun enableLogLoadTime(
         enable: Boolean,
-        callback: ValueCallback<String>? = null
+        callback: MonitorCallback? = null
     ): IMonitorBuilder
 
     /**

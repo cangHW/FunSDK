@@ -1,7 +1,9 @@
 package com.proxy.service.webview.monitor.converter
 
 import com.proxy.service.webview.base.web.IWeb
-import com.proxy.service.webview.monitor.work.base.BaseMonitor
+import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
+import com.proxy.service.webview.monitor.work.request.AjaxRequestMonitor
+import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
  * @author: cangHX
@@ -16,21 +18,15 @@ class WebLoadCallbackImpl : AbstractWebLoadCallback() {
         this.web = web
     }
 
-    private var isPageStarted = true
-
     override fun onPageStarted(url: String) {
         super.onPageStarted(url)
-        isPageStarted = true
+
+        CookieMonitor.runMonitor(web)
+        AjaxRequestMonitor.runMonitor(web)
     }
 
-    override fun onPageFinished(url: String) {
-        super.onPageFinished(url)
-
-        if (isPageStarted) {
-            isPageStarted = false
-
-            BaseMonitor.runMonitor(web)
-        }
+    override fun onPageFirstFrameRendered(url: String) {
+        super.onPageFirstFrameRendered(url)
+        PerformanceMonitor.runMonitor(web)
     }
-
 }

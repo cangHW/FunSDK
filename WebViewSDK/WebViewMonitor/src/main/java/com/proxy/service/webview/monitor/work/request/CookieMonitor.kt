@@ -1,8 +1,13 @@
 package com.proxy.service.webview.monitor.work.request
 
+import android.os.Build
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
+import java.lang.StringBuilder
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
+
 
 /**
  * @author: cangHX
@@ -21,20 +26,42 @@ object CookieMonitor : BaseMonitor() {
     }
 
     override fun getJs(): String {
-        val log = createLog(TAG, "document.cookie")
+        val log = createLog("logMonitorCookie", "document.cookie")
         return "javascript:$log;"
     }
 
-    override fun dispatchLog(tag: String, log: String) {
-        if (tag != TAG){
-            return
-        }
-
+    override fun dispatchLog(url: String, log: String) {
         if (config.isLogCookieEnable()) {
-            CsLogger.tag(tag).d("Cookies from JS: $log")
+            val builder = StringBuilder()
+            builder.append(url).append("\n")
+
+            try {
+                val cookiePairs: List<String> = log.split("; ")
+                for (pair in cookiePairs) {
+                    if (!pair.contains("=")) {
+                        continue
+                    }
+                    val keyValue = pair.split("=".toRegex(), limit = 2).toTypedArray()
+                    val key = keyValue[0]
+                    val value = if (keyValue.size > 1) keyValue[1] else ""
+
+                    val decodedValue = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        URLDecoder.decode(value, StandardCharsets.UTF_8)
+                    } else {
+                        URLDecoder.decode(value)
+                    }
+
+                    builder.append("    $key").append(": ").append(decodedValue).append("\n")
+                }
+            } catch (_: Throwable) {
+                builder.clear()
+                builder.append(url).append("\n").append(log)
+            }
+
+            CsLogger.tag(TAG).d("Cookies from JS: $builder")
         }
 
-        config.getLogCookieCallback()?.onReceiveValue(log)
+        config.getLogCookieCallback()?.onMonitorCall(url, log)
     }
 
 }

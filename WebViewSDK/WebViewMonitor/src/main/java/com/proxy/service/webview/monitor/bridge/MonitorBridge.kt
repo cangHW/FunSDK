@@ -1,7 +1,9 @@
 package com.proxy.service.webview.monitor.bridge
 
 import android.webkit.JavascriptInterface
-import com.proxy.service.webview.monitor.work.base.BaseMonitor
+import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
+import com.proxy.service.webview.monitor.work.request.AjaxRequestMonitor
+import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
  * @author: cangHX
@@ -11,8 +13,18 @@ import com.proxy.service.webview.monitor.work.base.BaseMonitor
 class MonitorBridge {
 
     @JavascriptInterface
-    fun logMonitorData(tag: String, log: String){
-        BaseMonitor.dispatchLog(tag, log)
+    fun logMonitorCookie(url: String, log: String) {
+        CookieMonitor.dispatchLog(url, log)
+    }
+
+    @JavascriptInterface
+    fun logMonitorAjaxRequest(url: String, log: String) {
+        AjaxRequestMonitor.dispatchLog(url, log)
+    }
+
+    @JavascriptInterface
+    fun logMonitorPerformance(url: String, log: String) {
+        PerformanceMonitor.dispatchLog(url, log)
     }
 
 }
