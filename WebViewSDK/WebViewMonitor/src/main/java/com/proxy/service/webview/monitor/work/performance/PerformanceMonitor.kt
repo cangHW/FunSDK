@@ -87,8 +87,11 @@ object PerformanceMonitor : BaseMonitor() {
                     .append("\n")
 
                 builder.append("    页面加载总时间: ")
-                    .append(data.loadEventEnd - data.navigationStart)
-                    .append("ms")
+                if (data.loadEventEnd > data.navigationStart) {
+                    builder.append(data.loadEventEnd - data.navigationStart).append("ms")
+                } else {
+                    builder.append("时间统计异常")
+                }
 
                 value = builder.toString()
             }

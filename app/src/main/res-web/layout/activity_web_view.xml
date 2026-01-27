@@ -44,12 +44,12 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:id="@+id/group"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="300dp" />
 
         <FrameLayout
             android:id="@+id/group2"
@@ -59,7 +59,7 @@
 
     <com.proxy.service.testview.DemoTestView
         android:id="@+id/content"
-        android:visibility="invisible"
+        android:visibility="visible"
         style="@style/content_style" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -74,14 +74,14 @@ ext {
             // web 库
             WebViewBase    : [
                     artifact          : "Service-Webview",
-                    version           : "0.2.15",
+                    version           : "0.2.15.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview-Info",
-                    version           : "0.2.15",
+                    version           : "0.2.15.1",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -95,7 +95,7 @@ ext {
             ],
             WebViewMonitor    : [
                     artifact          : "Service-WebMonitor",
-                    version           : "0.2.15.2",
+                    version           : "0.2.15.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

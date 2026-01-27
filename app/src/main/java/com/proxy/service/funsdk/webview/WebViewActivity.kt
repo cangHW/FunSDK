@@ -168,6 +168,12 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         private val binding: ActivityWebViewBinding?,
         private val tag: String
     ) : WebLoadCallback {
+
+        override fun onPageFirstFrameRendered(url: String) {
+            super.onPageFirstFrameRendered(url)
+            binding?.content?.addData(tag, "首帧可见")
+        }
+
         override fun onPageError(
             url: String,
             isMainFrameError: Boolean,

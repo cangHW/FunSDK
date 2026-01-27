@@ -157,23 +157,31 @@ class CommonWebViewClientImpl(
         if (renderTimeFrame == loadTimeFrame) {
             return
         }
-        renderTimeFrame = loadTimeFrame
 
-        view?.postVisualStateCallback(renderTimeFrame, object : WebView.VisualStateCallback() {
-            override fun onComplete(requestId: Long) {
-                if (requestId != loadTimeFrame) {
-                    return
-                }
-
-                CsLogger.tag(tag).d("onPageFirstFrameRendered url = $url")
-                CsTask.mainThread()?.call(object : ICallable<String> {
-                    override fun accept(): String {
-                        loadCallback?.onPageFirstFrameRendered(url ?: "")
-                        return ""
-                    }
-                })?.start()
+        val js = "(function() { return document.readyState === 'complete'; })();"
+        view?.evaluateJavascript(js) { value ->
+            if (value != "true") {
+                return@evaluateJavascript
             }
-        })
+            if (renderTimeFrame == loadTimeFrame) {
+                return@evaluateJavascript
+            }
+            renderTimeFrame = loadTimeFrame
+            view.postVisualStateCallback(renderTimeFrame, object : WebView.VisualStateCallback() {
+                override fun onComplete(requestId: Long) {
+                    if (requestId != loadTimeFrame) {
+                        return
+                    }
+                    CsLogger.tag(tag).d("onPageFirstFrameRendered url = $url")
+                    CsTask.mainThread()?.call(object : ICallable<String> {
+                        override fun accept(): String {
+                            loadCallback?.onPageFirstFrameRendered(url ?: "")
+                            return ""
+                        }
+                    })?.start()
+                }
+            })
+        }
     }
 
     override fun onPageCommitVisible(view: WebView?, url: String?) {

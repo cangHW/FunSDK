@@ -19,47 +19,74 @@ abstract class AbstractWebLoadCallback : WebLoadCallback {
     }
 
     override fun onPageStarted(url: String) {
-        super.onPageStarted(url)
-        realCallback?.onPageStarted(url)
+        if (realCallback != null) {
+            realCallback?.onPageStarted(url)
+        } else {
+            super.onPageStarted(url)
+        }
     }
 
     override fun onProgressChanged(newProgress: Int) {
-        super.onProgressChanged(newProgress)
-        realCallback?.onProgressChanged(newProgress)
+        if (realCallback != null) {
+            realCallback?.onProgressChanged(newProgress)
+        } else {
+            super.onProgressChanged(newProgress)
+        }
     }
 
     override fun onPageCommitVisible(url: String) {
-        super.onPageCommitVisible(url)
-        realCallback?.onPageCommitVisible(url)
+        if (realCallback != null) {
+            realCallback?.onPageCommitVisible(url)
+        } else {
+            super.onPageCommitVisible(url)
+        }
     }
 
     override fun onPageFinished(url: String) {
-        super.onPageFinished(url)
-        realCallback?.onPageFinished(url)
+        if (realCallback != null) {
+            realCallback?.onPageFinished(url)
+        } else {
+            super.onPageFinished(url)
+        }
     }
 
     override fun onPageFirstFrameRendered(url: String) {
-        super.onPageFirstFrameRendered(url)
-        realCallback?.onPageFirstFrameRendered(url)
+        if (realCallback != null) {
+            realCallback?.onPageFirstFrameRendered(url)
+        } else {
+            super.onPageFirstFrameRendered(url)
+        }
     }
 
     override fun onReceivedTitle(title: String) {
-        super.onReceivedTitle(title)
-        realCallback?.onReceivedTitle(title)
+        if (realCallback != null) {
+            realCallback?.onReceivedTitle(title)
+        } else {
+            super.onReceivedTitle(title)
+        }
     }
 
     override fun onReceivedIcon(icon: Bitmap?) {
-        super.onReceivedIcon(icon)
-        realCallback?.onReceivedIcon(icon)
+        if (realCallback != null) {
+            realCallback?.onReceivedIcon(icon)
+        } else {
+            super.onReceivedIcon(icon)
+        }
     }
 
     override fun onPageError(url: String, isMainFrameError: Boolean, isHttpError: Boolean) {
-        super.onPageError(url, isMainFrameError, isHttpError)
-        realCallback?.onPageError(url, isMainFrameError, isHttpError)
+        if (realCallback != null) {
+            realCallback?.onPageError(url, isMainFrameError, isHttpError)
+        } else {
+            super.onPageError(url, isMainFrameError, isHttpError)
+        }
     }
 
     override fun onPageSslError(error: SslError, handler: SslErrorHandler) {
-        super.onPageSslError(error, handler)
-        realCallback?.onPageSslError(error, handler)
+        if (realCallback != null) {
+            realCallback?.onPageSslError(error, handler)
+        } else {
+            super.onPageSslError(error, handler)
+        }
     }
 }
