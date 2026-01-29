@@ -3,6 +3,7 @@ package com.proxy.service.webview.bridge.ds.converter
 import com.proxy.service.webview.base.WebService
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.web.IWebLoader
+import com.proxy.service.webview.base.web.callback.ValueCallback
 import com.proxy.service.webview.bridge.ds.bridge.GlobalBridgeManager
 
 /**
@@ -11,6 +12,7 @@ import com.proxy.service.webview.bridge.ds.bridge.GlobalBridgeManager
  * @desc:
  */
 class WebServiceConverter(private val service: WebService) : WebService {
+
     override fun addGlobalJavascriptInterface(any: Any) {
         service.addGlobalJavascriptInterface(any)
         GlobalBridgeManager.put("", any)
@@ -21,15 +23,31 @@ class WebServiceConverter(private val service: WebService) : WebService {
         GlobalBridgeManager.put(nameSpace, any)
     }
 
+    override fun setAcceptGlobalCookie(accept: Boolean) {
+        service.setAcceptGlobalCookie(accept)
+    }
+
+    override fun getGlobalCookie(url: String): String {
+        return service.getGlobalCookie(url)
+    }
+
+    override fun setGlobalCookie(url: String, value: String, callback: ValueCallback<Boolean>?) {
+        service.setGlobalCookie(url, value, callback)
+    }
+
+    override fun removeGlobalCookie(url: String, callback: ValueCallback<Boolean>?) {
+        service.removeGlobalCookie(url, callback)
+    }
+
+    override fun removeAllGlobalCookies(callback: ValueCallback<Boolean>?) {
+        service.removeAllGlobalCookies(callback)
+    }
+
     override fun createWebLoader(config: WebConfig): IWebLoader {
         return WebLoaderConverter(service.createWebLoader(config))
     }
 
     override fun flushGlobalCookie() {
         service.flushGlobalCookie()
-    }
-
-    override fun setGlobalCookie(url: String, value: String) {
-        service.setGlobalCookie(url, value)
     }
 }

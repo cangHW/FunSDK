@@ -8,6 +8,8 @@ import okhttp3.OkHttpClient
 import java.io.File
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
 
 /**
  * @author: cangHX
@@ -62,15 +64,21 @@ object OkhttpFactory {
             builder.dns(it)
         }
 
-        TrustCerManager.getSSLSocketFactory(
+        val x509TrustManager = TrustCerManager.parseX509TrustManager(
             config.getServerCerAssetsName(),
             config.getClientCerAssetsName(),
             config.getClientCerPassWord(),
             config.getX509TrustManager()
+        )
+        TrustCerManager.getSSLSocketFactory(
+            config.getServerCerAssetsName(),
+            config.getClientCerAssetsName(),
+            config.getClientCerPassWord(),
+            x509TrustManager
         )?.let {
             builder.sslSocketFactory(
                 it,
-                TrustCerManager.getX509TrustManager(config.getX509TrustManager())
+                TrustCerManager.getX509TrustManager(x509TrustManager)
             )
         }
 
@@ -80,6 +88,10 @@ object OkhttpFactory {
 
         config.getHostnameVerifier()?.let {
             builder.hostnameVerifier(it)
+        } ?: let {
+            if (CoreConfig.isDebug) {
+                builder.hostnameVerifier { _, _ -> true }
+            }
         }
 
         val client = builder.build()

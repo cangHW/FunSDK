@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.info.common.ssl
 
 import android.annotation.SuppressLint
+import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import java.security.KeyStore
 import java.security.SecureRandom
@@ -19,6 +20,27 @@ import javax.net.ssl.X509TrustManager
  * @desc:
  */
 object TrustCerManager {
+
+    fun parseX509TrustManager(
+        serverCerAssetsName: String?,
+        clientCerAssetsName: String?,
+        clientCerPassWord: String?,
+        x509TrustManager: X509TrustManager?
+    ):X509TrustManager?{
+        if (x509TrustManager != null){
+            return x509TrustManager
+        }
+        if (
+            serverCerAssetsName.isNullOrEmpty() &&
+            clientCerAssetsName.isNullOrEmpty() &&
+            clientCerPassWord.isNullOrEmpty()
+        ) {
+            if (CoreConfig.isDebug) {
+                return DebugX509TrustManager()
+            }
+        }
+        return null
+    }
 
     fun getX509TrustManager(x509TrustManager: X509TrustManager?): X509TrustManager {
         return ApiX509TrustManager(x509TrustManager)
@@ -85,9 +107,7 @@ object TrustCerManager {
 }
 
 @SuppressLint("CustomX509TrustManager")
-private class ApiX509TrustManager(
-    private val x509TrustManager: X509TrustManager?
-) : X509TrustManager {
+private class ApiX509TrustManager(private val x509TrustManager: X509TrustManager?) : X509TrustManager {
 
     private val defaultTrustManager: X509TrustManager = TrustManagerFactory.getInstance(
         TrustManagerFactory.getDefaultAlgorithm()
@@ -110,5 +130,23 @@ private class ApiX509TrustManager(
     override fun getAcceptedIssuers(): Array<X509Certificate> {
         return (x509TrustManager ?: defaultTrustManager).acceptedIssuers
     }
+}
+
+@SuppressLint("CustomX509TrustManager")
+private class DebugX509TrustManager : X509TrustManager {
+    @SuppressLint("TrustAllX509TrustManager")
+    override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        // Nothing
+    }
+
+    @SuppressLint("TrustAllX509TrustManager")
+    override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        // Nothing
+    }
+
+    override fun getAcceptedIssuers(): Array<X509Certificate> {
+        return arrayOf()
+    }
+
 }
 

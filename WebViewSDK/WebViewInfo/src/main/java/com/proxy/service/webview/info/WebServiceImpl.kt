@@ -5,6 +5,7 @@ import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.webview.base.WebService
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.web.IWebLoader
+import com.proxy.service.webview.base.web.callback.ValueCallback
 import com.proxy.service.webview.info.config.JavaScriptManager
 import com.proxy.service.webview.info.web.WebLoaderImpl
 import java.util.concurrent.atomic.AtomicBoolean
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 @CloudApiService(serviceTag = "service/web_view")
 class WebServiceImpl : WebService {
 
+    private val cookieManager = CookieManager.getInstance()
     private val isAcceptCookie = AtomicBoolean(false)
 
     override fun createWebLoader(config: WebConfig): IWebLoader {
@@ -31,11 +33,33 @@ class WebServiceImpl : WebService {
         JavaScriptManager.addGlobalJavascriptInterface(nameSpace, any)
     }
 
-    override fun setGlobalCookie(url: String, value: String) {
+    override fun setAcceptGlobalCookie(accept: Boolean) {
+        cookieManager.setAcceptCookie(accept)
+    }
+
+    override fun getGlobalCookie(url: String): String {
+        return cookieManager.getCookie(url) ?: ""
+    }
+
+    override fun setGlobalCookie(url: String, value: String, callback: ValueCallback<Boolean>?) {
         if (isAcceptCookie.compareAndSet(false, true)) {
-            CookieManager.getInstance().setAcceptCookie(true)
+            cookieManager.setAcceptCookie(true)
         }
-        CookieManager.getInstance().setCookie(url, value)
+        cookieManager.setCookie(url, value) {
+            callback?.onReceiveValue(it)
+        }
+    }
+
+    override fun removeGlobalCookie(url: String, callback: ValueCallback<Boolean>?) {
+        cookieManager.setCookie(url, null) {
+            callback?.onReceiveValue(it)
+        }
+    }
+
+    override fun removeAllGlobalCookies(callback: ValueCallback<Boolean>?) {
+        cookieManager.removeAllCookies {
+            callback?.onReceiveValue(it)
+        }
     }
 
     override fun flushGlobalCookie() {
