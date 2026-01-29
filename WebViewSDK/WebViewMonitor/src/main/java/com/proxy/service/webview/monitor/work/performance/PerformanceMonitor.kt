@@ -53,7 +53,7 @@ object PerformanceMonitor : BaseMonitor() {
                 value = log
             } else {
                 val builder = StringBuilder()
-                builder.append(url).append("\n")
+                builder.append("当前页面 ").append(url).append("\n")
 
                 builder.append("    DNS 查询时间: ")
                     .append(data.domainLookupEnd - data.domainLookupStart)

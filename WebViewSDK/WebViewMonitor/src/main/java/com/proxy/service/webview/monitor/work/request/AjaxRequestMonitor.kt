@@ -110,7 +110,7 @@ object AjaxRequestMonitor : BaseMonitor() {
                 value = log
             } else {
                 val builder = StringBuilder()
-                builder.append(url).append("\n")
+                builder.append("当前页面 ").append(url).append("\n")
 
                 builder.append("    请求方式: ")
                     .append(data.method)

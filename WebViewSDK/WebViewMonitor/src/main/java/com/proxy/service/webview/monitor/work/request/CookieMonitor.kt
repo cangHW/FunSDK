@@ -33,7 +33,7 @@ object CookieMonitor : BaseMonitor() {
     override fun dispatchLog(url: String, log: String) {
         if (config.isLogCookieEnable()) {
             val builder = StringBuilder()
-            builder.append(url).append("\n")
+            builder.append("当前页面 ").append(url).append("\n")
 
             try {
                 val cookiePairs: List<String> = log.split("; ")
