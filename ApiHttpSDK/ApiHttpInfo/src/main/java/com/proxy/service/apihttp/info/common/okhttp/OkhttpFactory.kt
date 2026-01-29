@@ -64,34 +64,16 @@ object OkhttpFactory {
             builder.dns(it)
         }
 
-        val x509TrustManager = TrustCerManager.parseX509TrustManager(
-            config.getServerCerAssetsName(),
-            config.getClientCerAssetsName(),
-            config.getClientCerPassWord(),
-            config.getX509TrustManager()
-        )
-        TrustCerManager.getSSLSocketFactory(
-            config.getServerCerAssetsName(),
-            config.getClientCerAssetsName(),
-            config.getClientCerPassWord(),
-            x509TrustManager
-        )?.let {
-            builder.sslSocketFactory(
-                it,
-                TrustCerManager.getX509TrustManager(x509TrustManager)
-            )
-        }
-
-        if (!CoreConfig.isDebug) {
-            builder.proxy(Proxy.NO_PROXY)
-        }
-
+        TrustCerManager.parse(builder, config)
         config.getHostnameVerifier()?.let {
             builder.hostnameVerifier(it)
         } ?: let {
             if (CoreConfig.isDebug) {
                 builder.hostnameVerifier { _, _ -> true }
             }
+        }
+        if (!CoreConfig.isDebug) {
+            builder.proxy(Proxy.NO_PROXY)
         }
 
         val client = builder.build()

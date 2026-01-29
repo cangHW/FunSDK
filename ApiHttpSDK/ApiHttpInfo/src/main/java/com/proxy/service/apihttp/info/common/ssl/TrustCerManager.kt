@@ -1,8 +1,10 @@
 package com.proxy.service.apihttp.info.common.ssl
 
 import android.annotation.SuppressLint
+import com.proxy.service.apihttp.info.common.okhttp.IOkhttpConfig
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
+import okhttp3.OkHttpClient
 import java.security.KeyStore
 import java.security.SecureRandom
 import java.security.cert.CertificateFactory
@@ -21,46 +23,48 @@ import javax.net.ssl.X509TrustManager
  */
 object TrustCerManager {
 
-    fun parseX509TrustManager(
-        serverCerAssetsName: String?,
-        clientCerAssetsName: String?,
-        clientCerPassWord: String?,
-        x509TrustManager: X509TrustManager?
-    ):X509TrustManager?{
-        if (x509TrustManager != null){
-            return x509TrustManager
-        }
+    fun parse(builder: OkHttpClient.Builder, config: IOkhttpConfig) {
         if (
-            serverCerAssetsName.isNullOrEmpty() &&
-            clientCerAssetsName.isNullOrEmpty() &&
-            clientCerPassWord.isNullOrEmpty()
+            config.getServerCerAssetsName().isNullOrEmpty() &&
+            config.getClientCerAssetsName().isNullOrEmpty() &&
+            config.getClientCerPassWord().isNullOrEmpty() &&
+            config.getX509TrustManager() == null
         ) {
             if (CoreConfig.isDebug) {
-                return DebugX509TrustManager()
+                debug(builder)
             }
+            return
         }
-        return null
+
+        val x509TrustManager = ApiX509TrustManager(config.getX509TrustManager())
+        getSSLSocketFactory(
+            config.getServerCerAssetsName(),
+            config.getClientCerAssetsName(),
+            config.getClientCerPassWord(),
+            x509TrustManager
+        )?.let {
+            builder.sslSocketFactory(
+                it,
+                x509TrustManager
+            )
+        }
     }
 
-    fun getX509TrustManager(x509TrustManager: X509TrustManager?): X509TrustManager {
-        return ApiX509TrustManager(x509TrustManager)
+    private fun debug(builder: OkHttpClient.Builder) {
+        val trustAllCerts = DebugX509TrustManager()
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(null, arrayOf(trustAllCerts), SecureRandom())
+        val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
+
+        builder.sslSocketFactory(sslSocketFactory, trustAllCerts)
     }
 
-    fun getSSLSocketFactory(
+    private fun getSSLSocketFactory(
         serverCerAssetsName: String?,
         clientCerAssetsName: String?,
         clientCerPassWord: String?,
-        x509TrustManager: X509TrustManager?
+        x509TrustManager: X509TrustManager
     ): SSLSocketFactory? {
-        if (
-            serverCerAssetsName.isNullOrEmpty() &&
-            clientCerAssetsName.isNullOrEmpty() &&
-            clientCerPassWord.isNullOrEmpty() &&
-            x509TrustManager == null
-        ) {
-            return null
-        }
-
         val application = CsContextManager.getApplication()
         val sslContext: SSLContext = SSLContext.getInstance("TLS")
 
@@ -96,7 +100,7 @@ object TrustCerManager {
 
         val km = clientFactory?.keyManagers
         val tm = if (serverFactory == null) {
-            arrayOf<TrustManager>(ApiX509TrustManager(x509TrustManager))
+            arrayOf<TrustManager>(x509TrustManager)
         } else {
             serverFactory.trustManagers
         }
@@ -107,7 +111,7 @@ object TrustCerManager {
 }
 
 @SuppressLint("CustomX509TrustManager")
-private class ApiX509TrustManager(private val x509TrustManager: X509TrustManager?) : X509TrustManager {
+private class ApiX509TrustManager(val x509TrustManager: X509TrustManager?) : X509TrustManager {
 
     private val defaultTrustManager: X509TrustManager = TrustManagerFactory.getInstance(
         TrustManagerFactory.getDefaultAlgorithm()

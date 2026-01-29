@@ -13,12 +13,12 @@ upArray=(
 #  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
-  ":ApiHttpSDK:ApiHttpInfo"
-  ":ApiHttpSDK:ApiHttpBase"
+#  ":ApiHttpSDK:ApiHttpInfo"
+#  ":ApiHttpSDK:ApiHttpBase"
 
   # web 容器库
-#  ":WebViewSDK:WebViewInfo"
-#  ":WebViewSDK:WebViewBase"
+  ":WebViewSDK:WebViewInfo"
+  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
 #  ":WebViewSDK:WebViewMonitor"
 

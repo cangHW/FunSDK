@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 @CloudApiService(serviceTag = "service/web_view")
 class WebServiceImpl : WebService {
 
-    private val cookieManager = CookieManager.getInstance()
     private val isAcceptCookie = AtomicBoolean(false)
 
     override fun createWebLoader(config: WebConfig): IWebLoader {
@@ -34,30 +33,30 @@ class WebServiceImpl : WebService {
     }
 
     override fun setAcceptGlobalCookie(accept: Boolean) {
-        cookieManager.setAcceptCookie(accept)
+        CookieManager.getInstance().setAcceptCookie(accept)
     }
 
     override fun getGlobalCookie(url: String): String {
-        return cookieManager.getCookie(url) ?: ""
+        return CookieManager.getInstance().getCookie(url) ?: ""
     }
 
     override fun setGlobalCookie(url: String, value: String, callback: ValueCallback<Boolean>?) {
         if (isAcceptCookie.compareAndSet(false, true)) {
-            cookieManager.setAcceptCookie(true)
+            CookieManager.getInstance().setAcceptCookie(true)
         }
-        cookieManager.setCookie(url, value) {
+        CookieManager.getInstance().setCookie(url, value) {
             callback?.onReceiveValue(it)
         }
     }
 
     override fun removeGlobalCookie(url: String, callback: ValueCallback<Boolean>?) {
-        cookieManager.setCookie(url, null) {
+        CookieManager.getInstance().setCookie(url, null) {
             callback?.onReceiveValue(it)
         }
     }
 
     override fun removeAllGlobalCookies(callback: ValueCallback<Boolean>?) {
-        cookieManager.removeAllCookies {
+        CookieManager.getInstance().removeAllCookies {
             callback?.onReceiveValue(it)
         }
     }

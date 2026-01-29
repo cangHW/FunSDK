@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.WebService
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.web.IWebLoader
+import com.proxy.service.webview.base.web.callback.ValueCallback
 
 /**
  * Web 容器框架入口
@@ -25,7 +26,8 @@ object CsWeb {
             service = CloudSystem.getService(WebService::class.java)
         }
         if (service == null) {
-            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.canghw:Service-Webview:xxx>")
+            CsLogger.tag(TAG)
+                .e("Please check to see if it is referenced. <io.github.canghw:Service-Webview:xxx>")
         }
         return service
     }
@@ -73,10 +75,38 @@ object CsWeb {
     }
 
     /**
+     * 是否接受所有 Cookie（包括第一方和第三方 Cookie）
+     * */
+    fun setAcceptGlobalCookie(accept: Boolean) {
+        getService()?.setAcceptGlobalCookie(accept)
+    }
+
+    /**
+     * 获取指定 URL 的 Cookie（多个 Cookie 用分号分隔）
+     * */
+    fun getGlobalCookie(url: String): String {
+        return getService()?.getGlobalCookie(url) ?: ""
+    }
+
+    /**
      * 设置全局 cookie
      * */
-    fun setGlobalCookie(url: String, value: String) {
-        getService()?.setGlobalCookie(url, value)
+    fun setGlobalCookie(url: String, value: String, callback: ValueCallback<Boolean>? = null) {
+        getService()?.setGlobalCookie(url, value, callback)
+    }
+
+    /**
+     * 清除特定域名的 Cookie
+     * */
+    fun removeGlobalCookie(url: String, callback: ValueCallback<Boolean>? = null) {
+        getService()?.removeGlobalCookie(url, callback)
+    }
+
+    /**
+     * 清除所有 Cookie
+     * */
+    fun removeAllGlobalCookies(callback: ValueCallback<Boolean>? = null) {
+        getService()?.removeAllGlobalCookies(callback)
     }
 
     /**
