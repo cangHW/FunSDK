@@ -28,12 +28,20 @@ class MonitorConfig private constructor(
         return builder.getLogAjaxRequestCallback()
     }
 
-    override fun isLogLoadTimeEnable(): Boolean {
-        return builder.isLogLoadTimeEnable()
+    override fun isLogLoadPageTimeEnable(): Boolean {
+        return builder.isLogLoadPageTimeEnable()
     }
 
-    override fun getLogLoadTimeCallback(): MonitorCallback? {
-        return builder.getLogLoadTimeCallback()
+    override fun getLogLoadPageTimeCallback(): MonitorCallback? {
+        return builder.getLogLoadPageTimeCallback()
+    }
+
+    override fun isLogLoadPageResourceTimeEnable(): Boolean {
+        return builder.isLogLoadPageResourceTimeEnable()
+    }
+
+    override fun getLogLoadPageResourceTimeCallback(): MonitorCallback? {
+        return builder.getLogLoadPageResourceTimeCallback()
     }
 
     companion object {
@@ -50,8 +58,10 @@ class MonitorConfig private constructor(
         private var logAjaxRequestEnable = WebMonitorConstants.ENABLE_LOG_AJAX_REQUEST
         private var logAjaxRequestCallback: MonitorCallback? = null
 
-        private var logLoadTimeEnable = WebMonitorConstants.ENABLE_LOG_LOAD_TIME
-        private var logLoadTimeCallback: MonitorCallback? = null
+        private var logLoadPageTimeEnable = WebMonitorConstants.ENABLE_LOG_LOAD_PAGE_TIME
+        private var logLoadPageTimeCallback: MonitorCallback? = null
+        private var logLoadPageResourceTimeEnable = WebMonitorConstants.ENABLE_LOG_LOAD_PAGE_RESOURCE_TIME
+        private var logLoadPageResourceTimeCallback: MonitorCallback? = null
 
         override fun enableLogCookie(
             enable: Boolean,
@@ -71,12 +81,21 @@ class MonitorConfig private constructor(
             return this
         }
 
-        override fun enableLogLoadTime(
+        override fun enableLogLoadPageTime(
             enable: Boolean,
             callback: MonitorCallback?
         ): IMonitorBuilder {
-            this.logLoadTimeEnable = enable
-            this.logLoadTimeCallback = callback
+            this.logLoadPageTimeEnable = enable
+            this.logLoadPageTimeCallback = callback
+            return this
+        }
+
+        override fun enableLogLoadPageResourceTime(
+            enable: Boolean,
+            callback: MonitorCallback?
+        ): IMonitorBuilder {
+            this.logLoadPageResourceTimeEnable = enable
+            this.logLoadPageResourceTimeCallback = callback
             return this
         }
 
@@ -100,12 +119,20 @@ class MonitorConfig private constructor(
             return logAjaxRequestCallback
         }
 
-        override fun isLogLoadTimeEnable(): Boolean {
-            return logLoadTimeEnable
+        override fun isLogLoadPageTimeEnable(): Boolean {
+            return logLoadPageTimeEnable
         }
 
-        override fun getLogLoadTimeCallback(): MonitorCallback? {
-            return logLoadTimeCallback
+        override fun getLogLoadPageTimeCallback(): MonitorCallback? {
+            return logLoadPageTimeCallback
+        }
+
+        override fun isLogLoadPageResourceTimeEnable(): Boolean {
+            return logLoadPageResourceTimeEnable
+        }
+
+        override fun getLogLoadPageResourceTimeCallback(): MonitorCallback? {
+            return logLoadPageResourceTimeCallback
         }
     }
 

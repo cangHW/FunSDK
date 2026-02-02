@@ -2,6 +2,7 @@ package com.proxy.service.webview.monitor.converter
 
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
+import com.proxy.service.webview.monitor.work.performance.PerformanceResourceMonitor
 import com.proxy.service.webview.monitor.work.request.AjaxRequestMonitor
 import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
@@ -25,8 +26,10 @@ class WebLoadCallbackImpl : AbstractWebLoadCallback() {
         AjaxRequestMonitor.runMonitor(web)
     }
 
-    override fun onPageFirstFrameRendered(url: String) {
-        super.onPageFirstFrameRendered(url)
+    override fun onPageAllResourceFinished(url: String) {
+        super.onPageAllResourceFinished(url)
+
         PerformanceMonitor.runMonitor(web)
+        PerformanceResourceMonitor.runMonitor(web)
     }
 }

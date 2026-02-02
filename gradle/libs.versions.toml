@@ -34,9 +34,9 @@ core-framework = {group = "io.github.canghw", name="Service-CoreFramework", vers
 service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.9.1"}
 service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.8"}
 service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.18"}
-service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.16.2"}
+service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.16.3"}
 service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.16"}
-service-webview-monitor = {group = "io.github.canghw", name="Service-WebMonitor", version="0.2.16"}
+service-webview-monitor = {group = "io.github.canghw", name="Service-WebMonitor", version="0.2.16.1"}
 service-permission = {group = "io.github.canghw", name="Service-Permission", version="0.2.5"}
 service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", version="0.2.9"}
 service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}

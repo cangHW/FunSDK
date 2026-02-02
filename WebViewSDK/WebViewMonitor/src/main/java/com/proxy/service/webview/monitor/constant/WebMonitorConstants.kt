@@ -15,6 +15,7 @@ object WebMonitorConstants {
 
     const val ENABLE_LOG_COOKIE = false
     const val ENABLE_LOG_AJAX_REQUEST = false
-    const val ENABLE_LOG_LOAD_TIME = true
+    const val ENABLE_LOG_LOAD_PAGE_TIME = true
+    const val ENABLE_LOG_LOAD_PAGE_RESOURCE_TIME = false
 
 }

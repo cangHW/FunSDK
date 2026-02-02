@@ -84,13 +84,21 @@ class CommonWebChromeClientImpl(
     override fun onRequestFocus(view: WebView?) {
 //        super.onRequestFocus(view)
         CsLogger.tag(tag).d("onRequestFocus(view: WebView?)")
-        view?.requestFocus()
+        try {
+            view?.requestFocus()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).d(throwable)
+        }
     }
 
     override fun onCloseWindow(view: WebView?) {
 //        super.onCloseWindow(view)
         CsLogger.tag(tag).d("onCloseWindow(view: WebView?)")
-        interceptCallback?.onCloseWindow()
+        try {
+            interceptCallback?.onCloseWindow()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).d(throwable)
+        }
     }
 
     override fun onJsAlert(

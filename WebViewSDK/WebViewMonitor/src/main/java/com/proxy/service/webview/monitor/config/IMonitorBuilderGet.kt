@@ -30,13 +30,23 @@ interface IMonitorBuilderGet {
     fun getLogAjaxRequestCallback(): MonitorCallback?
 
     /**
-     * 是否打印加载耗时统计
+     * 是否打印页面加载耗时统计
      * */
-    fun isLogLoadTimeEnable(): Boolean
+    fun isLogLoadPageTimeEnable(): Boolean
 
     /**
-     * 加载耗时统计回调
+     * 页面加载耗时统计回调
      * */
-    fun getLogLoadTimeCallback(): MonitorCallback?
+    fun getLogLoadPageTimeCallback(): MonitorCallback?
+
+    /**
+     * 是否打印页面资源加载耗时统计
+     * */
+    fun isLogLoadPageResourceTimeEnable(): Boolean
+
+    /**
+     * 页面资源加载耗时统计回调
+     * */
+    fun getLogLoadPageResourceTimeCallback(): MonitorCallback?
 
 }

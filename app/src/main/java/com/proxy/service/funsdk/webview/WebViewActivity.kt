@@ -81,6 +81,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
             MonitorConfig.builder()
                 .enableLogCookie(true)
                 .enableLogAjaxRequest(true)
+                .enableLogLoadPageResourceTime(true)
                 .build()
         )
     }

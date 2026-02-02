@@ -31,11 +31,21 @@ interface IMonitorBuilder {
     ): IMonitorBuilder
 
     /**
-     * 是否打印加载耗时统计, 默认 [WebMonitorConstants.ENABLE_LOG_LOAD_TIME]
+     * 是否打印页面加载耗时统计, 默认 [WebMonitorConstants.ENABLE_LOG_LOAD_PAGE_TIME]
      *
      * @param callback 回调 web 页面的加载耗时统计
      * */
-    fun enableLogLoadTime(
+    fun enableLogLoadPageTime(
+        enable: Boolean,
+        callback: MonitorCallback? = null
+    ): IMonitorBuilder
+
+    /**
+     * 是否打印页面资源加载耗时统计, 默认 [WebMonitorConstants.ENABLE_LOG_LOAD_PAGE_RESOURCE_TIME]
+     *
+     * @param callback 回调 web 页面的加载耗时统计
+     * */
+    fun enableLogLoadPageResourceTime(
         enable: Boolean,
         callback: MonitorCallback? = null
     ): IMonitorBuilder

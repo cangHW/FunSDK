@@ -34,7 +34,12 @@ interface WebLoadCallback {
     fun onPageFinished(url: String) {}
 
     /**
-     * 页面首帧渲染完成
+     * 页面全部资源加载结束, 在 HTML 文档和所有子资源（style.css、image.jpg、script.js）加载完成后触发。
+     * */
+    fun onPageAllResourceFinished(url: String) {}
+
+    /**
+     * 页面首帧渲染完成, 需要页面可见。
      * */
     fun onPageFirstFrameRendered(url: String) {}
 

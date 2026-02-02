@@ -50,6 +50,14 @@ abstract class AbstractWebLoadCallback : WebLoadCallback {
         }
     }
 
+    override fun onPageAllResourceFinished(url: String) {
+        if (realCallback != null) {
+            realCallback?.onPageAllResourceFinished(url)
+        } else {
+            super.onPageAllResourceFinished(url)
+        }
+    }
+
     override fun onPageFirstFrameRendered(url: String) {
         if (realCallback != null) {
             realCallback?.onPageFirstFrameRendered(url)

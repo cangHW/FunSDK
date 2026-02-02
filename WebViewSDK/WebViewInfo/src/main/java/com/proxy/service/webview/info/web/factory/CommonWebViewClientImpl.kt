@@ -158,29 +158,46 @@ class CommonWebViewClientImpl(
             return
         }
 
-        val js = "(function() { return document.readyState === 'complete'; })();"
-        view?.evaluateJavascript(js) { value ->
-            if (value != "true") {
-                return@evaluateJavascript
-            }
-            if (renderTimeFrame == loadTimeFrame) {
-                return@evaluateJavascript
-            }
-            renderTimeFrame = loadTimeFrame
-            view.postVisualStateCallback(renderTimeFrame, object : WebView.VisualStateCallback() {
-                override fun onComplete(requestId: Long) {
-                    if (requestId != loadTimeFrame) {
-                        return
-                    }
-                    CsLogger.tag(tag).d("onPageFirstFrameRendered url = $url")
-                    CsTask.mainThread()?.call(object : ICallable<String> {
-                        override fun accept(): String {
-                            loadCallback?.onPageFirstFrameRendered(url ?: "")
-                            return ""
-                        }
-                    })?.start()
+        try {
+            val js = "(function() { console.log(\"Current document.readyState: \" + document.readyState); return document.readyState === 'complete'; })();"
+            view?.evaluateJavascript(js) { value ->
+                if (value != "true") {
+                    return@evaluateJavascript
                 }
-            })
+                if (renderTimeFrame == loadTimeFrame) {
+                    return@evaluateJavascript
+                }
+                renderTimeFrame = loadTimeFrame
+                CsLogger.tag(tag).d("onPageAllResourceFinished url = $url")
+                CsTask.mainThread()?.call(object : ICallable<String> {
+                    override fun accept(): String {
+                        loadCallback?.onPageAllResourceFinished(url ?: "")
+                        return ""
+                    }
+                })?.start()
+                try {
+                    view.postVisualStateCallback(
+                        renderTimeFrame,
+                        object : WebView.VisualStateCallback() {
+                            override fun onComplete(requestId: Long) {
+                                if (requestId != loadTimeFrame) {
+                                    return
+                                }
+                                CsLogger.tag(tag).d("onPageFirstFrameRendered url = $url")
+                                CsTask.mainThread()?.call(object : ICallable<String> {
+                                    override fun accept(): String {
+                                        loadCallback?.onPageFirstFrameRendered(url ?: "")
+                                        return ""
+                                    }
+                                })?.start()
+                            }
+                        })
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(tag).d(throwable)
+                }
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).d(throwable)
         }
     }
 
@@ -298,20 +315,24 @@ class CommonWebViewClientImpl(
     ): Boolean {
         CsLogger.tag(tag)
             .d("onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?)")
-        if (detail != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (detail.didCrash()) {
-                    CsLogger.tag(tag).e("The WebView rendering process crashed!")
-                } else {
-                    CsLogger.tag(tag)
-                        .e("The WebView rendering process was killed by the system.")
+        try {
+            if (detail != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    if (detail.didCrash()) {
+                        CsLogger.tag(tag).e("The WebView rendering process crashed!")
+                    } else {
+                        CsLogger.tag(tag)
+                            .e("The WebView rendering process was killed by the system.")
+                    }
                 }
             }
-        }
 
-        view?.let {
-            it.loadUrl("about:blank")
-            it.reload()
+            view?.let {
+                it.loadUrl("about:blank")
+                it.reload()
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(tag).d(throwable)
         }
 
         return true
