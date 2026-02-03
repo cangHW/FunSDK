@@ -32,26 +32,39 @@ object PerformanceResourceMonitor : BaseMonitor() {
                 "       img: []," +
                 "       script: []," +
                 "       css: []," +
-                "       xmlhttprequest: []," +
+                "       font: []," +
+                "       video: []," +
+                "       audio: []," +
+                "       iframe: []," +
                 "       other: []" +
                 "   };" +
                 "   for (var i = 0; i < entries.length; i++) {" +
-                "       var type = entries[i].initiatorType;" +
+                "       var entry = entries[i];" +
+                "       var type = entry.initiatorType;" +
+                "       var name = entry.name;" +
+
+                checkResIsImg() +
+                checkResIsScript() +
+                checkResIsCss() +
+                checkResIsFont() +
+                checkResIsVideo() +
+                checkResIsAudio() +
+                checkResIsIframe() +
 
                 "       var performanceData = {" +
-                "           startTime: entries[i].startTime," +
-                "           duration: entries[i].duration," +
-                "           transferSize: entries[i].transferSize," +
-                "           domainLookupStart: entries[i].domainLookupStart," +
-                "           domainLookupEnd: entries[i].domainLookupEnd," +
-                "           connectStart: entries[i].connectStart," +
-                "           connectEnd: entries[i].connectEnd," +
-                "           requestStart: entries[i].requestStart," +
-                "           responseStart: entries[i].responseStart," +
-                "           responseEnd: entries[i].responseEnd," +
-                "           name: entries[i].name," +
-                "           nextHopProtocol: entries[i].nextHopProtocol," +
-                "           fromCache: entries[i].transferSize === 0 && entries[i].encodedBodySize > 0" +
+                "           startTime: entry.startTime," +
+                "           duration: entry.duration," +
+                "           transferSize: entry.transferSize," +
+                "           domainLookupStart: entry.domainLookupStart," +
+                "           domainLookupEnd: entry.domainLookupEnd," +
+                "           connectStart: entry.connectStart," +
+                "           connectEnd: entry.connectEnd," +
+                "           requestStart: entry.requestStart," +
+                "           responseStart: entry.responseStart," +
+                "           responseEnd: entry.responseEnd," +
+                "           name: entry.name," +
+                "           nextHopProtocol: entry.nextHopProtocol," +
+                "           fromCache: entry.transferSize === 0 && entry.encodedBodySize > 0" +
                 "       };" +
 
                 "       if (groupedData[type]) {" +
@@ -94,8 +107,29 @@ object PerformanceResourceMonitor : BaseMonitor() {
                 CsLogger.tag(TAG).d(builder.toString())
 
                 builder.clear()
-                builder.append(LINE_1).append("请求: ").append("\n")
-                data.xmlhttprequest?.forEach {
+                builder.append(LINE_1).append("字体资源: ").append("\n")
+                data.font?.forEach {
+                    builder.append(LINE_2).append(it).append("\n")
+                }
+                CsLogger.tag(TAG).d(builder.toString())
+
+                builder.clear()
+                builder.append(LINE_1).append("视频资源: ").append("\n")
+                data.video?.forEach {
+                    builder.append(LINE_2).append(it).append("\n")
+                }
+                CsLogger.tag(TAG).d(builder.toString())
+
+                builder.clear()
+                builder.append(LINE_1).append("音频资源: ").append("\n")
+                data.audio?.forEach {
+                    builder.append(LINE_2).append(it).append("\n")
+                }
+                CsLogger.tag(TAG).d(builder.toString())
+
+                builder.clear()
+                builder.append(LINE_1).append("HTML 资源: ").append("\n")
+                data.iframe?.forEach {
                     builder.append(LINE_2).append(it).append("\n")
                 }
                 CsLogger.tag(TAG).d(builder.toString())
@@ -110,5 +144,90 @@ object PerformanceResourceMonitor : BaseMonitor() {
         }
 
         config.getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)
+    }
+
+
+    private fun checkResIsImg(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".jpg\")")
+            .append("||").append("name.endsWith(\".jpeg\")")
+            .append("||").append("name.endsWith(\".png\")")
+            .append("||").append("name.endsWith(\".gif\")")
+            .append("||").append("name.endsWith(\".webp\")")
+            .append("||").append("name.endsWith(\".svg\")")
+            .append("){type = \"img\"}")
+
+        return builder.toString()
+    }
+
+    private fun checkResIsScript(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".js\")")
+            .append("){type = \"script\"}")
+
+        return builder.toString()
+    }
+
+    private fun checkResIsCss(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".css\")")
+            .append("){type = \"css\"}")
+
+        return builder.toString()
+    }
+
+    private fun checkResIsFont(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".woff\")")
+            .append("||").append("name.endsWith(\".woff2\")")
+            .append("||").append("name.endsWith(\".ttf\")")
+            .append("||").append("name.endsWith(\".otf\")")
+            .append("||").append("name.endsWith(\".eot\")")
+            .append("){type = \"font\"}")
+
+        return builder.toString()
+    }
+
+    private fun checkResIsVideo(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".mp4\")")
+            .append("||").append("name.endsWith(\".webm\")")
+            .append("||").append("name.endsWith(\".ogg\")")
+            .append("){type = \"video\"}")
+
+        return builder.toString()
+    }
+
+    private fun checkResIsAudio(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".mp3\")")
+            .append("||").append("name.endsWith(\".wav\")")
+            .append("||").append("name.endsWith(\".aac\")")
+            .append("){type = \"audio\"}")
+
+        return builder.toString()
+    }
+
+    private fun checkResIsIframe(): String {
+        val builder = StringBuilder()
+
+        builder.append("if (")
+            .append("name.endsWith(\".html\")")
+            .append("||").append("name.endsWith(\".htm\")")
+            .append("){type = \"iframe\"}")
+
+        return builder.toString()
     }
 }

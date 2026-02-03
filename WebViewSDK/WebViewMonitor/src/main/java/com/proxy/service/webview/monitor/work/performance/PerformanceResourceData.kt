@@ -10,24 +10,39 @@ import java.text.DecimalFormat
 class PerformanceResourceData {
 
     /**
-     * 图片资源，通过 <img> 标签加载
+     * 图片资源
      * */
     var img: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
 
     /**
-     * JavaScript 文件，通过 <script> 标签加载
+     * 脚本文件
      * */
     var script: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
 
     /**
-     * 样式表文件，通过 <link> 标签加载
+     * 样式表文件
      * */
     var css: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
 
     /**
-     * XHR 请求，通过 XMLHttpRequest 发起的网络请求
+     * 字体文件
      * */
-    var xmlhttprequest: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
+    var font: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
+
+    /**
+     * 视频文件
+     * */
+    var video: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
+
+    /**
+     * 音频文件
+     * */
+    var audio: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
+
+    /**
+     * HTML 文件
+     * */
+    var iframe: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
 
     /**
      * 其他类型的资源
