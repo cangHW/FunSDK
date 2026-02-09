@@ -12,8 +12,10 @@ import com.proxy.service.funsdk.apihttp.ApiActivity
 import com.proxy.service.funsdk.document.DocumentActivity
 import com.proxy.service.funsdk.framework.FrameWorkActivity
 import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
+import com.proxy.service.funsdk.media.MediaActivity
 import com.proxy.service.funsdk.permission.PermissionActivity
 import com.proxy.service.funsdk.threadpool.ThreadPoolActivity
+import com.proxy.service.funsdk.base.LaunchUtils
 import com.proxy.service.funsdk.webview.WebViewActivity
 import com.proxy.service.funsdk.widget.WidgetActivity
 import java.io.File
@@ -41,35 +43,39 @@ class MainActivity : AppCompatActivity() {
     fun onClick(view: View) {
         when (view.id) {
             R.id.core_framework -> {
-                FrameWorkActivity.launch(this)
+                LaunchUtils.launch(this, FrameWorkActivity::class.java)
             }
 
             R.id.image_loader -> {
-                ImageLoaderActivity.launch(this)
+                LaunchUtils.launch(this, ImageLoaderActivity::class.java)
             }
 
             R.id.thread_pool -> {
-                ThreadPoolActivity.launch(this)
+                LaunchUtils.launch(this, ThreadPoolActivity::class.java)
             }
 
             R.id.api_http -> {
-                ApiActivity.launch(this)
+                LaunchUtils.launch(this, ApiActivity::class.java)
             }
 
             R.id.web_view -> {
-                WebViewActivity.launch(this)
+                LaunchUtils.launch(this, WebViewActivity::class.java)
             }
 
             R.id.permission -> {
-                PermissionActivity.launch(this)
+                LaunchUtils.launch(this, PermissionActivity::class.java)
             }
 
             R.id.document -> {
-                DocumentActivity.launch(this)
+                LaunchUtils.launch(this, DocumentActivity::class.java)
             }
 
             R.id.widget -> {
-                WidgetActivity.launch(this)
+                LaunchUtils.launch(this, WidgetActivity::class.java)
+            }
+
+            R.id.media -> {
+                LaunchUtils.launch(this, MediaActivity::class.java)
             }
         }
     }

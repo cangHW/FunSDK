@@ -1,16 +1,13 @@
 package com.proxy.service.funsdk.webview
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.core.service.web.CsWeb
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -32,16 +29,6 @@ import com.proxy.service.widget.info.toast.CsToast
  * @desc:
  */
 class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
-
-    companion object {
-        fun launch(context: Context) {
-            val intent = Intent(context, WebViewActivity::class.java)
-            if (context is Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
 
 //    private val url = "file:///android_asset/web/test_bridge.html"
 //    private val url = "file:///android_asset/web/test_edittext.html"

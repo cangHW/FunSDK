@@ -2,9 +2,6 @@ package com.proxy.service.funsdk.permission
 
 import android.Manifest
 import android.app.Activity
-import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -26,16 +23,6 @@ import com.proxy.service.permission.base.manager.DialogFactory
 class PermissionActivity : BaseActivity<ActivityPermissionBinding>() {
 
     private val tag = "PermissionActivity"
-
-    companion object {
-        fun launch(context: Context) {
-            val intent = Intent(context, PermissionActivity::class.java)
-            if (context is Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityPermissionBinding {
         return ActivityPermissionBinding.inflate(inflater)

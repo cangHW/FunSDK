@@ -55,10 +55,15 @@ include(":DocumentsSDK:Pdf:DocumentPdfInfo")
 include(":DocumentsSDK:Image:DocumentImageBase")
 include(":DocumentsSDK:Image:DocumentImageInfo")
 
+include(":MediaSDK:Camera:CameraBase")
+include(":MediaSDK:Camera:CameraInfo")
+
 include(":LogFileSDK:LogFileSpdlogInfo")
 include(":LogFileSDK:LogFileXlogInfo")
 
 include(":ApmSDK:ApmInfo")
 include(":WidgetSDK:WidgetInfo")
+
+
 
 

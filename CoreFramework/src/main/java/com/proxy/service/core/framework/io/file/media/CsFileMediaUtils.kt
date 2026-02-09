@@ -13,7 +13,18 @@ import com.proxy.service.core.framework.io.file.media.compat.VideoStoreCompat
  * @data: 2024/12/31 11:51
  * @desc:
  *
- * 需要权限才能访问全部文件，否则只能访问当前应用关联的文件
+ * 需要权限才能访问对应文件，否则只能访问当前应用关联的文件
+ *
+ * 读取图片文件所需权限
+ * <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+ *
+ * 读取视频文件所需权限
+ * <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+ *
+ * 读取音频文件所需权限
+ * <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+ *
+ * 读取全部文件所需权限, 该权限受到限制
  * <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
  */
 object CsFileMediaUtils {

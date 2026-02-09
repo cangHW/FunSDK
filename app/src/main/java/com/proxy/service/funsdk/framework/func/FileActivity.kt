@@ -14,6 +14,7 @@ import com.proxy.service.core.framework.io.file.media.config.DataInfo
 import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.read.CsFileReadUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
+import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityFrameworkFileBinding
@@ -40,6 +41,16 @@ class FileActivity : BaseActivity<ActivityFrameworkFileBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkFileBinding {
         return ActivityFrameworkFileBinding.inflate(inflater)
+    }
+
+    override fun initView() {
+        super.initView()
+
+        CsPermission.createRequest()
+            ?.addPermission("android.permission.READ_MEDIA_IMAGES")
+            ?.addPermission("android.permission.READ_MEDIA_VIDEO")
+            ?.addPermission("android.permission.READ_MEDIA_AUDIO")
+            ?.start()
     }
 
     override fun onClick(view: View) {

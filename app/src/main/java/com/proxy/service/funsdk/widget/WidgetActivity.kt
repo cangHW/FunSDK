@@ -17,16 +17,6 @@ import com.proxy.service.funsdk.databinding.ActivityWidgetBinding
  */
 class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
 
-    companion object {
-        fun launch(context: Context) {
-            val intent = Intent(context, WidgetActivity::class.java)
-            if (context is Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
-
     override fun getViewBinding(inflater: LayoutInflater): ActivityWidgetBinding {
         return ActivityWidgetBinding.inflate(inflater)
     }

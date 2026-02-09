@@ -165,6 +165,21 @@ ext {
                     libraryDescription: "The perfect framework for Android"
             ],
 
+            // 相机
+            CameraBase    : [
+                    artifact          : "Service-Media-Camera",
+                    version           : "0.0.1",
+                    source            : true,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
+            ],
+            CameraInfo    : [
+                    artifact          : "Service-Media-Camera-Info",
+                    version           : "0.0.1",
+                    source            : false,
+                    libraryName       : "Android cloud sdk",
+                    libraryDescription: "The perfect framework for Android"
+            ],
 
             // 异常监控库
             ApmInfo    : [

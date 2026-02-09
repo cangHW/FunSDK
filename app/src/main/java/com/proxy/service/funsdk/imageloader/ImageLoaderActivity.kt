@@ -1,24 +1,17 @@
 package com.proxy.service.funsdk.imageloader
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatRadioButton
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.core.service.imageloader.CsImageLoader
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityImageLoaderBinding
 import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
-import com.proxy.service.imageloader.base.option.pag.callback.PagAnimationUpdateCallback
 import com.proxy.service.imageloader.base.option.pag.image.PagImageData
 import com.proxy.service.imageloader.base.option.pag.image.PagScaleMode
-import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
 import com.proxy.service.imageloader.base.option.pag.txt.PagTextFont
 
@@ -28,16 +21,6 @@ import com.proxy.service.imageloader.base.option.pag.txt.PagTextFont
  * @desc:
  */
 class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {
-
-    companion object {
-        fun launch(context: Context) {
-            val intent = Intent(context, ImageLoaderActivity::class.java)
-            if (context is Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 //        CsBarUtils.setNavigationBarTransparent(this)

@@ -1,8 +1,5 @@
 package com.proxy.service.funsdk.threadpool
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
@@ -25,16 +22,6 @@ import java.util.concurrent.TimeUnit
  * @desc:
  */
 class ThreadPoolActivity : BaseActivity<ActivityThreadPoolBinding>() {
-
-    companion object {
-        fun launch(context: Context) {
-            val intent = Intent(context, ThreadPoolActivity::class.java)
-            if (context is Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
 
     private var intervalDisposable: ITaskDisposable? = null
 

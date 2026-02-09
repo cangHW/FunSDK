@@ -1,8 +1,5 @@
 package com.proxy.service.funsdk.framework
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.funsdk.R
@@ -29,16 +26,6 @@ import com.proxy.service.funsdk.framework.func.UiActivity
  * @desc:
  */
 class FrameWorkActivity : BaseActivity<ActivityFrameworkBinding>() {
-
-    companion object {
-        fun launch(context: Context) {
-            val intent = Intent(context, FrameWorkActivity::class.java)
-            if (context is Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
-        }
-    }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityFrameworkBinding {
         return ActivityFrameworkBinding.inflate(inflater)
