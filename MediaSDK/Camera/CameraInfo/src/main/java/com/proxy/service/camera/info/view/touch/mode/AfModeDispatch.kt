@@ -1,26 +1,24 @@
-package com.proxy.service.camera.info.view.view
+package com.proxy.service.camera.info.view.touch.mode
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.proxy.service.camera.info.view.touch.base.BaseTouchDispatch
 import com.proxy.service.core.framework.app.resource.CsDpUtils
-import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.handler.option.IHandlerOption
 import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2026/2/8 15:59
+ * @data: 2026/2/11 10:11
  * @desc:
  */
-class TouchView : View {
+class AfModeDispatch(view: View, private val handler: IHandlerOption?) : BaseTouchDispatch(view) {
 
-    interface OnCameraTouchAfIntercept {
+    interface OnCameraAfIntercept {
         /**
          * 检测是否触发手动对焦
          * */
@@ -34,49 +32,31 @@ class TouchView : View {
 
     }
 
-    private val handler = CsTask.launchTaskGroup("Media-Camera-TouchView")
-    private var cameraTouchAfIntercept: OnCameraTouchAfIntercept? = null
-
     private var paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var afRect: RectF? = null
 
-    constructor(context: Context) : super(context)
+    private var cameraAfIntercept: OnCameraAfIntercept? = null
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    fun setOnCameraTouchAfIntercept(intercept: OnCameraTouchAfIntercept) {
-        this.cameraTouchAfIntercept = intercept
+    fun setOnCameraAfIntercept(intercept: OnCameraAfIntercept) {
+        this.cameraAfIntercept = intercept
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event == null) {
-            return false
-        }
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                afRect = cameraTouchAfIntercept?.onTouchAfIntercept(event)
-                afRect?.let {
-                    handler?.clearAllTaskWithTag(TASK_AF)
-                    postInvalidate()
-                    handler?.setDelay(TASK_AF_DELAY_SECONDS, TimeUnit.SECONDS)?.start(TASK_AF) {
-                        afRect = null
-                        postInvalidate()
-                    }
-                }
+    override fun onViewSingleTap(e: MotionEvent) {
+        super.onViewSingleTap(e)
+
+        afRect = cameraAfIntercept?.onTouchAfIntercept(e)
+        afRect?.let {
+            handler?.clearAllTaskWithTag(TASK_AF)
+            postInvalidate()
+            handler?.setDelay(TASK_AF_DELAY_SECONDS, TimeUnit.SECONDS)?.start(TASK_AF) {
+                afRect = null
+                postInvalidate()
             }
         }
-        return true
     }
 
-
-    override fun onDraw(canvas: Canvas) {
-//        super.onDraw(canvas)
-        drawAf(canvas)
-    }
-
-    private fun drawAf(canvas: Canvas) {
+    override fun onViewDraw(canvas: Canvas) {
         val rect = afRect ?: return
 
         val offsetW = rect.width() / 3

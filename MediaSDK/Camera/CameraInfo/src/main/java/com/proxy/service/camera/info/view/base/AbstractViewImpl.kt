@@ -10,12 +10,14 @@ import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.mode.CameraAfMode
 import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.base.mode.CameraViewAfMode
 import com.proxy.service.camera.base.mode.af.FocusAreaInfo
 import com.proxy.service.camera.base.view.IView
 import com.proxy.service.camera.info.CameraServiceImpl
 import com.proxy.service.camera.info.loader.CameraLoaderImpl
-import com.proxy.service.camera.info.view.view.TouchView
+import com.proxy.service.camera.info.view.touch.CameraTouchView
+import com.proxy.service.camera.info.view.touch.mode.AfModeDispatch
 
 /**
  * @author: cangHX
@@ -25,13 +27,13 @@ import com.proxy.service.camera.info.view.view.TouchView
 abstract class AbstractViewImpl(
     config: ViewConfig,
     private val owner: LifecycleOwner?
-) : IView, TouchView.OnCameraTouchAfIntercept {
+) : IView, AfModeDispatch.OnCameraAfIntercept {
 
     protected val tag = "${CameraConstants.TAG}View"
 
-    protected val cameraService = CameraServiceImpl()
-    private var cameraViewAfMode: CameraViewAfMode = config.getCameraViewAfMode()
-    protected val loader: ICameraLoader = CameraLoaderImpl(
+    protected val mCameraService = CameraServiceImpl()
+    private var mCameraViewAfMode: CameraViewAfMode = config.getCameraViewAfMode()
+    protected val mCameraLoader: ICameraLoader = CameraLoaderImpl(
         LoaderConfig.builder().apply {
             config.getCameraViewAfMode().toCameraAfMode()?.let {
                 setCameraAfMode(it)
@@ -39,22 +41,29 @@ abstract class AbstractViewImpl(
         }.build()
     )
 
-    protected var cameraFaceMode: CameraFaceMode = config.getCameraFaceMode()
+    protected var mCameraMode: CameraMode = config.getCameraMode()
+    protected var mCameraFaceMode: CameraFaceMode = config.getCameraFaceMode()
 
     /**
      * 初始化
      * */
     open fun init() {
+        mCameraLoader.openCamera(mCameraFaceMode)
         owner?.let {
-            loader.setLifecycleOwner(it)
+            mCameraLoader.setLifecycleOwner(it)
         }
     }
+
+    /**
+     * 开始预览
+     * */
+    protected abstract fun startPreview()
 
     /**
      * 检测是否触发手动对焦
      * */
     override fun onTouchAfIntercept(event: MotionEvent): RectF? {
-        val mode = cameraViewAfMode as? CameraViewAfMode.AfTouchMode? ?: return null
+        val mode = mCameraViewAfMode as? CameraViewAfMode.AfTouchMode? ?: return null
 
         val halfW = mode.width
         val halfH = mode.height
@@ -72,36 +81,44 @@ abstract class AbstractViewImpl(
                 FocusAreaInfo.WEIGHT_MAX
             )
         )
-        loader.setCameraAfMode(CameraAfMode.AfFixedMode(list))
+        mCameraLoader.setCameraAfMode(CameraAfMode.AfFixedMode(list))
 
         return RectF(x, y, event.x + halfW, event.y + halfH)
     }
 
+    override fun setCameraMode(mode: CameraMode) {
+        if (mCameraMode == mode) {
+            return
+        }
+        mCameraMode = mode
+        startPreview()
+    }
+
     override fun setCameraViewAfMode(mode: CameraViewAfMode) {
-        cameraViewAfMode = mode
+        mCameraViewAfMode = mode
         mode.toCameraAfMode()?.let {
-            loader.setCameraAfMode(it)
+            mCameraLoader.setCameraAfMode(it)
         }
     }
 
-    override fun capturePhoto(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
-        loader.capturePhoto(isSavePhotoAlbum, callback)
+    override fun takePicture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
+        mCameraLoader.takePicture(isSavePhotoAlbum, callback)
     }
 
     override fun openCamera(mode: CameraFaceMode) {
-        loader.openCamera(mode)
+        mCameraLoader.openCamera(mode)
     }
 
     override fun pausePreview() {
-        loader.pausePreview()
+        mCameraLoader.pausePreview()
     }
 
     override fun resumePreview() {
-        loader.resumePreview()
+        mCameraLoader.resumePreview()
     }
 
     override fun releaseCamera() {
-        loader.releaseCamera()
+        mCameraLoader.releaseCamera()
     }
 
 }

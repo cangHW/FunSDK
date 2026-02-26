@@ -1,4 +1,4 @@
-package com.proxy.service.widget.info.view.recyclerview
+package com.proxy.service.widget.info.view.recyclerview.decoration
 
 import android.graphics.Rect
 import android.view.View

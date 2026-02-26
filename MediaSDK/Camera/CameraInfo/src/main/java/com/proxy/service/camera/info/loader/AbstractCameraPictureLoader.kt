@@ -8,10 +8,9 @@ import com.proxy.service.camera.base.callback.TakePictureCallback
 import com.proxy.service.camera.base.config.loader.LoaderConfig
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraMode
-import com.proxy.service.camera.info.loader.manager.CapturePhotoController
+import com.proxy.service.camera.info.loader.manager.TakePictureController
 import com.proxy.service.camera.info.utils.CameraUtils
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.screen.CsScreenUtils
 
 /**
  * @author: cangHX
@@ -22,25 +21,25 @@ abstract class AbstractCameraPictureLoader(
     config: LoaderConfig
 ) : AbstractCameraPreviewLoader(config) {
 
-    private val capturePhotoController = CapturePhotoController.create()
+    private val takePictureController = TakePictureController.create()
 
     override fun findCaptureSessionSurfaces(list: ArrayList<Surface>) {
         super.findCaptureSessionSurfaces(list)
 
         if (cameraMode == CameraMode.PICTURE) {
-            capturePhotoController.getImageReader()?.let {
+            takePictureController.getImageReader()?.let {
                 list.add(it.surface)
             }
         }
     }
 
     override fun setPicturePreview(surface: Surface, width: Int, height: Int) {
-        capturePhotoController.refresh(width, height, handler)
+        takePictureController.refresh(width, height, handler)
         super.setPicturePreview(surface, width, height)
     }
 
-    override fun capturePhoto(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
-        CsLogger.tag(tag).i("capturePhoto. isSavePhotoAlbum=$isSavePhotoAlbum")
+    override fun takePicture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
+        CsLogger.tag(tag).i("takePicture. isSavePhotoAlbum=$isSavePhotoAlbum")
 
         if (cameraMode != CameraMode.PICTURE) {
             CsLogger.tag(tag).w("It is not in photo mode at present.")
@@ -48,15 +47,16 @@ abstract class AbstractCameraPictureLoader(
         }
 
         val device = cameraDevice ?: return
-        val imageReader = capturePhotoController.getImageReader() ?: return
-        capturePhotoController.setCapturePhotoParams(isSavePhotoAlbum, callback)
+        val imageReader = takePictureController.getImageReader() ?: return
+        takePictureController.setTakePictureParams(isSavePhotoAlbum, callback)
 
         try {
             val rotation = CameraUtils.calculateRotation(
                 cameraService.getSensorOrientation(cameraFaceMode),
-                CsScreenUtils.getScreenRotation(),
                 cameraFaceMode == CameraFaceMode.FaceFront
             )
+
+            CsLogger.tag(tag).i("拍照旋转 rotation = $rotation")
 
             val builder = device.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
             builder.addTarget(imageReader.surface)
@@ -72,7 +72,7 @@ abstract class AbstractCameraPictureLoader(
         super._releaseCamera()
 
         try {
-            capturePhotoController.close()
+            takePictureController.close()
         } catch (throwable: Throwable) {
             CsLogger.tag(tag).e(throwable)
         }

@@ -20,7 +20,7 @@ upArray=(
 #  ":WebViewSDK:WebViewInfo"
 #  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
-  ":WebViewSDK:WebViewMonitor"
+#  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
 #  ":Permission:PermissionInfo"
@@ -39,7 +39,7 @@ upArray=(
 #  ":DocumentsSDK:Pdf:DocumentPdfBase"
 
     # 视图 UI 库
-#  ":WidgetSDK:WidgetInfo"
+  ":WidgetSDK:WidgetInfo"
 )
 
 type_params="r"

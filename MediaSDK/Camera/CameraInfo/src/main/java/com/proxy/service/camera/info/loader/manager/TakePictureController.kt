@@ -23,13 +23,13 @@ import java.nio.ByteBuffer
  * @data: 2026/2/5 16:28
  * @desc:
  */
-class CapturePhotoController private constructor() {
+class TakePictureController private constructor() {
 
     companion object {
         private const val TAG = "${CameraConstants.TAG}Capture"
 
-        fun create(): CapturePhotoController {
-            return CapturePhotoController()
+        fun create(): TakePictureController {
+            return TakePictureController()
         }
     }
 
@@ -66,7 +66,7 @@ class CapturePhotoController private constructor() {
         return reader
     }
 
-    fun setCapturePhotoParams(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
+    fun setTakePictureParams(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
         this.isSavePhotoAlbum = isSavePhotoAlbum
         this.callback = callback
     }

@@ -14,6 +14,7 @@ import com.proxy.service.permission.base.manager.base.ISettingDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.fragment.SettingFragment
 import com.proxy.service.permission.info.utils.PermissionUtils
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
@@ -125,11 +126,16 @@ class SettingDialogImpl : ISettingDialog {
         }
     }
 
+    private val isUseOperate = AtomicBoolean(false)
+
     /**
      * 展示需要权限的理由
      * */
     override fun show(activity: FragmentActivity) {
         CsLogger.tag(tag).i("dialog is ready to show from activity : $activity")
+
+        isUseOperate.set(false)
+
         dialogInterface = Config.factory.showDialog(DialogFactory.MODE_SETTING,
             activity,
             title,
@@ -141,6 +147,7 @@ class SettingDialogImpl : ISettingDialog {
                         CsLogger.tag(tag).i("Left button click event has been taken over.")
                         return true
                     }
+                    isUseOperate.set(true)
                     deniedCallback?.onAction(permissions.toTypedArray())
                     dialog.dismiss()
                     return true
@@ -153,6 +160,7 @@ class SettingDialogImpl : ISettingDialog {
                         CsLogger.tag(tag).i("Right button click event has been taken over.")
                         return true
                     }
+                    isUseOperate.set(true)
                     dialog.dismiss()
                     CsLogger.tag(tag).i("Ready to launch setting page.")
                     if (activity.isFinishing) {
@@ -175,6 +183,10 @@ class SettingDialogImpl : ISettingDialog {
             },
             object : DialogDismissCallback {
                 override fun onDismiss() {
+                    if (!isUseOperate.get()) {
+                        deniedCallback?.onAction(permissions.toTypedArray())
+                    }
+
                     dialogDismissCallback?.onDismiss()
                 }
             })

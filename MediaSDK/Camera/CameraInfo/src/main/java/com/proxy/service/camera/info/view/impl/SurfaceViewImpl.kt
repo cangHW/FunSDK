@@ -21,8 +21,11 @@ class SurfaceViewImpl(
     override fun init() {
         super.init()
 
-        loader.openCamera(cameraFaceMode)
         view.holder.addCallback(surfaceHolderCallback)
+    }
+
+    override fun startPreview() {
+
     }
 
     private val surfaceHolderCallback=object :SurfaceHolder.Callback{
@@ -33,9 +36,9 @@ class SurfaceViewImpl(
 
         override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
             if (config.getCameraMode() == CameraMode.PICTURE) {
-                loader.setPicturePreview(holder.surface, width, height)
+                mCameraLoader.setPicturePreview(holder.surface, width, height)
             }else{
-                loader.setVideoPreview(holder.surface)
+                mCameraLoader.setVideoPreview(holder.surface)
             }
 
 

@@ -13,6 +13,7 @@ sealed class CameraFaceMode {
      * 后置摄像头
      * */
     object FaceBack : CameraFaceMode() {
+
         override fun getCameraId(): String? {
             return CameraFactory.getCameraFaceBackId()
         }
@@ -26,6 +27,7 @@ sealed class CameraFaceMode {
      * 前置摄像头
      * */
     object FaceFront : CameraFaceMode() {
+
         override fun getCameraId(): String? {
             return CameraFactory.getCameraFaceFrontId()
         }

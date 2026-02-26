@@ -5,6 +5,7 @@ import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.permission.base.PermissionService
 import com.proxy.service.permission.base.manager.DialogFactory
+import com.proxy.service.permission.base.manager.IAutoPermissionRequest
 import com.proxy.service.permission.base.manager.IPermissionRequest
 import com.proxy.service.permission.base.manager.base.IRationaleDialog
 import com.proxy.service.permission.base.manager.base.ISettingDialog
@@ -52,6 +53,13 @@ object CsPermission {
      * */
     fun createRequest(): IPermissionRequest? {
         return getService()?.createRequest()
+    }
+
+    /**
+     * 创建权限请求器, 用于请求权限, 并在用户拒绝或系统禁止申请时, 自动展示申请权限理由弹窗或跳转权限设置弹窗
+     * */
+    fun createAutoRequest(): IAutoPermissionRequest? {
+        return getService()?.createAutoRequest()
     }
 
     /**

@@ -21,6 +21,7 @@ class PermissionRequestImpl : IPermissionRequest {
     private val tag = "${PermConstants.LOG_TAG_START}IRequest"
 
     private val permissions = ArrayList<String>()
+
     private var grantedCallback: ActionCallback? = null
     private var deniedCallback: ActionCallback? = null
     private var noPromptCallback: ActionCallback? = null

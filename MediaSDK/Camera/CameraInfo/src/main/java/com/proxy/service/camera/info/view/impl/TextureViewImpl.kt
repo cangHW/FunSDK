@@ -1,6 +1,7 @@
 package com.proxy.service.camera.info.view.impl
 
 import android.graphics.Matrix
+import android.graphics.RectF
 import android.graphics.SurfaceTexture
 import android.util.Size
 import android.view.Surface
@@ -9,10 +10,10 @@ import android.view.TextureView.SurfaceTextureListener
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.mode.CameraMode
-import com.proxy.service.camera.base.mode.SensorOrientationMode
+import com.proxy.service.camera.info.utils.CameraUtils
 import com.proxy.service.camera.info.view.base.AbstractViewImpl
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.screen.CsScreenUtils
+
 
 /**
  * @author: cangHX
@@ -20,41 +21,49 @@ import com.proxy.service.core.framework.system.screen.CsScreenUtils
  * @desc:
  */
 class TextureViewImpl(
-    private val config: ViewConfig,
-    private val owner: LifecycleOwner?,
+    config: ViewConfig,
+    owner: LifecycleOwner?,
     private val view: TextureView
 ) : AbstractViewImpl(config, owner) {
+
+    private var _surface: SurfaceTexture? = null
+    private var _width: Int = view.width
+    private var _height: Int = view.height
 
     override fun init() {
         super.init()
 
-        loader.openCamera(cameraFaceMode)
         view.surfaceTextureListener = surfaceTextureListener
+    }
+
+    override fun startPreview() {
+        val surface = _surface ?: return
+
+        val supportSizes = mCameraService.getSupportedSizes(mCameraFaceMode)
+        val size = CameraUtils.calculatePreviewSize(supportSizes, _width, _height)
+        if (size == null) {
+            CsLogger.tag(tag).e("没有合适的预览尺寸.")
+            return
+        }
+        surface.setDefaultBufferSize(size.width, size.height)
+
+        if (mCameraMode == CameraMode.PICTURE) {
+            mCameraLoader.setPicturePreview(Surface(surface), size.width, size.height)
+        } else {
+            mCameraLoader.setVideoPreview(Surface(surface))
+        }
+
+        view.setTransform(createTransformImageMatrix(_width, _height, size))
     }
 
     private val surfaceTextureListener = object : SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
-            val supportSize = cameraService.getSupportedSizes(cameraFaceMode)
-            val size = chooseOptimalSize(supportSize, width, height)
-            if (size == null) {
-                CsLogger.tag(tag).e("没有合适的预览尺寸.")
-                return
-            }
-            surface.setDefaultBufferSize(size.width, size.height)
+            _surface = surface
+            _width = width
+            _height = height
 
-            if (config.getCameraMode() == CameraMode.PICTURE) {
-                loader.setPicturePreview(Surface(surface), size.width, size.height)
-            }else{
-                loader.setVideoPreview(Surface(surface))
-            }
-
-            val displayRotation = CsScreenUtils.getScreenRotation()
-            val matrix = Matrix()
-            val centerX = view.width / 2f
-            val centerY = view.height / 2f
-            matrix.postRotate(-displayRotation.degree * 90f, centerX, centerY)
-            view.setTransform(matrix)
+            startPreview()
         }
 
         override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
@@ -62,6 +71,7 @@ class TextureViewImpl(
         }
 
         override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
+            _surface = null
             return true
         }
 
@@ -70,47 +80,31 @@ class TextureViewImpl(
         }
     }
 
-    private fun chooseOptimalSize(
-        supportedSizes: List<Size>,
-        viewWidth: Int,
-        viewHeight: Int
-    ): Size? {
-        val maxWidth = 1920
-        val maxHeight = 1080
+    private fun createTransformImageMatrix(viewW: Int, viewH: Int, preferredSize: Size): Matrix {
+        val matrix = Matrix()
+        val textureRectF = RectF(0f, 0f, viewW.toFloat(), viewH.toFloat())
+        val previewRectF = RectF(
+            0f,
+            0f,
+            preferredSize.height.toFloat(),
+            preferredSize.width.toFloat()
+        )
+        val centerX = textureRectF.centerX()
+        val centerY = textureRectF.centerY()
+        previewRectF.offset(
+            centerX - previewRectF.centerX(),
+            centerY - previewRectF.centerY()
+        )
+        matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
 
-        val aspectRatio = when (cameraService.getSensorOrientation(cameraFaceMode)) {
-            SensorOrientationMode.ORIENTATION_0, SensorOrientationMode.ORIENTATION_180 -> {
-                viewWidth.toFloat() / viewHeight
-            }
+        val widthScale = viewW.toFloat() / preferredSize.width
+        val heightScale = viewH.toFloat() / preferredSize.height
 
-            else -> {
-                viewHeight.toFloat() / viewWidth
-            }
-        }
-//        val aspectRatio = if (viewWidth > viewHeight) {
-//            viewWidth.toFloat() / viewHeight
-//        } else {
-//            viewHeight.toFloat() / viewWidth
-//        }
+        val scale: Float = widthScale.coerceAtLeast(heightScale)
+        matrix.postScale(scale, scale, centerX, centerY)
 
-        var offset = Float.MAX_VALUE
-        var finalWidth = -1
-        var finalHeight = -1
-
-        supportedSizes.forEach {
-            val temp = Math.abs(it.width.toFloat() / it.height - aspectRatio)
-            if (temp < offset) {
-                offset = temp
-
-                finalWidth = it.width
-                finalHeight = it.height
-            }
-        }
-
-        if (finalWidth == -1 && finalHeight == -1) {
-            return null
-        }
-
-        return Size(finalWidth, finalHeight)
+        val rotate = CameraUtils.calculatePreviewRotation()
+        matrix.postRotate(rotate.toFloat(), centerX, centerY)
+        return matrix
     }
 }

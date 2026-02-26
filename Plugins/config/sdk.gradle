@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.2.4.2",
+                    version           : "1.2.4.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -104,14 +104,14 @@ ext {
             // 权限库
             PermissionBase    : [
                     artifact          : "Service-Permission",
-                    version           : "0.2.5",
+                    version           : "0.2.6",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             PermissionInfo    : [
                     artifact          : "Service-Permission-Info",
-                    version           : "0.2.5",
+                    version           : "0.2.6",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -193,7 +193,7 @@ ext {
             // 视图 UI 库
             WidgetInfo    : [
                     artifact          : "Service-Widget",
-                    version           : "0.0.18",
+                    version           : "0.0.18.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

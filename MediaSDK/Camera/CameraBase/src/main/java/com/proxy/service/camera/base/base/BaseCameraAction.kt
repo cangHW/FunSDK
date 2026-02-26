@@ -12,5 +12,5 @@ interface BaseCameraAction : BaseCamera {
     /**
      * 拍照
      * */
-    fun capturePhoto(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?)
+    fun takePicture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?)
 }

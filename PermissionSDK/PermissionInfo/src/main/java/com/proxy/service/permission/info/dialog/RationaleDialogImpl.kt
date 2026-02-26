@@ -12,6 +12,7 @@ import com.proxy.service.permission.base.manager.DialogFactory
 import com.proxy.service.permission.base.manager.base.IRationaleDialog
 import com.proxy.service.permission.info.config.Config
 import com.proxy.service.permission.info.request.PermissionRequestImpl
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
@@ -119,11 +120,16 @@ class RationaleDialogImpl : IRationaleDialog {
         }
     }
 
+    private val isUseOperate = AtomicBoolean(false)
+
     /**
      * 展示需要权限的理由
      * */
     override fun show(activity: FragmentActivity) {
         CsLogger.tag(tag).i("dialog is ready to show from activity: $activity")
+
+        isUseOperate.set(false)
+
         dialogInterface = Config.factory.showDialog(
             DialogFactory.MODE_RATIONALE,
             activity,
@@ -136,6 +142,7 @@ class RationaleDialogImpl : IRationaleDialog {
                         CsLogger.tag(tag).i("Left button click event has been taken over.")
                         return true
                     }
+                    isUseOperate.set(true)
                     deniedCallback?.onAction(permissionRequest.getPermissions())
                     dialog.dismiss()
                     return true
@@ -148,6 +155,7 @@ class RationaleDialogImpl : IRationaleDialog {
                         CsLogger.tag(tag).i("Right button click event has been taken over.")
                         return true
                     }
+                    isUseOperate.set(true)
                     dialog.dismiss()
                     CsLogger.tag(tag).i("Ready to launch request permission.")
                     if (activity.isFinishing) {
@@ -166,6 +174,10 @@ class RationaleDialogImpl : IRationaleDialog {
             },
             object : DialogDismissCallback {
                 override fun onDismiss() {
+                    if (!isUseOperate.get()) {
+                        deniedCallback?.onAction(permissionRequest.getPermissions())
+                    }
+
                     dialogDismissCallback?.onDismiss()
                 }
             }

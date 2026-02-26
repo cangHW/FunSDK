@@ -5,6 +5,7 @@ import android.view.SurfaceView
 import android.view.TextureView
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import com.proxy.service.camera.base.callback.ITouchDispatch
 import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.mode.ViewMode
 import com.proxy.service.camera.base.view.ICameraViewLoader
@@ -14,7 +15,7 @@ import com.proxy.service.camera.info.view.base.AbstractViewImpl
 import com.proxy.service.camera.info.view.impl.EmptyViewImpl
 import com.proxy.service.camera.info.view.impl.SurfaceViewImpl
 import com.proxy.service.camera.info.view.impl.TextureViewImpl
-import com.proxy.service.camera.info.view.view.TouchView
+import com.proxy.service.camera.info.view.touch.CameraTouchView
 
 /**
  * @author: cangHX
@@ -26,9 +27,15 @@ class CameraViewLoaderImpl(
 ) : ICameraViewLoader {
 
     private var lifecycleOwner: LifecycleOwner? = null
+    private var touchDispatch: ITouchDispatch? = null
 
     override fun setLifecycleOwner(owner: LifecycleOwner): ICameraViewLoader {
         this.lifecycleOwner = owner
+        return this
+    }
+
+    override fun setCustomTouchDispatch(touchDispatch: ITouchDispatch): ICameraViewLoader {
+        this.touchDispatch = touchDispatch
         return this
     }
 
@@ -55,8 +62,9 @@ class CameraViewLoaderImpl(
         val textureView = rootView.findViewById<TextureView>(R.id.view_texture)
         val viewImpl = TextureViewImpl(config, lifecycleOwner, textureView)
 
-        val touchView = rootView.findViewById<TouchView>(R.id.view_touch)
-        touchView.setOnCameraTouchAfIntercept(viewImpl)
+        val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.view_touch)
+        cameraTouchView.setCustomTouchDispatch(touchDispatch)
+        cameraTouchView.setOnCameraAfIntercept(viewImpl)
         return viewImpl
     }
 
@@ -66,8 +74,9 @@ class CameraViewLoaderImpl(
         val surfaceView = rootView.findViewById<SurfaceView>(R.id.view_surface)
         val viewImpl = SurfaceViewImpl(config, lifecycleOwner, surfaceView)
 
-        val touchView = rootView.findViewById<TouchView>(R.id.view_touch)
-        touchView.setOnCameraTouchAfIntercept(viewImpl)
+        val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.view_touch)
+        cameraTouchView.setCustomTouchDispatch(touchDispatch)
+        cameraTouchView.setOnCameraAfIntercept(viewImpl)
         return viewImpl
     }
 }

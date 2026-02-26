@@ -3,6 +3,7 @@ package com.proxy.service.camera.info.view.impl
 import com.proxy.service.camera.base.callback.TakePictureCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.base.mode.CameraViewAfMode
 import com.proxy.service.camera.base.view.IView
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -18,12 +19,16 @@ class EmptyViewImpl: IView {
         private const val TAG = "${CameraConstants.TAG}EmptyView"
     }
 
-    override fun setCameraViewAfMode(mode: CameraViewAfMode) {
-
+    override fun setCameraMode(mode: CameraMode) {
+        CsLogger.tag(TAG).i("setCameraMode. mode=$mode")
     }
 
-    override fun capturePhoto(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
-        CsLogger.tag(TAG).i("capturePhoto. isSavePhotoAlbum=$isSavePhotoAlbum")
+    override fun setCameraViewAfMode(mode: CameraViewAfMode) {
+        CsLogger.tag(TAG).i("setCameraViewAfMode. mode=$mode")
+    }
+
+    override fun takePicture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
+        CsLogger.tag(TAG).i("takePicture. isSavePhotoAlbum=$isSavePhotoAlbum")
     }
 
     override fun openCamera(mode: CameraFaceMode) {

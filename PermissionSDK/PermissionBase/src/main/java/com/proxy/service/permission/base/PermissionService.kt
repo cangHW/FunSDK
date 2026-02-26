@@ -2,6 +2,7 @@ package com.proxy.service.permission.base
 
 import com.proxy.service.base.BaseService
 import com.proxy.service.permission.base.manager.DialogFactory
+import com.proxy.service.permission.base.manager.IAutoPermissionRequest
 import com.proxy.service.permission.base.manager.IPermissionRequest
 import com.proxy.service.permission.base.manager.base.IRationaleDialog
 import com.proxy.service.permission.base.manager.base.ISettingDialog
@@ -22,6 +23,11 @@ interface PermissionService : BaseService {
      * 设置弹窗工厂
      * */
     fun setDialogFactory(factory: DialogFactory)
+
+    /**
+     * 创建权限请求器, 用于请求权限, 并在用户拒绝或系统禁止申请时, 自动展示申请权限理由弹窗或跳转权限设置弹窗, 最好配置旋转屏幕时不重建当前页面, 避免横屏页面跳转竖屏设置后返回等问题。
+     * */
+    fun createAutoRequest(): IAutoPermissionRequest
 
     /**
      * 创建权限请求器, 用于请求权限, 最好配置旋转屏幕时不重建当前页面, 避免横屏页面跳转竖屏设置后返回等问题。
