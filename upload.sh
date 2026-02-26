@@ -40,6 +40,10 @@ upArray=(
 
     # 视图 UI 库
   ":WidgetSDK:WidgetInfo"
+
+    # 媒体库
+  ":MediaSDK:Camera:CameraBase"
+  ":MediaSDK:Camera:CameraInfo"
 )
 
 type_params="r"
