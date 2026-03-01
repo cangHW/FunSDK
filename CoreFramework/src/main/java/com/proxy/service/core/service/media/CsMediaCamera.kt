@@ -15,6 +15,8 @@ import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
+ * 相机 加载框架入口
+ *
  * @author: cangHX
  * @data: 2026/2/26 16:20
  * @desc:
