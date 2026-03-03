@@ -17,7 +17,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @data: 2026/2/7 14:12
  * @desc:
  */
-abstract class AbstractCameraPictureLoader(
+abstract class AbstractCameraCaptureLoader(
     config: LoaderConfig
 ) : AbstractCameraPreviewLoader(config) {
 
@@ -26,23 +26,31 @@ abstract class AbstractCameraPictureLoader(
     override fun findCaptureSessionSurfaces(list: ArrayList<Surface>) {
         super.findCaptureSessionSurfaces(list)
 
-        if (cameraMode == CameraMode.PICTURE) {
+        if (cameraMode == CameraMode.CAPTURE) {
             takePictureController.getImageReader()?.let {
                 list.add(it.surface)
             }
         }
     }
 
-    override fun setPicturePreview(surface: Surface, width: Int, height: Int) {
+    override fun setPictureCaptureSize(width: Int, height: Int) {
+        CsLogger.tag(tag).i("setPictureCaptureSize. width=$width, height=$height")
+
+        if (takePictureController.isSizeSame(width, height)) {
+            return
+        }
+
         takePictureController.refresh(width, height, handler)
-        super.setPicturePreview(surface, width, height)
+        if (cameraMode == CameraMode.CAPTURE) {
+            reCreateCaptureSession()
+        }
     }
 
-    override fun takePicture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
-        CsLogger.tag(tag).i("takePicture. isSavePhotoAlbum=$isSavePhotoAlbum")
+    override fun startPictureCapture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
+        CsLogger.tag(tag).i("startPictureCapture. isSavePhotoAlbum=$isSavePhotoAlbum")
 
-        if (cameraMode != CameraMode.PICTURE) {
-            CsLogger.tag(tag).w("It is not in photo mode at present.")
+        if (cameraMode != CameraMode.CAPTURE) {
+            CsLogger.tag(tag).w("It is not in capture mode at present.")
             return
         }
 

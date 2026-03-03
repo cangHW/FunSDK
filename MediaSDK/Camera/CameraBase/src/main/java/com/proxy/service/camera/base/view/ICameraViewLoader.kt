@@ -24,6 +24,6 @@ interface ICameraViewLoader {
     /**
      * 创建相机 view 到 ViewGroup
      * */
-    fun createTo(viewGroup: ViewGroup?): IView
+    fun createTo(viewGroup: ViewGroup?): ICameraView
 
 }

@@ -5,7 +5,7 @@ import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.view.IView
+import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -13,10 +13,18 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @data: 2026/2/5 14:45
  * @desc:
  */
-class EmptyViewImpl: IView {
+class EmptyCameraViewImpl: ICameraView {
 
     companion object{
         private const val TAG = "${CameraConstants.TAG}EmptyView"
+    }
+
+    override fun setPictureCaptureSize(width: Int, height: Int) {
+        CsLogger.tag(TAG).i("setPictureCaptureSize. width=$width, height=$height")
+    }
+
+    override fun setPreviewSize(width: Int, height: Int) {
+        CsLogger.tag(TAG).i("setPreviewSize. width=$width, height=$height")
     }
 
     override fun setCameraMode(mode: CameraMode) {
@@ -27,8 +35,8 @@ class EmptyViewImpl: IView {
         CsLogger.tag(TAG).i("setCameraViewAfMode. mode=$mode")
     }
 
-    override fun takePicture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
-        CsLogger.tag(TAG).i("takePicture. isSavePhotoAlbum=$isSavePhotoAlbum")
+    override fun startPictureCapture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
+        CsLogger.tag(TAG).i("startPictureCapture. isSavePhotoAlbum=$isSavePhotoAlbum")
     }
 
     override fun openCamera(mode: CameraFaceMode) {

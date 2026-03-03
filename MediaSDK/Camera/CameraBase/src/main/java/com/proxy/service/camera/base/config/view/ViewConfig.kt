@@ -1,5 +1,6 @@
 package com.proxy.service.camera.base.config.view
 
+import android.util.Size
 import com.proxy.service.camera.base.config.view.builder.IBuilder
 import com.proxy.service.camera.base.config.view.builder.IBuilderGet
 import com.proxy.service.camera.base.constants.CameraConstants
@@ -16,6 +17,10 @@ import com.proxy.service.camera.base.mode.ViewMode
 class ViewConfig private constructor(
     private val builder: IBuilderGet
 ) : IBuilderGet {
+
+    override fun getAllUserSize(): List<UserSize> {
+        return builder.getAllUserSize()
+    }
 
     override fun getCameraFaceMode(): CameraFaceMode {
         return builder.getCameraFaceMode()
@@ -41,10 +46,22 @@ class ViewConfig private constructor(
 
     class Builder : IBuilder, IBuilderGet {
 
+        private val userSize = ArrayList<UserSize>()
+
         private var cameraFaceMode = CameraConstants.DEFAULT_CAMERA_FACE_MODE
         private var viewMode = CameraConstants.DEFAULT_VIEW_MODE
         private var cameraMode = CameraConstants.DEFAULT_CAMERA_MODE
         private var cameraViewAfMode: CameraViewAfMode = CameraConstants.DEFAULT_CAMERA_VIEW_AF_MODE
+
+        override fun setCameraPreviewSize(mode: CameraMode?, faceMode: CameraFaceMode?, size: Size): IBuilder {
+            userSize.add(UserPreviewSize(mode, faceMode, size))
+            return this
+        }
+
+        override fun setCameraOutSize(mode: CameraMode?, faceMode: CameraFaceMode?, size: Size): IBuilder {
+            userSize.add(UserOutSize(mode, faceMode, size))
+            return this
+        }
 
         override fun setCameraFaceMode(mode: CameraFaceMode): IBuilder {
             this.cameraFaceMode = mode
@@ -68,6 +85,10 @@ class ViewConfig private constructor(
 
         override fun build(): ViewConfig {
             return ViewConfig(this)
+        }
+
+        override fun getAllUserSize(): List<UserSize> {
+            return userSize
         }
 
         override fun getCameraFaceMode(): CameraFaceMode {

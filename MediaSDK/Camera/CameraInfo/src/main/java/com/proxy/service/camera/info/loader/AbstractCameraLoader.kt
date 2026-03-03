@@ -1,19 +1,15 @@
 package com.proxy.service.camera.info.loader
 
 import android.annotation.SuppressLint
-import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.os.Handler
 import android.os.HandlerThread
-import android.view.Surface
 import androidx.annotation.CallSuper
 import com.proxy.service.camera.base.config.loader.LoaderConfig
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.CameraFactory
 import com.proxy.service.camera.base.loader.ICameraLoader
-import com.proxy.service.camera.base.mode.CameraAfMode
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.af.FocusAreaInfo
 import com.proxy.service.camera.info.CameraServiceImpl
 import com.proxy.service.camera.info.loader.mode.EmptyCameraFaceMode
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -30,22 +26,21 @@ abstract class AbstractCameraLoader(
 
     protected val tag = "${CameraConstants.TAG}Loader"
 
-    protected val cameraService = CameraServiceImpl()
-
+    // 单线程
     private val handlerThread = HandlerThread("thread-${System.currentTimeMillis()}").apply {
         start()
     }
     protected val handler = Handler(handlerThread.looper)
 
-    protected var cameraFaceMode: CameraFaceMode = EmptyCameraFaceMode
+    //是否已释放
+    protected val isReleased = AtomicBoolean(false)
 
-    private val isReleased = AtomicBoolean(false)
+
+    protected val cameraService = CameraServiceImpl()
+    protected var cameraFaceMode: CameraFaceMode = EmptyCameraFaceMode
 
     @Volatile
     protected var cameraDevice: CameraDevice? = null
-
-    @Volatile
-    protected var cameraCaptureSession: CameraCaptureSession? = null
 
 
     final override fun openCamera(mode: CameraFaceMode) {
@@ -72,20 +67,6 @@ abstract class AbstractCameraLoader(
         }
         this.cameraFaceMode = mode
         CameraFactory.getCameraManager()?.openCamera(cameraId, cameraDeviceStateCallback, handler)
-    }
-
-
-    final override fun setCameraAfMode(mode: CameraAfMode) {
-        if (isReleased.get()) {
-            CsLogger.tag(tag).w("The camera has been released.")
-            return
-        }
-        CsLogger.tag(tag).i("setCameraAfMode. mode=$mode")
-        _setCameraAfMode(mode)
-    }
-
-    @CallSuper
-    protected open fun _setCameraAfMode(mode: CameraAfMode) {
     }
 
 
@@ -141,49 +122,30 @@ abstract class AbstractCameraLoader(
         releaseOldCamera()
     }
 
-
     /**
-     * 获取相机会话相关的 surface
+     * 释放旧相机
      * */
     @CallSuper
-    protected abstract fun findCaptureSessionSurfaces(list: ArrayList<Surface>)
-
-
-    protected fun releaseOldCamera() {
+    protected open fun releaseOldCamera() {
         CsLogger.tag(tag).i("releaseOldCamera")
         try {
             cameraDevice?.close()
-            cameraCaptureSession?.close()
 
-            CsLogger.tag(tag).i("releaseOldCamera end")
+            CsLogger.tag(tag).i("release cameraDevice end")
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            CsLogger.tag(tag).e(throwable, "release cameraDevice error")
         } finally {
             cameraDevice = null
-            cameraCaptureSession = null
         }
     }
 
-    protected fun createCaptureSession() {
-        CsLogger.tag(tag).i("createCaptureSession.")
-
-        try {
-            val list = ArrayList<Surface>()
-            findCaptureSessionSurfaces(list)
-            if (list.isEmpty()) {
-                return
-            }
-            cameraDevice?.createCaptureSession(list, cameraCaptureSessionStateCallback, handler)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable, "创建相机会话失败.")
-        }
-    }
 
     private val cameraDeviceStateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
             CsLogger.tag(tag).i("openCamera onOpened.")
             cameraDevice = camera
-            createCaptureSession()
+
+            reCreateCaptureSession()
         }
 
         override fun onDisconnected(camera: CameraDevice) {
@@ -206,18 +168,4 @@ abstract class AbstractCameraLoader(
         }
     }
 
-    private val cameraCaptureSessionStateCallback = object : CameraCaptureSession.StateCallback() {
-        override fun onConfigured(session: CameraCaptureSession) {
-            CsLogger.tag(tag).i("createCaptureSession onConfigured.")
-            cameraCaptureSession = session
-
-            resumePreview()
-        }
-
-        override fun onConfigureFailed(session: CameraCaptureSession) {
-            CsLogger.tag(tag).e("createCaptureSession onConfigureFailed.")
-
-            releaseOldCamera()
-        }
-    }
 }

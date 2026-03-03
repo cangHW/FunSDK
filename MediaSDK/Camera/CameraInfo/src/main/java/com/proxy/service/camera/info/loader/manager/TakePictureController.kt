@@ -33,14 +33,24 @@ class TakePictureController private constructor() {
         }
     }
 
+    private var width: Int? = null
+    private var height: Int? = null
     private var reader: ImageReader? = null
 
     private var isSavePhotoAlbum: Boolean = true
     private var callback: TakePictureCallback? = null
 
+    fun isSizeSame(width: Int, height: Int): Boolean {
+        return this.width == width && this.height == height
+    }
+
     fun refresh(width: Int, height: Int, handler: Handler) {
+        CsLogger.tag(TAG).i("ImageReader. width=$width, height=$height")
+
         close()
         reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)
+        this.width = width
+        this.height = height
         reader?.setOnImageAvailableListener({ reader ->
             val image = reader.acquireLatestImage()
             try {

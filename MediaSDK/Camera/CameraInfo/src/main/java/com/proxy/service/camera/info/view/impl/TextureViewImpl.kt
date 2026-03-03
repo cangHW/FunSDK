@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.info.utils.CameraUtils
-import com.proxy.service.camera.info.view.base.AbstractViewImpl
+import com.proxy.service.camera.info.view.base.AbstractCameraActionView
 import com.proxy.service.core.framework.data.log.CsLogger
 
 
@@ -24,7 +24,7 @@ class TextureViewImpl(
     config: ViewConfig,
     owner: LifecycleOwner?,
     private val view: TextureView
-) : AbstractViewImpl(config, owner) {
+) : AbstractCameraActionView(config, owner) {
 
     private var _surface: SurfaceTexture? = null
     private var _width: Int = view.width
@@ -39,21 +39,29 @@ class TextureViewImpl(
     override fun startPreview() {
         val surface = _surface ?: return
 
-        val supportSizes = mCameraService.getSupportedSizes(mCameraFaceMode)
-        val size = CameraUtils.calculatePreviewSize(supportSizes, _width, _height)
-        if (size == null) {
+        val previewSize = getCalculatePreviewSize(_width, _height)
+        val outSize = getCalculateOutSize(_width, _height)
+
+        if (previewSize == null) {
             CsLogger.tag(tag).e("没有合适的预览尺寸.")
             return
         }
-        surface.setDefaultBufferSize(size.width, size.height)
 
-        if (mCameraMode == CameraMode.PICTURE) {
-            mCameraLoader.setPicturePreview(Surface(surface), size.width, size.height)
-        } else {
-            mCameraLoader.setVideoPreview(Surface(surface))
+        if (outSize == null) {
+            CsLogger.tag(tag).e("没有合适的拍照尺寸.")
+            return
         }
 
-        view.setTransform(createTransformImageMatrix(_width, _height, size))
+        if (mCameraMode == CameraMode.CAPTURE) {
+            mCameraLoader.setPictureCaptureSize(outSize.width, outSize.height)
+        } else {
+            mCameraLoader.setVideoRecordSize(outSize.width, outSize.height)
+        }
+
+        view.setTransform(createTransformImageMatrix(_width, _height, previewSize))
+
+        surface.setDefaultBufferSize(previewSize.width, previewSize.height)
+        mCameraLoader.setPreviewSurface(Surface(surface), mCameraMode)
     }
 
     private val surfaceTextureListener = object : SurfaceTextureListener {

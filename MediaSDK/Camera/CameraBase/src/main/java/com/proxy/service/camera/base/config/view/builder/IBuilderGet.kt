@@ -1,5 +1,6 @@
 package com.proxy.service.camera.base.config.view.builder
 
+import com.proxy.service.camera.base.config.view.UserSize
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.base.mode.CameraViewAfMode
@@ -11,6 +12,11 @@ import com.proxy.service.camera.base.mode.ViewMode
  * @desc:
  */
 interface IBuilderGet {
+
+    /**
+     * 获取全部用户设置的尺寸
+     * */
+    fun getAllUserSize(): List<UserSize>
 
     /**
      * 获取默认摄像头

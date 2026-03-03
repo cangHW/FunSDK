@@ -1,7 +1,9 @@
 package com.proxy.service.camera.info.utils
 
 import android.util.Size
+import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.SensorOrientationMode
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import kotlin.math.abs
 
@@ -12,6 +14,8 @@ import kotlin.math.abs
  * @desc:
  */
 object CameraUtils {
+
+    private const val TAG = "${CameraConstants.TAG}Utils"
 
     /**
      * 获取拍照时的旋转角度
@@ -36,12 +40,14 @@ object CameraUtils {
     /**
      * 获取最佳预览尺寸
      * */
-     fun calculatePreviewSize(
+    fun calculatePreviewSize(
         supportedSizes: List<Size>,
         viewWidth: Int,
         viewHeight: Int
     ): Size? {
         val aspectRatio = checkRatio(viewWidth, viewHeight)
+        CsLogger.tag(TAG)
+            .d("calculatePreviewSize. viewWidth=$viewWidth, viewHeight=$viewHeight, aspectRatio=$aspectRatio")
 
         var offset = Float.MAX_VALUE
         var finalWidth = -1
@@ -51,11 +57,17 @@ object CameraUtils {
             val cameraRatio = checkRatio(it.width, it.height)
             val temp = abs(cameraRatio - aspectRatio)
             if (temp <= offset) {
-                offset = temp
-                if (it.width > finalWidth && it.height > finalHeight) {
+                if (offset != temp) {
                     finalWidth = it.width
                     finalHeight = it.height
+                } else {
+                    if (it.width > finalWidth && it.height > finalHeight) {
+                        finalWidth = it.width
+                        finalHeight = it.height
+                    }
                 }
+
+                offset = temp
             }
         }
 
@@ -67,11 +79,12 @@ object CameraUtils {
     }
 
     private fun checkRatio(width: Int, height: Int): Float {
-        return if (width > height) {
-            width.toFloat() / height
-        } else {
-            height.toFloat() / width
-        }
+        return width.toFloat() / height
+//        return if (width > height) {
+//            width.toFloat() / height
+//        } else {
+//            height.toFloat() / width
+//        }
     }
 
 }

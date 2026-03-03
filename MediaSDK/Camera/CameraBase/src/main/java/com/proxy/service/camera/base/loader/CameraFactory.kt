@@ -1,8 +1,10 @@
 package com.proxy.service.camera.base.loader
 
+import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.media.MediaRecorder
 import android.util.Size
 import androidx.appcompat.app.AppCompatActivity.CAMERA_SERVICE
 import com.proxy.service.camera.base.constants.CameraConstants
@@ -25,7 +27,9 @@ object CameraFactory {
     private var faceBackId: String? = null
     private var faceFrontId: String? = null
 
-    private val supportedSizesMap = HashMap<String, List<Size>>()
+    private val supportedPreviewSizesMap = HashMap<String, List<Size>>()
+    private val supportedCaptureSizesMap = HashMap<String, List<Size>>()
+    private val supportedRecordSizesMap = HashMap<String, List<Size>>()
 
     /**
      * 相机管理类
@@ -55,17 +59,57 @@ object CameraFactory {
     }
 
     /**
-     * 获取摄像头支持的图片尺寸
+     * 获取摄像头支持的预览尺寸
      * */
-    fun getSupportedSizes(cameraId: String): List<Size>? {
-        val size = supportedSizesMap.get(cameraId)
+    fun getSupportedPreviewSizes(cameraId: String): List<Size>? {
+        val size = supportedPreviewSizesMap.get(cameraId)
         if (size != null) {
             return size
         }
         val characteristics = manager?.getCameraCharacteristics(cameraId)
         val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
         val supportedSizes = map?.getOutputSizes(SurfaceTexture::class.java)
-        return supportedSizes?.toList()
+        val list = supportedSizes?.toList()
+        list?.let {
+            supportedPreviewSizesMap.put(cameraId, it)
+        }
+        return list
+    }
+
+    /**
+     * 获取摄像头支持的拍照尺寸
+     * */
+    fun getSupportedCaptureSizes(cameraId: String): List<Size>? {
+        val size = supportedCaptureSizesMap.get(cameraId)
+        if (size != null) {
+            return size
+        }
+        val characteristics = manager?.getCameraCharacteristics(cameraId)
+        val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+        val supportedSizes = map?.getOutputSizes(ImageFormat.JPEG)
+        val list = supportedSizes?.toList()
+        list?.let {
+            supportedCaptureSizesMap.put(cameraId, it)
+        }
+        return list
+    }
+
+    /**
+     * 获取摄像头支持的视频尺寸
+     * */
+    fun getSupportedRecordSizes(cameraId: String): List<Size>? {
+        val size = supportedRecordSizesMap.get(cameraId)
+        if (size != null) {
+            return size
+        }
+        val characteristics = manager?.getCameraCharacteristics(cameraId)
+        val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+        val supportedSizes = map?.getOutputSizes(MediaRecorder::class.java)
+        val list = supportedSizes?.toList()
+        list?.let {
+            supportedRecordSizesMap.put(cameraId, it)
+        }
+        return list
     }
 
     /**

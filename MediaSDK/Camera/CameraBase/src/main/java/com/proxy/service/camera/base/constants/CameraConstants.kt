@@ -15,7 +15,7 @@ object CameraConstants {
 
     const val TAG = "Media_Camera_"
 
-    val DEFAULT_CAMERA_MODE: CameraMode = CameraMode.PICTURE
+    val DEFAULT_CAMERA_MODE: CameraMode = CameraMode.CAPTURE
 
     val DEFAULT_CAMERA_FACE_MODE: CameraFaceMode = CameraFaceMode.FaceBack
 

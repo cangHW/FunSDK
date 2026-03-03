@@ -40,10 +40,24 @@ object CsMediaCamera {
 
 
     /**
-     * 获取摄像头支持的图片尺寸
+     * 获取摄像头支持的预览尺寸
      * */
-    fun getSupportedSizes(mode: CameraFaceMode): List<Size>? {
-        return getService()?.getSupportedSizes(mode)
+    fun getSupportedPreviewSizes(mode: CameraFaceMode): List<Size>? {
+        return getService()?.getSupportedPreviewSizes(mode)
+    }
+
+    /**
+     * 获取摄像头支持的拍照图片尺寸
+     * */
+    fun getSupportedCaptureSizes(mode: CameraFaceMode): List<Size>? {
+        return getService()?.getSupportedCaptureSizes(mode)
+    }
+
+    /**
+     * 获取摄像头支持的录制视频尺寸
+     * */
+    fun getSupportedRecordSizes(mode: CameraFaceMode): List<Size>? {
+        return getService()?.getSupportedRecordSizes(mode)
     }
 
     /**

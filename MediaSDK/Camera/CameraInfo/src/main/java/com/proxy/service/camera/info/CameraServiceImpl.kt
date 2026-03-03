@@ -28,7 +28,7 @@ class CameraServiceImpl : CameraService {
 
     private val tag = "${CameraConstants.TAG}Service"
 
-    override fun getSupportedSizes(mode: CameraFaceMode): List<Size> {
+    override fun getSupportedPreviewSizes(mode: CameraFaceMode): List<Size> {
         val cameraId = mode.getCameraId()
         if (cameraId.isNullOrEmpty()) {
             CsLogger.tag(tag)
@@ -36,7 +36,29 @@ class CameraServiceImpl : CameraService {
             return arrayListOf()
         }
 
-        return CameraFactory.getSupportedSizes(cameraId) ?: arrayListOf()
+        return CameraFactory.getSupportedPreviewSizes(cameraId) ?: arrayListOf()
+    }
+
+    override fun getSupportedCaptureSizes(mode: CameraFaceMode): List<Size> {
+        val cameraId = mode.getCameraId()
+        if (cameraId.isNullOrEmpty()) {
+            CsLogger.tag(tag)
+                .e("当前摄像头模式不支持. cameraId=$cameraId, desc=${mode.getCameraDesc()}")
+            return arrayListOf()
+        }
+
+        return CameraFactory.getSupportedCaptureSizes(cameraId) ?: arrayListOf()
+    }
+
+    override fun getSupportedRecordSizes(mode: CameraFaceMode): List<Size> {
+        val cameraId = mode.getCameraId()
+        if (cameraId.isNullOrEmpty()) {
+            CsLogger.tag(tag)
+                .e("当前摄像头模式不支持. cameraId=$cameraId, desc=${mode.getCameraDesc()}")
+            return arrayListOf()
+        }
+
+        return CameraFactory.getSupportedRecordSizes(cameraId) ?: arrayListOf()
     }
 
     override fun getSensorOrientation(mode: CameraFaceMode): SensorOrientationMode {

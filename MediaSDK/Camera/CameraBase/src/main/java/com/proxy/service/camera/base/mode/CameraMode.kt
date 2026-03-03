@@ -15,12 +15,12 @@ enum class CameraMode(
     /**
      * 拍照
      * */
-    PICTURE("照片", R.drawable.cs_camera_base_capture_photo),
+    CAPTURE("照片", R.drawable.cs_camera_base_capture_photo),
 
     /**
      * 录像
      * */
-    VIDEO("录像", 0);
+    RECORD("录像", 0);
 
     /**
      * 获取模式名称
@@ -39,8 +39,8 @@ enum class CameraMode(
     companion object {
         fun getAll(): List<CameraMode> {
             val list = ArrayList<CameraMode>()
-            list.add(PICTURE)
-            list.add(VIDEO)
+            list.add(CAPTURE)
+            list.add(RECORD)
             return list
         }
     }

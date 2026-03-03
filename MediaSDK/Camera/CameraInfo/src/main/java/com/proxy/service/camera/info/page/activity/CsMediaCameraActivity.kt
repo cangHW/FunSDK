@@ -2,6 +2,7 @@ package com.proxy.service.camera.info.page.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Size
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.base.mode.CameraViewAfMode
 import com.proxy.service.camera.base.mode.ViewMode
-import com.proxy.service.camera.base.view.IView
+import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.CameraServiceImpl
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.page.adapter.CameraModeListAdapter
@@ -51,7 +52,7 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
     protected val service = CameraServiceImpl()
     protected var params: MediaCameraParams = MediaCameraParams()
     protected var cameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
-    protected var iView: IView? = null
+    protected var iCameraView: ICameraView? = null
 
     private var cameraModeList: CsCenterSelectRecyclerView? = null
 
@@ -97,7 +98,7 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
                 CameraFaceMode.FaceBack
             }
 
-            iView?.openCamera(cameraFaceMode)
+            iCameraView?.openCamera(cameraFaceMode)
         }
 
         cameraModeList = findViewById(R.id.camera_mode_list)
@@ -114,11 +115,11 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
         val viewGroup = findViewById<ViewGroup>(R.id.cs_media_camera)
         val config = ViewConfig.builder()
             .setCameraFaceMode(cameraFaceMode)
-            .setCameraMode(CameraMode.PICTURE)
+            .setCameraMode(CameraMode.CAPTURE)
             .setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
             .setViewMode(ViewMode.TEXTURE_VIEW)
             .build()
-        iView = service.createViewLoader(config)
+        iCameraView = service.createViewLoader(config)
             .setCustomTouchDispatch(customTouchDispatch)
             .setLifecycleOwner(this)
             .createTo(viewGroup)
@@ -222,13 +223,13 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
             .i("onSelectionChanged. oldPosition=$oldPosition, newPosition=$newPosition")
 
         params.supportCameraModes.getOrNull(newPosition)?.let {
-            iView?.setCameraMode(it)
+            iCameraView?.setCameraMode(it)
         }
     }
 
     override fun onItemClick(data: CameraMode) {
-        if (data == CameraMode.PICTURE) {
-            iView?.takePicture(false, this)
+        if (data == CameraMode.CAPTURE) {
+            iCameraView?.startPictureCapture(false, this)
         }
     }
 }

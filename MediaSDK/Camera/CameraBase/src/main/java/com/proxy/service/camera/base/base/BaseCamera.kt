@@ -1,7 +1,6 @@
 package com.proxy.service.camera.base.base
 
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.af.FocusAreaInfo
 
 /**
  * @author: cangHX

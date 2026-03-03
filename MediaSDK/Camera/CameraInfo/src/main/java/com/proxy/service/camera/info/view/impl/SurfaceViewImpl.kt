@@ -4,8 +4,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.config.view.ViewConfig
-import com.proxy.service.camera.base.mode.CameraMode
-import com.proxy.service.camera.info.view.base.AbstractViewImpl
+import com.proxy.service.camera.info.view.base.AbstractCameraActionView
 
 /**
  * @author: cangHX
@@ -16,7 +15,7 @@ class SurfaceViewImpl(
     private val config: ViewConfig,
     private val owner: LifecycleOwner?,
     private val view: SurfaceView
-) : AbstractViewImpl(config, owner) {
+) : AbstractCameraActionView(config, owner) {
 
     override fun init() {
         super.init()
@@ -35,11 +34,11 @@ class SurfaceViewImpl(
         }
 
         override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-            if (config.getCameraMode() == CameraMode.PICTURE) {
-                mCameraLoader.setPicturePreview(holder.surface, width, height)
-            }else{
-                mCameraLoader.setVideoPreview(holder.surface)
-            }
+//            if (config.getCameraMode() == CameraMode.PICTURE) {
+//                mCameraLoader.setPicturePreview(holder.surface, width, height)
+//            }else{
+//                mCameraLoader.setVideoPreview(holder.surface)
+//            }
 
 
 //            val sensorOrientation = loader.getSensorOrientation(cameraFaceMode)

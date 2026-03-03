@@ -9,10 +9,10 @@ import com.proxy.service.camera.base.callback.ITouchDispatch
 import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.mode.ViewMode
 import com.proxy.service.camera.base.view.ICameraViewLoader
-import com.proxy.service.camera.base.view.IView
+import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.R
-import com.proxy.service.camera.info.view.base.AbstractViewImpl
-import com.proxy.service.camera.info.view.impl.EmptyViewImpl
+import com.proxy.service.camera.info.view.base.AbstractCameraActionView
+import com.proxy.service.camera.info.view.impl.EmptyCameraViewImpl
 import com.proxy.service.camera.info.view.impl.SurfaceViewImpl
 import com.proxy.service.camera.info.view.impl.TextureViewImpl
 import com.proxy.service.camera.info.view.touch.CameraTouchView
@@ -39,12 +39,12 @@ class CameraViewLoaderImpl(
         return this
     }
 
-    override fun createTo(viewGroup: ViewGroup?): IView {
+    override fun createTo(viewGroup: ViewGroup?): ICameraView {
         if (viewGroup == null) {
-            return EmptyViewImpl()
+            return EmptyCameraViewImpl()
         }
 
-        val iView: AbstractViewImpl? = if (config.getViewMode() == ViewMode.TEXTURE_VIEW) {
+        val iView: AbstractCameraActionView? = if (config.getViewMode() == ViewMode.TEXTURE_VIEW) {
             createByTextureView(viewGroup)
         } else if (config.getViewMode() == ViewMode.SURFACE_VIEW) {
             createBySurfaceView(viewGroup)
@@ -53,10 +53,10 @@ class CameraViewLoaderImpl(
         }
 
         iView?.init()
-        return iView ?: EmptyViewImpl()
+        return iView ?: EmptyCameraViewImpl()
     }
 
-    private fun createByTextureView(viewGroup: ViewGroup): AbstractViewImpl {
+    private fun createByTextureView(viewGroup: ViewGroup): AbstractCameraActionView {
         val rootView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.cs_camera_info_view_texture, viewGroup, true)
         val textureView = rootView.findViewById<TextureView>(R.id.view_texture)
@@ -68,7 +68,7 @@ class CameraViewLoaderImpl(
         return viewImpl
     }
 
-    private fun createBySurfaceView(viewGroup: ViewGroup): AbstractViewImpl {
+    private fun createBySurfaceView(viewGroup: ViewGroup): AbstractCameraActionView {
         val rootView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.cs_camera_info_view_surface, viewGroup, true)
         val surfaceView = rootView.findViewById<SurfaceView>(R.id.view_surface)
