@@ -64,6 +64,11 @@ class DownloadException private constructor(
         const val SOCKET_TIME_OUT = 1015
 
         /**
+         * 连接失败
+         * */
+        const val CONNECT_FAILED = 1020
+
+        /**
          * 创建文件失败
          * */
         const val CREATE_FILE_FAILURE = 1050

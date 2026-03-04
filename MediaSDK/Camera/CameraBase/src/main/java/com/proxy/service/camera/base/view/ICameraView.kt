@@ -1,5 +1,6 @@
 package com.proxy.service.camera.base.view
 
+import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.base.BaseCamera
 import com.proxy.service.camera.base.callback.TakePictureCallback
 import com.proxy.service.camera.base.mode.CameraMode
@@ -13,7 +14,7 @@ import com.proxy.service.camera.base.mode.CameraViewAfMode
 interface ICameraView : BaseCamera {
 
     /**
-     * 设置预览尺寸, 针对当前相机模式与方向有效
+     * 设置预览尺寸, 针对当前相机模式与方向有效, 来源 [CameraService.getSupportedPreviewSizes]
      * */
     fun setPreviewSize(width: Int, height: Int)
 
@@ -28,7 +29,7 @@ interface ICameraView : BaseCamera {
     fun setCameraViewAfMode(mode: CameraViewAfMode)
 
     /**
-     * 设置拍照图片尺寸, 针对当前相机模式与方向有效
+     * 设置拍照图片尺寸, 针对当前相机模式与方向有效, 来源 [CameraService.getSupportedCaptureSizes]
      * */
     fun setPictureCaptureSize(width: Int, height: Int)
 

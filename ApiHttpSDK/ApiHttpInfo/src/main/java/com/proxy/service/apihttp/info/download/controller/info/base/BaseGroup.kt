@@ -16,8 +16,6 @@ abstract class BaseGroup : Comparator<DownloadTask> {
     protected val groupCache = GroupCache<DownloadTask> { o1, o2 ->
         o1.getPriority().compareTo(o2.getPriority())
     }
-//    protected val waitingTasks = ArrayList<DownloadTask>()
-//    protected val runningTasks = ArrayList<DownloadTask>()
 
     /**
      * 获取第一个任务

@@ -1,5 +1,6 @@
 package com.proxy.service.apihttp.info.download.utils
 
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 
 /**
@@ -25,7 +26,7 @@ object TaskUtils {
         if (src.getFilePath() != dest.getFilePath()) {
             return false
         }
-        if (src.getFileSize() != 0L && dest.getFileSize() != 0L) {
+        if (src.getFileSize() != ApiConstants.Download.TOTAL_FILE_SIZE && dest.getFileSize() != ApiConstants.Download.TOTAL_FILE_SIZE) {
             if (src.getFileSize() != dest.getFileSize()) {
                 return false
             }

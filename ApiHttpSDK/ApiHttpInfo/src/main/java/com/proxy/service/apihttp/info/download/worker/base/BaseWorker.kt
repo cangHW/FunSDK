@@ -2,6 +2,7 @@ package com.proxy.service.apihttp.info.download.worker.base
 
 import androidx.annotation.WorkerThread
 import com.proxy.service.apihttp.base.common.DownloadException
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @desc:
  */
 abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
+
     companion object {
         const val TASK_RUNNING = "running"
         const val TASK_FINISH = "finish"
@@ -114,7 +116,7 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
     @WorkerThread
     protected fun endTaskCheck(filePath: String) {
         CsLogger.tag(tag).i("开始检查文件长度. path = $filePath")
-        if (task.getFileSize() != 0L) {
+        if (task.getFileSize() != ApiConstants.Download.TOTAL_FILE_SIZE) {
             if (task.getFileSize() != CsFileUtils.length(filePath)) {
                 CsLogger.tag(tag).i("文件长度不一致, 删除对应文件. path = $filePath")
                 CsFileUtils.delete(filePath)

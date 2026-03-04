@@ -16,7 +16,7 @@ interface IWorker {
     /**
      * 配置任务完成回调
      * */
-    fun setOnFinishedCallback(callback: IWorker.TaskWorkerFinishCallback)
+    fun setOnFinishedCallback(callback: TaskWorkerFinishCallback)
 
     /**
      * 开始任务
@@ -33,5 +33,5 @@ interface IWorker {
     /**
      * 获取当前任务绑定的 DownloadTask
      * */
-    fun getDownloadTask():DownloadTask
+    fun getDownloadTask(): DownloadTask
 }

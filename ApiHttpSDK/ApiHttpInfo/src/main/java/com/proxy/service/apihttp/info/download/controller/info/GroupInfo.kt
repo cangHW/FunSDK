@@ -34,18 +34,16 @@ open class GroupInfo(
         val oldTask = DownloadRoom.INSTANCE.getTaskDao().query(task.getTaskTag())?.getDownloadTask()
         if (oldTask != null) {
             if (!TaskUtils.checkIsSame(task, oldTask)) {
-                if (task.getFilePath() != oldTask.getFilePath()) {
-                    CsFileUtils.delete(oldTask.getFilePath())
-                    CsFileUtils.delete(FileUtils.getTempPath(oldTask.getFilePath()))
-                }
+                CsFileUtils.delete(oldTask.getFilePath())
+                CsFileUtils.delete(FileUtils.getTempPath(oldTask.getFilePath()))
                 DownloadRoom.INSTANCE.getTaskDao().updateDownloadTask(task)
-                CsLogger.tag(tag)
-                    .d("该任务与上次记录信息不一致, 已覆盖上次信息")
+                CsLogger.tag(tag).w("该任务与上次记录信息不一致, 已覆盖上次信息, 并移除已存在缓存")
+            } else {
+                CsLogger.tag(tag).d("该任务与上次记录信息一致")
             }
         } else {
             DownloadRoom.INSTANCE.getTaskDao().updateDownloadTask(task)
-            CsLogger.tag(tag)
-                .d("该任务为首次添加, 任务信息记录完成")
+            CsLogger.tag(tag).d("该任务为首次添加, 任务信息记录完成")
         }
 
         CsLogger.tag(tag).d("任务添加完成. taskTag = ${task.getTaskTag()}")

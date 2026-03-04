@@ -82,7 +82,7 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         }
     }
 
-    private class Builder(downloadUrl: String) : IBuilder, IBuilderGet {
+    class Builder(downloadUrl: String) : IBuilder, IBuilderGet {
 
         private var groupName: String = ""
 
@@ -96,7 +96,7 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         private var fileName: String = ""
 
         private var fileMd5: String = ""
-        private var fileSize: Long = 0
+        private var fileSize: Long = ApiConstants.Download.TOTAL_FILE_SIZE
 
         private var multiPartEnable: Boolean = false
 
@@ -174,7 +174,9 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         }
 
         override fun setFileSize(fileSize: Long): IBuilder {
-            this.fileSize = fileSize
+            if (fileSize > 0) {
+                this.fileSize = fileSize
+            }
             return this
         }
 
@@ -187,10 +189,15 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
             if (taskTag.isEmpty()) {
                 taskTag = CsMd5Utils.getMD5(downloadUrl)
             }
+            checkMultiPartEnable()
+            return DownloadTask(this)
+        }
+
+        fun checkMultiPartEnable() {
             if (multiPartEnable) {
                 val minSizeForMultiPart =
                     ApiConstants.Download.FILE_PART_SIZE * (ApiConstants.Download.MIN_PART_NUM - 1)
-                if (fileSize <= minSizeForMultiPart) {
+                if (fileSize != ApiConstants.Download.TOTAL_FILE_SIZE && fileSize <= minSizeForMultiPart) {
                     CsLogger.tag(TAG).i(
                         "启动分片下载, 需要文件长度大于: ${
                             CsStorageUnit.B_UNIT_1024.toMbString(
@@ -202,7 +209,6 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
                     multiPartEnable = false
                 }
             }
-            return DownloadTask(this)
         }
 
         override fun getGroupName(): String {

@@ -33,7 +33,7 @@ class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {
     }
 
     private val test_url_BaiduNetdisk =
-        "https://ad986c-1905179982.antpcdn.com:19001/b/pkg-ant.baidu.com/issue/netdisk/MACguanjia/4.38.0/BaiduNetdisk_mac_4.38.0_x64.dmg"
+        "https://readbook-static-test.oss-cn-beijing.aliyuncs.com/biz/uploads/20240507/%E9%98%85%E8%AF%BB%E6%9C%AC/book/bv_1b1f1dvdotwt_compress.pdf"
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityApiDownloadBinding {
         return ActivityApiDownloadBinding.inflate(inflater)
@@ -70,8 +70,8 @@ class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {
                         .setGroupName("test")
                         .setFileName("111.file")
                         .setTaskTag("111")
-                        .setFileSize(338693085)
-                        .setFileMd5("e8f12b89d8f03e461e8886fdeb69f2b8")
+//                        .setFileSize(338693085)
+//                        .setFileMd5("e8f12b89d8f03e461e8886fdeb69f2b8")
                         .build(),
                     callback
                 )
@@ -83,9 +83,9 @@ class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {
                     DownloadTask.builder(test_url_BaiduNetdisk)
                         .setFileName("222.file")
                         .setTaskTag("222")
-                        .setFileSize(338693085)
+//                        .setFileSize(338693085)
                         .setMultiPartEnable(true)
-                        .setFileMd5("e8f12b89d8f03e461e8886fdeb69f2b8")
+//                        .setFileMd5("e8f12b89d8f03e461e8886fdeb69f2b8")
                         .build(),
                     callback
                 )

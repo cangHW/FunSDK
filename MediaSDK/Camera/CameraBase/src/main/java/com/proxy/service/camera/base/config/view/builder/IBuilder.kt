@@ -1,6 +1,7 @@
 package com.proxy.service.camera.base.config.view.builder
 
 import android.util.Size
+import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraFaceMode
@@ -16,7 +17,7 @@ import com.proxy.service.camera.base.mode.ViewMode
 interface IBuilder {
 
     /**
-     * 设置相机不同模式的预览尺寸
+     * 设置相机不同模式的预览尺寸, 来源 [CameraService.getSupportedPreviewSizes]
      *
      * @param mode      相机模式, 若为 null, 则代表全部模式都满足
      * @param faceMode  相机方向, 若为 null, 则代表全部方向都满足
@@ -25,7 +26,7 @@ interface IBuilder {
     fun setCameraPreviewSize(mode: CameraMode?, faceMode: CameraFaceMode?, size: Size): IBuilder
 
     /**
-     * 设置相机不同模式的产物尺寸
+     * 设置相机不同模式的产物尺寸, 来源 [CameraService.getSupportedPreviewSizes]、[CameraService.getSupportedPreviewSizes] 等
      *
      * @param mode      相机模式, 若为 null, 则代表全部模式都满足
      * @param faceMode  相机方向, 若为 null, 则代表全部方向都满足

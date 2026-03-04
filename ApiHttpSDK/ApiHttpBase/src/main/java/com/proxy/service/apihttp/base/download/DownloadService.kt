@@ -16,11 +16,6 @@ import com.proxy.service.base.BaseService
  */
 interface DownloadService : BaseService {
 
-    fun xx(){
-       val builder = DownloadConfig.builder().build()
-        init(builder)
-    }
-
     /**
      * 初始化
      * */

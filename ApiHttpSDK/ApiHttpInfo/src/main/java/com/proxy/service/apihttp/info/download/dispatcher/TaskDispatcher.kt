@@ -1,11 +1,13 @@
 package com.proxy.service.apihttp.info.download.dispatcher
 
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.config.Config
 import com.proxy.service.apihttp.info.download.controller.TaskController
 import com.proxy.service.apihttp.info.download.dispatcher.base.BaseDispatcher
 import com.proxy.service.apihttp.info.download.worker.MultiTaskWorker
 import com.proxy.service.apihttp.info.download.worker.SingleTaskWorker
+import com.proxy.service.apihttp.info.download.worker.TransferTaskWorker
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 
@@ -23,11 +25,14 @@ object TaskDispatcher : BaseDispatcher() {
         if (isTaskFull()) {
             return false
         }
-        val worker = if (task.getMultiPartEnable()) {
+        val worker = if (task.getFileSize() == ApiConstants.Download.TOTAL_FILE_SIZE) {
+            TransferTaskWorker(task)
+        } else if (task.getMultiPartEnable()) {
             MultiTaskWorker(task)
         } else {
             SingleTaskWorker(task)
         }
+
         if (!workerRunningList.tryAdd(worker)) {
             return false
         }

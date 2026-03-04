@@ -26,14 +26,14 @@ ext {
             // 网络库
             ApiHttpBase    : [
                     artifact          : "Service-Apihttp",
-                    version           : "0.2.9.1",
+                    version           : "0.2.9.2",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ApiHttpInfo    : [
                     artifact          : "Service-Apihttp-Info",
-                    version           : "0.2.9.1",
+                    version           : "0.2.9.2",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

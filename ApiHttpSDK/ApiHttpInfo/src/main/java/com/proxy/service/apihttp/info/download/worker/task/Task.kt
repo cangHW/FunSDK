@@ -10,6 +10,7 @@ import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
 import com.proxy.service.core.framework.system.net.CsNetManager
 import okhttp3.Request
+import okhttp3.Response
 import java.io.InputStream
 import java.net.SocketException
 import java.net.SocketTimeoutException
@@ -62,6 +63,24 @@ object Task {
         realStart(task, tempPath, "bytes=${CsFileUtils.length(tempPath)}-", callback)
     }
 
+    /**
+     * 获取远程文件大小
+     * */
+    @Throws(Throwable::class)
+    @WorkerThread
+    fun getRemoteFileSize(task: DownloadTask): Long? {
+        val request = Request.Builder()
+            .url(task.getDownloadUrl())
+            .head()
+            .build()
+        val response = connectSever(request)
+        val contentLength = response.header("Content-Length")
+        if (contentLength != null) {
+            return contentLength.toLong()
+        }
+        return null
+    }
+
     private fun realStart(
         task: DownloadTask,
         tempPath: String,
@@ -69,25 +88,17 @@ object Task {
         callback: (InputStream) -> Unit
     ) {
 
-        if (!CsNetManager.isAvailable()) {
-            throw DownloadException.create(DownloadException.NETWORK_ERROR, "无网络")
-        }
-
         val request = Request.Builder()
             .url(task.getDownloadUrl())
             .header("RANGE", range)
             .build()
-
-        val response = try {
-            OkhttpManager.getOkhttpClient().newCall(request).execute()
-        } catch (exception: UnknownHostException) {
-            throw DownloadException.create(DownloadException.UNKNOWN_HOST, exception.message)
-        } catch (exception: SocketTimeoutException) {
-            throw DownloadException.create(DownloadException.SOCKET_TIME_OUT, exception.message)
-        }
+        val response = connectSever(request)
+        val stream = response.body
+            ?.byteStream()
+            ?: throw DownloadException.create(DownloadException.CONNECT_FAILED, "请求失败")
 
         try {
-            response.body?.byteStream()?.use { bs ->
+            stream.use { bs ->
                 callback(bs)
                 CsFileWriteUtils
                     .setSourceStream(bs)
@@ -116,4 +127,25 @@ object Task {
         }
     }
 
+    /**
+     * 链接服务器
+     * */
+    private fun connectSever(request: Request): Response {
+        if (!CsNetManager.isAvailable()) {
+            throw DownloadException.create(DownloadException.NETWORK_ERROR, "无网络")
+        }
+
+        val response = try {
+            OkhttpManager.getOkhttpClient().newCall(request).execute()
+        } catch (exception: UnknownHostException) {
+            throw DownloadException.create(DownloadException.UNKNOWN_HOST, exception.message)
+        } catch (exception: SocketTimeoutException) {
+            throw DownloadException.create(DownloadException.SOCKET_TIME_OUT, exception.message)
+        }
+        if (!response.isSuccessful) {
+            throw DownloadException.create(DownloadException.CONNECT_FAILED, "请求失败")
+        }
+
+        return response
+    }
 }

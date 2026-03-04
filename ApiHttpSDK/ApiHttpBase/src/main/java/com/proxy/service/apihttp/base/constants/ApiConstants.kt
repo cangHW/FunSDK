@@ -30,9 +30,14 @@ object ApiConstants {
     object Download {
 
         /**
+         * 默认总长度
+         * */
+        const val TOTAL_FILE_SIZE = 0L
+
+        /**
          * 每个分片的大小
          * */
-        const val FILE_PART_SIZE = 80 * 1024 * 1024L
+        const val FILE_PART_SIZE = 5 * 1024 * 1024L
 
         /**
          * 最小分片数量
