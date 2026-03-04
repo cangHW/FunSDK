@@ -30,7 +30,7 @@ interface IBuilder {
      *
      * @param mode      相机模式, 若为 null, 则代表全部模式都满足
      * @param faceMode  相机方向, 若为 null, 则代表全部方向都满足
-     * @param size      预览尺寸
+     * @param size      产物尺寸
      * */
     fun setCameraOutSize(mode: CameraMode?, faceMode: CameraFaceMode?, size: Size): IBuilder
 
