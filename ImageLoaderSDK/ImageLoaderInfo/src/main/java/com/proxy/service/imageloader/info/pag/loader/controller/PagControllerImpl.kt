@@ -27,4 +27,8 @@ class PagControllerImpl(
     override fun cancelAnimation() {
         view.stopPag()
     }
+
+    override fun freeCache() {
+        view.releaseCache()
+    }
 }

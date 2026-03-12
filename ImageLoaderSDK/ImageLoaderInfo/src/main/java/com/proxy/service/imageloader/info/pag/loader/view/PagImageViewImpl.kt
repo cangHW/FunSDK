@@ -14,7 +14,7 @@ import org.libpag.PAGImageView
  * @data: 2025/11/11 16:01
  * @desc:
  */
-class PagImageViewImpl: PAGImageView, IView {
+class PagImageViewImpl : PAGImageView, IView {
 
     private var pagListener: PagImageViewListenerImpl? = null
 
@@ -63,6 +63,10 @@ class PagImageViewImpl: PAGImageView, IView {
 
     override fun stopPag() {
         pause()
+    }
+
+    override fun releaseCache() {
+
     }
 
 }

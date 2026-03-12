@@ -1,5 +1,7 @@
 package com.proxy.service.imageloader.info.pag.info
 
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 import org.libpag.PAGView
 
 /**
@@ -12,19 +14,39 @@ class PagViewListenerImpl(
 ) : PAGView.PAGViewListener {
 
     override fun onAnimationStart(p0: PAGView?) {
-        info.animationStartCallback?.onAnimation()
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                info.animationStartCallback?.onAnimation()
+                return ""
+            }
+        })?.start()
     }
 
     override fun onAnimationEnd(p0: PAGView?) {
-        info.animationEndCallback?.onAnimation()
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                info.animationEndCallback?.onAnimation()
+                return ""
+            }
+        })?.start()
     }
 
     override fun onAnimationCancel(p0: PAGView?) {
-        info.animationCancelCallback?.onAnimation()
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                info.animationCancelCallback?.onAnimation()
+                return ""
+            }
+        })?.start()
     }
 
     override fun onAnimationRepeat(p0: PAGView?) {
-        info.animationRepeatCallback?.onAnimation()
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                info.animationRepeatCallback?.onAnimation()
+                return ""
+            }
+        })?.start()
     }
 
     override fun onAnimationUpdate(p0: PAGView?) {

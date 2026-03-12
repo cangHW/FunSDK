@@ -9,8 +9,8 @@ upArray=(
 #  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
-#  ":ImageLoaderSDK:ImageLoaderInfo"
-#  ":ImageLoaderSDK:ImageLoaderBase"
+  ":ImageLoaderSDK:ImageLoaderInfo"
+  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
 #  ":ApiHttpSDK:ApiHttpInfo"
@@ -42,7 +42,7 @@ upArray=(
 #  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
-  ":MediaSDK:Camera:CameraBase"
+#  ":MediaSDK:Camera:CameraBase"
 #  ":MediaSDK:Camera:CameraInfo"
 )
 

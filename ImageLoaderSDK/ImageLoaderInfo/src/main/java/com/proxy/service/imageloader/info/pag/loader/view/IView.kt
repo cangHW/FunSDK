@@ -21,4 +21,6 @@ interface IView {
     fun playPag()
 
     fun stopPag()
+
+    fun releaseCache()
 }

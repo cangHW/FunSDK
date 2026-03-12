@@ -23,4 +23,8 @@ class PagControllerEmpty: PagController {
     override fun cancelAnimation() {
 
     }
+
+    override fun freeCache() {
+
+    }
 }

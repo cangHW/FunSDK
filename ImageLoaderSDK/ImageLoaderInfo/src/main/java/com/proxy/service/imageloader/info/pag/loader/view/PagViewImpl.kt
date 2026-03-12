@@ -28,11 +28,6 @@ class PagViewImpl : PAGView, IView {
         defStyleAttr
     )
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        freeCache()
-    }
-
     override fun checkListener(pagInfo: PagInfo) {
         pagListener?.let {
             try {
@@ -68,6 +63,10 @@ class PagViewImpl : PAGView, IView {
 
     override fun stopPag() {
         pause()
+    }
+
+    override fun releaseCache() {
+        freeCache()
     }
 
 }
