@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.2.4.5",
+                    version           : "1.2.4.6",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -168,14 +168,14 @@ ext {
             // 相机
             CameraBase    : [
                     artifact          : "Service-Media-Camera",
-                    version           : "0.0.2",
+                    version           : "0.0.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             CameraInfo    : [
                     artifact          : "Service-Media-Camera-Info",
-                    version           : "0.0.2",
+                    version           : "0.0.3",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

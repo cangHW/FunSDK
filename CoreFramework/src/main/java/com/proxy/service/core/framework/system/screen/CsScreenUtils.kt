@@ -13,6 +13,7 @@ import com.proxy.service.core.framework.system.screen.callback.ScreenOrientation
 import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
 import com.proxy.service.core.framework.system.screen.enums.RotationEnum
 import com.proxy.service.core.framework.system.screen.factory.DisplayController
+import com.proxy.service.core.framework.system.screen.factory.SensorController
 import com.proxy.service.core.framework.system.screen.info.ScreenInfo
 
 
@@ -134,16 +135,7 @@ object CsScreenUtils {
      * 获取屏幕旋转角度
      * */
     fun getScreenRotation(activity: Activity? = null): RotationEnum {
-        val context = CsContextManager.getApplication()
-
-        val degree = if (activity != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            activity.display?.rotation
-        } else {
-            val wm = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager?
-            wm?.defaultDisplay?.rotation
-        }
-
-        return RotationEnum.valueOf(degree) ?: RotationEnum.ROTATION_0
+        return SensorController.instance.getRotationEnum(activity) ?: RotationEnum.ROTATION_0
     }
 
     /**
@@ -163,14 +155,14 @@ object CsScreenUtils {
      * </manifest>
      * */
     fun addScreenRotationCallback(callback: ScreenRotationCallback) {
-        DisplayController.instance.addCallback(callback)
+        SensorController.instance.addCallback(callback)
     }
 
     /**
      * 移除屏幕旋转监听
      * */
     fun removeScreenRotationCallback(callback: ScreenRotationCallback) {
-        DisplayController.instance.removeCallback(callback)
+        SensorController.instance.removeCallback(callback)
     }
 
     /**

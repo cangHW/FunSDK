@@ -13,6 +13,9 @@ import com.proxy.service.camera.base.mode.CameraMode
 import com.proxy.service.camera.info.utils.CameraUtils
 import com.proxy.service.camera.info.view.base.AbstractCameraActionView
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.screen.CsScreenUtils
+import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
+import com.proxy.service.core.framework.system.screen.enums.RotationEnum
 
 
 /**
@@ -65,26 +68,37 @@ class TextureViewImpl(
     }
 
     private val surfaceTextureListener = object : SurfaceTextureListener {
-
         override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
+            CsLogger.tag(tag).i("onSurfaceTextureAvailable. width=$width, height=$height")
             _surface = surface
             _width = width
             _height = height
 
             startPreview()
+
+            CsScreenUtils.addScreenRotationCallback(screenRotationCallback)
         }
 
         override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
+            CsLogger.tag(tag).i("onSurfaceTextureSizeChanged. width=$width, height=$height")
             onSurfaceTextureAvailable(surface, width, height)
         }
 
         override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
+            CsLogger.tag(tag).i("onSurfaceTextureDestroyed")
             _surface = null
+            CsScreenUtils.removeScreenRotationCallback(screenRotationCallback)
             return true
         }
 
         override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
+//            CsLogger.tag(tag).i("onSurfaceTextureUpdated")
+        }
+    }
 
+    private val screenRotationCallback = object : ScreenRotationCallback {
+        override fun onRotation(rotation: RotationEnum) {
+            startPreview()
         }
     }
 
@@ -112,6 +126,7 @@ class TextureViewImpl(
         matrix.postScale(scale, scale, centerX, centerY)
 
         val rotate = CameraUtils.calculatePreviewRotation()
+        CsLogger.tag(tag).i("调整预览旋转角度 rotate = $rotate")
         matrix.postRotate(rotate.toFloat(), centerX, centerY)
         return matrix
     }

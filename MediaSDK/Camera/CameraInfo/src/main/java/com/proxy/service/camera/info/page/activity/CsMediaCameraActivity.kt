@@ -2,7 +2,6 @@ package com.proxy.service.camera.info.page.activity
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Size
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
