@@ -168,14 +168,14 @@ ext {
             // 相机
             CameraBase    : [
                     artifact          : "Service-Media-Camera",
-                    version           : "0.0.3",
+                    version           : "0.0.4",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             CameraInfo    : [
                     artifact          : "Service-Media-Camera-Info",
-                    version           : "0.0.3",
+                    version           : "0.0.4",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

@@ -116,6 +116,7 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
             .setCameraFaceMode(cameraFaceMode)
             .setCameraMode(CameraMode.CAPTURE)
             .setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
+//            .setViewMode(ViewMode.SURFACE_VIEW)
             .setViewMode(ViewMode.TEXTURE_VIEW)
             .build()
         iCameraView = service.createViewLoader(config)

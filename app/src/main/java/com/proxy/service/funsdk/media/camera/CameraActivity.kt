@@ -38,8 +38,8 @@ class CameraActivity : BaseActivity<ActivityCameraBinding>() {
                     CsLogger.tag(tag).e("onTakePictureFailed.")
                 }
             })
-//            ?.launch(this)
-            ?.launchLandscape(this)
+            ?.launch(this)
+//            ?.launchLandscape(this)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityCameraBinding {

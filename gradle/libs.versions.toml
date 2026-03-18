@@ -43,7 +43,7 @@ service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
 service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.5"}
 service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
 service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.18.1"}
-service-media-camera = {group = "io.github.canghw", name="Service-Media-Camera", version="0.0.3"}
+service-media-camera = {group = "io.github.canghw", name="Service-Media-Camera", version="0.0.4"}
 
 ##########################################  三方库  ############################################################################
 # 网络库

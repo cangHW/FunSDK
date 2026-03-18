@@ -30,8 +30,10 @@ class TextureViewImpl(
 ) : AbstractCameraActionView(config, owner) {
 
     private var _surface: SurfaceTexture? = null
-    private var _width: Int = view.width
-    private var _height: Int = view.height
+    private var _rotation: RotationEnum? = null
+    private var _width: Int = 0
+    private var _height: Int = 0
+    private var _rotationCallbackAdded: Boolean = false
 
     override fun init() {
         super.init()
@@ -40,7 +42,16 @@ class TextureViewImpl(
     }
 
     override fun startPreview() {
+        CsLogger.tag(tag).d("startPreview. _width=$_width, _height=$_height, _rotation=${_rotation?.name}")
         val surface = _surface ?: return
+
+        if (_width <= 0) {
+            return
+        }
+
+        if (_height <= 0) {
+            return
+        }
 
         val previewSize = getCalculatePreviewSize(_width, _height)
         val outSize = getCalculateOutSize(_width, _height)
@@ -68,26 +79,44 @@ class TextureViewImpl(
     }
 
     private val surfaceTextureListener = object : SurfaceTextureListener {
+
+        private fun runOnTextureChange(surface: SurfaceTexture, width: Int, height: Int) {
+            if (_width != width || _height != height) {
+                _width = width
+                _height = height
+                _surface = surface
+                _rotation = CsScreenUtils.getScreenRotation()
+
+                startPreview()
+            }
+        }
+
         override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
             CsLogger.tag(tag).i("onSurfaceTextureAvailable. width=$width, height=$height")
-            _surface = surface
-            _width = width
-            _height = height
+            runOnTextureChange(surface, width, height)
 
-            startPreview()
-
-            CsScreenUtils.addScreenRotationCallback(screenRotationCallback)
+            if (!_rotationCallbackAdded) {
+                CsScreenUtils.addScreenRotationCallback(screenRotationCallback)
+                _rotationCallbackAdded = true
+            }
         }
 
         override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
             CsLogger.tag(tag).i("onSurfaceTextureSizeChanged. width=$width, height=$height")
-            onSurfaceTextureAvailable(surface, width, height)
+            runOnTextureChange(surface, width, height)
         }
 
         override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
             CsLogger.tag(tag).i("onSurfaceTextureDestroyed")
             _surface = null
-            CsScreenUtils.removeScreenRotationCallback(screenRotationCallback)
+            _width = 0
+            _height = 0
+            _rotation = null
+            mCameraLoader.pausePreview()
+            if (_rotationCallbackAdded) {
+                CsScreenUtils.removeScreenRotationCallback(screenRotationCallback)
+                _rotationCallbackAdded = false
+            }
             return true
         }
 
@@ -98,7 +127,19 @@ class TextureViewImpl(
 
     private val screenRotationCallback = object : ScreenRotationCallback {
         override fun onRotation(rotation: RotationEnum) {
-            startPreview()
+            CsLogger.tag(tag).d("onRotation. rotation=${rotation.name}")
+            if (_surface == null) return
+            if (_rotation == rotation) {
+                return
+            }
+            _rotation = rotation
+            val viewW = if (view.width > 0) view.width else _width
+            val viewH = if (view.height > 0) view.height else _height
+            if (viewW > 0 && viewH > 0) {
+                _width = viewW
+                _height = viewH
+                startPreview()
+            }
         }
     }
 
@@ -125,9 +166,9 @@ class TextureViewImpl(
         val scale: Float = widthScale.coerceAtLeast(heightScale)
         matrix.postScale(scale, scale, centerX, centerY)
 
-        val rotate = CameraUtils.calculatePreviewRotation()
-        CsLogger.tag(tag).i("调整预览旋转角度 rotate = $rotate")
-        matrix.postRotate(rotate.toFloat(), centerX, centerY)
+        val rotation = CameraUtils.calculatePreviewRotation()
+        CsLogger.tag(tag).i("调整预览旋转角度 rotation = $rotation")
+        matrix.postRotate(rotation.toFloat(), centerX, centerY)
         return matrix
     }
 }
