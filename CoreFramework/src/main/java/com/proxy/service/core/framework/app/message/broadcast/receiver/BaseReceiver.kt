@@ -43,9 +43,13 @@ abstract class BaseReceiver : BroadcastReceiver() {
         }
 
         val data = intent.data
-        val fromPkg = intent.`package`
+
+        val fromPkg = intent.getStringExtra(BroadcastConstants.PACKAGE_NAME)
+        intent.removeExtra(BroadcastConstants.PACKAGE_NAME)
+
         val processName = intent.getStringExtra(BroadcastConstants.PROCESS_NAME)
         intent.removeExtra(BroadcastConstants.PROCESS_NAME)
+
         val extras = intent.extras
 
         CsLogger.tag(getLogTag())
