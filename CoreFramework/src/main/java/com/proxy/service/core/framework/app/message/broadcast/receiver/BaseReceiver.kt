@@ -8,6 +8,7 @@ import android.text.TextUtils
 import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.constants.BroadcastConstants
 import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
+import com.proxy.service.core.framework.app.message.broadcast.utils.BroadcastUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -55,6 +56,7 @@ abstract class BaseReceiver : BroadcastReceiver() {
         CsLogger.tag(getLogTag())
             .d("onReceive action=$action, fromPkg=$fromPkg, processName=$processName, extras=$extras, data=$data")
 
+        val realAction = BroadcastUtils.parseAppAction(action ?: "")
         var result: Bundle? = getResultExtras(false)
         CallbackController.getReceiverList(action ?: "")?.forEachSync {
             CsLogger.tag(getLogTag()).d("receiver dispatch listener=$it")
@@ -63,6 +65,7 @@ abstract class BaseReceiver : BroadcastReceiver() {
                 if (it is OrderedBroadcastMsgListener) {
                     result = it.onOrderReceive(
                         context,
+                        realAction,
                         fromPkg ?: "",
                         processName ?: "",
                         data,
@@ -72,7 +75,14 @@ abstract class BaseReceiver : BroadcastReceiver() {
                     resultData = BroadcastConstants.ORDER_RESPONSE
                     setResultExtras(result)
                 } else {
-                    it.onReceive(context, fromPkg ?: "", processName ?: "", data, extras)
+                    it.onReceive(
+                        context,
+                        realAction,
+                        fromPkg ?: "",
+                        processName ?: "",
+                        data,
+                        extras
+                    )
                 }
             } catch (throwable: Throwable) {
                 CsLogger.tag(getLogTag()).e(throwable)

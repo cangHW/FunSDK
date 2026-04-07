@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-#  ":CoreFramework"
+  ":CoreFramework"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolInfo"
@@ -42,8 +42,8 @@ upArray=(
 #  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
-  ":MediaSDK:Camera:CameraBase"
-  ":MediaSDK:Camera:CameraInfo"
+#  ":MediaSDK:Camera:CameraBase"
+#  ":MediaSDK:Camera:CameraInfo"
 )
 
 type_params="r"

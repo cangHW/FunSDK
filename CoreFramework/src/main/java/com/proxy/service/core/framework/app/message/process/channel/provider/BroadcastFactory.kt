@@ -69,6 +69,7 @@ class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMs
 
     override fun onOrderReceive(
         context: Context,
+        action: String,
         fromPkg: String,
         fromProcessName: String,
         data: Uri?,
