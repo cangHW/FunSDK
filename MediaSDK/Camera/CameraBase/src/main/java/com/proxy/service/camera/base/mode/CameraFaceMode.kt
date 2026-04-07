@@ -1,6 +1,6 @@
 package com.proxy.service.camera.base.mode
 
-import com.proxy.service.camera.base.loader.CameraFactory
+import com.proxy.service.core.service.media.CsMediaCamera
 
 /**
  * @author: cangHX
@@ -15,7 +15,7 @@ sealed class CameraFaceMode {
     object FaceBack : CameraFaceMode() {
 
         override fun getCameraId(): String? {
-            return CameraFactory.getCameraFaceBackId()
+            return CsMediaCamera.getCameraFaceBackId()
         }
 
         override fun getCameraDesc(): String {
@@ -29,7 +29,7 @@ sealed class CameraFaceMode {
     object FaceFront : CameraFaceMode() {
 
         override fun getCameraId(): String? {
-            return CameraFactory.getCameraFaceFrontId()
+            return CsMediaCamera.getCameraFaceFrontId()
         }
 
         override fun getCameraDesc(): String {

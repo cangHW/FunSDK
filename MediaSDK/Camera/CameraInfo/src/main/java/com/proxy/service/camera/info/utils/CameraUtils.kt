@@ -2,7 +2,6 @@ package com.proxy.service.camera.info.utils
 
 import android.util.Size
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.SensorOrientationMode
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import kotlin.math.abs
@@ -18,18 +17,6 @@ object CameraUtils {
     private const val TAG = "${CameraConstants.TAG}Utils"
 
     /**
-     * 获取拍照时的旋转角度
-     * */
-    fun calculateRotation(
-        som: SensorOrientationMode,
-        isFrontCamera: Boolean
-    ): Int {
-        val rotationDegrees = CsScreenUtils.getScreenRotation().degree * 90
-        val sign = if (isFrontCamera) 1 else -1
-        return (som.degree + rotationDegrees * sign + 360) % 360
-    }
-
-    /**
      * 获取预览时的旋转角度
      * */
     fun calculatePreviewRotation(): Int {
@@ -38,23 +25,23 @@ object CameraUtils {
     }
 
     /**
-     * 获取最佳预览尺寸
+     * 获取最佳尺寸
      * */
-    fun calculatePreviewSize(
+    fun calculateSize(
         supportedSizes: List<Size>,
         viewWidth: Int,
         viewHeight: Int
     ): Size? {
-        val aspectRatio = checkRatio(viewWidth, viewHeight)
+        val aspectRatio = viewWidth.toFloat() / viewHeight
         CsLogger.tag(TAG)
-            .d("calculatePreviewSize. viewWidth=$viewWidth, viewHeight=$viewHeight, aspectRatio=$aspectRatio")
+            .d("calculateSize. viewWidth=$viewWidth, viewHeight=$viewHeight, aspectRatio=$aspectRatio")
 
         var offset = Float.MAX_VALUE
         var finalWidth = -1
         var finalHeight = -1
 
         supportedSizes.forEach {
-            val cameraRatio = checkRatio(it.width, it.height)
+            val cameraRatio = it.width.toFloat() / it.height
             val temp = abs(cameraRatio - aspectRatio)
             if (temp <= offset) {
                 if (offset != temp) {
@@ -76,15 +63,6 @@ object CameraUtils {
         }
 
         return Size(finalWidth, finalHeight)
-    }
-
-    private fun checkRatio(width: Int, height: Int): Float {
-        return width.toFloat() / height
-//        return if (width > height) {
-//            width.toFloat() / height
-//        } else {
-//            height.toFloat() / width
-//        }
     }
 
 }

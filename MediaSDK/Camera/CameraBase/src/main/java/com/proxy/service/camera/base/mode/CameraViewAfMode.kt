@@ -47,8 +47,8 @@ sealed class CameraViewAfMode private constructor() {
      * @param height    对焦区域大小
      * */
     class AfTouchMode(val width: Int = dp40, val height: Int = dp40) : CameraViewAfMode() {
-        override fun toCameraAfMode(): CameraAfMode? {
-            return null
+        override fun toCameraAfMode(): CameraAfMode {
+            return CameraAfMode.AfAutoMode
         }
 
         override fun toString(): String {
@@ -59,5 +59,5 @@ sealed class CameraViewAfMode private constructor() {
     /**
      * 转化当前模式
      * */
-    abstract fun toCameraAfMode(): CameraAfMode?
+    abstract fun toCameraAfMode(): CameraAfMode
 }

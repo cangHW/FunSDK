@@ -1,10 +1,10 @@
 package com.proxy.service.camera.info.view.manager
 
 import android.util.Size
-import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraMode
+import com.proxy.service.camera.base.mode.CameraFunMode
 import com.proxy.service.camera.info.utils.CameraUtils
+import com.proxy.service.core.service.media.CsMediaCamera
 
 /**
  * @author: cangHX
@@ -25,15 +25,15 @@ class CalculateSizeManager {
     /**
      * 设置来自用户的预览尺寸
      * */
-    fun setUserPreviewSize(mode: CameraMode?, faceMode: CameraFaceMode?, size: Size) {
-        calculatePreviewSizeMap.put(createUserKey(mode, faceMode), size)
+    fun setUserPreviewSize(funMode: CameraFunMode?, faceMode: CameraFaceMode?, size: Size) {
+        calculatePreviewSizeMap[createUserKey(funMode, faceMode)] = size
     }
 
     /**
      * 设置来自用户的产物尺寸
      * */
-    fun setUserOutSize(mode: CameraMode?, faceMode: CameraFaceMode?, size: Size) {
-        calculateOutSizeMap.put(createUserKey(mode, faceMode), size)
+    fun setUserOutSize(funMode: CameraFunMode?, faceMode: CameraFaceMode?, size: Size) {
+        calculateOutSizeMap[createUserKey(funMode, faceMode)] = size
     }
 
 
@@ -41,89 +41,86 @@ class CalculateSizeManager {
      * 获取预览尺寸
      * */
     fun getPreviewSize(
-        service: CameraService,
-        mode: CameraMode,
+        funMode: CameraFunMode?,
         faceMode: CameraFaceMode,
         width: Int,
         height: Int
     ): Size? {
-        return getCalculateSize(service, calculatePreviewSizeMap, mode, faceMode, width, height)
+        return getCalculateSize(calculatePreviewSizeMap, funMode, faceMode, width, height)
     }
 
     /**
      * 获取产物尺寸
      * */
     fun getOutSize(
-        service: CameraService,
-        mode: CameraMode,
+        funMode: CameraFunMode,
         faceMode: CameraFaceMode,
         width: Int,
         height: Int
     ): Size? {
-        return getCalculateSize(service, calculateOutSizeMap, mode, faceMode, width, height)
+        return getCalculateSize(calculateOutSizeMap, funMode, faceMode, width, height)
     }
 
 
     private fun getCalculateSize(
-        service: CameraService,
         map: HashMap<String, Size>,
-        mode: CameraMode,
+        funMode: CameraFunMode?,
         faceMode: CameraFaceMode,
         width: Int,
         height: Int
     ): Size? {
-        var tempKey = createUserKey(mode, faceMode)
-        var size = map.get(tempKey)
+        var tempKey = createUserKey(funMode, faceMode)
+        var size = map[tempKey]
         if (size != null) {
             return size
         }
 
         tempKey = createUserKey(null, faceMode)
-        size = map.get(tempKey)
+        size = map[tempKey]
         if (size != null) {
             return size
         }
 
-        tempKey = createUserKey(mode, null)
-        size = map.get(tempKey)
+        tempKey = createUserKey(funMode, null)
+        size = map[tempKey]
         if (size != null) {
             return size
         }
 
         tempKey = createUserKey(null, null)
-        size = map.get(tempKey)
+        size = map[tempKey]
         if (size != null) {
             return size
         }
 
 
-        val key = createKey(mode, faceMode, width, height)
-        size = map.get(key)
+        val key = createKey(funMode, faceMode, width, height)
+        size = map[key]
         if (size != null) {
             return size
         }
 
-        size = createCalculateSize(service, mode, faceMode, width, height)
+        size = createCalculateSize(funMode, faceMode, width, height)
         if (size != null) {
-            map.put(key, size)
+            map[key] = size
         }
         return size
     }
 
 
-    private fun createUserKey(mode: CameraMode?, faceMode: CameraFaceMode?): String {
-        val cameraName = mode?.getModeName() ?: "-"
+    private fun createUserKey(funMode: CameraFunMode?, faceMode: CameraFaceMode?): String {
+        val cameraName = funMode?.getModeName() ?: "-"
         val cameraId = faceMode?.getCameraId() ?: "-"
         return "${cameraName}_${cameraId}"
     }
 
     private fun createKey(
-        mode: CameraMode,
+        funMode: CameraFunMode?,
         faceMode: CameraFaceMode,
         width: Int,
         height: Int
     ): String {
-        val cameraName = mode.getModeName()
+        val cameraName = funMode?.getModeName() ?: ""
         val cameraId = faceMode.getCameraId() ?: ""
         return "${cameraName}_${cameraId}_${width}_${height}"
     }
@@ -132,17 +129,24 @@ class CalculateSizeManager {
      * 获取计算后的camera尺寸
      * */
     private fun createCalculateSize(
-        service: CameraService,
-        mode: CameraMode,
+        funMode: CameraFunMode?,
         faceMode: CameraFaceMode,
         width: Int,
         height: Int
     ): Size? {
-        val supportSizes = if (mode == CameraMode.CAPTURE) {
-            service.getSupportedCaptureSizes(faceMode)
-        } else {
-            service.getSupportedRecordSizes(faceMode)
+        val supportSizes = when (funMode) {
+            CameraFunMode.CAPTURE -> {
+                CsMediaCamera.getSupportedCaptureSizes(faceMode) ?: ArrayList()
+            }
+
+            CameraFunMode.RECORD -> {
+                CsMediaCamera.getSupportedRecordSizes(faceMode) ?: ArrayList()
+            }
+
+            else -> {
+                CsMediaCamera.getSupportedPreviewSizes(faceMode) ?: ArrayList()
+            }
         }
-        return CameraUtils.calculatePreviewSize(supportSizes, width, height)
+        return CameraUtils.calculateSize(supportSizes, width, height)
     }
 }

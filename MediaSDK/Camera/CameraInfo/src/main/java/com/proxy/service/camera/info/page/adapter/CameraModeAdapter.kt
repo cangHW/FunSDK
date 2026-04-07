@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.viewpager.widget.PagerAdapter
-import com.proxy.service.camera.base.mode.CameraMode
+import com.proxy.service.camera.base.mode.CameraFunMode
 import com.proxy.service.camera.info.R
 import com.proxy.service.core.framework.app.resource.CsDpUtils
 
@@ -19,12 +19,12 @@ class CameraModeAdapter : PagerAdapter() {
 
     private val itemWidth = CsDpUtils.dp2pxf(70f)
 
-    private val modes = ArrayList<CameraMode>()
+    private val modes = ArrayList<CameraFunMode>()
 
     /**
      * 设置相机模式
      * */
-    fun setCameraModes(list: ArrayList<CameraMode>?) {
+    fun setCameraModes(list: ArrayList<CameraFunMode>?) {
         if (list == null) {
             return
         }

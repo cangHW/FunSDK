@@ -8,7 +8,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import com.proxy.service.camera.base.callback.ITouchDispatch
+import com.proxy.service.camera.base.callback.view.ITouchDispatch
 
 /**
  * @author: cangHX

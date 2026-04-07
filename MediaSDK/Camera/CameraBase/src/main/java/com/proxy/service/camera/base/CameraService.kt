@@ -2,14 +2,11 @@ package com.proxy.service.camera.base
 
 import android.util.Size
 import com.proxy.service.base.BaseService
-import com.proxy.service.camera.base.config.loader.LoaderConfig
-import com.proxy.service.camera.base.config.page.PageConfig
-import com.proxy.service.camera.base.config.view.ViewConfig
-import com.proxy.service.camera.base.page.ICameraPageLoader
-import com.proxy.service.camera.base.view.ICameraViewLoader
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.SensorOrientationMode
+import com.proxy.service.camera.base.page.ICameraPageLoader
+import com.proxy.service.camera.base.view.ICameraViewLoader
 
 /**
  * @author: cangHX
@@ -17,6 +14,16 @@ import com.proxy.service.camera.base.mode.SensorOrientationMode
  * @desc:
  */
 interface CameraService : BaseService {
+
+    /**
+     * 获取后置摄像头 ID
+     * */
+    fun getCameraFaceBackId(): String?
+
+    /**
+     * 获取前置摄像头 ID
+     * */
+    fun getCameraFaceFrontId(): String?
 
     /**
      * 获取摄像头支持的预览尺寸
@@ -41,15 +48,15 @@ interface CameraService : BaseService {
     /**
      * 创建相机加载器
      * */
-    fun createLoader(config: LoaderConfig): ICameraLoader
+    fun createLoader(): ICameraLoader
 
     /**
      * 创建相机view
      * */
-    fun createViewLoader(config: ViewConfig): ICameraViewLoader
+    fun createViewLoader(): ICameraViewLoader
 
     /**
      * 创建相机页面
      * */
-    fun createPageLoader(config: PageConfig): ICameraPageLoader
+    fun createPageLoader(): ICameraPageLoader
 }

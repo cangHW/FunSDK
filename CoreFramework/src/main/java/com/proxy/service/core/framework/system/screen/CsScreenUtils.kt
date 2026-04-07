@@ -11,9 +11,11 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.resource.CsResUtils
 import com.proxy.service.core.framework.system.screen.callback.ScreenOrientationCallback
 import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
+import com.proxy.service.core.framework.system.screen.callback.SensorRotationCallback
 import com.proxy.service.core.framework.system.screen.enums.RotationEnum
-import com.proxy.service.core.framework.system.screen.factory.DisplayController
-import com.proxy.service.core.framework.system.screen.factory.SensorController
+import com.proxy.service.core.framework.system.screen.factory.OrientationFactory
+import com.proxy.service.core.framework.system.screen.factory.RotationFactory
+import com.proxy.service.core.framework.system.screen.factory.SensorFactory
 import com.proxy.service.core.framework.system.screen.info.ScreenInfo
 
 
@@ -135,11 +137,11 @@ object CsScreenUtils {
      * 获取屏幕旋转角度
      * */
     fun getScreenRotation(activity: Activity? = null): RotationEnum {
-        return SensorController.instance.getRotationEnum(activity) ?: RotationEnum.ROTATION_0
+        return RotationFactory.instance.getRotationEnum(activity) ?: RotationEnum.ROTATION_0
     }
 
     /**
-     * 添加屏幕旋转角度监听.
+     * 添加屏幕旋转角度监听, 弱引用.
      * 尽量保证在旋转屏幕时如果当前对象会被销毁, 则在销毁前移除监听, 避免内存泄漏, 或者配置旋转屏幕时当前对象不销毁。
      *
      * Activity 配置方式
@@ -154,19 +156,49 @@ object CsScreenUtils {
      *  </application>
      * </manifest>
      * */
-    fun addScreenRotationCallback(callback: ScreenRotationCallback) {
-        SensorController.instance.addCallback(callback)
+    fun addWeakScreenRotationCallback(
+        callback: ScreenRotationCallback,
+        activity: Activity? = null
+    ) {
+        RotationFactory.instance.addWeakCallback(activity, callback)
     }
 
     /**
      * 移除屏幕旋转监听
      * */
     fun removeScreenRotationCallback(callback: ScreenRotationCallback) {
-        SensorController.instance.removeCallback(callback)
+        RotationFactory.instance.removeCallback(callback)
     }
 
     /**
-     * 添加横竖屏旋转监听.
+     * 添加传感器检测旋转角度监听, 弱引用.
+     * 尽量保证在旋转时如果当前对象会被销毁, 则在销毁前移除监听, 避免内存泄漏, 或者配置旋转时当前对象不销毁。
+     *
+     * Activity 配置方式
+     * <manifest
+     * .
+     * .
+     *  <application
+     *
+     *      <activity
+     *          android:name=".xx.xx.XXActivity"
+     *          android:configChanges="orientation|screenSize" />
+     *  </application>
+     * </manifest>
+     * */
+    fun addWeakSensorRotationCallback(callback: SensorRotationCallback) {
+        SensorFactory.instance.addWeakCallback(callback)
+    }
+
+    /**
+     * 移除传感器检测旋转监听
+     * */
+    fun removeSensorRotationCallback(callback: SensorRotationCallback) {
+        SensorFactory.instance.removeCallback(callback)
+    }
+
+    /**
+     * 添加横竖屏旋转监听, 弱引用.
      * 尽量保证在横竖屏旋转时如果当前对象会被销毁, 则在销毁前移除监听, 避免内存泄漏, 或者配置横竖屏旋转时当前对象不销毁。
      *
      * Activity 配置方式
@@ -181,15 +213,15 @@ object CsScreenUtils {
      *  </application>
      * </manifest>
      * */
-    fun addScreenOrientationCallback(callback: ScreenOrientationCallback) {
-        DisplayController.instance.addCallback(callback)
+    fun addWeakScreenOrientationCallback(callback: ScreenOrientationCallback) {
+        OrientationFactory.instance.addWeakCallback(callback)
     }
 
     /**
      * 移除横竖屏变化监听
      * */
     fun removeScreenOrientationCallback(callback: ScreenOrientationCallback) {
-        DisplayController.instance.removeCallback(callback)
+        OrientationFactory.instance.removeCallback(callback)
     }
 
 }

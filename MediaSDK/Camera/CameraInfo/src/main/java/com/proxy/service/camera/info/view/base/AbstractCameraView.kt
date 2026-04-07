@@ -1,16 +1,16 @@
 package com.proxy.service.camera.info.view.base
 
-import com.proxy.service.camera.base.callback.TakePictureCallback
-import com.proxy.service.camera.base.config.loader.LoaderConfig
-import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.loader.ICameraLoader
+import com.proxy.service.camera.base.loader.camera.ICameraAction
+import com.proxy.service.camera.base.loader.camera.ICameraController
+import com.proxy.service.camera.base.loader.camera.ICameraFun
+import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
+import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.view.ICameraView
-import com.proxy.service.camera.info.CameraServiceImpl
-import com.proxy.service.camera.info.loader.CameraLoaderImpl
+import com.proxy.service.camera.info.view.config.CameraViewConfig
+import com.proxy.service.camera.info.view.impl.EmptyCameraCaptureControllerImpl
+import com.proxy.service.camera.info.view.impl.EmptyCameraRecordControllerImpl
+import com.proxy.service.core.service.media.CsMediaCamera
 
 /**
  * @author: cangHX
@@ -18,71 +18,58 @@ import com.proxy.service.camera.info.loader.CameraLoaderImpl
  * @desc:
  */
 abstract class AbstractCameraView(
-    config: ViewConfig
-) : ICameraView {
+    private val config: CameraViewConfig,
+) : ICameraAction, ICameraFun {
 
     protected val tag = "${CameraConstants.TAG}View"
 
-    protected val mCameraService = CameraServiceImpl()
-    protected var mCameraViewAfMode: CameraViewAfMode = config.getCameraViewAfMode()
-    protected val mCameraLoader: ICameraLoader = CameraLoaderImpl(
-        LoaderConfig.builder().apply {
-            config.getCameraViewAfMode().toCameraAfMode()?.let {
-                setCameraAfMode(it)
-            }
-        }.build()
-    )
+    protected var cameraController: ICameraController? = null
 
-    protected var mCameraMode: CameraMode = config.getCameraMode()
-    protected var mCameraFaceMode: CameraFaceMode = config.getCameraFaceMode()
-
-
-    /**
-     * 开始预览
-     * */
-    protected abstract fun startPreview()
-
-
-    override fun setCameraMode(mode: CameraMode) {
-        if (mCameraMode == mode) {
-            return
+    open fun init() {
+        val loader = CsMediaCamera.createLoader()
+        loader?.setCameraAfMode(config.cameraViewAfMode.toCameraAfMode())
+        config.lifecycleOwner?.let {
+            loader?.setLifecycleOwner(it)
         }
-        mCameraMode = mode
-        startPreview()
-    }
 
-    override fun setCameraViewAfMode(mode: CameraViewAfMode) {
-        mCameraViewAfMode = mode
-        mode.toCameraAfMode()?.let {
-            mCameraLoader.setCameraAfMode(it)
+        val faceMode = config.cameraFaceMode
+        cameraController = if (faceMode == null) {
+            loader?.createCamera()
+        } else {
+            loader?.createAndOpenCamera(faceMode)
         }
     }
-
-
-    override fun setPictureCaptureSize(width: Int, height: Int) {
-        mCameraLoader.setPictureCaptureSize(width, height)
-    }
-
-    override fun startPictureCapture(isSavePhotoAlbum: Boolean, callback: TakePictureCallback?) {
-        mCameraLoader.startPictureCapture(isSavePhotoAlbum, callback)
-    }
-
 
     override fun openCamera(mode: CameraFaceMode) {
-        mCameraLoader.openCamera(mode)
-        startPreview()
+        cameraController?.openCamera(mode)
     }
 
-    override fun pausePreview() {
-        mCameraLoader.pausePreview()
+    override fun startPreview() {
+        cameraController?.startPreview()
     }
 
     override fun resumePreview() {
-        mCameraLoader.resumePreview()
+        cameraController?.resumePreview()
+    }
+
+    override fun pausePreview() {
+        cameraController?.pausePreview()
+    }
+
+    override fun stopPreview() {
+        cameraController?.stopPreview()
     }
 
     override fun releaseCamera() {
-        mCameraLoader.releaseCamera()
+        cameraController?.releaseCamera()
+    }
+
+    override fun chooseCaptureMode(): ICameraCaptureController {
+        return cameraController?.chooseCaptureMode() ?: EmptyCameraCaptureControllerImpl()
+    }
+
+    override fun chooseRecordMode(): ICameraRecordController {
+        return cameraController?.chooseRecordMode() ?: EmptyCameraRecordControllerImpl()
     }
 
 }

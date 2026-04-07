@@ -38,7 +38,7 @@ class ScreenActivity : BaseActivity<ActivityFrameworkScreenBinding>() {
     override fun initView() {
         binding?.checkScreenMode?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CsScreenUtils.addScreenOrientationCallback(orientationCallback)
+                CsScreenUtils.addWeakScreenOrientationCallback(orientationCallback)
             } else {
                 CsScreenUtils.removeScreenOrientationCallback(orientationCallback)
             }
@@ -46,7 +46,7 @@ class ScreenActivity : BaseActivity<ActivityFrameworkScreenBinding>() {
 
         binding?.checkScreenRotation?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                CsScreenUtils.addScreenRotationCallback(rotationCallback)
+                CsScreenUtils.addWeakScreenRotationCallback(rotationCallback)
             } else {
                 CsScreenUtils.removeScreenRotationCallback(rotationCallback)
             }

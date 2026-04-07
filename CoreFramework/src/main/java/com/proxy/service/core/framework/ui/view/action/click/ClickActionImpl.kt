@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.ui.view.action.base.IViewActionCallback
  */
 class ClickActionImpl(private val view: View?) : IClickAction() {
 
-    private var lastClickTime: Long = 0
+    private var lastClickTime: Long = 600
 
     /**
      * 配置回调

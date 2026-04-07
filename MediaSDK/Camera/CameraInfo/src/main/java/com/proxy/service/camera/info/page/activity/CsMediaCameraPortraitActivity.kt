@@ -27,18 +27,7 @@ class CsMediaCameraPortraitActivity : CsMediaCameraActivity(), ActionCallback {
 
     companion object {
 
-        private const val TAG = "${CameraConstants.TAG}Activity"
-//
-//        private const val PARAMS = "PARAMS"
-//
-//        fun launch(context: Context, params: MediaCameraParams) {
-//            val intent = Intent(context, CsMediaCameraPortraitActivity::class.java)
-//            intent.putExtra(PARAMS, params)
-//            if (context is Application) {
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            }
-//            context.startActivity(intent)
-//        }
+        private const val TAG = "${CameraConstants.TAG}PortraitActivity"
     }
 
     private var orientationListener: OrientationEventListenerImpl? = null
@@ -56,52 +45,52 @@ class CsMediaCameraPortraitActivity : CsMediaCameraActivity(), ActionCallback {
 
     private var tempPath: String? = null
 
-    override fun interceptPhotoSave(bytes: ByteArray, file: File): Boolean {
-        tempPath = file.absolutePath
-        var rotation = orientationListener?.getRotation() ?: 0f
+//    override fun interceptPhotoSave(bytes: ByteArray, file: File): Boolean {
+//        tempPath = file.absolutePath
+//        var rotation = orientationListener?.getRotation() ?: 0f
+//
+//        if (cameraFaceMode == CameraFaceMode.FaceBack) {
+//            rotation = -rotation
+//        }
+//
+//        rotation = 90 * (rotation - 2)
+//
+//        if (rotation == 0f) {
+//            CsFileWriteUtils.setSourceByte(bytes).writeSync(file)
+//            return true
+//        }
+//
+//        val originalBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+//        val matrix = Matrix()
+//        matrix.postRotate(rotation)
+//        val rotatedBitmap = Bitmap.createBitmap(
+//            originalBitmap,
+//            0,
+//            0,
+//            originalBitmap.width,
+//            originalBitmap.height,
+//            matrix,
+//            true
+//        )
+//
+//        try {
+//            FileOutputStream(file).use { outputStream ->
+//                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//            }
+//        } catch (throwable: Throwable) {
+//            CsLogger.tag(TAG).e(throwable)
+//        }
+//        originalBitmap.recycle()
+//        rotatedBitmap.recycle()
+//        return true
+//    }
 
-        if (cameraFaceMode == CameraFaceMode.FaceBack) {
-            rotation = -rotation
-        }
-
-        rotation = 90 * (rotation - 2)
-
-        if (rotation == 0f) {
-            CsFileWriteUtils.setSourceByte(bytes).writeSync(file)
-            return true
-        }
-
-        val originalBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-        val matrix = Matrix()
-        matrix.postRotate(rotation)
-        val rotatedBitmap = Bitmap.createBitmap(
-            originalBitmap,
-            0,
-            0,
-            originalBitmap.width,
-            originalBitmap.height,
-            matrix,
-            true
-        )
-
-        try {
-            FileOutputStream(file).use { outputStream ->
-                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            }
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
-        }
-        originalBitmap.recycle()
-        rotatedBitmap.recycle()
-        return true
-    }
-
-    override fun onSuccess(filePath: String) {
+    override fun onPictureCaptureSuccess(filePath: String) {
         if (tempPath != filePath) {
             CsFileUtils.delete(tempPath)
             tempPath = null
         }
-        super.onSuccess(filePath)
+        super.onPictureCaptureSuccess(filePath)
     }
 
 

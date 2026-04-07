@@ -5,8 +5,8 @@ upArray=(
 #  ":CoreFramework"
 
   # 线程库
-#  ":ThreadPoolSDK:ThreadPoolInfo"
-#  ":ThreadPoolSDK:ThreadPoolBase"
+  ":ThreadPoolSDK:ThreadPoolInfo"
+  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
 #  ":ImageLoaderSDK:ImageLoaderInfo"
@@ -42,8 +42,8 @@ upArray=(
 #  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
-  ":MediaSDK:Camera:CameraBase"
-  ":MediaSDK:Camera:CameraInfo"
+#  ":MediaSDK:Camera:CameraBase"
+#  ":MediaSDK:Camera:CameraInfo"
 )
 
 type_params="r"

@@ -3,11 +3,11 @@ package com.proxy.service.camera.info.page
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import com.proxy.service.camera.base.callback.PageTakePictureCallback
+import com.proxy.service.camera.base.callback.PagePictureCaptureCallback
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.base.config.page.PageConfig
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraMode
+import com.proxy.service.camera.base.mode.CameraFunMode
 import com.proxy.service.camera.info.page.activity.CsMediaCameraActivity
 import com.proxy.service.camera.info.page.activity.CsMediaCameraLandscapeActivity
 import com.proxy.service.camera.info.page.activity.CsMediaCameraPortraitActivity
@@ -20,15 +20,13 @@ import com.proxy.service.core.framework.app.context.CsContextManager
  * @data: 2026/2/4 16:20
  * @desc:
  */
-class CameraPageLoaderImpl(
-    private val config: PageConfig
-) : ICameraPageLoader {
+class CameraPageLoaderImpl : ICameraPageLoader {
 
     private val params = MediaCameraParams()
 
-    override fun setOpenCameraMode(list: List<CameraMode>): ICameraPageLoader {
-        params.supportCameraModes.clear()
-        params.supportCameraModes.addAll(list)
+    override fun setOpenCameraMode(list: List<CameraFunMode>): ICameraPageLoader {
+        params.supportCameraFunModes.clear()
+        params.supportCameraFunModes.addAll(list)
         return this
     }
 
@@ -37,46 +35,35 @@ class CameraPageLoaderImpl(
         return this
     }
 
-    override fun setTakePictureCallback(callback: PageTakePictureCallback): ICameraPageLoader {
-        params.takePictureCallback = callback
+    override fun setTakePictureCallback(callback: PagePictureCaptureCallback): ICameraPageLoader {
+        params.pictureCaptureCallback = callback
         return this
     }
 
-    override fun launch() {
-        launch(CsContextManager.getApplication())
-    }
-
-    override fun launch(context: Context) {
+    override fun launch(context: Context?) {
         launch(context, CsMediaCameraActivity::class.java, params)
     }
 
-    override fun launchPortrait() {
-        launchPortrait(CsContextManager.getApplication())
-    }
-
-    override fun launchPortrait(context: Context) {
+    override fun launchPortrait(context: Context?) {
         launch(context, CsMediaCameraPortraitActivity::class.java, params)
     }
 
-    override fun launchLandscape() {
-        launchLandscape(CsContextManager.getApplication())
-    }
-
-    override fun launchLandscape(context: Context) {
+    override fun launchLandscape(context: Context?) {
         launch(context, CsMediaCameraLandscapeActivity::class.java, params)
     }
 
     private fun launch(
-        context: Context,
+        context: Context?,
         aClass: Class<out CsMediaCameraActivity>,
         params: MediaCameraParams
     ) {
+        val ctx = context ?: CsContextManager.getApplication()
         val intent = Intent(context, aClass)
-        intent.putExtra(CsMediaCameraActivity.PARAMS, CameraCache.put(context, params))
+        intent.putExtra(CsMediaCameraActivity.PARAMS, CameraCache.put(ctx, params))
         if (context is Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        context.startActivity(intent)
+        ctx.startActivity(intent)
     }
 
 }

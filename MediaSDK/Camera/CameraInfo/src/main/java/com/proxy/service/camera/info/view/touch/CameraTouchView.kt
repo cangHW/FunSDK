@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
-import com.proxy.service.camera.base.callback.ITouchDispatch
+import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.info.view.touch.mode.AfModeDispatch
 import com.proxy.service.core.service.task.CsTask
 

@@ -1,23 +1,11 @@
 package com.proxy.service.camera.info.page.activity
 
-import android.Manifest
-import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.OrientationEventListener
-import android.view.View
-import com.proxy.service.camera.base.callback.TakePictureCallback
-import com.proxy.service.camera.base.config.view.ViewConfig
+import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.ViewMode
-import com.proxy.service.camera.info.R
-import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.screen.CsBarUtils
-import com.proxy.service.core.service.permission.CsPermission
-import com.proxy.service.permission.base.callback.ActionCallback
 
 /**
  * @author: cangHX
@@ -28,7 +16,7 @@ class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
 
     companion object {
 
-        private const val TAG = "${CameraConstants.TAG}Activity"
+        private const val TAG = "${CameraConstants.TAG}LandscapeActivity"
 
 //        private const val PARAMS = "PARAMS"
 
@@ -57,7 +45,7 @@ class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
         }
     }
 
-    private val takePictureCallback = object : TakePictureCallback {
+    private val pictureCaptureCallback = object : PictureCaptureCallback {
 
         private var tempPath: String? = null
 
@@ -101,7 +89,7 @@ class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
 //            return true
 //        }
 
-        override fun onSuccess(filePath: String) {
+        override fun onPictureCaptureSuccess(filePath: String) {
 //            if (tempPath != filePath) {
 //                CsFileUtils.delete(tempPath)
 //                tempPath = null
@@ -114,7 +102,7 @@ class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
 //            })?.start()
         }
 
-        override fun onFailed() {
+        override fun onPictureCaptureFailed() {
 //            CsTask.mainThread()?.call(object : ICallable<String> {
 //                override fun accept(): String {
 //                    params?.takePictureCallback?.onTakePictureFailed()

@@ -1,7 +1,7 @@
 package com.proxy.service.camera.info.view.touch.base
 
 import android.view.View
-import com.proxy.service.camera.base.callback.CustomTouchDispatch
+import com.proxy.service.camera.base.callback.view.CustomTouchDispatch
 
 /**
  * @author: cangHX

@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.2.4.6",
+                    version           : "1.2.4.7",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -42,14 +42,14 @@ ext {
             // 线程库
             ThreadPoolBase : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.2.8",
+                    version           : "0.2.9",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool-Info",
-                    version           : "0.2.8",
+                    version           : "0.2.9",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

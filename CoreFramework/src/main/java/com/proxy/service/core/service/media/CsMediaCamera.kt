@@ -3,9 +3,7 @@ package com.proxy.service.core.service.media
 import android.util.Size
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.camera.base.CameraService
-import com.proxy.service.camera.base.config.loader.LoaderConfig
 import com.proxy.service.camera.base.config.page.PageConfig
-import com.proxy.service.camera.base.config.view.ViewConfig
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.SensorOrientationMode
@@ -38,6 +36,19 @@ object CsMediaCamera {
         return service
     }
 
+    /**
+     * 获取后置摄像头 ID
+     * */
+    fun getCameraFaceBackId(): String? {
+        return getService()?.getCameraFaceBackId()
+    }
+
+    /**
+     * 获取前置摄像头 ID
+     * */
+    fun getCameraFaceFrontId(): String? {
+        return getService()?.getCameraFaceFrontId()
+    }
 
     /**
      * 获取摄像头支持的预览尺寸
@@ -70,15 +81,15 @@ object CsMediaCamera {
     /**
      * 创建相机加载器
      * */
-    fun createLoader(config: LoaderConfig): ICameraLoader? {
-        return getService()?.createLoader(config)
+    fun createLoader(): ICameraLoader? {
+        return getService()?.createLoader()
     }
 
     /**
      * 创建相机view
      * */
-    fun createViewLoader(config: ViewConfig): ICameraViewLoader? {
-        return getService()?.createViewLoader(config)
+    fun createViewLoader(): ICameraViewLoader? {
+        return getService()?.createViewLoader()
     }
 
     /**

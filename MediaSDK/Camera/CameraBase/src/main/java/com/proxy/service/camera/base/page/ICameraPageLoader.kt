@@ -1,9 +1,9 @@
 package com.proxy.service.camera.base.page
 
 import android.content.Context
-import com.proxy.service.camera.base.callback.PageTakePictureCallback
+import com.proxy.service.camera.base.callback.PagePictureCaptureCallback
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraMode
+import com.proxy.service.camera.base.mode.CameraFunMode
 
 /**
  * @author: cangHX
@@ -13,9 +13,9 @@ import com.proxy.service.camera.base.mode.CameraMode
 interface ICameraPageLoader {
 
     /**
-     * 设置开启的相机模式, 默认全部开启
+     * 设置支持的相机模式, 默认全部支持
      * */
-    fun setOpenCameraMode(list: List<CameraMode>): ICameraPageLoader
+    fun setOpenCameraMode(list: List<CameraFunMode>): ICameraPageLoader
 
     /**
      * 设置默认的摄像头
@@ -25,36 +25,21 @@ interface ICameraPageLoader {
     /**
      * 设置拍照回调
      * */
-    fun setTakePictureCallback(callback: PageTakePictureCallback): ICameraPageLoader
+    fun setTakePictureCallback(callback: PagePictureCaptureCallback): ICameraPageLoader
 
     /**
      * 启动支持横竖屏相机
      * */
-    fun launch()
+    fun launch(context: Context? = null)
 
     /**
      * 启动竖屏相机
      * */
-    fun launchPortrait()
+    fun launchPortrait(context: Context? = null)
 
     /**
      * 启动横屏相机
      * */
-    fun launchLandscape()
-
-    /**
-     * 启动支持横竖屏相机
-     * */
-    fun launch(context: Context)
-
-    /**
-     * 启动竖屏相机
-     * */
-    fun launchPortrait(context: Context)
-
-    /**
-     * 启动横屏相机
-     * */
-    fun launchLandscape(context: Context)
+    fun launchLandscape(context: Context? = null)
 
 }

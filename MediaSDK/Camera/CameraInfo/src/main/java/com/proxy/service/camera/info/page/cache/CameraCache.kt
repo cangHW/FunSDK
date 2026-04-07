@@ -1,5 +1,6 @@
 package com.proxy.service.camera.info.page.cache
 
+import android.content.Context
 import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.collections.type.Type
@@ -11,11 +12,27 @@ import com.proxy.service.core.framework.collections.type.Type
  */
 object CameraCache {
 
-    private val weakMap = CsExcellentMap<Any, MediaCameraParams>(Type.WEAK)
+    data class DataInfo(val code: Long, val params: MediaCameraParams)
 
-    fun put(any: Any, params: MediaCameraParams): Int {
-        weakMap.putSync(any, params)
-        return any.hashCode()
+    private val weakMap = CsExcellentMap<Any, MediaCameraParams>(Type.WEAK)
+    private val cacheMap = CsExcellentMap<Context, DataInfo>(Type.WEAK)
+
+    fun put(context: Context, params: MediaCameraParams): Long {
+        val time = System.currentTimeMillis()
+        cacheMap.putSync(context, DataInfo(time, params))
+        return time
+    }
+
+    fun get(code: Long): MediaCameraParams? {
+        var params: MediaCameraParams? = null
+        cacheMap.forEachSync { context, data ->
+            if (data.code == code){
+                params = data.params
+                weakMap.removeAsync(context)
+                return@forEachSync
+            }
+        }
+        return params
     }
 
     fun get(code: Int): MediaCameraParams? {

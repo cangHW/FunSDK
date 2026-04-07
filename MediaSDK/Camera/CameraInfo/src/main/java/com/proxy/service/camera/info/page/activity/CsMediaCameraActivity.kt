@@ -6,16 +6,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
-import com.proxy.service.camera.base.callback.CustomTouchDispatch
-import com.proxy.service.camera.base.callback.TakePictureCallback
-import com.proxy.service.camera.base.config.view.ViewConfig
+import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
+import com.proxy.service.camera.base.callback.view.CustomTouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.mode.ViewMode
+import com.proxy.service.camera.base.mode.CameraFunMode
 import com.proxy.service.camera.base.view.ICameraView
-import com.proxy.service.camera.info.CameraServiceImpl
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.page.adapter.CameraModeListAdapter
 import com.proxy.service.camera.info.page.cache.CameraCache
@@ -23,6 +19,7 @@ import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.app.resource.CsDpUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsBarUtils
+import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.permission.base.callback.ActionCallback
@@ -38,9 +35,9 @@ import kotlin.math.abs
  * @data: 2026/2/6 15:09
  * @desc:
  */
-open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictureCallback,
+open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, PictureCaptureCallback,
     CsCenterSelectRecyclerView.OnSelectionChangedListener,
-    CsBaseRecyclerViewAdapter.OnItemClickListener<CameraMode> {
+    CsBaseRecyclerViewAdapter.OnItemClickListener<CameraFunMode> {
 
     companion object {
         private const val TAG = "${CameraConstants.TAG}Activity"
@@ -48,7 +45,6 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
         const val PARAMS = "PARAMS"
     }
 
-    protected val service = CameraServiceImpl()
     protected var params: MediaCameraParams = MediaCameraParams()
     protected var cameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
     protected var iCameraView: ICameraView? = null
@@ -102,7 +98,7 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
 
         cameraModeList = findViewById(R.id.camera_mode_list)
         val adapter = CameraModeListAdapter()
-        adapter.setData(params.supportCameraModes)
+        adapter.setData(params.supportCameraFunModes)
         adapter.setOnCameraModeClickListener(this)
         cameraModeList?.adapter = adapter
 
@@ -112,17 +108,17 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
 
     override fun onAction(list: Array<String>) {
         val viewGroup = findViewById<ViewGroup>(R.id.cs_media_camera)
-        val config = ViewConfig.builder()
-            .setCameraFaceMode(cameraFaceMode)
-            .setCameraMode(CameraMode.CAPTURE)
-            .setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
-//            .setViewMode(ViewMode.SURFACE_VIEW)
-            .setViewMode(ViewMode.TEXTURE_VIEW)
-            .build()
-        iCameraView = service.createViewLoader(config)
-            .setCustomTouchDispatch(customTouchDispatch)
-            .setLifecycleOwner(this)
-            .createTo(viewGroup)
+//        val config = ViewConfig.builder()
+//            .setCameraFaceMode(cameraFaceMode)
+//            .setCameraMode(CameraMode.CAPTURE)
+//            .setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
+////            .setViewMode(ViewMode.SURFACE_VIEW)
+//            .setViewMode(ViewMode.TEXTURE_VIEW)
+//            .build()
+        iCameraView = CsMediaCamera.createViewLoader()
+            ?.setCustomTouchDispatch(customTouchDispatch)
+            ?.setLifecycleOwner(this)
+            ?.createTo(viewGroup)
     }
 
     private val customTouchDispatch = object : CustomTouchDispatch() {
@@ -184,23 +180,23 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
         }
     }
 
-    override fun onSuccess(filePath: String) {
+    override fun onPictureCaptureSuccess(filePath: String) {
         CsLogger.tag(TAG).i("Capture photo success. filePath=$filePath")
 
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                params.takePictureCallback?.onTakePictureSuccess(filePath)
+                params.pictureCaptureCallback?.onPictureCaptureSuccess(filePath)
                 return ""
             }
         })?.start()
     }
 
-    override fun onFailed() {
+    override fun onPictureCaptureFailed() {
         CsLogger.tag(TAG).i("Capture photo failed.")
 
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                params.takePictureCallback?.onTakePictureFailed()
+                params.pictureCaptureCallback?.onPictureCaptureFailed()
                 return ""
             }
         })?.start()
@@ -222,14 +218,14 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, TakePictu
         CsLogger.tag(TAG)
             .i("onSelectionChanged. oldPosition=$oldPosition, newPosition=$newPosition")
 
-        params.supportCameraModes.getOrNull(newPosition)?.let {
-            iCameraView?.setCameraMode(it)
+        params.supportCameraFunModes.getOrNull(newPosition)?.let {
+//            iCameraView?.setCameraMode(it)
         }
     }
 
-    override fun onItemClick(data: CameraMode) {
-        if (data == CameraMode.CAPTURE) {
-            iCameraView?.startPictureCapture(false, this)
+    override fun onItemClick(data: CameraFunMode) {
+        if (data == CameraFunMode.CAPTURE) {
+//            iCameraView?.startPictureCapture(false, this)
         }
     }
 }

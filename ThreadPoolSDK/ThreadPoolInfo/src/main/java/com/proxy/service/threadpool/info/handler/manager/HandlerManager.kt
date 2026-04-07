@@ -14,7 +14,22 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 object HandlerManager {
 
+    private interface ThreadCloseCallback {
+        fun onThreadClosed(threadName: String, controller: HandlerController)
+    }
+
     private val threads = HashMap<String, HandlerController>()
+
+    private val threadCloseCallbackImpl = object : ThreadCloseCallback {
+        override fun onThreadClosed(threadName: String, controller: HandlerController) {
+            synchronized(threads) {
+                val ctl = threads[threadName]
+                if (ctl == controller) {
+                    threads.remove(threadName)
+                }
+            }
+        }
+    }
 
     fun getThreadHandler(threadName: String): HandlerController {
         var controller = threads[threadName]
@@ -26,7 +41,7 @@ object HandlerManager {
             controller = threads[threadName]
             if (controller == null || controller?.isCanUse() != true) {
                 controller?.close()
-                val handler = ThreadHandlerInfo(threadName)
+                val handler = ThreadHandlerInfo(threadName, threadCloseCallbackImpl)
                 threads[threadName] = handler
                 controller = handler
             }
@@ -34,7 +49,10 @@ object HandlerManager {
         return controller!!
     }
 
-    private class ThreadHandlerInfo(private val threadName: String) : HandlerController {
+    private class ThreadHandlerInfo(
+        private val threadName: String,
+        private val callback: ThreadCloseCallback
+    ) : HandlerController {
 
         companion object {
             private const val TAG = "${ThreadConstants.TAG}_Handler"
@@ -64,7 +82,7 @@ object HandlerManager {
         }
 
         override fun startTask(key: Any, value: TaskInfo) {
-            synchronized(cacheTaskMap){
+            synchronized(cacheTaskMap) {
                 cacheTaskMap.put(key, value)
             }
         }
@@ -104,6 +122,8 @@ object HandlerManager {
                     handlerThread.quit()
                 } catch (throwable: Throwable) {
                     CsLogger.tag(ThreadConstants.TAG).e(throwable)
+                } finally {
+                    callback.onThreadClosed(threadName, this)
                 }
                 return
             }
@@ -118,6 +138,8 @@ object HandlerManager {
                     handlerThread.quitSafely()
                 } catch (throwable: Throwable) {
                     CsLogger.tag(ThreadConstants.TAG).e(throwable)
+                } finally {
+                    callback.onThreadClosed(threadName, this)
                 }
                 return
             }

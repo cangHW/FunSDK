@@ -1,8 +1,8 @@
 package com.proxy.service.camera.info.page.params
 
-import com.proxy.service.camera.base.callback.PageTakePictureCallback
+import com.proxy.service.camera.base.callback.PagePictureCaptureCallback
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraMode
+import com.proxy.service.camera.base.mode.CameraFunMode
 
 /**
  * @author: cangHX
@@ -14,8 +14,8 @@ class MediaCameraParams {
     /**
      * 支持的相机模式
      * */
-    val supportCameraModes = ArrayList<CameraMode>().apply {
-        addAll(CameraMode.getAll())
+    val supportCameraFunModes = ArrayList<CameraFunMode>().apply {
+        addAll(CameraFunMode.getAll())
     }
 
     /**
@@ -27,6 +27,6 @@ class MediaCameraParams {
     /**
      * 拍照回调
      * */
-    var takePictureCallback: PageTakePictureCallback? = null
+    var pictureCaptureCallback: PagePictureCaptureCallback? = null
 
 }
