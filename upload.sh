@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-  ":CoreFramework"
+#  ":CoreFramework"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolInfo"
@@ -39,7 +39,7 @@ upArray=(
 #  ":DocumentsSDK:Pdf:DocumentPdfBase"
 
     # 视图 UI 库
-#  ":WidgetSDK:WidgetInfo"
+  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
 #  ":MediaSDK:Camera:CameraBase"

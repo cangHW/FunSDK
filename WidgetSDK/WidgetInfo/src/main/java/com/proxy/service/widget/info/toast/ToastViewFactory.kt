@@ -20,6 +20,8 @@ open class ToastViewFactory {
 
     /**
      * 获取普通 toast 视图
+     *
+     * @param tag   自定义数据
      * */
     @SuppressLint("MissingInflatedId")
     open fun getToastView(context: Context, tag: String): ToastViewInfo {
@@ -30,6 +32,8 @@ open class ToastViewFactory {
 
     /**
      * 获取带 icon 的 toast 视图
+     *
+     * @param tag   自定义数据
      * */
     @SuppressLint("MissingInflatedId")
     open fun getToastViewWithIcon(context: Context, tag: String): ToastWithIconViewInfo {
