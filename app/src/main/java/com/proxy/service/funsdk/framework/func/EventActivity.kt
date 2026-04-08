@@ -233,6 +233,7 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     private val orderedBroadcastMsgListener = object : OrderedBroadcastMsgListener {
         override fun onOrderReceive(
             context: Context,
+            action: String,
             fromPkg: String,
             fromProcessName: String,
             data: Uri?,
@@ -252,8 +253,9 @@ class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {
     private val broadcastMessageListener = object : BroadcastMsgListener {
         override fun onReceive(
             context: Context,
+            action: String,
             fromPkg: String,
-            processName: String,
+            fromProcessName: String,
             data: Uri?,
             extras: Bundle?
         ) {

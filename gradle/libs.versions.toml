@@ -32,7 +32,7 @@ cloud-plugin = { group = "io.github.canghw", name = "Cloud-Plugin", version = "1
 
 core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.2.4.7"}
 service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.9.2"}
-service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.8"}
+service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.9"}
 service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.18"}
 service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.17"}
 service-webview-bridge = {group = "io.github.canghw", name="Service-WebBridge-Ds", version="0.2.17"}
@@ -42,7 +42,7 @@ service-logfile = {group = "io.github.canghw", name="Service-LogFile-Spdlog", ve
 service-apm = {group = "io.github.canghw", name="Service-Apm", version="0.2.2"}
 service-document-image = {group = "io.github.canghw", name="Service-Document-Image", version="0.2.5"}
 service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
-service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.18.1"}
+service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.19"}
 service-media-camera = {group = "io.github.canghw", name="Service-Media-Camera", version="0.0.4"}
 
 ##########################################  三方库  ############################################################################

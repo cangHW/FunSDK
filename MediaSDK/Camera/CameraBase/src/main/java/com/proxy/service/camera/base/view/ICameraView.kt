@@ -13,7 +13,10 @@ import com.proxy.service.camera.base.mode.CameraViewAfMode
 interface ICameraView : ICameraAction, ICameraFun {
 
     /**
-     * 设置预览尺寸, 针对当前相机模式与方向有效, 来源 [CameraService.getSupportedPreviewSizes]
+     * 设置预览尺寸, 针对当前相机模式与方向有效,
+     * 来源 [CameraService.getSupportedPreviewSizes]、
+     * [CameraService.getSupportedCaptureSizes]、
+     * [CameraService.getSupportedRecordSizes]
      * */
     fun setPreviewSize(width: Int, height: Int)
 

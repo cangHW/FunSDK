@@ -3,7 +3,6 @@ package com.proxy.service.core.service.media
 import android.util.Size
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.camera.base.CameraService
-import com.proxy.service.camera.base.config.page.PageConfig
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.SensorOrientationMode
@@ -95,8 +94,8 @@ object CsMediaCamera {
     /**
      * 创建相机页面
      * */
-    fun createPageLoader(config: PageConfig): ICameraPageLoader? {
-        return getService()?.createPageLoader(config)
+    fun createPageLoader(): ICameraPageLoader? {
+        return getService()?.createPageLoader()
     }
 
 }

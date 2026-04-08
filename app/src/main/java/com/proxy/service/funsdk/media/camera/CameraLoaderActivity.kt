@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
-import com.proxy.service.api.CloudSystem
-import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.loader.camera.ICameraController
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -35,8 +34,10 @@ class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {
 
         iCamera = CsMediaCamera.createLoader()
             ?.setLifecycleOwner(this)
-            ?.createAndOpenCamera(CameraFaceMode.FaceBack)
+            ?.createCamera()
         captureController = iCamera?.chooseCaptureMode()
+        captureController?.setPictureCaptureSize(1440, 1920)
+        iCamera?.openCamera(CameraFaceMode.FaceBack)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityCameraLoaderBinding {
@@ -77,13 +78,14 @@ class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.picture_capture -> {
-                captureController?.startPictureCaptureToLocal(object : PictureCaptureCallback{
+                captureController?.startPictureCaptureToLocal(object : PictureCaptureCallback {
                     override fun onPictureCaptureFailed() {
                         CsToast.show("拍照失败")
                     }
 
                     override fun onPictureCaptureSuccess(filePath: String) {
-                        CsToast.show("拍照成功")
+                        CsToast.show("拍照成功.")
+                        CsLogger.e("filePath=$filePath")
                     }
                 })
             }

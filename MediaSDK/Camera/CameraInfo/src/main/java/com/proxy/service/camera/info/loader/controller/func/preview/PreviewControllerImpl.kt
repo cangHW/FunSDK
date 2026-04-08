@@ -22,7 +22,7 @@ class PreviewControllerImpl private constructor(
     private val pWidth: Int,
     private val pHeight: Int,
     private val callback: PreviewCallback
-) : com.proxy.service.camera.info.loader.controller.IFunController, ImageReader.OnImageAvailableListener {
+) : IFunController, ImageReader.OnImageAvailableListener {
 
     companion object {
 
@@ -75,11 +75,11 @@ class PreviewControllerImpl private constructor(
         return reader.surface
     }
 
-    override fun setSurfaceChangedCallback(callback: com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback) {
+    override fun setSurfaceChangedCallback(callback: IFunController.SurfaceChangedCallback) {
 
     }
 
-    override fun setParamsController(controller: com.proxy.service.camera.info.loader.controller.IFunController.IParamsController) {
+    override fun setParamsController(controller: IFunController.IParamsController) {
 
     }
 

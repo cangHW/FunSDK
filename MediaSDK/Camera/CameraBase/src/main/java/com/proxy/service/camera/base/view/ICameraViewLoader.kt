@@ -29,25 +29,7 @@ interface ICameraViewLoader {
     fun setCustomTouchDispatch(touchDispatch: ITouchDispatch): ICameraViewLoader
 
     /**
-     * 设置相机不同模式的预览尺寸, 来源 [CameraService.getSupportedPreviewSizes]
-     *
-     * @param mode      相机模式, 若为 null, 则代表全部模式都满足
-     * @param faceMode  相机方向, 若为 null, 则代表全部方向都满足
-     * @param size      预览尺寸
-     * */
-    fun setCameraPreviewSize(mode: CameraFunMode?, faceMode: CameraFaceMode?, size: Size): ICameraViewLoader
-
-    /**
-     * 设置相机不同模式的产物尺寸, 来源 [CameraService.getSupportedCaptureSizes]、[CameraService.getSupportedRecordSizes] 等
-     *
-     * @param mode      相机模式, 若为 null, 则代表全部模式都满足
-     * @param faceMode  相机方向, 若为 null, 则代表全部方向都满足
-     * @param size      产物尺寸
-     * */
-    fun setCameraOutSize(mode: CameraFunMode?, faceMode: CameraFaceMode?, size: Size): ICameraViewLoader
-
-    /**
-     * 设置默认摄像头, 默认 [CameraConstants.DEFAULT_CAMERA_FACE_MODE]
+     * 设置默认摄像头, 默认为 null
      * */
     fun setCameraFaceMode(mode: CameraFaceMode): ICameraViewLoader
 

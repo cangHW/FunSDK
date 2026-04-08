@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.core.framework)
     implementation(libs.service.widget)
     implementation(libs.service.threadpool)
-    implementation(libs.android.view.constraintlayout)
 
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 

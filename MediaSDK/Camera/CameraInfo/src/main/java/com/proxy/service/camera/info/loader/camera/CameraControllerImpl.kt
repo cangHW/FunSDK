@@ -8,6 +8,7 @@ import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.CameraAfMode
 import com.proxy.service.camera.base.mode.CameraFunMode
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.camera.info.loader.converter.CameraAfConverter
 
 /**
  * @author: cangHX
@@ -32,7 +33,7 @@ class CameraControllerImpl : AbstractCameraFunController(), ICameraController {
     override fun parsePreviewRequest(builder: CaptureRequest.Builder) {
         super.parsePreviewRequest(builder)
 
-        com.proxy.service.camera.info.loader.converter.CameraAfConverter.parse(
+        CameraAfConverter.parse(
             cameraAfMode,
             funControllerToCameraMode(),
             builder

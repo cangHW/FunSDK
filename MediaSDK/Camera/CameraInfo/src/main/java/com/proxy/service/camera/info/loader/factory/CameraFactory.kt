@@ -62,7 +62,7 @@ object CameraFactory {
      * 获取摄像头支持的预览尺寸
      * */
     fun getSupportedPreviewSizes(cameraId: String): List<Size>? {
-        val size = supportedPreviewSizesMap.get(cameraId)
+        val size = supportedPreviewSizesMap[cameraId]
         if (size != null) {
             return size
         }
@@ -80,7 +80,7 @@ object CameraFactory {
      * 获取摄像头支持的拍照尺寸
      * */
     fun getSupportedCaptureSizes(cameraId: String): List<Size>? {
-        val size = supportedCaptureSizesMap.get(cameraId)
+        val size = supportedCaptureSizesMap[cameraId]
         if (size != null) {
             return size
         }
@@ -98,7 +98,7 @@ object CameraFactory {
      * 获取摄像头支持的视频尺寸
      * */
     fun getSupportedRecordSizes(cameraId: String): List<Size>? {
-        val size = supportedRecordSizesMap.get(cameraId)
+        val size = supportedRecordSizesMap[cameraId]
         if (size != null) {
             return size
         }

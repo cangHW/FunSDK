@@ -20,17 +20,18 @@ import java.nio.ByteBuffer
  */
 abstract class AbstractCaptureController(
     private val handler: Handler
-) : ICameraCaptureController, com.proxy.service.camera.info.loader.controller.IFunController, ImageReader.OnImageAvailableListener {
+) : ICameraCaptureController, IFunController, ImageReader.OnImageAvailableListener {
 
     protected val tag = "${CameraConstants.TAG}CaptureController"
 
     private var width: Int = 1080
     private var height: Int = 720
     private var reader: ImageReader? = null
-    private var surfaceChangedCallback: com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback? = null
+    private var surfaceChangedCallback: IFunController.SurfaceChangedCallback? = null
 
 
     override fun setPictureCaptureSize(width: Int, height: Int) {
+        CsLogger.tag(tag).i("setPictureCaptureSize. width=$width, height=$height")
         if (this.width != width || this.height != height) {
             this.width = width
             this.height = height
@@ -43,11 +44,12 @@ abstract class AbstractCaptureController(
         return refreshImageReader().surface
     }
 
-    override fun setSurfaceChangedCallback(callback: com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback) {
+    override fun setSurfaceChangedCallback(callback: IFunController.SurfaceChangedCallback) {
         this.surfaceChangedCallback = callback
     }
 
     override fun destroy() {
+        CsLogger.tag(tag).i("destroy.")
         try {
             reader?.close()
         } catch (throwable: Throwable) {
@@ -58,6 +60,7 @@ abstract class AbstractCaptureController(
     }
 
     private fun refreshImageReader(): ImageReader {
+        CsLogger.tag(tag).i("refreshImageReader.")
         var reader = this.reader
         if (reader == null) {
             reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)

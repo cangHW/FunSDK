@@ -52,10 +52,12 @@ class EmptyCameraViewImpl: ICameraView {
     }
 
     override fun chooseCaptureMode(): ICameraCaptureController {
-        TODO("Not yet implemented")
+        CsLogger.tag(TAG).i("chooseCaptureMode.")
+        return EmptyCameraCaptureControllerImpl()
     }
 
     override fun chooseRecordMode(): ICameraRecordController {
-        TODO("Not yet implemented")
+        CsLogger.tag(TAG).i("chooseRecordMode.")
+        return EmptyCameraRecordControllerImpl()
     }
 }

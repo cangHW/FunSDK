@@ -21,7 +21,10 @@ import com.proxy.service.core.framework.system.screen.CsScreenUtils
 class TextureViewImpl(
     config: CameraViewConfig,
     private val view: TextureView
-) : AbstractCameraSurfaceView(config, view) {
+) : AbstractCameraSurfaceView(config) {
+
+    private var surfaceWidth: Int = 0
+    private var surfaceHeight: Int = 0
 
     private var surface: SurfaceTexture? = null
 
@@ -31,19 +34,11 @@ class TextureViewImpl(
     }
 
     override fun startCameraPreview() {
-        CsLogger.tag(tag)
-            .d("startCameraPreview. surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight, rotation=${rotation?.name}")
+        CsLogger.tag(tag).d("startCameraPreview.")
         val surface = surface ?: return
 
-        if (surfaceWidth <= 0) {
-            return
-        }
-
-        if (surfaceHeight <= 0) {
-            return
-        }
-
-        val previewSize = getCalculatePreviewSize(surfaceWidth, surfaceHeight)
+        val faceMode = cameraController?.getOpenedCameraMode() ?: return
+        val previewSize = getCalculatePreviewSize(faceMode, surfaceWidth, surfaceHeight)
         if (previewSize == null) {
             CsLogger.tag(tag).e("没有合适的预览尺寸.")
             return
@@ -52,8 +47,7 @@ class TextureViewImpl(
         view.setTransform(createTransformImageMatrix(surfaceWidth, surfaceHeight, previewSize))
         surface.setDefaultBufferSize(previewSize.width, previewSize.height)
         cameraController?.setPreviewSurface(Surface(surface))
-
-        startPreview()
+        cameraController?.startPreview()
     }
 
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {

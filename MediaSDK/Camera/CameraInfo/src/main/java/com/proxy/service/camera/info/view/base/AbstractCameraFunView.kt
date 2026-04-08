@@ -15,7 +15,7 @@ import com.proxy.service.camera.info.view.touch.mode.AfModeDispatch
  * @desc:
  */
 abstract class AbstractCameraFunView(
-    private val config: CameraViewConfig,
+    config: CameraViewConfig,
 ) : AbstractCameraView(config), ICameraView, AfModeDispatch.OnCameraAfIntercept {
 
     private var cameraViewAfMode = config.cameraViewAfMode

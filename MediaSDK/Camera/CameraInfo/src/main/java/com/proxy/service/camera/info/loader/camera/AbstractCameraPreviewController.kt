@@ -13,6 +13,7 @@ import com.proxy.service.camera.info.loader.controller.func.preview.PreviewContr
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.camera.info.loader.controller.IFunController
 
 /**
  * @author: cangHX
@@ -21,7 +22,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 abstract class AbstractCameraPreviewController : AbstractCameraController(), ICameraPreview {
 
-    private var previewController: com.proxy.service.camera.info.loader.controller.IFunController? = null
+    private var previewController: IFunController? = null
     private var previewSurfaces: ArrayList<Surface> = ArrayList()
 
     private fun getSurfaces(): List<Surface> {

@@ -14,7 +14,7 @@ abstract class IClickAction : IAction<IClickAction>(), ICall<Unit, Unit> {
     /**
      * 防抖间隔
      * */
-    protected var debounceTime: Long = 0
+    protected var debounceTime: Long = 600
 
     /**
      * 配置防抖间隔, 用于限制快速重复操作

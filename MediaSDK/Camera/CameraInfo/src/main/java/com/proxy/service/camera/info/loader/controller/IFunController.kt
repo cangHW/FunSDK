@@ -26,12 +26,12 @@ interface IFunController {
     /**
      * 设置窗口变化监听
      * */
-    fun setSurfaceChangedCallback(callback: com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback)
+    fun setSurfaceChangedCallback(callback: SurfaceChangedCallback)
 
     /**
      * 设置参数控制器
      * */
-    fun setParamsController(controller: com.proxy.service.camera.info.loader.controller.IFunController.IParamsController)
+    fun setParamsController(controller: IParamsController)
 
     /**
      * 销毁

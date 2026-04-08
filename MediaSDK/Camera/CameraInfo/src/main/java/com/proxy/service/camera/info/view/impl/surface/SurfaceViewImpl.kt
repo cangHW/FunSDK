@@ -18,7 +18,10 @@ import com.proxy.service.core.framework.system.screen.CsScreenUtils
 class SurfaceViewImpl(
     config: CameraViewConfig,
     private val view: SurfaceView
-) : AbstractCameraSurfaceView(config, view), ICameraView {
+) : AbstractCameraSurfaceView(config), ICameraView {
+
+    private var surfaceWidth: Int = 0
+    private var surfaceHeight: Int = 0
 
     private var holder: SurfaceHolder? = null
 
@@ -29,19 +32,11 @@ class SurfaceViewImpl(
     }
 
     override fun startCameraPreview() {
-        CsLogger.tag(tag)
-            .d("startCameraPreview. surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight, rotation=${rotation?.name}")
+        CsLogger.tag(tag).d("startCameraPreview.")
         val holder = holder ?: return
 
-        if (surfaceWidth <= 0) {
-            return
-        }
-
-        if (surfaceHeight <= 0) {
-            return
-        }
-
-        val previewSize = getCalculatePreviewSize(surfaceWidth, surfaceHeight)
+        val faceMode = cameraController?.getOpenedCameraMode() ?: return
+        val previewSize = getCalculatePreviewSize(faceMode, surfaceWidth, surfaceHeight)
         if (previewSize == null) {
             CsLogger.tag(tag).e("没有合适的预览尺寸.")
             return
@@ -50,8 +45,7 @@ class SurfaceViewImpl(
         adjustSurfaceViewTransform(surfaceWidth, surfaceHeight, previewSize)
         holder.setFixedSize(previewSize.width, previewSize.height)
         cameraController?.setPreviewSurface(holder.surface)
-
-        startPreview()
+        cameraController?.startPreview()
     }
 
     private val surfaceHolderCallback = object : SurfaceHolder.Callback {

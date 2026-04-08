@@ -16,7 +16,10 @@ import java.util.concurrent.TimeUnit
  * @data: 2026/2/11 10:11
  * @desc:
  */
-class AfModeDispatch(view: View, private val handler: IHandlerOption?) : BaseTouchDispatch(view) {
+class AfModeDispatch(
+    view: View,
+    private val handler: IHandlerOption?
+) : BaseTouchDispatch(view) {
 
     interface OnCameraAfIntercept {
         /**

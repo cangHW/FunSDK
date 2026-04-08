@@ -9,6 +9,7 @@ import com.proxy.service.camera.base.mode.CameraAfMode
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.info.loader.camera.CameraControllerImpl
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.camera.info.loader.lifecycle.LifecycleObserverImpl
 
 /**
  * @author: cangHX
@@ -56,11 +57,7 @@ class CameraLoaderImpl : ICameraLoader {
     private fun createController(): CameraControllerImpl {
         val controller = CameraControllerImpl()
 
-        lifecycleOwner?.lifecycle?.addObserver(
-            com.proxy.service.camera.info.loader.lifecycle.LifecycleObserverImpl(
-                controller
-            )
-        )
+        lifecycleOwner?.lifecycle?.addObserver(LifecycleObserverImpl(controller))
         controller.setCameraAfMode(cameraAfMode)
 
         return controller

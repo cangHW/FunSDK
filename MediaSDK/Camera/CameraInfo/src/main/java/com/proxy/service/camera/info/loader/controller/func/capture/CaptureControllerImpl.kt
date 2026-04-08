@@ -20,6 +20,8 @@ import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import com.proxy.service.core.service.media.CsMediaCamera
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.File
 
 /**
@@ -66,50 +68,46 @@ open class CaptureControllerImpl private constructor(
 
     override fun startPictureCapture(callback: PictureCaptureByteCallback?) {
         CsLogger.tag(tag).i("startPictureCapture.")
-        captureBean =
-            CaptureBean(
-                false,
-                null,
-                null,
-                callback
-            )
+        captureBean = CaptureBean(
+            false,
+            null,
+            null,
+            callback
+        )
         requestPictureCapture()
     }
 
     override fun startPictureCaptureToLocal(callback: PictureCaptureCallback?) {
         val file = FileUtils.getPictureCaptureFile()
         CsLogger.tag(tag).i("startPictureCaptureToLocal. filePath=${file.absolutePath}")
-        captureBean =
-            CaptureBean(
-                false,
-                file,
-                callback,
-                null
-            )
+        captureBean = CaptureBean(
+            false,
+            file,
+            callback,
+            null
+        )
         requestPictureCapture()
     }
 
     override fun startPictureCaptureToLocal(filePath: String, callback: PictureCaptureCallback?) {
         CsLogger.tag(tag).i("startPictureCaptureToLocal. filePath=$filePath")
-        captureBean =
-            CaptureBean(
-                false,
-                File(filePath),
-                callback,
-                null
-            )
+        captureBean = CaptureBean(
+            false,
+            File(filePath),
+            callback,
+            null
+        )
         requestPictureCapture()
     }
 
     override fun startPictureCaptureToAlbum(callback: PictureCaptureCallback?) {
         CsLogger.tag(tag).i("startPictureCaptureToAlbum.")
-        captureBean =
-            CaptureBean(
-                true,
-                null,
-                callback,
-                null
-            )
+        captureBean = CaptureBean(
+            true,
+            null,
+            callback,
+            null
+        )
         requestPictureCapture()
     }
 
@@ -156,31 +154,60 @@ open class CaptureControllerImpl private constructor(
         }
     }
 
+    private fun callSuccess(bytes: ByteArray) {
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                try {
+                    captureBean?.byteCallback?.onPictureCaptureSuccess(bytes)
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(tag).e(throwable)
+                } finally {
+                    captureBean = null
+                }
+                return ""
+            }
+        })?.start()
+    }
 
     override fun callSuccess(filePath: String) {
-        try {
-            captureBean?.callback?.onPictureCaptureSuccess(filePath)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
-        } finally {
-            captureBean = null
-        }
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                try {
+                    captureBean?.callback?.onPictureCaptureSuccess(filePath)
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(tag).e(throwable)
+                } finally {
+                    captureBean = null
+                }
+                return ""
+            }
+        })?.start()
     }
 
     override fun callFailed() {
-        try {
-            captureBean?.callback?.onPictureCaptureFailed()
-            captureBean?.byteCallback?.onPictureCaptureFailed()
-        } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
-        } finally {
-            captureBean = null
-        }
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                try {
+                    captureBean?.callback?.onPictureCaptureFailed()
+                    captureBean?.byteCallback?.onPictureCaptureFailed()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(tag).e(throwable)
+                } finally {
+                    captureBean = null
+                }
+                return ""
+            }
+        })?.start()
     }
 
 
     override fun saveImage(bytes: ByteArray) {
         val bean = captureBean ?: return
+
+        if (bean.byteCallback != null) {
+            callSuccess(bytes)
+            return
+        }
 
         if (bean.isSavePhotoAlbum) {
             savePhotoAlbum(bytes, FileUtils.createPictureCaptureFileName())
@@ -231,10 +258,7 @@ open class CaptureControllerImpl private constructor(
     /**
      * 获取拍照时的旋转角度
      * */
-    private fun calculateRotation(
-        som: SensorOrientationMode,
-        isFrontCamera: Boolean
-    ): Int {
+    private fun calculateRotation(som: SensorOrientationMode, isFrontCamera: Boolean): Int {
         val rotationDegrees = CsScreenUtils.getScreenRotation().degree * 90
         val sign = if (isFrontCamera) 1 else -1
         return (som.degree + rotationDegrees * sign + 360) % 360

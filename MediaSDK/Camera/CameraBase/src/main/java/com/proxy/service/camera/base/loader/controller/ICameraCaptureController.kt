@@ -17,7 +17,7 @@ interface ICameraCaptureController {
 
 
     /**
-     * 拍照并保存到本地
+     * 拍照并获取图片字节信息
      * */
     fun startPictureCapture(callback: PictureCaptureByteCallback?)
 

@@ -3,7 +3,6 @@ package com.proxy.service.camera.info
 import android.util.Size
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.camera.base.CameraService
-import com.proxy.service.camera.base.config.page.PageConfig
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.mode.CameraFaceMode

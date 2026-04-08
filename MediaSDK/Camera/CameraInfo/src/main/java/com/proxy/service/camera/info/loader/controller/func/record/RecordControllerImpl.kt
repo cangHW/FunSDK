@@ -10,8 +10,7 @@ import com.proxy.service.camera.info.loader.controller.IFunController
  * @data: 2026/3/23 18:35
  * @desc:
  */
-class RecordControllerImpl: ICameraRecordController,
-    com.proxy.service.camera.info.loader.controller.IFunController {
+class RecordControllerImpl: ICameraRecordController, IFunController {
     override fun setVideoRecordSize(width: Int, height: Int) {
         TODO("Not yet implemented")
     }
@@ -28,11 +27,11 @@ class RecordControllerImpl: ICameraRecordController,
         TODO("Not yet implemented")
     }
 
-    override fun setSurfaceChangedCallback(callback: com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback) {
+    override fun setSurfaceChangedCallback(callback: IFunController.SurfaceChangedCallback) {
         TODO("Not yet implemented")
     }
 
-    override fun setParamsController(controller: com.proxy.service.camera.info.loader.controller.IFunController.IParamsController) {
+    override fun setParamsController(controller: IFunController.IParamsController) {
         TODO("Not yet implemented")
     }
 

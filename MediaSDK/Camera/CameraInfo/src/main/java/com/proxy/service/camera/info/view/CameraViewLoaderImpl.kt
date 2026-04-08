@@ -1,6 +1,5 @@
 package com.proxy.service.camera.info.view
 
-import android.util.Size
 import android.view.LayoutInflater
 import android.view.SurfaceView
 import android.view.TextureView
@@ -9,7 +8,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraFunMode
 import com.proxy.service.camera.base.mode.CameraViewAfMode
 import com.proxy.service.camera.base.mode.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
@@ -17,8 +15,6 @@ import com.proxy.service.camera.base.view.ICameraViewLoader
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.view.base.AbstractCameraSurfaceView
 import com.proxy.service.camera.info.view.config.CameraViewConfig
-import com.proxy.service.camera.info.view.config.UserOutSize
-import com.proxy.service.camera.info.view.config.UserPreviewSize
 import com.proxy.service.camera.info.view.impl.EmptyCameraViewImpl
 import com.proxy.service.camera.info.view.impl.surface.SurfaceViewImpl
 import com.proxy.service.camera.info.view.impl.surface.TextureViewImpl
@@ -42,24 +38,6 @@ class CameraViewLoaderImpl : ICameraViewLoader {
 
     override fun setCustomTouchDispatch(touchDispatch: ITouchDispatch): ICameraViewLoader {
         this.touchDispatch = touchDispatch
-        return this
-    }
-
-    override fun setCameraPreviewSize(
-        mode: CameraFunMode?,
-        faceMode: CameraFaceMode?,
-        size: Size
-    ): ICameraViewLoader {
-        config.userSize.add(UserPreviewSize(mode, faceMode, size))
-        return this
-    }
-
-    override fun setCameraOutSize(
-        mode: CameraFunMode?,
-        faceMode: CameraFaceMode?,
-        size: Size
-    ): ICameraViewLoader {
-        config.userSize.add(UserOutSize(mode, faceMode, size))
         return this
     }
 

@@ -14,8 +14,6 @@ class CameraViewConfig {
 
     var lifecycleOwner: LifecycleOwner? = null
 
-    val userSize = ArrayList<UserSize>()
-
     var cameraFaceMode: CameraFaceMode? = null
     var cameraViewAfMode: CameraViewAfMode = CameraConstants.DEFAULT_CAMERA_VIEW_AF_MODE
 
