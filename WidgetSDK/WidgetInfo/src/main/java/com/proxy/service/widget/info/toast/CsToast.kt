@@ -25,7 +25,8 @@ object CsToast {
 
     private val viewInfoCache = HashMap<String, BaseViewInfo>()
 
-    private var config: ToastConfig = ToastConfig()
+    private var defaultConfig: ToastConfig = ToastConfig()
+    private val configs = HashMap<String, ToastConfig>()
     private var factory: ToastViewFactory = ToastViewFactory()
 
     private var nativeToast: Toast? = null
@@ -37,7 +38,14 @@ object CsToast {
      * 设置全局 toast 配置
      * */
     fun setGlobalToastConfig(config: ToastConfig) {
-        this.config = config
+        this.defaultConfig = config
+    }
+
+    /**
+     * 设置全局 toast 配置, 后续展示 toast 时可通过 tag 字段控制使用哪个配置
+     * */
+    fun setGlobalToastConfig(tag: String, config: ToastConfig) {
+        configs[tag] = config
     }
 
     /**
@@ -142,7 +150,7 @@ object CsToast {
                 val viewInfo = createViewInfo(context, tag, false)
                 viewInfo.updateTxt(content)
 
-                showToast(createToast(context), viewInfo, duration.value)
+                showToast(createToast(context, tag), viewInfo, duration.value)
                 return ""
             }
         })?.start()
@@ -216,7 +224,7 @@ object CsToast {
                 viewInfo.updateIcon(icon)
                 viewInfo.updateTxt(content)
 
-                showToast(createToast(context), viewInfo, duration.value)
+                showToast(createToast(context, tag), viewInfo, duration.value)
                 return ""
             }
         })?.start()
@@ -257,7 +265,7 @@ object CsToast {
                 viewInfo.updateIcon(icon)
                 viewInfo.updateTxt(content)
 
-                showToast(createToast(context), viewInfo, duration.value)
+                showToast(createToast(context, tag), viewInfo, duration.value)
                 return ""
             }
         })?.start()
@@ -271,22 +279,26 @@ object CsToast {
         } else {
             "$KEY_TXT$tag"
         }
-        var viewInfo: BaseViewInfo? = viewInfoCache.get(key)
+        var viewInfo: BaseViewInfo? = viewInfoCache[key]
         if (viewInfo == null) {
             viewInfo = if (hasIcon) {
                 factory.getToastViewWithIcon(context, tag)
             } else {
                 factory.getToastView(context, tag)
             }
-            viewInfoCache.put(key, viewInfo)
+            viewInfoCache[key] = viewInfo
         }
         return viewInfo
     }
 
-    private fun createToast(context: Context): Toast {
+    private fun createToast(context: Context, tag: String): Toast {
         var toast = currentToast
         if (toast != null) {
             return toast
+        }
+        var config = configs[tag]
+        if (config == null) {
+            config = defaultConfig
         }
         toast = Toast(context)
         toast.setMargin(config.horizontalMargin, config.verticalMargin)

@@ -109,6 +109,7 @@ abstract class AbstractBroadcast<T>(
         extras?.let {
             intent.putExtras(it)
         }
+        intent.putExtra(BroadcastConstants.PACKAGE_NAME, CsAppUtils.getPackageName())
         intent.putExtra(BroadcastConstants.PROCESS_NAME, CsAppUtils.getProcessName())
         intent.putExtra(BroadcastConstants.ACTION_TYPE_NAME, action)
         return intent
