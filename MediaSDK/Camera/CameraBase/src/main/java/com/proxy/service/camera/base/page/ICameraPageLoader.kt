@@ -15,7 +15,7 @@ interface ICameraPageLoader {
     /**
      * 设置支持的相机模式, 默认全部支持
      * */
-    fun setOpenCameraMode(list: List<CameraFunMode>): ICameraPageLoader
+    fun setSupportCameraFunMode(list: List<CameraFunMode>): ICameraPageLoader
 
     /**
      * 设置默认的摄像头

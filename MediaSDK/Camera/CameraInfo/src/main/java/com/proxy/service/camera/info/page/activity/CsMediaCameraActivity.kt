@@ -11,6 +11,8 @@ import com.proxy.service.camera.base.callback.view.CustomTouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraFunMode
+import com.proxy.service.camera.base.mode.CameraViewAfMode
+import com.proxy.service.camera.base.mode.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.page.adapter.CameraModeListAdapter
@@ -57,8 +59,8 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, PictureCa
         CsBarUtils.setStatusBarTransparent(this)
         setContentView(R.layout.cs_camera_info_page_activity_camera)
 
-        val code = intent.getIntExtra(PARAMS, 0)
-        val tempParams = CameraCache.get(code)
+        val hashCode = intent.getIntExtra(PARAMS, 0)
+        val tempParams = CameraCache.get(hashCode)
         if (tempParams == null) {
             CsToast.show(R.string.cs_camera_info_no_params_toast)
             finish()
@@ -107,18 +109,13 @@ open class CsMediaCameraActivity : FragmentActivity(), ActionCallback, PictureCa
     }
 
     override fun onAction(list: Array<String>) {
-        val viewGroup = findViewById<ViewGroup>(R.id.cs_media_camera)
-//        val config = ViewConfig.builder()
-//            .setCameraFaceMode(cameraFaceMode)
-//            .setCameraMode(CameraMode.CAPTURE)
-//            .setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
-////            .setViewMode(ViewMode.SURFACE_VIEW)
-//            .setViewMode(ViewMode.TEXTURE_VIEW)
-//            .build()
         iCameraView = CsMediaCamera.createViewLoader()
             ?.setCustomTouchDispatch(customTouchDispatch)
             ?.setLifecycleOwner(this)
-            ?.createTo(viewGroup)
+            ?.setCameraViewMode(CameraViewMode.TEXTURE_VIEW)
+            ?.setCameraFaceMode(cameraFaceMode)
+            ?.setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
+            ?.createTo(findViewById(R.id.cs_media_camera))
     }
 
     private val customTouchDispatch = object : CustomTouchDispatch() {

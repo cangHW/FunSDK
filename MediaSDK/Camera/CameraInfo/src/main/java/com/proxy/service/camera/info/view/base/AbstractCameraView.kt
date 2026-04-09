@@ -42,6 +42,7 @@ abstract class AbstractCameraView(
 
     override fun openCamera(mode: CameraFaceMode) {
         cameraController?.openCamera(mode)
+        startPreview()
     }
 
     override fun startPreview() {

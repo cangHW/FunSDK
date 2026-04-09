@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.Surface
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.core.framework.data.log.CsLogger
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
@@ -35,9 +34,9 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
         }
     }
 
-    private val isOpenState = AtomicBoolean(false)
     private val callbacks = ArrayList<Callback>()
 
+    private var device: CameraDevice? = null
     private var session: CameraCaptureSession? = null
 
 
@@ -49,12 +48,6 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
      * 暂停重复请求, 用于暂停预览
      * */
     fun stopRepeating() {
-        if (!isOpenState.get()) {
-            CsLogger.tag(TAG)
-                .d("CaptureSession has been suspended and there is no need to suspend it again")
-            return
-        }
-
         CsLogger.tag(TAG).i("stopCaptureSession.")
 
         handler.post {
@@ -67,16 +60,11 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
     }
 
     fun closeCaptureSession() {
-        if (!isOpenState.compareAndSet(true, false)) {
-            CsLogger.tag(TAG)
-                .d("CaptureSession has been closed and there is no need to close it again")
-            return
-        }
-
         CsLogger.tag(TAG).i("closeCaptureSession.")
 
         handler.post {
-            realCloseCaptureSession()
+            realCloseCaptureSession(session)
+            clearCaptureSession()
         }
     }
 
@@ -89,7 +77,8 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
 
         handler.post {
             if (session?.device != device) {
-                realCloseCaptureSession()
+                realCloseCaptureSession(session)
+                clearCaptureSession()
             }
 
             val ss = session
@@ -109,7 +98,7 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
     }
 
 
-    private fun realCloseCaptureSession() {
+    private fun realCloseCaptureSession(session: CameraCaptureSession?) {
         try {
             session?.stopRepeating()
             session?.abortCaptures()
@@ -121,9 +110,12 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).w(throwable)
             }
-            isOpenState.set(false)
-            session = null
         }
+    }
+
+    private fun clearCaptureSession() {
+        device = null
+        session = null
     }
 
     @Throws(Throwable::class)
@@ -133,11 +125,6 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
         callback: Callback
     ) {
         callbacks.add(callback)
-        if (!isOpenState.compareAndSet(false, true)) {
-            CsLogger.tag(TAG).w("The CaptureSession is in the process of turning on.")
-            return
-        }
-
         val surfaces = surfaceCallback.getOutputSurface()
         if (surfaces.isEmpty()) {
             CsLogger.tag(TAG).e("surfaces is empty.")
@@ -147,47 +134,48 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
             return
         }
 
+        if (this.device == device) {
+            CsLogger.tag(TAG).w("The CaptureSession is in the process of turning on.")
+            return
+        }
+        this.device = device
+
         device.createCaptureSession(
             surfaces,
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
-                    this@CaptureSessionManager.session = session
-                    if (isOpenState.get()) {
-                        CsLogger.tag(TAG).d("createCaptureSession onConfigured")
+                    CsLogger.tag(TAG).d("onConfigured. cameraId=${session.device.id}")
+                    if (this@CaptureSessionManager.device == session.device) {
+                        this@CaptureSessionManager.session = session
 
                         forEachCallbacks {
                             it.onConfigured(session)
                         }
-                        isOpenState.set(true)
                     } else {
-                        realCloseCaptureSession()
+                        realCloseCaptureSession(session)
                     }
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
-                    if (this@CaptureSessionManager.session == session) {
-                        this@CaptureSessionManager.session = null
-                        CsLogger.tag(TAG).e("createCaptureSession onConfigureFailed")
+                    CsLogger.tag(TAG).e("onConfigureFailed. cameraId=${session.device.id}")
+                    if (this@CaptureSessionManager.device == session.device) {
+                        clearCaptureSession()
 
                         forEachCallbacks {
                             it.onConfigureFailed()
                         }
-
-                        isOpenState.compareAndSet(true, false)
                     }
                 }
 
                 override fun onClosed(session: CameraCaptureSession) {
                     super.onClosed(session)
-                    if (this@CaptureSessionManager.session == session) {
-                        this@CaptureSessionManager.session = null
-                        CsLogger.tag(TAG).d("createCaptureSession onClosed")
+                    CsLogger.tag(TAG).d("onClosed. cameraId=${session.device.id}")
+                    if (this@CaptureSessionManager.device == session.device) {
+                        clearCaptureSession()
 
                         forEachCallbacks {
                             it.onClosed(session)
                         }
-
-                        isOpenState.compareAndSet(true, false)
                     }
                 }
             },

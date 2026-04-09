@@ -38,7 +38,6 @@ class CameraDeviceManager private constructor(
         }
     }
 
-    private val isOpenState = AtomicBoolean(false)
     private val callbacks = ArrayList<Callback>()
 
     private var cameraId: String = ""
@@ -50,16 +49,11 @@ class CameraDeviceManager private constructor(
     }
 
     fun closeCamera() {
-        if (!isOpenState.compareAndSet(true, false)) {
-            CsLogger.tag(TAG)
-                .w("The camera has been turned off and there is no need to turn it off again")
-            return
-        }
-
         CsLogger.tag(TAG).i("closeCamera. cameraId=$cameraId")
 
         handler.post {
-            realCloseCamera()
+            realCloseCamera(cameraDevice)
+            clearCameraCache()
         }
     }
 
@@ -81,9 +75,9 @@ class CameraDeviceManager private constructor(
         handler.post {
             if (this.cameraId != "" && this.cameraId != cameraId) {
                 CsLogger.tag(TAG).d("close old camera")
-                realCloseCamera()
+                realCloseCamera(cameraDevice)
+                clearCameraCache()
             }
-            this.cameraId = cameraId
 
             val device = cameraDevice
             if (device != null) {
@@ -102,15 +96,17 @@ class CameraDeviceManager private constructor(
     }
 
 
-    private fun realCloseCamera() {
+    private fun realCloseCamera(cameraDevice: CameraDevice?) {
         try {
             cameraDevice?.close()
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).w(throwable)
-        } finally {
-            isOpenState.set(false)
-            cameraDevice = null
         }
+    }
+
+    private fun clearCameraCache() {
+        cameraId = ""
+        cameraDevice = null
     }
 
     @SuppressLint("MissingPermission")
@@ -118,60 +114,63 @@ class CameraDeviceManager private constructor(
         callback?.let {
             callbacks.add(it)
         }
-        if (!isOpenState.compareAndSet(false, true)) {
+        if (this.cameraId == cameraId) {
             CsLogger.tag(TAG).w("The camera is in the process of turning on.")
             return
         }
+        this.cameraId = cameraId
 
         manager.openCamera(
             cameraId,
             object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
-                    this@CameraDeviceManager.cameraDevice = camera
-                    if (isOpenState.get()) {
-                        CsLogger.tag(TAG).d("onOpened. cameraId=$cameraId")
+                    CsLogger.tag(TAG).d("onOpened. cameraId=$cameraId")
 
+                    if (this@CameraDeviceManager.cameraId == cameraId) {
+                        this@CameraDeviceManager.cameraDevice = camera
                         forEachCallbacks {
                             it.onOpened(camera)
                         }
-                        isOpenState.set(true)
                     } else {
-                        realCloseCamera()
+                        realCloseCamera(camera)
                     }
                 }
 
                 override fun onClosed(camera: CameraDevice) {
                     super.onClosed(camera)
-                    this@CameraDeviceManager.cameraDevice = null
                     CsLogger.tag(TAG).d("onClosed. cameraId=$cameraId")
 
-                    forEachCallbacks {
-                        it.onClosed(camera)
+                    if (this@CameraDeviceManager.cameraId == camera.id) {
+                        clearCameraCache()
+                        forEachCallbacks {
+                            it.onClosed(camera)
+                        }
                     }
-
-                    isOpenState.compareAndSet(true, false)
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
-                    this@CameraDeviceManager.cameraDevice = null
                     CsLogger.tag(TAG).w("onDisconnected. cameraId=$cameraId")
 
-                    forEachCallbacks {
-                        it.onDisconnected(camera)
+                    if (this@CameraDeviceManager.cameraId == camera.id) {
+                        clearCameraCache()
+
+                        forEachCallbacks {
+                            it.onDisconnected(camera)
+                        }
                     }
-                    isOpenState.compareAndSet(true, false)
                 }
 
                 override fun onError(camera: CameraDevice, error: Int) {
-                    this@CameraDeviceManager.cameraDevice = null
-
                     val mode = errorCodeToMode(error)
                     CsLogger.tag(TAG).e("onError. cameraId=$cameraId, mode=${mode.name}")
 
-                    forEachCallbacks {
-                        it.onError(mode)
+                    if (this@CameraDeviceManager.cameraId == camera.id) {
+                        clearCameraCache()
+
+                        forEachCallbacks {
+                            it.onError(mode)
+                        }
                     }
-                    isOpenState.compareAndSet(true, false)
                 }
             },
             handler

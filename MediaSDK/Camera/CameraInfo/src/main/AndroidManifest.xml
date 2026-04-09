@@ -11,15 +11,18 @@
 
         <activity
             android:name=".page.activity.CsMediaCameraActivity"
-            android:configChanges="screenSize|orientation" />
+            android:configChanges="screenSize|orientation"
+            android:launchMode="singleTop" />
 
         <activity
             android:name=".page.activity.CsMediaCameraPortraitActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             tools:ignore="DiscouragedApi" />
 
         <activity
             android:name=".page.activity.CsMediaCameraLandscapeActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="landscape"
             tools:ignore="DiscouragedApi" />
 

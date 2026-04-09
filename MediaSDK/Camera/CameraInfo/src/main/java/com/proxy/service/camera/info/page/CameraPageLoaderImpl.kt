@@ -23,7 +23,7 @@ class CameraPageLoaderImpl : ICameraPageLoader {
 
     private val params = MediaCameraParams()
 
-    override fun setOpenCameraMode(list: List<CameraFunMode>): ICameraPageLoader {
+    override fun setSupportCameraFunMode(list: List<CameraFunMode>): ICameraPageLoader {
         params.supportCameraFunModes.clear()
         params.supportCameraFunModes.addAll(list)
         return this

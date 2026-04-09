@@ -26,6 +26,7 @@ class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {
 
     private val tag = "CameraLoaderActivity"
 
+    private var cameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
     private var iCamera: ICameraController? = null
     private var captureController: ICameraCaptureController? = null
 
@@ -34,10 +35,9 @@ class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {
 
         iCamera = CsMediaCamera.createLoader()
             ?.setLifecycleOwner(this)
-            ?.createCamera()
+            ?.createAndOpenCamera(cameraFaceMode)
         captureController = iCamera?.chooseCaptureMode()
         captureController?.setPictureCaptureSize(1440, 1920)
-        iCamera?.openCamera(CameraFaceMode.FaceBack)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityCameraLoaderBinding {
@@ -88,6 +88,17 @@ class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {
                         CsLogger.e("filePath=$filePath")
                     }
                 })
+            }
+
+            R.id.change_camera -> {
+                cameraFaceMode = if (cameraFaceMode == CameraFaceMode.FaceBack) {
+                    CameraFaceMode.FaceFront
+                } else {
+                    CameraFaceMode.FaceBack
+                }
+
+                iCamera?.openCamera(cameraFaceMode)
+                iCamera?.startPreview()
             }
         }
     }
