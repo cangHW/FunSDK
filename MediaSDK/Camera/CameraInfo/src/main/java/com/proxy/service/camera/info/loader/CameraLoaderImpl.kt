@@ -1,7 +1,7 @@
 package com.proxy.service.camera.info.loader
 
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.camera.base.callback.CameraLoaderCallback
+import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraController
 import com.proxy.service.camera.base.loader.ICameraLoader
@@ -22,10 +22,13 @@ class CameraLoaderImpl : ICameraLoader {
         private const val TAG = "${CameraConstants.TAG}Loader"
     }
 
+    private var cameraLoaderCallback: CameraLoaderCallback? = null
     private var lifecycleOwner: LifecycleOwner? = null
     private var cameraAfMode: CameraAfMode = CameraConstants.DEFAULT_CAMERA_AF_MODE
 
     override fun setCameraLoaderCallback(callback: CameraLoaderCallback): ICameraLoader {
+        CsLogger.tag(TAG).i("setCameraLoaderCallback. callback=$callback")
+        this.cameraLoaderCallback = callback
         return this
     }
 
@@ -59,6 +62,7 @@ class CameraLoaderImpl : ICameraLoader {
 
         lifecycleOwner?.lifecycle?.addObserver(LifecycleObserverImpl(controller))
         controller.setCameraAfMode(cameraAfMode)
+        controller.setCameraLoaderCallback(cameraLoaderCallback)
 
         return controller
     }

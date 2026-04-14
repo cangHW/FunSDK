@@ -1,7 +1,8 @@
 package com.proxy.service.camera.base.page
 
 import android.content.Context
-import com.proxy.service.camera.base.callback.PagePictureCaptureCallback
+import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
+import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraFunMode
 
@@ -25,7 +26,30 @@ interface ICameraPageLoader {
     /**
      * 设置拍照回调
      * */
-    fun setTakePictureCallback(callback: PagePictureCaptureCallback): ICameraPageLoader
+    fun setPictureCaptureCallback(callback: PictureCaptureCallback): ICameraPageLoader
+
+    /**
+     * 设置拍照并保存相册回调
+     * */
+    fun setPictureCaptureToAlbumCallback(callback: PictureCaptureCallback): ICameraPageLoader
+
+    /**
+     * 设置拍照回调
+     *
+     * @param filePath      照片文件待保存地址. 为空则使用默认文件夹
+     * @param callback      数据回调
+     * */
+    fun setPictureCaptureCallback(
+        filePath: String,
+        callback: PictureCaptureCallback
+    ): ICameraPageLoader
+
+    /**
+     * 设置拍照回调, 字节
+     *
+     * @param callback      数据回调
+     * */
+    fun setPictureCaptureCallback(callback: PictureCaptureByteCallback): ICameraPageLoader
 
     /**
      * 启动支持横竖屏相机

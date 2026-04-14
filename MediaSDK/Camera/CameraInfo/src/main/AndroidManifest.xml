@@ -26,6 +26,11 @@
             android:screenOrientation="landscape"
             tools:ignore="DiscouragedApi" />
 
+        <activity
+            android:name=".page.activity.CsMediaCameraSettingActivity"
+            android:configChanges="screenSize|orientation"
+            android:launchMode="singleTop" />
+
     </application>
 
 </manifest>

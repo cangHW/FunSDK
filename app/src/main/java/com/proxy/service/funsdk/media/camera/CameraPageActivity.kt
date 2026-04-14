@@ -3,7 +3,7 @@ package com.proxy.service.funsdk.media.camera
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import com.proxy.service.camera.base.callback.PagePictureCaptureCallback
+import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.funsdk.base.BaseActivity
@@ -23,9 +23,9 @@ class CameraPageActivity : BaseActivity<ActivityCameraPageBinding>() {
 
         CsMediaCamera.createPageLoader()
 //            ?.setDefaultCameraFaceMode(CameraFaceMode.FaceFront)
-            ?.setTakePictureCallback(object : PagePictureCaptureCallback {
-                override fun onPictureCaptureSuccess(path: String) {
-                    CsLogger.tag(tag).i("onTakePictureSuccess. path=$path")
+            ?.setPictureCaptureCallback(object : PictureCaptureCallback{
+                override fun onPictureCaptureSuccess(filePath: String) {
+                    CsLogger.tag(tag).i("onTakePictureSuccess. filePath=$filePath")
                 }
 
                 override fun onPictureCaptureFailed() {

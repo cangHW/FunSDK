@@ -1,6 +1,7 @@
 package com.proxy.service.camera.info.page.params
 
-import com.proxy.service.camera.base.callback.PagePictureCaptureCallback
+import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
+import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.mode.CameraFaceMode
 import com.proxy.service.camera.base.mode.CameraFunMode
 
@@ -23,10 +24,24 @@ class MediaCameraParams {
      * */
     var defaultCameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
 
+    /**
+     * 拍照文件地址
+     * */
+    var filePath: String? = null
+
+    /**
+     * 拍照文件保存到相册
+     * */
+    var isSaveAlbum: Boolean = false
 
     /**
      * 拍照回调
      * */
-    var pictureCaptureCallback: PagePictureCaptureCallback? = null
+    var pictureCaptureCallback: PictureCaptureCallback? = null
+
+    /**
+     * 拍照回调
+     * */
+    var pictureCaptureByteCallback: PictureCaptureByteCallback? = null
 
 }

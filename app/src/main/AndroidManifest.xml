@@ -16,8 +16,7 @@
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
 
     <application
@@ -92,13 +91,13 @@
         <activity android:name=".media.MediaActivity" />
         <activity
             android:name=".media.camera.CameraLoaderActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".media.camera.CameraViewActivity"
-            android:screenOrientation="portrait"/>
+            android:configChanges="screenSize|orientation" />
         <activity
             android:name=".media.camera.CameraPageActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
     </application>
 

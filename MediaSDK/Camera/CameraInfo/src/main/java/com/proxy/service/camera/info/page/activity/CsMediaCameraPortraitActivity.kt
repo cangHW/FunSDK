@@ -85,13 +85,13 @@ class CsMediaCameraPortraitActivity : CsMediaCameraActivity(), ActionCallback {
 //        return true
 //    }
 
-    override fun onPictureCaptureSuccess(filePath: String) {
-        if (tempPath != filePath) {
-            CsFileUtils.delete(tempPath)
-            tempPath = null
-        }
-        super.onPictureCaptureSuccess(filePath)
-    }
+//    override fun onPictureCaptureSuccess(filePath: String) {
+//        if (tempPath != filePath) {
+//            CsFileUtils.delete(tempPath)
+//            tempPath = null
+//        }
+//        super.onPictureCaptureSuccess(filePath)
+//    }
 
 
     private class OrientationEventListenerImpl(

@@ -3,6 +3,7 @@ package com.proxy.service.camera.info.loader.camera
 import android.os.Handler
 import android.os.HandlerThread
 import androidx.annotation.CallSuper
+import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraAction
 import com.proxy.service.camera.base.loader.camera.ICameraActionGet
@@ -38,6 +39,9 @@ abstract class AbstractCameraController : ICameraAction, ICameraActionGet {
 
     protected var cameraFaceMode: CameraFaceMode? = null
 
+    fun setCameraLoaderCallback(callback: CameraLoaderCallback?){
+        cameraDeviceManager.setCameraLoaderCallback(callback)
+    }
 
     final override fun openCamera(mode: CameraFaceMode) {
         if (isReleased.get()) {

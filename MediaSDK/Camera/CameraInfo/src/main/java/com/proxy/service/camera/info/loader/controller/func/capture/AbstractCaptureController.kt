@@ -26,7 +26,7 @@ abstract class AbstractCaptureController(
 
     private var width: Int = 1080
     private var height: Int = 720
-    private var reader: ImageReader? = null
+    protected var reader: ImageReader? = null
     private var surfaceChangedCallback: IFunController.SurfaceChangedCallback? = null
 
 

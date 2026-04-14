@@ -31,6 +31,10 @@ android {
         }
     }
 
+    viewBinding {
+        enable = true
+    }
+
     resourcePrefix = "cs_camera_info_"
 }
 

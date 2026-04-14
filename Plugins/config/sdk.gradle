@@ -193,7 +193,7 @@ ext {
             // 视图 UI 库
             WidgetInfo    : [
                     artifact          : "Service-Widget",
-                    version           : "0.0.19",
+                    version           : "0.0.19.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

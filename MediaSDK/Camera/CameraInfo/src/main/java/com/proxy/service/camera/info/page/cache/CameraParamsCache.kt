@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit
  * @data: 2026/2/10 19:46
  * @desc:
  */
-object CameraCache {
+object CameraParamsCache {
 
-    private const val TAG = "${CameraConstants.TAG}CameraCache"
+    private const val TAG = "${CameraConstants.TAG}CameraParams"
 
     private const val DELAY_TIME = 5 * 1000L
 
@@ -37,9 +37,9 @@ object CameraCache {
         CsTask.delay(DELAY_TIME, TimeUnit.MILLISECONDS)
             ?.doOnNext(object : IConsumer<Long> {
                 override fun accept(value: Long) {
-                    val params = cacheMap.removeSync(code)
+                    val params = cacheMap.removeSync(code) ?: return
                     CsLogger.tag(TAG)
-                        .w("It hasn't been used for too long. I'm going to recycle it. callback=${params?.pictureCaptureCallback}")
+                        .w("It hasn't been used for too long. I'm going to recycle it. callback=${params.pictureCaptureCallback}")
                 }
             })
             ?.start()

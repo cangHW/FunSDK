@@ -113,6 +113,12 @@ open class CaptureControllerImpl private constructor(
 
 
     private fun requestPictureCapture() {
+        if (reader == null){
+            CsLogger.tag(tag).e("PictureCapture reader is null. do startPreview first")
+            callFailed()
+            return
+        }
+
         val cameraDevice = deviceManager.getCameraDevice()
         if (cameraDevice == null) {
             CsLogger.tag(tag).e("camera is not open.")

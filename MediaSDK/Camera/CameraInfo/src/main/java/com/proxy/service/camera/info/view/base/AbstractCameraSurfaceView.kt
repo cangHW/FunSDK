@@ -62,18 +62,6 @@ abstract class AbstractCameraSurfaceView(
         startCameraPreview()
     }
 
-    override fun chooseCaptureMode(): ICameraCaptureController {
-        val controller = super.chooseCaptureMode()
-        startPreview()
-        return controller
-    }
-
-    override fun chooseRecordMode(): ICameraRecordController {
-        val controller = super.chooseRecordMode()
-        startPreview()
-        return controller
-    }
-
     override fun releaseCamera() {
         super.releaseCamera()
         finishCallScreenRotation()

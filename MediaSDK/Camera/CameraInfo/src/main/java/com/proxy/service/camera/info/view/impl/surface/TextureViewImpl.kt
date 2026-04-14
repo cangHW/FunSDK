@@ -3,7 +3,6 @@ package com.proxy.service.camera.info.view.impl.surface
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.graphics.SurfaceTexture
-import android.util.Size
 import android.view.Surface
 import android.view.TextureView
 import com.proxy.service.camera.info.utils.CameraUtils
@@ -44,7 +43,7 @@ class TextureViewImpl(
             return
         }
 
-        view.setTransform(createTransformImageMatrix(surfaceWidth, surfaceHeight, previewSize))
+        view.setTransform(createTransformImageMatrix(surfaceWidth, surfaceHeight))
         surface.setDefaultBufferSize(previewSize.width, previewSize.height)
         cameraController?.setPreviewSurface(Surface(surface))
         cameraController?.startPreview()
@@ -91,28 +90,18 @@ class TextureViewImpl(
         }
     }
 
-    private fun createTransformImageMatrix(viewW: Int, viewH: Int, preferredSize: Size): Matrix {
+    private fun createTransformImageMatrix(viewW: Int, viewH: Int): Matrix {
         val matrix = Matrix()
         val textureRectF = RectF(0f, 0f, viewW.toFloat(), viewH.toFloat())
-        val previewRectF = RectF(
-            0f,
-            0f,
-            preferredSize.height.toFloat(),
-            preferredSize.width.toFloat()
-        )
+
         val centerX = textureRectF.centerX()
         val centerY = textureRectF.centerY()
-        previewRectF.offset(
-            centerX - previewRectF.centerX(),
-            centerY - previewRectF.centerY()
-        )
-        matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
 
-        val widthScale = viewW.toFloat() / preferredSize.width
-        val heightScale = viewH.toFloat() / preferredSize.height
-
-        val scale: Float = widthScale.coerceAtLeast(heightScale)
-        matrix.postScale(scale, scale, centerX, centerY)
+        if (CsScreenUtils.isLandscape()) {
+            val widthScale = textureRectF.height() / textureRectF.width()
+            val heightScale = textureRectF.width() / textureRectF.height()
+            matrix.postScale(widthScale, heightScale, centerX, centerY)
+        }
 
         val rotation = CameraUtils.calculatePreviewRotation()
         CsLogger.tag(tag).i("调整预览旋转角度 rotation = $rotation")

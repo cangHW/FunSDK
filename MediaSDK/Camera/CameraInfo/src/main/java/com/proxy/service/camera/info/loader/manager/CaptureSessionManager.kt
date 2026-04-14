@@ -48,9 +48,11 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
      * 暂停重复请求, 用于暂停预览
      * */
     fun stopRepeating() {
-        CsLogger.tag(TAG).i("stopCaptureSession.")
+        CsLogger.tag(TAG).d("stopCaptureSession. session=$session")
 
         handler.post {
+            CsLogger.tag(TAG).i("stopCaptureSession Start. session=$session")
+
             try {
                 session?.stopRepeating()
             } catch (throwable: Throwable) {
@@ -60,9 +62,11 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
     }
 
     fun closeCaptureSession() {
-        CsLogger.tag(TAG).i("closeCaptureSession.")
+        CsLogger.tag(TAG).d("closeCaptureSession. session=$session")
 
         handler.post {
+            CsLogger.tag(TAG).i("closeCaptureSession Start. session=$session")
+
             realCloseCaptureSession(session)
             clearCaptureSession()
         }
@@ -73,17 +77,20 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
         surfaceCallback: OutputSurfaceCallback,
         callback: Callback
     ) {
-        CsLogger.tag(TAG).i("openCaptureSession.")
+        CsLogger.tag(TAG).d("openCaptureSession. device=$device, session=$session")
 
         handler.post {
-            if (session?.device != device) {
+            CsLogger.tag(TAG).i("openCaptureSession Start. device=$device, session=$session")
+
+            if (session != null && session?.device != device) {
+                CsLogger.tag(TAG).d("close old session. session=$session")
                 realCloseCaptureSession(session)
                 clearCaptureSession()
             }
 
             val ss = session
             if (ss != null) {
-                CsLogger.tag(TAG).i("It has been enabled and can be reused")
+                CsLogger.tag(TAG).i("It has been enabled and can be reused. session=$session")
                 callback.onConfigured(ss)
                 return@post
             }
@@ -114,6 +121,7 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
     }
 
     private fun clearCaptureSession() {
+        CsLogger.tag(TAG).d("clearCaptureSession. device=$device, session=$session")
         device = null
         session = null
     }
@@ -144,7 +152,13 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
             surfaces,
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
-                    CsLogger.tag(TAG).d("onConfigured. cameraId=${session.device.id}")
+                    CsLogger.tag(TAG).d(
+                        "onConfigured. " +
+                                "cameraId=${session.device.id}, " +
+                                "device=${this@CaptureSessionManager.device}, " +
+                                "sessionDevice=${session.device}, " +
+                                "session=$session"
+                    )
                     if (this@CaptureSessionManager.device == session.device) {
                         this@CaptureSessionManager.session = session
 
@@ -157,7 +171,8 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
-                    CsLogger.tag(TAG).e("onConfigureFailed. cameraId=${session.device.id}")
+                    CsLogger.tag(TAG)
+                        .e("onConfigureFailed. cameraId=${session.device.id}, session=$session")
                     if (this@CaptureSessionManager.device == session.device) {
                         clearCaptureSession()
 
@@ -169,8 +184,8 @@ class CaptureSessionManager private constructor(private val handler: Handler) {
 
                 override fun onClosed(session: CameraCaptureSession) {
                     super.onClosed(session)
-                    CsLogger.tag(TAG).d("onClosed. cameraId=${session.device.id}")
-                    if (this@CaptureSessionManager.device == session.device) {
+                    CsLogger.tag(TAG).d("onClosed. cameraId=${session.device.id}, session=$session")
+                    if (this@CaptureSessionManager.session == session) {
                         clearCaptureSession()
 
                         forEachCallbacks {

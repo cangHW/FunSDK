@@ -5,11 +5,13 @@ import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.os.Handler
 import android.text.TextUtils
+import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.CameraErrorMode
 import com.proxy.service.camera.info.loader.factory.CameraFactory
 import com.proxy.service.core.framework.data.log.CsLogger
-import java.util.concurrent.atomic.AtomicBoolean
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
@@ -38,27 +40,34 @@ class CameraDeviceManager private constructor(
         }
     }
 
+    private var cameraLoaderCallback: CameraLoaderCallback? = null
+
     private val callbacks = ArrayList<Callback>()
 
     private var cameraId: String = ""
     private var cameraDevice: CameraDevice? = null
 
+    fun setCameraLoaderCallback(callback: CameraLoaderCallback?) {
+        this.cameraLoaderCallback = callback
+    }
 
     fun getCameraDevice(): CameraDevice? {
         return cameraDevice
     }
 
     fun closeCamera() {
-        CsLogger.tag(TAG).i("closeCamera. cameraId=$cameraId")
+        CsLogger.tag(TAG).d("closeCamera. cameraId=$cameraId, camera=$cameraDevice")
 
         handler.post {
+            CsLogger.tag(TAG).i("closeCamera Start. cameraId=$cameraId, camera=$cameraDevice")
+
             realCloseCamera(cameraDevice)
             clearCameraCache()
         }
     }
 
     fun openCamera(cameraId: String, callback: Callback?) {
-        CsLogger.tag(TAG).i("openCamera. cameraId=$cameraId")
+        CsLogger.tag(TAG).d("openCamera. cameraId=$cameraId")
         if (TextUtils.isEmpty(cameraId)) {
             CsLogger.tag(TAG).e("camera id can not be null or empty.")
             callback?.onError(CameraErrorMode.ERROR_UNKNOWN)
@@ -73,15 +82,17 @@ class CameraDeviceManager private constructor(
         }
 
         handler.post {
+            CsLogger.tag(TAG).i("openCamera Start. cameraId=$cameraId")
+
             if (this.cameraId != "" && this.cameraId != cameraId) {
-                CsLogger.tag(TAG).d("close old camera")
+                CsLogger.tag(TAG).d("close old camera. camera=$cameraDevice")
                 realCloseCamera(cameraDevice)
                 clearCameraCache()
             }
 
             val device = cameraDevice
             if (device != null) {
-                CsLogger.tag(TAG).i("It has been enabled and can be reused")
+                CsLogger.tag(TAG).i("It has been enabled and can be reused. camera=$cameraDevice")
                 callback?.onOpened(device)
                 return@post
             }
@@ -124,9 +135,13 @@ class CameraDeviceManager private constructor(
             cameraId,
             object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) {
-                    CsLogger.tag(TAG).d("onOpened. cameraId=$cameraId")
+                    CsLogger.tag(TAG).d("onOpened. cameraId=$cameraId, camera=$camera")
 
-                    if (this@CameraDeviceManager.cameraId == cameraId) {
+                    runMain {
+                        cameraLoaderCallback?.onCameraOpened(camera.id, camera)
+                    }
+
+                    if (this@CameraDeviceManager.cameraId == camera.id) {
                         this@CameraDeviceManager.cameraDevice = camera
                         forEachCallbacks {
                             it.onOpened(camera)
@@ -138,9 +153,13 @@ class CameraDeviceManager private constructor(
 
                 override fun onClosed(camera: CameraDevice) {
                     super.onClosed(camera)
-                    CsLogger.tag(TAG).d("onClosed. cameraId=$cameraId")
+                    CsLogger.tag(TAG).d("onClosed. cameraId=$cameraId, camera=$camera")
 
-                    if (this@CameraDeviceManager.cameraId == camera.id) {
+                    runMain {
+                        cameraLoaderCallback?.onCameraClosed(camera.id, camera)
+                    }
+
+                    if (this@CameraDeviceManager.cameraDevice == camera) {
                         clearCameraCache()
                         forEachCallbacks {
                             it.onClosed(camera)
@@ -149,9 +168,13 @@ class CameraDeviceManager private constructor(
                 }
 
                 override fun onDisconnected(camera: CameraDevice) {
-                    CsLogger.tag(TAG).w("onDisconnected. cameraId=$cameraId")
+                    CsLogger.tag(TAG).w("onDisconnected. cameraId=$cameraId, camera=$camera")
 
-                    if (this@CameraDeviceManager.cameraId == camera.id) {
+                    runMain {
+                        cameraLoaderCallback?.onCameraDisconnected(camera.id, camera)
+                    }
+
+                    if (this@CameraDeviceManager.cameraDevice == camera) {
                         clearCameraCache()
 
                         forEachCallbacks {
@@ -162,9 +185,13 @@ class CameraDeviceManager private constructor(
 
                 override fun onError(camera: CameraDevice, error: Int) {
                     val mode = errorCodeToMode(error)
-                    CsLogger.tag(TAG).e("onError. cameraId=$cameraId, mode=${mode.name}")
+                    CsLogger.tag(TAG).e("onError. cameraId=$cameraId, mode=${mode.name}, camera=$camera")
 
-                    if (this@CameraDeviceManager.cameraId == camera.id) {
+                    runMain {
+                        cameraLoaderCallback?.onCameraError(camera.id, camera, mode)
+                    }
+
+                    if (this@CameraDeviceManager.cameraDevice == camera) {
                         clearCameraCache()
 
                         forEachCallbacks {
@@ -198,7 +225,7 @@ class CameraDeviceManager private constructor(
             }
 
             CameraDevice.StateCallback.ERROR_CAMERA_DISABLED -> {
-                CameraErrorMode.ERROR_CAMERA_IN_USE
+                CameraErrorMode.ERROR_CAMERA_DISABLED
             }
 
             CameraDevice.StateCallback.ERROR_CAMERA_DEVICE -> {
@@ -213,5 +240,14 @@ class CameraDeviceManager private constructor(
                 CameraErrorMode.ERROR_UNKNOWN
             }
         }
+    }
+
+    private fun runMain(callback: Runnable) {
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                callback.run()
+                return ""
+            }
+        })?.start()
     }
 }
