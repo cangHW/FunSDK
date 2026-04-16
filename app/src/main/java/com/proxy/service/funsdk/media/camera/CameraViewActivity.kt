@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraViewMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.view.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.media.CsMediaCamera

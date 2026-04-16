@@ -5,8 +5,9 @@ import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.ICameraLoader
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.SensorOrientationMode
+import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.base.view.ICameraViewLoader
 import com.proxy.service.camera.info.loader.CameraLoaderImpl
@@ -33,7 +34,7 @@ class CameraServiceImpl : CameraService {
         return CameraFactory.getCameraFaceFrontId()
     }
 
-    override fun getSupportedPreviewSizes(mode: CameraFaceMode): List<Size> {
+    override fun getSupportedPreviewSizes(mode: CameraFaceMode): List<SupportSize> {
         val cameraId = mode.getCameraId()
         if (cameraId.isNullOrEmpty()) {
             CsLogger.tag(tag)
@@ -44,7 +45,7 @@ class CameraServiceImpl : CameraService {
         return CameraFactory.getSupportedPreviewSizes(cameraId) ?: arrayListOf()
     }
 
-    override fun getSupportedCaptureSizes(mode: CameraFaceMode): List<Size> {
+    override fun getSupportedCaptureSizes(mode: CameraFaceMode): List<SupportSize> {
         val cameraId = mode.getCameraId()
         if (cameraId.isNullOrEmpty()) {
             CsLogger.tag(tag)
@@ -55,7 +56,7 @@ class CameraServiceImpl : CameraService {
         return CameraFactory.getSupportedCaptureSizes(cameraId) ?: arrayListOf()
     }
 
-    override fun getSupportedRecordSizes(mode: CameraFaceMode): List<Size> {
+    override fun getSupportedRecordSizes(mode: CameraFaceMode): List<SupportSize> {
         val cameraId = mode.getCameraId()
         if (cameraId.isNullOrEmpty()) {
             CsLogger.tag(tag)

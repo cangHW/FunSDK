@@ -5,9 +5,9 @@ import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.media.MediaRecorder
-import android.util.Size
 import androidx.appcompat.app.AppCompatActivity.CAMERA_SERVICE
 import com.proxy.service.camera.base.constants.CameraConstants
+import com.proxy.service.camera.base.loader.info.SupportSize
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -27,9 +27,9 @@ object CameraFactory {
     private var faceBackId: String? = null
     private var faceFrontId: String? = null
 
-    private val supportedPreviewSizesMap = HashMap<String, List<Size>>()
-    private val supportedCaptureSizesMap = HashMap<String, List<Size>>()
-    private val supportedRecordSizesMap = HashMap<String, List<Size>>()
+    private val supportedPreviewSizesMap = HashMap<String, List<SupportSize>>()
+    private val supportedCaptureSizesMap = HashMap<String, List<SupportSize>>()
+    private val supportedRecordSizesMap = HashMap<String, List<SupportSize>>()
 
     /**
      * 相机管理类
@@ -61,7 +61,7 @@ object CameraFactory {
     /**
      * 获取摄像头支持的预览尺寸
      * */
-    fun getSupportedPreviewSizes(cameraId: String): List<Size>? {
+    fun getSupportedPreviewSizes(cameraId: String): List<SupportSize>? {
         val size = supportedPreviewSizesMap[cameraId]
         if (size != null) {
             return size
@@ -69,17 +69,22 @@ object CameraFactory {
         val characteristics = manager?.getCameraCharacteristics(cameraId)
         val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
         val supportedSizes = map?.getOutputSizes(SurfaceTexture::class.java)
-        val list = supportedSizes?.toList()
-        list?.let {
-            supportedPreviewSizesMap.put(cameraId, it)
+
+        val sList = ArrayList<SupportSize>()
+        supportedSizes?.forEach {
+            sList.add(SupportSize.create(it.width, it.height))
         }
-        return list
+        if (sList.isEmpty()){
+            return null
+        }
+        supportedPreviewSizesMap.put(cameraId, sList)
+        return sList
     }
 
     /**
      * 获取摄像头支持的拍照尺寸
      * */
-    fun getSupportedCaptureSizes(cameraId: String): List<Size>? {
+    fun getSupportedCaptureSizes(cameraId: String): List<SupportSize>? {
         val size = supportedCaptureSizesMap[cameraId]
         if (size != null) {
             return size
@@ -87,17 +92,22 @@ object CameraFactory {
         val characteristics = manager?.getCameraCharacteristics(cameraId)
         val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
         val supportedSizes = map?.getOutputSizes(ImageFormat.JPEG)
-        val list = supportedSizes?.toList()
-        list?.let {
-            supportedCaptureSizesMap.put(cameraId, it)
+
+        val sList = ArrayList<SupportSize>()
+        supportedSizes?.forEach {
+            sList.add(SupportSize.create(it.width, it.height))
         }
-        return list
+        if (sList.isEmpty()){
+            return null
+        }
+        supportedCaptureSizesMap.put(cameraId, sList)
+        return sList
     }
 
     /**
      * 获取摄像头支持的视频尺寸
      * */
-    fun getSupportedRecordSizes(cameraId: String): List<Size>? {
+    fun getSupportedRecordSizes(cameraId: String): List<SupportSize>? {
         val size = supportedRecordSizesMap[cameraId]
         if (size != null) {
             return size
@@ -105,11 +115,16 @@ object CameraFactory {
         val characteristics = manager?.getCameraCharacteristics(cameraId)
         val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
         val supportedSizes = map?.getOutputSizes(MediaRecorder::class.java)
-        val list = supportedSizes?.toList()
-        list?.let {
-            supportedRecordSizesMap.put(cameraId, it)
+
+        val sList = ArrayList<SupportSize>()
+        supportedSizes?.forEach {
+            sList.add(SupportSize.create(it.width, it.height))
         }
-        return list
+        if (sList.isEmpty()){
+            return null
+        }
+        supportedRecordSizesMap.put(cameraId, sList)
+        return sList
     }
 
     /**

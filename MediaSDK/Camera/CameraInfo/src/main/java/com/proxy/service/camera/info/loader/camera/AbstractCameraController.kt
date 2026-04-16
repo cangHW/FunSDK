@@ -7,7 +7,7 @@ import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraAction
 import com.proxy.service.camera.base.loader.camera.ICameraActionGet
-import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager
 import com.proxy.service.core.framework.data.log.CsLogger

@@ -5,8 +5,8 @@ import com.proxy.service.camera.base.loader.camera.ICameraFun
 import com.proxy.service.camera.base.loader.camera.ICameraFunGet
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.info.loader.controller.IFunController
 import com.proxy.service.camera.info.loader.controller.IFunController.IParamsController
 import com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback
@@ -22,8 +22,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 abstract class AbstractCameraFunController : AbstractCameraPreviewController(), ICameraFun,
     ICameraFunGet {
 
-    private var cameraFunMode: CameraFunMode? = null
-    protected var funController: IFunController? = null
+    protected var cameraFunMode: CameraFunMode? = null
+    private var funController: IFunController? = null
 
 
     override fun getChooseMode(): CameraFunMode? {

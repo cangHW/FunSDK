@@ -1,8 +1,8 @@
 package com.proxy.service.camera.base.constants
 
-import com.proxy.service.camera.base.mode.CameraAfMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.mode.CameraViewMode
+import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMode
 
 /**
  * @author: cangHX

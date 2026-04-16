@@ -92,14 +92,14 @@ class TextureViewImpl(
 
     private fun createTransformImageMatrix(viewW: Int, viewH: Int): Matrix {
         val matrix = Matrix()
-        val textureRectF = RectF(0f, 0f, viewW.toFloat(), viewH.toFloat())
+        val viewRectF = RectF(0f, 0f, viewW.toFloat(), viewH.toFloat())
 
-        val centerX = textureRectF.centerX()
-        val centerY = textureRectF.centerY()
+        val centerX = viewRectF.centerX()
+        val centerY = viewRectF.centerY()
 
         if (CsScreenUtils.isLandscape()) {
-            val widthScale = textureRectF.height() / textureRectF.width()
-            val heightScale = textureRectF.width() / textureRectF.height()
+            val widthScale = viewRectF.height() / viewRectF.width()
+            val heightScale = viewRectF.width() / viewRectF.height()
             matrix.postScale(widthScale, heightScale, centerX, centerY)
         }
 

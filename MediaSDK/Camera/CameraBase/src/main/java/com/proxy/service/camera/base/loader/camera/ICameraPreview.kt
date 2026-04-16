@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.loader.camera
 
 import android.view.Surface
 import com.proxy.service.camera.base.callback.loader.PreviewCallback
-import com.proxy.service.camera.base.mode.PreviewImageFormatMode
+import com.proxy.service.camera.base.mode.loader.PreviewImageFormatMode
 
 /**
  * @author: cangHX

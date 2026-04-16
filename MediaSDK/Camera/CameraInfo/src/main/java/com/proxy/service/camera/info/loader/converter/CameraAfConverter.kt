@@ -3,8 +3,8 @@ package com.proxy.service.camera.info.loader.converter
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.CaptureRequest
 import android.hardware.camera2.params.MeteringRectangle
-import com.proxy.service.camera.base.mode.CameraAfMode
-import com.proxy.service.camera.base.mode.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 
 /**
  * @author: cangHX

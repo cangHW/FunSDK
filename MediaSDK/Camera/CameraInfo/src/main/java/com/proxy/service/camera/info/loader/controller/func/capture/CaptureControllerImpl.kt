@@ -6,8 +6,8 @@ import android.hardware.camera2.CaptureRequest
 import android.os.Handler
 import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
 import com.proxy.service.camera.info.loader.controller.IFunController
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager

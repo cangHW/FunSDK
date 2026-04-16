@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
-import com.proxy.service.camera.base.mode.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.info.R
 import com.proxy.service.widget.info.view.recyclerview.adapter.CsBaseRecyclerViewAdapter
 import com.proxy.service.widget.info.view.recyclerview.adapter.CsBaseRecyclerViewHolder

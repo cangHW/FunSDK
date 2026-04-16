@@ -8,7 +8,7 @@ import android.view.Surface
 import androidx.annotation.CallSuper
 import com.proxy.service.camera.base.callback.loader.PreviewCallback
 import com.proxy.service.camera.base.loader.camera.ICameraPreview
-import com.proxy.service.camera.base.mode.PreviewImageFormatMode
+import com.proxy.service.camera.base.mode.loader.PreviewImageFormatMode
 import com.proxy.service.camera.info.loader.controller.func.preview.PreviewControllerImpl
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager

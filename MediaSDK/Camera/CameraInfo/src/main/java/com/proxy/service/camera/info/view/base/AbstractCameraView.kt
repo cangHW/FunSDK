@@ -6,7 +6,7 @@ import com.proxy.service.camera.base.loader.camera.ICameraController
 import com.proxy.service.camera.base.loader.camera.ICameraFun
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.info.view.config.CameraViewConfig
 import com.proxy.service.camera.info.view.impl.EmptyCameraCaptureControllerImpl
 import com.proxy.service.camera.info.view.impl.EmptyCameraRecordControllerImpl

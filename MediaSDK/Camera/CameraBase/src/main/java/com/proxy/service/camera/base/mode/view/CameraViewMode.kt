@@ -1,4 +1,4 @@
-package com.proxy.service.camera.base.mode
+package com.proxy.service.camera.base.mode.view
 
 /**
  * @author: cangHX

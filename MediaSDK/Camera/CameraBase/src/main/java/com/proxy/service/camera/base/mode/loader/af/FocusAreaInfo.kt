@@ -1,4 +1,4 @@
-package com.proxy.service.camera.base.mode.af
+package com.proxy.service.camera.base.mode.loader.af
 
 import android.hardware.camera2.params.MeteringRectangle
 import androidx.annotation.IntRange

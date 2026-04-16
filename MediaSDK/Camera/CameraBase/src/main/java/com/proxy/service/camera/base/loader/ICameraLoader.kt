@@ -4,8 +4,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraController
-import com.proxy.service.camera.base.mode.CameraAfMode
-import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
  * @author: cangHX

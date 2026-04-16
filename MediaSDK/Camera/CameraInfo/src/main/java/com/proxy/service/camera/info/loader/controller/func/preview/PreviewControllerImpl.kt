@@ -8,7 +8,7 @@ import android.os.HandlerThread
 import android.view.Surface
 import com.proxy.service.camera.base.callback.loader.PreviewCallback
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.PreviewImageFormatMode
+import com.proxy.service.camera.base.mode.loader.PreviewImageFormatMode
 import com.proxy.service.camera.info.loader.controller.IFunController
 import com.proxy.service.core.framework.data.log.CsLogger
 

@@ -3,8 +3,8 @@ package com.proxy.service.camera.info.view.impl
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.view.CameraViewAfMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.core.framework.data.log.CsLogger
 

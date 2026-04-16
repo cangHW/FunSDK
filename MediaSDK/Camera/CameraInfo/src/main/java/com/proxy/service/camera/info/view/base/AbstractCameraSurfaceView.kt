@@ -1,10 +1,8 @@
 package com.proxy.service.camera.info.view.base
 
 import android.util.Size
-import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
-import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.utils.CameraUtils
 import com.proxy.service.camera.info.view.config.CameraViewConfig
@@ -113,7 +111,7 @@ abstract class AbstractCameraSurfaceView(
                     CsMediaCamera.getSupportedPreviewSizes(faceMode) ?: ArrayList()
                 }
             }
-            CameraUtils.calculateSize(supportSizes, width, height)
+            CameraUtils.calculateSize(supportSizes, width, height)?.toSize()
         }
 
         size?.let {

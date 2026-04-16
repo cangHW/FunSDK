@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraFunMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.mode.CameraViewMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
+import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.databinding.CsCameraInfoPageActivityCameraBinding
@@ -22,7 +22,6 @@ import com.proxy.service.camera.info.page.manager.PictureCaptureManager
 import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
-import com.proxy.service.core.framework.system.screen.info.ScreenInfo
 import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.permission.base.callback.ActionCallback
@@ -45,7 +44,6 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         const val PARAMS = "PARAMS"
     }
 
-    private var screenInfo: ScreenInfo = CsScreenUtils.getScreenRealInfo()
     private val cameraModeListAdapter = CameraModeListAdapter()
 
     private var params: MediaCameraParams = MediaCameraParams()
@@ -136,6 +134,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
             ?.setCustomTouchDispatch(CameraCustomTouchDispatch.create(this))
             ?.setLifecycleOwner(this)
             ?.setCameraViewMode(CameraViewMode.TEXTURE_VIEW)
+//            ?.setCameraViewMode(CameraViewMode.SURFACE_VIEW)
             ?.setCameraFaceMode(cameraFaceMode)
             ?.setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
             ?.createTo(findViewById(R.id.cs_media_camera))
@@ -214,6 +213,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         }
         iCameraView?.setPreviewSize(size.width, size.height)
         view.post {
+            val screenInfo = CameraSettingCache.getScreenSize()
             val w = if (CsScreenUtils.isPortrait() == screenInfo.isPortrait) {
                 screenInfo.screenWidth
             } else {
@@ -226,25 +226,24 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
                 screenInfo.screenWidth
             }
 
-            var finalWidth: Int
-            var finalHeight: Int
+            var fW: Int
+            var fH: Int
 
             if (CsScreenUtils.isPortrait()) {
-                finalWidth = w
-                finalHeight = (w * 1f / size.height * size.width).toInt()
-                finalHeight = h.coerceAtMost(finalHeight)
+                fW = w
+                fH = (w * 1f / size.height * size.width).toInt()
+                fH = h.coerceAtMost(fH)
             } else {
-                finalHeight = h
-                finalWidth = (h * 1f / size.height * size.width).toInt()
-                finalWidth = w.coerceAtMost(finalWidth)
+                fH = h
+                fW = (h * 1f / size.height * size.width).toInt()
+                fW = w.coerceAtMost(fW)
             }
 
-            CsLogger.tag(TAG)
-                .d("size=$size, w=$w, h=$h, finalWidth=$finalWidth, finalHeight=$finalHeight")
+            CsLogger.tag(TAG).d("size=$size, w=$w, h=$h, finalW=$fW, finalH=$fH")
 
             val params = view.layoutParams
-            params.width = finalWidth
-            params.height = finalHeight
+            params.width = fW
+            params.height = fH
             view.layoutParams = params
         }
     }

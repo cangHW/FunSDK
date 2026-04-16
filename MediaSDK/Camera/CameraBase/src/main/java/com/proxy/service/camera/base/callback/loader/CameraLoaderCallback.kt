@@ -1,7 +1,7 @@
 package com.proxy.service.camera.base.callback.loader
 
 import android.hardware.camera2.CameraDevice
-import com.proxy.service.camera.base.mode.CameraErrorMode
+import com.proxy.service.camera.base.mode.loader.CameraErrorMode
 
 /**
  * @author: cangHX

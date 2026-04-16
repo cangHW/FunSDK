@@ -18,7 +18,7 @@ abstract class AbstractController {
     /**
      * 初始化
      * */
-    fun init() {
+    protected fun init() {
         if (isInit.compareAndSet(false, true)) {
             onInit()
         }

@@ -1,22 +1,11 @@
 package com.proxy.service.camera.info.page.activity
 
-import android.app.Application
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.os.Bundle
 import android.view.OrientationEventListener
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.file.CsFileUtils
-import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
 import com.proxy.service.permission.base.callback.ActionCallback
-import java.io.File
-import java.io.FileOutputStream
 
 /**
  * @author: cangHX

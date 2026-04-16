@@ -19,7 +19,9 @@ class NormalController private constructor(
         private const val DELAY_TIME = 50L
 
         fun create(callback: RotationChangedCallback): NormalController {
-            return NormalController(callback)
+            return NormalController(callback).apply {
+                init()
+            }
         }
     }
 

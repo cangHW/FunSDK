@@ -7,7 +7,7 @@ import android.os.Handler
 import android.text.TextUtils
 import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.CameraErrorMode
+import com.proxy.service.camera.base.mode.loader.CameraErrorMode
 import com.proxy.service.camera.info.loader.factory.CameraFactory
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask

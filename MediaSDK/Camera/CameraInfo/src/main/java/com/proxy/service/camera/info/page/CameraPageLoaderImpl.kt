@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.info.page.activity.CsMediaCameraActivity
 import com.proxy.service.camera.info.page.activity.CsMediaCameraLandscapeActivity

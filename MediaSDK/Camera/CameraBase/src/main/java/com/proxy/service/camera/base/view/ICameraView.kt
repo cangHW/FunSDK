@@ -3,7 +3,7 @@ package com.proxy.service.camera.base.view
 import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.loader.camera.ICameraAction
 import com.proxy.service.camera.base.loader.camera.ICameraFun
-import com.proxy.service.camera.base.mode.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewAfMode
 
 /**
  * @author: cangHX

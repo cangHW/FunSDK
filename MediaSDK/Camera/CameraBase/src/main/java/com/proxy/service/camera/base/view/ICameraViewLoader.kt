@@ -1,15 +1,12 @@
 package com.proxy.service.camera.base.view
 
-import android.util.Size
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraFunMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.mode.CameraViewMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMode
 
 /**
  * @author: cangHX

@@ -9,7 +9,7 @@ import android.view.View
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.loader.camera.ICameraController
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
-import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.funsdk.R

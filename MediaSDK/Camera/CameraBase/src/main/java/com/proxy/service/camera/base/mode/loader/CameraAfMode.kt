@@ -1,6 +1,6 @@
-package com.proxy.service.camera.base.mode
+package com.proxy.service.camera.base.mode.loader
 
-import com.proxy.service.camera.base.mode.af.FocusAreaInfo
+import com.proxy.service.camera.base.mode.loader.af.FocusAreaInfo
 
 /**
  * @author: cangHX

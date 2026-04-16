@@ -1,10 +1,10 @@
 package com.proxy.service.camera.base
 
-import android.util.Size
 import com.proxy.service.base.BaseService
 import com.proxy.service.camera.base.loader.ICameraLoader
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.SensorOrientationMode
+import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.base.view.ICameraViewLoader
 
@@ -28,17 +28,17 @@ interface CameraService : BaseService {
     /**
      * 获取摄像头支持的预览尺寸
      * */
-    fun getSupportedPreviewSizes(mode: CameraFaceMode): List<Size>
+    fun getSupportedPreviewSizes(mode: CameraFaceMode): List<SupportSize>
 
     /**
      * 获取摄像头支持的拍照图片尺寸
      * */
-    fun getSupportedCaptureSizes(mode: CameraFaceMode): List<Size>
+    fun getSupportedCaptureSizes(mode: CameraFaceMode): List<SupportSize>
 
     /**
      * 获取摄像头支持的录制视频尺寸
      * */
-    fun getSupportedRecordSizes(mode: CameraFaceMode): List<Size>
+    fun getSupportedRecordSizes(mode: CameraFaceMode): List<SupportSize>
 
     /**
      * 获取摄像头传感器角度

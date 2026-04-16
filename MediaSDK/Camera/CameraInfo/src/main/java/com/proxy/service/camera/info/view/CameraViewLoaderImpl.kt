@@ -1,15 +1,14 @@
 package com.proxy.service.camera.info.view
 
 import android.view.LayoutInflater
-import android.view.SurfaceView
 import android.view.TextureView
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
-import com.proxy.service.camera.base.mode.CameraFaceMode
-import com.proxy.service.camera.base.mode.CameraViewAfMode
-import com.proxy.service.camera.base.mode.CameraViewMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.base.view.ICameraViewLoader
 import com.proxy.service.camera.info.R
@@ -19,6 +18,7 @@ import com.proxy.service.camera.info.view.impl.EmptyCameraViewImpl
 import com.proxy.service.camera.info.view.impl.surface.SurfaceViewImpl
 import com.proxy.service.camera.info.view.impl.surface.TextureViewImpl
 import com.proxy.service.camera.info.view.touch.CameraTouchView
+import com.proxy.service.camera.info.view.view.CustomSurfaceView
 
 /**
  * @author: cangHX
@@ -92,7 +92,7 @@ class CameraViewLoaderImpl : ICameraViewLoader {
     private fun createBySurfaceView(viewGroup: ViewGroup): AbstractCameraSurfaceView {
         val rootView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.cs_camera_info_view_surface, viewGroup, true)
-        val surfaceView = rootView.findViewById<SurfaceView>(R.id.view_surface)
+        val surfaceView = rootView.findViewById<CustomSurfaceView>(R.id.view_surface)
         val viewImpl = SurfaceViewImpl(config, surfaceView)
 
         val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.view_touch)

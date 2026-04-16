@@ -1,6 +1,6 @@
 package com.proxy.service.camera.base.loader.camera
 
-import com.proxy.service.camera.base.mode.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraAfMode
 
 /**
  * @author: cangHX

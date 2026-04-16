@@ -1,6 +1,6 @@
 package com.proxy.service.camera.base.loader.camera
 
-import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
  * @author: cangHX

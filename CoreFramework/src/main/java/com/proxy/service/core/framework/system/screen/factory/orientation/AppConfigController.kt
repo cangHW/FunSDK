@@ -16,7 +16,9 @@ class AppConfigController private constructor(
 
     companion object {
         fun create(callback: OrientationChangedCallback): AppConfigController {
-            return AppConfigController(callback)
+            return AppConfigController(callback).apply {
+                init()
+            }
         }
     }
 

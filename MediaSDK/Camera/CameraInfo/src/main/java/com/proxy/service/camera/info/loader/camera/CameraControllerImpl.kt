@@ -3,12 +3,9 @@ package com.proxy.service.camera.info.loader.camera
 import android.hardware.camera2.CaptureRequest
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraController
-import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
-import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.CameraAfMode
-import com.proxy.service.camera.base.mode.CameraFunMode
-import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.camera.base.mode.loader.CameraAfMode
 import com.proxy.service.camera.info.loader.converter.CameraAfConverter
+import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
@@ -35,24 +32,8 @@ class CameraControllerImpl : AbstractCameraFunController(), ICameraController {
 
         CameraAfConverter.parse(
             cameraAfMode,
-            funControllerToCameraMode(),
+            cameraFunMode,
             builder
         )
-    }
-
-    private fun funControllerToCameraMode(): CameraFunMode? {
-        return when (funController) {
-            is ICameraCaptureController -> {
-                CameraFunMode.CAPTURE
-            }
-
-            is ICameraRecordController -> {
-                CameraFunMode.RECORD
-            }
-
-            else -> {
-                null
-            }
-        }
     }
 }

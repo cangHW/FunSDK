@@ -15,7 +15,9 @@ class SensorController private constructor(
 
     companion object {
         fun create(callback: RotationChangedCallback): SensorController {
-            return SensorController(callback)
+            return SensorController(callback).apply {
+                init()
+            }
         }
     }
 

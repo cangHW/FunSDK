@@ -1,7 +1,7 @@
 package com.proxy.service.camera.info.loader.controller
 
 import android.view.Surface
-import com.proxy.service.camera.base.mode.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
  * @author: cangHX
