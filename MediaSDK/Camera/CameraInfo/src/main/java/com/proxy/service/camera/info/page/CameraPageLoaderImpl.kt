@@ -88,9 +88,9 @@ class CameraPageLoaderImpl : ICameraPageLoader {
         params: MediaCameraParams
     ) {
         val ctx = context ?: CsContextManager.getApplication()
-        val intent = Intent(context, aClass)
-        intent.putExtra(CsMediaCameraActivity.PARAMS, CameraParamsCache.put(ctx, params))
-        if (context is Application) {
+        val intent = Intent(ctx, aClass)
+        intent.putExtra(CsMediaCameraActivity.TOKEN, CameraParamsCache.put(params))
+        if (ctx is Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         ctx.startActivity(intent)

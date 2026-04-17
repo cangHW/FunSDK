@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="cs_camera_info_page_setting_dialog_window_bg">#33000000</color>
+    <color name="cs_camera_info_page_setting_dialog_bg">#F7F7F7</color>
+    <color name="cs_camera_info_page_setting_dialog_divider_color">#22000000</color>
+
+    <color name="cs_camera_info_page_setting_dialog_title_color">#202020</color>
+    <color name="cs_camera_info_page_setting_dialog_cancel_color">#1E62D0</color>
+
+</resources>

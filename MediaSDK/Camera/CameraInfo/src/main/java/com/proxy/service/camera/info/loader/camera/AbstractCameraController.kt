@@ -98,7 +98,6 @@ abstract class AbstractCameraController : ICameraAction, ICameraActionGet {
             handler.post {
                 try {
                     handlerThread.quitSafely()
-                    handlerThread.join()
                 } catch (throwable: Throwable) {
                     CsLogger.tag(tag).e(throwable)
                 }

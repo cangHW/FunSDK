@@ -93,7 +93,6 @@ class PreviewControllerImpl private constructor(
         handler.post {
             try {
                 handlerThread.quitSafely()
-                handlerThread.join()
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).e(throwable)
             }

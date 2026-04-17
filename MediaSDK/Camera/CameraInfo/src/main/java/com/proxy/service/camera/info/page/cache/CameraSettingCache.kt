@@ -23,12 +23,22 @@ object CameraSettingCache {
     private val sp = CsSpManager.name(SP_NAME).getController()
     private var screenInfo: ScreenInfo = CsScreenUtils.getScreenRealInfo()
 
+    private const val KEY_SCREEN_SUPPORT_SIZE_TYPE = "key_screen_support_size_type"
     private const val KEY_PICTURE_CAPTURE = "key_picture_capture_"
     private const val KEY_VIDEO_RECORD = "key_video_record_"
 
 
     fun getScreenSize(): ScreenInfo {
         return screenInfo
+    }
+
+    fun getSupportSizeType(): Int {
+        var type: Int = sp.getInt(KEY_SCREEN_SUPPORT_SIZE_TYPE, -1)
+        if (type == -1) {
+            type = CameraUtils.getSupportSizeType(screenInfo.screenWidth, screenInfo.screenHeight)
+            sp.put(KEY_SCREEN_SUPPORT_SIZE_TYPE, type)
+        }
+        return type
     }
 
 
@@ -58,6 +68,21 @@ object CameraSettingCache {
         return createDefaultPictureCaptureSize(mode)
     }
 
+    fun getPictureCaptureAllSupportSize(mode: CameraFaceMode): List<SupportSize> {
+        val list = ArrayList<SupportSize>()
+
+        val type = getSupportSizeType()
+        val sizes = CsMediaCamera.getSupportedCaptureSizes(mode)
+
+        sizes?.forEach {
+            if (it.type <= type) {
+                list.add(it)
+            }
+        }
+
+        return list
+    }
+
     fun savaPictureCaptureSize(mode: CameraFaceMode, size: SupportSize) {
         sp.put(createKey(KEY_PICTURE_CAPTURE, mode), size.toJson())
     }
@@ -74,6 +99,21 @@ object CameraSettingCache {
             CsLogger.tag(TAG).e(throwable)
         }
         return createDefaultVideoRecordSize(mode)
+    }
+
+    fun getVideoRecordAllSupportSize(mode: CameraFaceMode): List<SupportSize> {
+        val list = ArrayList<SupportSize>()
+
+        val type = getSupportSizeType()
+        val sizes = CsMediaCamera.getSupportedRecordSizes(mode)
+
+        sizes?.forEach {
+            if (it.type <= type) {
+                list.add(it)
+            }
+        }
+
+        return list
     }
 
     fun savaVideoRecordSize(mode: CameraFaceMode, size: SupportSize) {

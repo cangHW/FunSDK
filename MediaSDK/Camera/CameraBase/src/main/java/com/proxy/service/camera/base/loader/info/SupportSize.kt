@@ -25,7 +25,9 @@ class SupportSize private constructor(
         const val RATIO_1_1 = 1f
         const val RATIO_4_3 = 1.33333f
         const val RATIO_16_9 = 1.77777f
+        const val RATIO_20_9 = 2.22222f
 
+        const val TYPE_SIZE_20_9 = 4
         const val TYPE_SIZE_16_9 = 3
         const val TYPE_SIZE_4_3 = 2
         const val TYPE_SIZE_1_1 = 1
@@ -42,6 +44,10 @@ class SupportSize private constructor(
 
             if (width / 16 == height / 9) {
                 return SupportSize(TYPE_SIZE_16_9, RATIO_16_9, width, height)
+            }
+
+            if (width / 20 == height / 9) {
+                return SupportSize(TYPE_SIZE_20_9, RATIO_20_9, width, height)
             }
             return SupportSize(TYPE_SIZE_UNKNOWN, width.toFloat() / height, width, height)
         }
@@ -67,6 +73,10 @@ class SupportSize private constructor(
         return Size(width, height)
     }
 
+    fun toSizeString():String{
+        return "${width}x${height}"
+    }
+
     fun toJson(): String {
         val json = JSONObject()
         json.put(KEY_TYPE, type)
@@ -90,11 +100,26 @@ class SupportSize private constructor(
                 "[16:9]"
             }
 
+            TYPE_SIZE_20_9 -> {
+                "[20:9]"
+            }
+
             else -> {
                 ""
             }
         }
         return "{type=$name, ratio=$ratio, width=$width, height=$height}"
+    }
+
+    override fun hashCode(): Int {
+        return toSizeString().hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is SupportSize) {
+            return toSizeString() == other.toSizeString()
+        }
+        return false
     }
 
 }

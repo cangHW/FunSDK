@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cs_camera_info_page_setting_dialog_window_bg" />
+
+    <com.proxy.service.widget.info.view.CsRoundLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/cs_camera_info_page_setting_dialog_bg"
+        android:orientation="vertical"
+        app:max_height="480dp"
+        app:round_radius="24dp">
+
+        <com.proxy.service.widget.info.view.CsFontStyleTextView
+            android:id="@+id/cs_camera_info_page_setting_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="18dp"
+            android:textColor="@color/cs_camera_info_page_setting_dialog_title_color"
+            android:textSize="24dp"
+            app:font_style="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cs_camera_info_page_setting_dialog_rlv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/cs_camera_info_page_setting_dialog_cancel"
+            android:layout_below="@+id/cs_camera_info_page_setting_dialog_title"
+            android:layout_margin="20dp"
+            android:background="@color/cs_camera_info_page_setting_dialog_divider_color" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/cs_camera_info_page_setting_dialog_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="@string/cs_camera_info_page_setting_cancel"
+            android:textColor="@color/cs_camera_info_page_setting_dialog_cancel_color"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+    </com.proxy.service.widget.info.view.CsRoundLayout>
+
+</RelativeLayout>

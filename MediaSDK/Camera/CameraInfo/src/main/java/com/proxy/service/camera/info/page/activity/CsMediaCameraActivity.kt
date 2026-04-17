@@ -38,10 +38,14 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
     ActionCallback, CsCenterSelectRecyclerView.OnSelectionChangedListener,
     CameraCustomTouchDispatch.CameraCustomTouchCallback {
 
+    override fun isStatusBarDarkModelEnable(): Boolean {
+        return true
+    }
+
     companion object {
         private const val TAG = "${CameraConstants.TAG}Activity"
 
-        const val PARAMS = "PARAMS"
+        const val TOKEN = "token"
     }
 
     private val cameraModeListAdapter = CameraModeListAdapter()
@@ -66,7 +70,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         super.initView()
 
         binding?.cameraSetting?.setOnClickListener {
-            CsMediaCameraSettingActivity.launch(this)
+            CsMediaCameraSettingActivity.launch(this, cameraFaceMode.getCameraId() ?: "")
         }
 
         binding?.changeCameraFace?.setOnClickListener {
@@ -93,10 +97,10 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
     override fun initData(intent: Intent?) {
         super.initData(intent)
 
-        val hashCode = intent?.getIntExtra(PARAMS, 0) ?: -1
-        val tempParams = CameraParamsCache.get(hashCode)
+        val token = intent?.getStringExtra(TOKEN)
+        val tempParams = CameraParamsCache.get(token)
         if (tempParams == null) {
-            CsToast.show(R.string.cs_camera_info_no_params_toast)
+            CsToast.show(R.string.cs_camera_info_page_camera_no_params_toast)
             finish()
             return
         }
@@ -114,13 +118,13 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         } else {
             CsPermission.createAutoRequest()
                 ?.addPermission(Manifest.permission.CAMERA)
-                ?.setTitle(getString(R.string.cs_camera_info_no_permission))
-                ?.setDialogSettingContent(getString(R.string.cs_camera_info_request_camera_permission))
-                ?.setDialogRationaleContent(getString(R.string.cs_camera_info_camera_permission_prompt))
+                ?.setTitle(getString(R.string.cs_camera_info_page_camera_no_permission))
+                ?.setDialogSettingContent(getString(R.string.cs_camera_info_page_camera_request_camera_permission))
+                ?.setDialogRationaleContent(getString(R.string.cs_camera_info_page_camera_camera_permission_prompt))
                 ?.setGrantedCallback(this)
                 ?.setDeniedCallback(object : ActionCallback {
                     override fun onAction(list: Array<String>) {
-                        CsToast.show(R.string.cs_camera_info_no_camera_permission_toast)
+                        CsToast.show(R.string.cs_camera_info_page_camera_no_camera_permission_toast)
                         finish()
                     }
                 })
@@ -140,6 +144,11 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
             ?.createTo(findViewById(R.id.cs_media_camera))
 
         binding?.cameraModeList?.setSelectedPosition(0, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshUiSize()
     }
 
 
@@ -190,6 +199,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
     }
 
     private fun refreshUiSize() {
+        val cameraView = iCameraView ?: return
         val view = binding?.csMediaCamera ?: return
         val funMode = cameraFunMode ?: return
         val faceMode = cameraFaceMode
@@ -211,7 +221,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
                 CameraSettingCache.getPreviewSize(faceMode)
             }
         }
-        iCameraView?.setPreviewSize(size.width, size.height)
+        cameraView.setPreviewSize(size.width, size.height)
         view.post {
             val screenInfo = CameraSettingCache.getScreenSize()
             val w = if (CsScreenUtils.isPortrait() == screenInfo.isPortrait) {
@@ -242,6 +252,11 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
             CsLogger.tag(TAG).d("size=$size, w=$w, h=$h, finalW=$fW, finalH=$fH")
 
             val params = view.layoutParams
+
+            if (params.width == fW && params.height == fH) {
+                cameraView.startPreview()
+            }
+
             params.width = fW
             params.height = fH
             view.layoutParams = params
