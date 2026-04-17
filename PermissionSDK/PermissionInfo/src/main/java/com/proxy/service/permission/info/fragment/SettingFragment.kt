@@ -92,6 +92,7 @@ class SettingFragment : Fragment(), IPermissionCallback<Unit> {
         CsLogger.tag(tag).i("start to launch setting page.")
         val intent = Intent()
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.setData(Uri.parse("package:${CsAppUtils.getPackageName()}"))
         startActivityForResult(intent, requestCode)
     }

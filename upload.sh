@@ -23,8 +23,8 @@ upArray=(
 #  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
-#  ":Permission:PermissionInfo"
-#  ":Permission:PermissionBase"
+  ":Permission:PermissionInfo"
+  ":Permission:PermissionBase"
 
     # 日志文件库
 #  ":LogFileSDK:LogFileInfo"
