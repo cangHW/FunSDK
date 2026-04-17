@@ -104,14 +104,14 @@ ext {
             // 权限库
             PermissionBase    : [
                     artifact          : "Service-Permission",
-                    version           : "0.2.6",
+                    version           : "0.2.7",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             PermissionInfo    : [
                     artifact          : "Service-Permission-Info",
-                    version           : "0.2.6",
+                    version           : "0.2.7",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

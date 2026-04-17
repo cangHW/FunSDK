@@ -23,8 +23,8 @@ upArray=(
 #  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
-#  ":Permission:PermissionInfo"
-#  ":Permission:PermissionBase"
+  ":Permission:PermissionInfo"
+  ":Permission:PermissionBase"
 
     # 日志文件库
 #  ":LogFileSDK:LogFileInfo"
@@ -39,7 +39,7 @@ upArray=(
 #  ":DocumentsSDK:Pdf:DocumentPdfBase"
 
     # 视图 UI 库
-  ":WidgetSDK:WidgetInfo"
+#  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
 #  ":MediaSDK:Camera:CameraBase"
