@@ -18,7 +18,7 @@ class CameraModeListAdapter : CsBaseRecyclerViewAdapter<CameraModeListViewHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CameraModeListViewHolder {
         val rootView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.cs_camera_info_page_camera_mode, parent, false)
+            .inflate(R.layout.cs_camera_info_adapter_camera_mode, parent, false)
 
         return CameraModeListViewHolder(rootView)
     }

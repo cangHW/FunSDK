@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:minHeight="64dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:background="#330000ff">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/cs_media_camera_setting_item_icon"
@@ -27,19 +28,19 @@
             android:id="@+id/cs_media_camera_setting_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="拍照"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:text="拍照" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/cs_media_camera_setting_item_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@string/cs_camera_info_setting_smile_desc"
             android:textColor="#99FFFFFF"
             android:textSize="15sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="需要拍照" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <FrameLayout
@@ -57,9 +58,9 @@
                 android:id="@+id/cs_media_camera_setting_item_text_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cs_camera_info_setting_value_full"
                 android:textColor="#99FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:text="1:1" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="18dp"

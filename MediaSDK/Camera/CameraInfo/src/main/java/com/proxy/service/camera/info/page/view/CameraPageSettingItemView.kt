@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.LinearLayoutCompat
-import com.proxy.service.camera.info.databinding.CsCameraInfoPageActivitySettingItemBinding
+import com.proxy.service.camera.info.databinding.CsCameraInfoViewSettingItemBinding
 import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
@@ -100,12 +100,12 @@ class CameraPageSettingItemView : LinearLayoutCompat {
         init(context)
     }
 
-    private var binding: CsCameraInfoPageActivitySettingItemBinding? = null
+    private var binding: CsCameraInfoViewSettingItemBinding? = null
     private var onViewClickListener: ((view: CameraPageSettingItemView) -> Unit)? = null
     private var onViewSelectListener: ((isSelect: Boolean) -> Unit)? = null
 
     private fun init(context: Context) {
-        binding = CsCameraInfoPageActivitySettingItemBinding
+        binding = CsCameraInfoViewSettingItemBinding
             .inflate(LayoutInflater.from(context), this, true)
     }
 
