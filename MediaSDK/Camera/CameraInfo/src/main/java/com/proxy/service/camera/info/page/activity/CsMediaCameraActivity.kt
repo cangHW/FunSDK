@@ -50,7 +50,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
 
     private val cameraModeListAdapter = CameraModeListAdapter()
 
-    private var params: MediaCameraParams = MediaCameraParams()
+    protected var params: MediaCameraParams = MediaCameraParams()
     private var cameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
     private var cameraFunMode: CameraFunMode? = null
 

@@ -7,8 +7,6 @@ import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHXa
@@ -69,34 +67,31 @@ class PictureCaptureManager private constructor(
     private fun callPictureCaptureSuccess(filePath: String) {
         CsLogger.tag(TAG).i("Capture photo success. filePath=$filePath")
 
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                params.pictureCaptureCallback?.onPictureCaptureSuccess(filePath)
-                return ""
-            }
-        })?.start()
+        try {
+            params.pictureCaptureCallback?.onPictureCaptureSuccess(filePath)
+        }catch (throwable:Throwable){
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 
     private fun callPictureCaptureSuccess(bytes: ByteArray) {
         CsLogger.tag(TAG).i("Capture photo success. bytes=${bytes.size}")
 
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                params.pictureCaptureByteCallback?.onPictureCaptureSuccess(bytes)
-                return ""
-            }
-        })?.start()
+        try {
+            params.pictureCaptureByteCallback?.onPictureCaptureSuccess(bytes)
+        }catch (throwable:Throwable){
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 
     private fun callPictureCaptureFailed() {
         CsLogger.tag(TAG).i("Capture photo failed.")
 
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                params.pictureCaptureCallback?.onPictureCaptureFailed()
-                params.pictureCaptureByteCallback?.onPictureCaptureFailed()
-                return ""
-            }
-        })?.start()
+        try {
+            params.pictureCaptureCallback?.onPictureCaptureFailed()
+            params.pictureCaptureByteCallback?.onPictureCaptureFailed()
+        }catch (throwable:Throwable){
+            CsLogger.tag(TAG).e(throwable)
+        }
     }
 }
