@@ -207,13 +207,13 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         val size = when (funMode) {
             CameraFunMode.CAPTURE -> {
                 CameraSettingCache.getPictureCaptureSize(faceMode).apply {
-                    cameraCaptureController?.setPictureCaptureSize(width, height)
+                    cameraCaptureController?.setSurfaceSize(width, height)
                 }
             }
 
             CameraFunMode.RECORD -> {
                 CameraSettingCache.getVideoRecordSize(faceMode).apply {
-                    cameraRecordController?.setVideoRecordSize(width, height)
+                    cameraRecordController?.setSurfaceSize(width, height)
                 }
             }
 

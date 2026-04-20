@@ -8,13 +8,7 @@ import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
  * @data: 2026/3/19 19:13
  * @desc:
  */
-interface ICameraCaptureController {
-
-    /**
-     * 设置拍照图片尺寸
-     * */
-    fun setPictureCaptureSize(width: Int, height: Int)
-
+interface ICameraCaptureController : ICameraController {
 
     /**
      * 拍照并获取图片字节信息

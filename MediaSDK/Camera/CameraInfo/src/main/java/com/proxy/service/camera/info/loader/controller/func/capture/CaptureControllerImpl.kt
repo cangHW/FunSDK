@@ -8,7 +8,6 @@ import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
-import com.proxy.service.camera.info.loader.controller.IFunController
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager
 import com.proxy.service.camera.info.utils.FileUtils
@@ -57,17 +56,10 @@ open class CaptureControllerImpl private constructor(
         }
     }
 
-    private var paramsController: IFunController.IParamsController? = null
     private var captureBean: CaptureBean? = null
 
-
-    override fun setParamsController(controller: IFunController.IParamsController) {
-        paramsController = controller
-    }
-
-
     override fun startPictureCapture(callback: PictureCaptureByteCallback?) {
-        CsLogger.tag(tag).i("startPictureCapture.")
+        CsLogger.tag(getTag()).i("startPictureCapture.")
         captureBean = CaptureBean(
             false,
             null,
@@ -79,7 +71,7 @@ open class CaptureControllerImpl private constructor(
 
     override fun startPictureCaptureToLocal(callback: PictureCaptureCallback?) {
         val file = FileUtils.getPictureCaptureFile()
-        CsLogger.tag(tag).i("startPictureCaptureToLocal. filePath=${file.absolutePath}")
+        CsLogger.tag(getTag()).i("startPictureCaptureToLocal. filePath=${file.absolutePath}")
         captureBean = CaptureBean(
             false,
             file,
@@ -90,7 +82,7 @@ open class CaptureControllerImpl private constructor(
     }
 
     override fun startPictureCaptureToLocal(filePath: String, callback: PictureCaptureCallback?) {
-        CsLogger.tag(tag).i("startPictureCaptureToLocal. filePath=$filePath")
+        CsLogger.tag(getTag()).i("startPictureCaptureToLocal. filePath=$filePath")
         captureBean = CaptureBean(
             false,
             File(filePath),
@@ -101,7 +93,7 @@ open class CaptureControllerImpl private constructor(
     }
 
     override fun startPictureCaptureToAlbum(callback: PictureCaptureCallback?) {
-        CsLogger.tag(tag).i("startPictureCaptureToAlbum.")
+        CsLogger.tag(getTag()).i("startPictureCaptureToAlbum.")
         captureBean = CaptureBean(
             true,
             null,
@@ -113,27 +105,34 @@ open class CaptureControllerImpl private constructor(
 
 
     private fun requestPictureCapture() {
-        if (reader == null){
-            CsLogger.tag(tag).e("PictureCapture reader is null. do startPreview first")
+        if (reader == null) {
+            CsLogger.tag(getTag()).e("PictureCapture reader is null. do startPreview first")
             callFailed()
             return
         }
 
         val cameraDevice = deviceManager.getCameraDevice()
         if (cameraDevice == null) {
-            CsLogger.tag(tag).e("camera is not open.")
+            CsLogger.tag(getTag()).e("camera is not open.")
             callFailed()
             return
         }
         val captureSession = sessionManager.getCameraCaptureSession()
         if (captureSession == null) {
-            CsLogger.tag(tag).e("capture session is not create.")
+            CsLogger.tag(getTag()).e("capture session is not create.")
             callFailed()
             return
         }
-        val cameraFaceMode = paramsController?.getCameraFaceMode()
+        val cameraFaceMode = funParamsController?.getCameraFaceMode()
         if (cameraFaceMode == null) {
-            CsLogger.tag(tag).e("cameraFaceMode is null.")
+            CsLogger.tag(getTag()).e("cameraFaceMode is null.")
+            callFailed()
+            return
+        }
+
+        val surface = getSurface()
+        if (surface == null) {
+            CsLogger.tag(getTag()).e("getSurface is null.")
             callFailed()
             return
         }
@@ -147,15 +146,15 @@ open class CaptureControllerImpl private constructor(
                 cameraFaceMode == CameraFaceMode.FaceFront
             )
 
-            CsLogger.tag(tag).i("PictureCapture rotation = $rotation")
+            CsLogger.tag(getTag()).i("PictureCapture rotation = $rotation")
 
             val builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-            builder.addTarget(getSurface())
+            builder.addTarget(surface)
             builder.set(CaptureRequest.JPEG_ORIENTATION, rotation)
             builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
             captureSession.capture(builder.build(), null, handler)
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable, "PictureCapture failed")
+            CsLogger.tag(getTag()).e(throwable, "PictureCapture failed")
             callFailed()
         }
     }
@@ -166,7 +165,7 @@ open class CaptureControllerImpl private constructor(
                 try {
                     captureBean?.byteCallback?.onPictureCaptureSuccess(bytes)
                 } catch (throwable: Throwable) {
-                    CsLogger.tag(tag).e(throwable)
+                    CsLogger.tag(getTag()).e(throwable)
                 } finally {
                     captureBean = null
                 }
@@ -181,7 +180,7 @@ open class CaptureControllerImpl private constructor(
                 try {
                     captureBean?.callback?.onPictureCaptureSuccess(filePath)
                 } catch (throwable: Throwable) {
-                    CsLogger.tag(tag).e(throwable)
+                    CsLogger.tag(getTag()).e(throwable)
                 } finally {
                     captureBean = null
                 }
@@ -197,7 +196,7 @@ open class CaptureControllerImpl private constructor(
                     captureBean?.callback?.onPictureCaptureFailed()
                     captureBean?.byteCallback?.onPictureCaptureFailed()
                 } catch (throwable: Throwable) {
-                    CsLogger.tag(tag).e(throwable)
+                    CsLogger.tag(getTag()).e(throwable)
                 } finally {
                     captureBean = null
                 }
@@ -222,7 +221,7 @@ open class CaptureControllerImpl private constructor(
 
         val file = bean.localFile
         if (file == null) {
-            CsLogger.tag(tag).e("The local path used to save the picture is lost.")
+            CsLogger.tag(getTag()).e("The local path used to save the picture is lost.")
             callFailed()
             return
         }

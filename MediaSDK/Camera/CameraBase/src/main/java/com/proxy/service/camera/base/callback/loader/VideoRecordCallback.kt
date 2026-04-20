@@ -6,4 +6,17 @@ package com.proxy.service.camera.base.callback.loader
  * @desc:
  */
 interface VideoRecordCallback {
+
+    /**
+     * 成功
+     *
+     * @param filePath 视频地址
+     * */
+    fun onVideoRecordSuccess(filePath: String)
+
+    /**
+     * 失败
+     * */
+    fun onVideoRecordFailed()
+
 }

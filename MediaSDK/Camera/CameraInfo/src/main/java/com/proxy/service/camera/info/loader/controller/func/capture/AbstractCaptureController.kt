@@ -7,7 +7,7 @@ import android.os.Handler
 import android.view.Surface
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
-import com.proxy.service.camera.info.loader.controller.IFunController
+import com.proxy.service.camera.info.loader.controller.func.base.BaseSurfaceController
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -20,58 +20,45 @@ import java.nio.ByteBuffer
  */
 abstract class AbstractCaptureController(
     private val handler: Handler
-) : ICameraCaptureController, IFunController, ImageReader.OnImageAvailableListener {
+) : BaseSurfaceController(), ICameraCaptureController, ImageReader.OnImageAvailableListener {
 
-    protected val tag = "${CameraConstants.TAG}CaptureController"
+    companion object{
+        private const val TAG = "${CameraConstants.TAG}CaptureController"
+    }
 
-    private var width: Int = 1080
-    private var height: Int = 720
     protected var reader: ImageReader? = null
-    private var surfaceChangedCallback: IFunController.SurfaceChangedCallback? = null
 
-
-    override fun setPictureCaptureSize(width: Int, height: Int) {
-        CsLogger.tag(tag).i("setPictureCaptureSize. width=$width, height=$height")
-        if (this.width != width || this.height != height) {
-            this.width = width
-            this.height = height
-            destroy()
-            refreshImageReader()
-        }
+    override fun getTag(): String {
+        return TAG
     }
 
-    override fun getSurface(): Surface {
-        return refreshImageReader().surface
+    override fun resetSurface() {
+        destroy()
     }
 
-    override fun setSurfaceChangedCallback(callback: IFunController.SurfaceChangedCallback) {
-        this.surfaceChangedCallback = callback
-    }
-
-    override fun destroy() {
-        CsLogger.tag(tag).i("destroy.")
-        try {
-            reader?.close()
-        } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
-        } finally {
-            reader = null
-        }
-    }
-
-    private fun refreshImageReader(): ImageReader {
-        CsLogger.tag(tag).i("refreshImageReader.")
+    override fun createSurface(): Surface? {
+        CsLogger.tag(TAG).i("createSurface.")
         var reader = this.reader
         if (reader == null) {
             reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)
             reader.setOnImageAvailableListener(this, handler)
             this.reader = reader
 
-            surfaceChangedCallback?.onSurfaceChanged()
+            funSurfaceChangedCallback?.onSurfaceChanged()
         }
-        return reader
+        return reader.surface
     }
 
+    override fun destroy() {
+        CsLogger.tag(TAG).i("destroy.")
+        try {
+            reader?.close()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        } finally {
+            reader = null
+        }
+    }
 
     override fun onImageAvailable(reader: ImageReader?) {
         if (reader == null) {
@@ -92,13 +79,13 @@ abstract class AbstractCaptureController(
                 }
             })?.start()
         } catch (throwable: Throwable) {
-            CsLogger.tag(tag).e(throwable)
+            CsLogger.tag(TAG).e(throwable)
             callFailed()
         } finally {
             try {
                 image?.close()
             } catch (throwable: Throwable) {
-                CsLogger.tag(tag).e(throwable)
+                CsLogger.tag(TAG).e(throwable)
             }
         }
     }

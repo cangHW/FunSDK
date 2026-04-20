@@ -17,8 +17,8 @@ class EmptyCameraCaptureControllerImpl: ICameraCaptureController {
         private const val TAG = "${CameraConstants.TAG}EmptyCapture"
     }
 
-    override fun setPictureCaptureSize(width: Int, height: Int) {
-        CsLogger.tag(TAG).i("setPictureCaptureSize. width=$width, height=$height")
+    override fun setSurfaceSize(width: Int, height: Int) {
+        CsLogger.tag(TAG).i("setSurfaceSize. width=$width, height=$height")
     }
 
     override fun startPictureCapture(callback: PictureCaptureByteCallback?) {

@@ -16,12 +16,20 @@ class EmptyCameraRecordControllerImpl: ICameraRecordController {
         private const val TAG = "${CameraConstants.TAG}EmptyRecord"
     }
 
-    override fun setVideoRecordSize(width: Int, height: Int) {
-        CsLogger.tag(TAG).i("setVideoRecordSize. width. width=$width, height=$height")
+    override fun setSurfaceSize(width: Int, height: Int) {
+        CsLogger.tag(TAG).i("setSurfaceSize. width. width=$width, height=$height")
     }
 
-    override fun startVideoRecording(isSavePhotoAlbum: Boolean, callback: VideoRecordCallback?) {
-        CsLogger.tag(TAG).i("startVideoRecording. ")
+    override fun startVideoRecording(callback: VideoRecordCallback?) {
+        CsLogger.tag(TAG).i("startVideoRecording.")
+    }
+
+    override fun startVideoRecordingToLocal(filePath: String, callback: VideoRecordCallback?) {
+        CsLogger.tag(TAG).i("startVideoRecordingToLocal. filePath=$filePath")
+    }
+
+    override fun startVideoRecordingToAlbum(callback: VideoRecordCallback?) {
+        CsLogger.tag(TAG).i("startVideoRecordingToAlbum.")
     }
 
     override fun finishVideoRecording() {

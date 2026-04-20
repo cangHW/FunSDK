@@ -2,6 +2,7 @@ package com.proxy.service.camera.info.loader.controller
 
 import android.view.Surface
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import kotlin.jvm.Throws
 
 /**
  * @author: cangHX
@@ -12,6 +13,8 @@ interface IFunController {
 
     interface SurfaceChangedCallback {
         fun onSurfaceChanged()
+
+        fun resumePreview(callback: (isSuccess:Boolean) -> Unit)
     }
 
     interface IParamsController {
@@ -21,7 +24,7 @@ interface IFunController {
     /**
      * 获取 surface 窗口
      * */
-    fun getSurface(): Surface
+    fun getSurface(): Surface?
 
     /**
      * 设置窗口变化监听

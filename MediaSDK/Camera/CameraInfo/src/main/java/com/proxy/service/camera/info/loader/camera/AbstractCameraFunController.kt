@@ -72,6 +72,17 @@ abstract class AbstractCameraFunController : AbstractCameraPreviewController(), 
                 captureSessionManager.closeCaptureSession()
                 resumePreview()
             }
+
+            override fun resumePreview(callback: (isSuccess: Boolean) -> Unit) {
+                requestPreview(
+                    success = {
+                        callback(true)
+                    },
+                    failed = {
+                        callback(false)
+                    }
+                )
+            }
         })
         funController?.setParamsController(object : IParamsController {
             override fun getCameraFaceMode(): CameraFaceMode? {

@@ -96,9 +96,9 @@ dependencies {
 //    implementation(project(":WidgetSDK:WidgetInfo"))
     implementation(libs.service.widget)
 
-//    implementation(libs.service.media.camera)
-    implementation(project(":MediaSDK:Camera:CameraInfo"))
-    implementation(project(":MediaSDK:Camera:CameraBase"))
+    implementation(libs.service.media.camera)
+//    implementation(project(":MediaSDK:Camera:CameraInfo"))
+//    implementation(project(":MediaSDK:Camera:CameraBase"))
 
 //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
 

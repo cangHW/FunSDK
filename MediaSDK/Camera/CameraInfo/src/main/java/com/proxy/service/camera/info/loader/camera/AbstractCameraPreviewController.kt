@@ -8,12 +8,15 @@ import android.view.Surface
 import androidx.annotation.CallSuper
 import com.proxy.service.camera.base.callback.loader.PreviewCallback
 import com.proxy.service.camera.base.loader.camera.ICameraPreview
-import com.proxy.service.camera.base.mode.loader.PreviewImageFormatMode
+import com.proxy.service.camera.base.mode.loader.CameraErrorMode
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.info.loader.controller.IFunController
+import com.proxy.service.camera.info.loader.controller.IFunController.IParamsController
+import com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback
 import com.proxy.service.camera.info.loader.controller.func.preview.PreviewControllerImpl
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.camera.info.loader.controller.IFunController
 
 /**
  * @author: cangHX
@@ -28,22 +31,37 @@ abstract class AbstractCameraPreviewController : AbstractCameraController(), ICa
     private fun getSurfaces(): List<Surface> {
         val list = ArrayList<Surface>()
         list.addAll(previewSurfaces)
-        previewController?.let {
-            list.add(it.getSurface())
+        previewController?.getSurface()?.let {
+            list.add(it)
         }
         return list
     }
 
-    override fun setPreviewCallback(
-        format: PreviewImageFormatMode,
-        pWidth: Int,
-        pHeight: Int,
-        callback: PreviewCallback
-    ) {
-        CsLogger.tag(tag)
-            .i("setPreviewCallback. format=${format.name}, pWidth=$pWidth, pHeight=$pHeight")
+    override fun setPreviewCallback(callback: PreviewCallback) {
+        CsLogger.tag(tag).i("setPreviewCallback.")
         previewController?.destroy()
-        previewController = PreviewControllerImpl.create(format, pWidth, pHeight, callback)
+        previewController = PreviewControllerImpl.create(callback)
+        previewController?.setParamsController(object : IParamsController {
+            override fun getCameraFaceMode(): CameraFaceMode? {
+                return cameraFaceMode
+            }
+        })
+        previewController?.setSurfaceChangedCallback(object : SurfaceChangedCallback {
+            override fun onSurfaceChanged() {
+                captureSessionManager.closeCaptureSession()
+            }
+
+            override fun resumePreview(callback: (isSuccess: Boolean) -> Unit) {
+                requestPreview(
+                    success = {
+                        callback(true)
+                    },
+                    failed = {
+                        callback(false)
+                    }
+                )
+            }
+        })
         captureSessionManager.closeCaptureSession()
     }
 
@@ -62,33 +80,8 @@ abstract class AbstractCameraPreviewController : AbstractCameraController(), ICa
 
     override fun resumePreview() {
         super.resumePreview()
-        if (!isStartPreview.get()) {
-            return
-        }
 
-        if (getSurfaces().isEmpty()) {
-            CsLogger.tag(tag).e("缺少预览 surface")
-            return
-        }
-
-        createCaptureSession { device, session ->
-            val list = getSurfaces()
-            if (list.isEmpty()) {
-                CsLogger.tag(tag).w("缺少预览 surface")
-                return@createCaptureSession
-            }
-
-            try {
-                val builder = device.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-                list.forEach {
-                    builder.addTarget(it)
-                }
-                parsePreviewRequest(builder)
-                session.setRepeatingRequest(builder.build(), null, handler)
-            } catch (throwable: Throwable) {
-                CsLogger.tag(tag).e(throwable, "发起预览失败")
-            }
-        }
+        requestPreview(null, null)
     }
 
     override fun onClear() {
@@ -118,7 +111,10 @@ abstract class AbstractCameraPreviewController : AbstractCameraController(), ICa
     /**
      * 打开会话
      * */
-    private fun createCaptureSession(callback: (device: CameraDevice, session: CameraCaptureSession) -> Unit) {
+    private fun createCaptureSession(
+        callback: (device: CameraDevice, session: CameraCaptureSession) -> Unit,
+        failed: (() -> Unit)? = null
+    ) {
         CsLogger.tag(tag).i("createCaptureSession.")
         cameraDeviceManager.openCamera(
             cameraFaceMode?.getCameraId() ?: "",
@@ -139,11 +135,61 @@ abstract class AbstractCameraPreviewController : AbstractCameraController(), ICa
                             override fun onConfigured(session: CameraCaptureSession) {
                                 callback(device, session)
                             }
+
+                            override fun onConfigureFailed() {
+                                super.onConfigureFailed()
+                                failed?.invoke()
+                            }
                         }
                     )
+                }
+
+                override fun onError(error: CameraErrorMode) {
+                    super.onError(error)
+                    failed?.invoke()
                 }
             }
         )
     }
 
+    /**
+     * 预览请求
+     * */
+    protected fun requestPreview(success: (() -> Unit)?, failed: (() -> Unit)?) {
+        if (!isStartPreview.get()) {
+            failed?.invoke()
+            return
+        }
+
+        if (getSurfaces().isEmpty()) {
+            CsLogger.tag(tag).e("缺少预览 surface")
+            failed?.invoke()
+            return
+        }
+
+        createCaptureSession(
+            callback = { device, session ->
+                val list = getSurfaces()
+                if (list.isEmpty()) {
+                    CsLogger.tag(tag).w("缺少预览 surface")
+                    failed?.invoke()
+                    return@createCaptureSession
+                }
+
+                try {
+                    val builder = device.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+                    list.forEach {
+                        builder.addTarget(it)
+                    }
+                    parsePreviewRequest(builder)
+                    session.setRepeatingRequest(builder.build(), null, handler)
+                    success?.invoke()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(tag).e(throwable, "发起预览失败")
+                    failed?.invoke()
+                }
+            },
+            failed = failed
+        )
+    }
 }

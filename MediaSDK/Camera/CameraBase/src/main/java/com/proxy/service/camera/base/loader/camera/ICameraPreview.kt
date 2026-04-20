@@ -13,17 +13,8 @@ interface ICameraPreview : ICameraAction {
 
     /**
      * 设置预览回调
-     *
-     * @param format    预览数据图像格式
-     * @param pWidth    回调的预览图宽度
-     * @param pHeight   回调的预览图高度
      * */
-    fun setPreviewCallback(
-        format: PreviewImageFormatMode,
-        pWidth: Int,
-        pHeight: Int,
-        callback: PreviewCallback
-    )
+    fun setPreviewCallback(callback: PreviewCallback)
 
     /**
      * 清空并重新设置预览窗口

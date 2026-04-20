@@ -21,4 +21,12 @@ object FileUtils {
     fun createPictureCaptureFileName(): String {
         return "photo_${System.currentTimeMillis()}.jpg"
     }
+
+    fun getVideoRecordFile(): File {
+        return File(getRootDir(), createVideoRecordFileName())
+    }
+
+    fun createVideoRecordFileName(): String {
+        return "video_${System.currentTimeMillis()}.mp4"
+    }
 }
