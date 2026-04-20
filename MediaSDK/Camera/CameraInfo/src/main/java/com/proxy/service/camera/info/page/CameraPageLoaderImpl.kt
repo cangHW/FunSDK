@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
+import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
@@ -35,11 +36,12 @@ class CameraPageLoaderImpl : ICameraPageLoader {
         return this
     }
 
+
     override fun setPictureCaptureCallback(callback: PictureCaptureCallback): ICameraPageLoader {
-        params.filePath = null
-        params.isSaveAlbum = false
-        params.pictureCaptureCallback = callback
-        params.pictureCaptureByteCallback = null
+        params.pictureCaptureParams.filePath = null
+        params.pictureCaptureParams.isSaveAlbum = false
+        params.pictureCaptureParams.pictureCaptureCallback = callback
+        params.pictureCaptureParams.pictureCaptureByteCallback = null
         return this
     }
 
@@ -47,28 +49,54 @@ class CameraPageLoaderImpl : ICameraPageLoader {
         filePath: String,
         callback: PictureCaptureCallback
     ): ICameraPageLoader {
-        params.filePath = filePath
-        params.isSaveAlbum = false
-        params.pictureCaptureCallback = callback
-        params.pictureCaptureByteCallback = null
+        params.pictureCaptureParams.filePath = filePath
+        params.pictureCaptureParams.isSaveAlbum = false
+        params.pictureCaptureParams.pictureCaptureCallback = callback
+        params.pictureCaptureParams.pictureCaptureByteCallback = null
         return this
     }
 
     override fun setPictureCaptureCallback(callback: PictureCaptureByteCallback): ICameraPageLoader {
-        params.filePath = null
-        params.isSaveAlbum = false
-        params.pictureCaptureCallback = null
-        params.pictureCaptureByteCallback = callback
+        params.pictureCaptureParams.filePath = null
+        params.pictureCaptureParams.isSaveAlbum = false
+        params.pictureCaptureParams.pictureCaptureCallback = null
+        params.pictureCaptureParams.pictureCaptureByteCallback = callback
         return this
     }
 
     override fun setPictureCaptureToAlbumCallback(callback: PictureCaptureCallback): ICameraPageLoader {
-        params.filePath = null
-        params.isSaveAlbum = true
-        params.pictureCaptureCallback = callback
-        params.pictureCaptureByteCallback = null
+        params.pictureCaptureParams.filePath = null
+        params.pictureCaptureParams.isSaveAlbum = true
+        params.pictureCaptureParams.pictureCaptureCallback = callback
+        params.pictureCaptureParams.pictureCaptureByteCallback = null
         return this
     }
+
+
+    override fun setVideoRecordCallback(callback: VideoRecordCallback): ICameraPageLoader {
+        params.videoRecordParams.callback = callback
+        params.videoRecordParams.filePath = null
+        params.videoRecordParams.isSaveAlbum = false
+        return this
+    }
+
+    override fun setVideoRecordCallback(
+        filePath: String,
+        callback: VideoRecordCallback
+    ): ICameraPageLoader {
+        params.videoRecordParams.callback = callback
+        params.videoRecordParams.filePath = filePath
+        params.videoRecordParams.isSaveAlbum = false
+        return this
+    }
+
+    override fun setVideoRecordToAlbumCallback(callback: VideoRecordCallback): ICameraPageLoader {
+        params.videoRecordParams.callback = callback
+        params.videoRecordParams.filePath = null
+        params.videoRecordParams.isSaveAlbum = true
+        return this
+    }
+
 
     override fun launch(context: Context?) {
         launch(context, CsMediaCameraActivity::class.java, params)

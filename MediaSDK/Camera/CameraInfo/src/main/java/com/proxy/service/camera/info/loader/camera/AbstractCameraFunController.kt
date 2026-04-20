@@ -1,5 +1,7 @@
 package com.proxy.service.camera.info.loader.camera
 
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraDevice
 import android.view.Surface
 import com.proxy.service.camera.base.loader.camera.ICameraFun
 import com.proxy.service.camera.base.loader.camera.ICameraFunGet
@@ -73,15 +75,14 @@ abstract class AbstractCameraFunController : AbstractCameraPreviewController(), 
                 resumePreview()
             }
 
-            override fun resumePreview(callback: (isSuccess: Boolean) -> Unit) {
-                requestPreview(
-                    success = {
-                        callback(true)
-                    },
-                    failed = {
-                        callback(false)
-                    }
-                )
+            override fun refreshPreview(
+                templateType: Int,
+                tempSurfaces: List<Surface>,
+                success: () -> Unit,
+                failed: () -> Unit
+            ) {
+                captureSessionManager.closeCaptureSession()
+                requestPreview(templateType, tempSurfaces, success, failed)
             }
         })
         funController?.setParamsController(object : IParamsController {

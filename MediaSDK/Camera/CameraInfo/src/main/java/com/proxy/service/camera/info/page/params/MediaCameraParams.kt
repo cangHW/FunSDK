@@ -2,6 +2,7 @@ package com.proxy.service.camera.info.page.params
 
 import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
+import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
 
@@ -25,12 +26,29 @@ class MediaCameraParams {
     var defaultCameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
 
     /**
+     * 拍照参数
+     * */
+    val pictureCaptureParams = PictureCaptureParams()
+
+    /**
+     * 录制参数
+     * */
+    val videoRecordParams = VideoRecordParams()
+
+    override fun toString(): String {
+        return "MediaCameraParams(supportCameraFunModes=$supportCameraFunModes, defaultCameraFaceMode=$defaultCameraFaceMode, pictureCaptureParams=$pictureCaptureParams, videoRecordParams=$videoRecordParams)"
+    }
+
+}
+
+class PictureCaptureParams {
+    /**
      * 拍照文件地址
      * */
     var filePath: String? = null
 
     /**
-     * 拍照文件保存到相册
+     * 拍照文件是否保存到相册
      * */
     var isSaveAlbum: Boolean = false
 
@@ -44,4 +62,29 @@ class MediaCameraParams {
      * */
     var pictureCaptureByteCallback: PictureCaptureByteCallback? = null
 
+    override fun toString(): String {
+        return "PictureCaptureParams(filePath=$filePath, isSaveAlbum=$isSaveAlbum, pictureCaptureCallback=$pictureCaptureCallback, pictureCaptureByteCallback=$pictureCaptureByteCallback)"
+    }
+}
+
+class VideoRecordParams {
+
+    /**
+     * 视频文件地址
+     * */
+    var filePath: String? = null
+
+    /**
+     * 视频文件是否保存到相册
+     * */
+    var isSaveAlbum: Boolean = false
+
+    /**
+     * 录制回调
+     * */
+    var callback: VideoRecordCallback? = null
+
+    override fun toString(): String {
+        return "VideoRecordParams(filePath=$filePath, isSaveAlbum=$isSaveAlbum, callback=$callback)"
+    }
 }

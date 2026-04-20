@@ -37,7 +37,7 @@ class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {
             ?.setLifecycleOwner(this)
             ?.createAndOpenCamera(cameraFaceMode)
         captureController = iCamera?.chooseCaptureMode()
-        captureController?.setPictureCaptureSize(1440, 1920)
+        captureController?.setSurfaceSize(1440, 1920)
     }
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityCameraLoaderBinding {

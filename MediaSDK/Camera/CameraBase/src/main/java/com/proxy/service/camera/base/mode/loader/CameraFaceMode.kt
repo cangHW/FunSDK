@@ -52,4 +52,8 @@ sealed class CameraFaceMode {
      * 摄像头说明
      * */
     abstract fun getCameraDesc(): String
+
+    override fun toString(): String {
+        return "CameraFaceMode(cameraId='${getCameraId()}', cameraDesc=${getCameraDesc()})"
+    }
 }

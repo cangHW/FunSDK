@@ -1,5 +1,7 @@
 package com.proxy.service.camera.info.loader.controller.func.record
 
+import android.hardware.camera2.CameraDevice
+import android.media.MediaRecorder
 import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.info.utils.FileUtils
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -9,7 +11,9 @@ import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
 import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import com.proxy.service.threadpool.base.thread.task.IConsumer
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
@@ -17,6 +21,10 @@ import java.io.File
  * @desc:
  */
 class RecordControllerImpl : AbstractRecordController() {
+
+    companion object {
+        private const val MIN_RECORD_TIME = 1 * 1000L
+    }
 
     override fun setSurfaceSize(width: Int, height: Int) {
         if (recordBean != null) {
@@ -35,7 +43,7 @@ class RecordControllerImpl : AbstractRecordController() {
             return
         }
 
-        recordBean = RecordBean(false, FileUtils.getVideoRecordFile(), callback)
+        recordBean = RecordBean(false, FileUtils.getVideoRecordFile(), callback, 0)
         requestVideoRecord()
     }
 
@@ -47,7 +55,7 @@ class RecordControllerImpl : AbstractRecordController() {
             return
         }
 
-        recordBean = RecordBean(false, File(filePath), callback)
+        recordBean = RecordBean(false, File(filePath), callback, 0)
 
         if (!CsFileUtils.createFile(recordBean?.localFile)) {
             callFailed(recordBean)
@@ -65,7 +73,7 @@ class RecordControllerImpl : AbstractRecordController() {
             return
         }
 
-        recordBean = RecordBean(true, FileUtils.getVideoRecordFile(), callback)
+        recordBean = RecordBean(true, FileUtils.getVideoRecordFile(), callback, 0)
         requestVideoRecord()
     }
 
@@ -84,6 +92,34 @@ class RecordControllerImpl : AbstractRecordController() {
             return
         }
 
+        if (bean.startTime == 0L) {
+            CsLogger.tag(getTag()).w("VideoRecord is not start.")
+            return
+        }
+
+        if ((System.currentTimeMillis() - bean.startTime) > MIN_RECORD_TIME) {
+            finishVideoRecord(bean, recorder)
+        } else {
+            CsTask.delay(MIN_RECORD_TIME, TimeUnit.MILLISECONDS)
+                ?.mainThread()
+                ?.doOnNext(object : IConsumer<Long> {
+                    override fun accept(value: Long) {
+                        finishVideoRecord(bean, recorder)
+                    }
+                })?.start()
+        }
+    }
+
+
+    override fun destroy() {
+        if (recordBean != null) {
+            finishVideoRecording()
+        }
+        super.destroy()
+    }
+
+
+    private fun finishVideoRecord(bean: RecordBean, recorder: MediaRecorder) {
         try {
             recorder.stop()
             CsLogger.tag(getTag()).i("finishVideoRecording success.")
@@ -98,15 +134,6 @@ class RecordControllerImpl : AbstractRecordController() {
             callFailed(bean)
         }
     }
-
-
-    override fun destroy() {
-        if (recordBean != null) {
-            finishVideoRecording()
-        }
-        super.destroy()
-    }
-
 
     private fun requestVideoRecord() {
         val recorder = mediaRecorder
@@ -132,20 +159,23 @@ class RecordControllerImpl : AbstractRecordController() {
         }
 
         try {
-            callback.resumePreview {
-                if (!it) {
+            callback.refreshPreview(
+                templateType = CameraDevice.TEMPLATE_RECORD,
+                tempSurfaces = listOf(surface),
+                success = {
+                    try {
+                        recorder.start()
+                        recordBean?.startTime = System.currentTimeMillis()
+                        CsLogger.tag(getTag()).i("startVideoRecording success.")
+                    } catch (throwable: Throwable) {
+                        CsLogger.tag(getTag()).e(throwable, "startVideoRecording failed.")
+                        callFailed(recordBean)
+                    }
+                },
+                failed = {
                     callFailed(recordBean)
-                    return@resumePreview
                 }
-
-                try {
-                    recorder.start()
-                    CsLogger.tag(getTag()).i("startVideoRecording success.")
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(getTag()).e(throwable, "startVideoRecording failed.")
-                    callFailed(recordBean)
-                }
-            }
+            )
         } catch (throwable: Throwable) {
             CsLogger.tag(getTag()).e(throwable, "startVideoRecording failed.")
             callFailed(recordBean)

@@ -1,5 +1,7 @@
 package com.proxy.service.camera.info.loader.controller
 
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraDevice
 import android.view.Surface
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import kotlin.jvm.Throws
@@ -14,7 +16,12 @@ interface IFunController {
     interface SurfaceChangedCallback {
         fun onSurfaceChanged()
 
-        fun resumePreview(callback: (isSuccess:Boolean) -> Unit)
+        fun refreshPreview(
+            templateType: Int,
+            tempSurfaces: List<Surface>,
+            success: (() -> Unit),
+            failed: (() -> Unit)
+        )
     }
 
     interface IParamsController {

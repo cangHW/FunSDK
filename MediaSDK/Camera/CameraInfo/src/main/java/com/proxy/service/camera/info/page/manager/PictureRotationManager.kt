@@ -38,7 +38,9 @@ class PictureRotationManager private constructor(
     private var degree: Float = 0f
 
     fun setRotation(degree: Float) {
-        CsLogger.tag(TAG).d("degree = $degree")
+        if (this.degree != degree) {
+            CsLogger.tag(TAG).d("degree = $degree")
+        }
         this.degree = degree
     }
 
@@ -117,7 +119,7 @@ class PictureRotationManager private constructor(
             override fun accept(value: ByteArray) {
                 if (value.isNotEmpty()) {
                     outPictureCaptureByteCallback?.onPictureCaptureSuccess(value)
-                }else{
+                } else {
                     outPictureCaptureByteCallback?.onPictureCaptureFailed()
                 }
             }

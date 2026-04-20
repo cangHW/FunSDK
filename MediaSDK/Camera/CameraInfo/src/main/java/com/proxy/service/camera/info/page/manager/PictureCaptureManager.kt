@@ -6,6 +6,7 @@ import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.info.page.params.MediaCameraParams
+import com.proxy.service.camera.info.page.params.PictureCaptureParams
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -14,14 +15,14 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @desc:
  */
 class PictureCaptureManager private constructor(
-    private val params: MediaCameraParams
+    private val params: PictureCaptureParams
 ) {
 
     companion object {
         private const val TAG = "${CameraConstants.TAG}Page_PictureCaptureManager"
 
         fun create(params: MediaCameraParams): PictureCaptureManager {
-            return PictureCaptureManager(params)
+            return PictureCaptureManager(params.pictureCaptureParams)
         }
     }
 

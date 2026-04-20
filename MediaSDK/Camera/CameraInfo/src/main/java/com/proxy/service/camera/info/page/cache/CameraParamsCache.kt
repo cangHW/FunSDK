@@ -42,9 +42,8 @@ object CameraParamsCache {
                 override fun accept(value: Long) {
                     val params = cacheMap.removeSync(token) ?: return
                     CsLogger.tag(TAG)
-                        .w("It hasn't been used for too long. I'm going to recycle it. callback=${params.pictureCaptureCallback}")
+                        .w("It hasn't been used for too long. I'm going to recycle it. callback=$params")
                 }
-            })
-            ?.start()
+            })?.start()
     }
 }

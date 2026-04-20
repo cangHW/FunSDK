@@ -36,6 +36,10 @@ enum class CameraFunMode(
         return modeRes
     }
 
+    override fun toString(): String {
+        return "CameraFunMode(modeName='$modeName', modeRes=$modeRes)"
+    }
+
     companion object {
         fun getAll(): List<CameraFunMode> {
             val list = ArrayList<CameraFunMode>()
@@ -44,5 +48,7 @@ enum class CameraFunMode(
             return list
         }
     }
+
+
 
 }

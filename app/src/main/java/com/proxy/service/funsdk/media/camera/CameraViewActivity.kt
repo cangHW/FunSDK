@@ -37,7 +37,7 @@ class CameraViewActivity : BaseActivity<ActivityCameraViewBinding>() {
             ?.createTo(binding?.cameraLayout)
 
         captureController = cameraView?.chooseCaptureMode()
-        captureController?.setPictureCaptureSize(1920,1440)
+        captureController?.setSurfaceSize(1920,1440)
         cameraView?.setPreviewSize(2560, 1920)
         cameraView?.openCamera(CameraFaceMode.FaceBack)
         cameraView?.startPreview()

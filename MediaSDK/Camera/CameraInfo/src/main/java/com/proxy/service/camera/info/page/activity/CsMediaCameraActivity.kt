@@ -19,6 +19,7 @@ import com.proxy.service.camera.info.page.cache.CameraParamsCache
 import com.proxy.service.camera.info.page.cache.CameraSettingCache
 import com.proxy.service.camera.info.page.manager.CameraCustomTouchDispatch
 import com.proxy.service.camera.info.page.manager.PictureCaptureManager
+import com.proxy.service.camera.info.page.manager.VideoRecordManager
 import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
@@ -55,6 +56,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
     private var cameraFunMode: CameraFunMode? = null
 
     private var pictureCaptureManager: PictureCaptureManager? = null
+    private var videoRecordManager: VideoRecordManager? = null
 
     private var iCameraView: ICameraView? = null
     private var cameraCaptureController: ICameraCaptureController? = null
@@ -87,6 +89,8 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         binding?.cameraActionIcon?.setOnClickListener {
             if (cameraFunMode == CameraFunMode.CAPTURE) {
                 pictureCaptureManager?.startPictureCapture(cameraCaptureController)
+            } else {
+                videoRecordManager?.startOrFinishRecord(cameraRecordController)
             }
         }
 
@@ -107,6 +111,7 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
 
         params = tempParams
         pictureCaptureManager = PictureCaptureManager.create(tempParams)
+        videoRecordManager = VideoRecordManager.create(tempParams)
 
         cameraFaceMode = params.defaultCameraFaceMode
         cameraFunMode = params.supportCameraFunModes.getOrNull(0)

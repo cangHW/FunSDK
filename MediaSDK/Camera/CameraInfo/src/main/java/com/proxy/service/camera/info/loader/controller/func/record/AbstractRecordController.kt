@@ -27,7 +27,8 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
     protected data class RecordBean(
         val isSavePhotoAlbum: Boolean,
         val localFile: File,
-        val callback: VideoRecordCallback?
+        val callback: VideoRecordCallback?,
+        var startTime: Long
     )
 
     companion object {
@@ -46,11 +47,13 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
 
 
     override fun getSurface(): Surface? {
+        CsLogger.tag(TAG).i("getSurface. recordSurface=$recordSurface")
         createMediaRecorder()
         return recordSurface
     }
 
     override fun resetSurface() {
+        CsLogger.tag(TAG).i("resetSurface.")
         if (recordSurface != null) {
             recordSurface = null
             funSurfaceChangedCallback?.onSurfaceChanged()
@@ -63,17 +66,21 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
     }
 
     override fun createSurface(): Surface? {
+        CsLogger.tag(TAG).i("createSurface. recordBean=$recordBean")
         val bean = recordBean ?: return null
 
         try {
+            CsFileUtils.createFile(bean.localFile)
+
             val recorder = createMediaRecorder() ?: return null
             recorder.reset()
             recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
-            recorder.setVideoSize(width, height)
+//            recorder.setVideoSize(width, height)
+//            recorder.setVideoSize(1080, 1920)
+            recorder.setVideoSize(1920, 1080)
             recorder.setVideoFrameRate(30)
-            recorder.setVideoEncodingBitRate(width * height * 5)
             recorder.setOrientationHint(calculateRotation())
             recorder.setOutputFile(bean.localFile.absolutePath)
             recorder.prepare()
@@ -109,7 +116,10 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
         }
         val rotationDegrees = CsScreenUtils.getScreenRotation().degree * 90
         val sign = if (cameraFaceMode == CameraFaceMode.FaceFront) 1 else -1
-        return (orientation.degree + rotationDegrees * sign + 360) % 360
+        val rotation = (orientation.degree + rotationDegrees * sign + 360) % 360
+
+        CsLogger.tag(TAG).i("calculateRotation. rotation=$rotation")
+        return rotation
     }
 
     private fun createMediaRecorder(): MediaRecorder? {

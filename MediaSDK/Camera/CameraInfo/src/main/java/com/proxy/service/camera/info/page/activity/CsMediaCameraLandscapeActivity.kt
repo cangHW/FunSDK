@@ -20,13 +20,14 @@ class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
 
         CsScreenUtils.addWeakSensorRotationCallback(sensorRotationCallback)
 
+        val pParams = params.pictureCaptureParams
         manager = PictureRotationManager.create(
-            params.pictureCaptureCallback,
-            params.pictureCaptureByteCallback
+            pParams.pictureCaptureCallback,
+            pParams.pictureCaptureByteCallback
         )
 
-        params.pictureCaptureCallback = manager
-        params.pictureCaptureByteCallback = manager
+        pParams.pictureCaptureCallback = manager
+        pParams.pictureCaptureByteCallback = manager
     }
 
     private val sensorRotationCallback = object : SensorRotationCallback {
