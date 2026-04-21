@@ -71,6 +71,13 @@ class VideoRecordManager private constructor(
                 taskDisposable = null
                 params.callback?.onVideoRecordFailed()
             }
+
+            override fun onVideoRecordCancel() {
+                statusMap.putSync(cameraRecordController, TYPE_IDLE)
+                taskDisposable?.dispose()
+                taskDisposable = null
+                params.callback?.onVideoRecordCancel()
+            }
         }
 
         if (params.isSaveAlbum) {
