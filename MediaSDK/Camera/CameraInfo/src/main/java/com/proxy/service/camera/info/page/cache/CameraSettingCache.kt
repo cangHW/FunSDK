@@ -104,7 +104,8 @@ object CameraSettingCache {
     fun getVideoRecordAllSupportSize(mode: CameraFaceMode): List<SupportSize> {
         val list = ArrayList<SupportSize>()
 
-        val type = getSupportSizeType()
+//        val type = getSupportSizeType()
+        val type = 9
         val sizes = CsMediaCamera.getSupportedRecordSizes(mode)
 
         sizes?.forEach {

@@ -8,8 +8,8 @@ import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.VideoRecordState
 import com.proxy.service.camera.info.loader.controller.func.base.BaseSurfaceController
-import com.proxy.service.camera.info.utils.FileUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
@@ -35,9 +35,13 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
         private const val TAG = "${CameraConstants.TAG}RecordController"
     }
 
+    @Volatile
     protected var recordSurface: Surface? = null
+
+    @Volatile
     protected var mediaRecorder: MediaRecorder? = null
 
+    @Volatile
     protected var recordBean: RecordBean? = null
 
 
@@ -78,8 +82,6 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
             recorder.setVideoSize(width, height)
-//            recorder.setVideoSize(1080, 1920)
-//            recorder.setVideoSize(1920, 1080)
             recorder.setVideoFrameRate(30)
             recorder.setOrientationHint(calculateRotation())
             recorder.setOutputFile(bean.localFile.absolutePath)
@@ -93,16 +95,30 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
         return null
     }
 
+    override fun abort() {
+        super.abort()
+        val state = getVideoRecordState()
+        if (state == VideoRecordState.STATE_STARTING || state == VideoRecordState.STATE_RECORDING) {
+            finishVideoRecording()
+        }
+    }
+
     override fun destroy() {
         CsLogger.tag(TAG).i("destroy.")
+        try {
+            mediaRecorder?.stop()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).w(throwable)
+        }
         try {
             mediaRecorder?.release()
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).w(throwable)
-        } finally {
-            mediaRecorder = null
-            recordSurface = null
         }
+
+        mediaRecorder = null
+        recordSurface = null
+        recordBean = null
     }
 
 

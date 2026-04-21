@@ -1,7 +1,5 @@
 package com.proxy.service.camera.info.loader.camera
 
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraDevice
 import android.view.Surface
 import com.proxy.service.camera.base.loader.camera.ICameraFun
 import com.proxy.service.camera.base.loader.camera.ICameraFunGet
@@ -58,6 +56,16 @@ abstract class AbstractCameraFunController : AbstractCameraPreviewController(), 
         funController?.getSurface()?.let {
             list.add(it)
         }
+    }
+
+    override fun pausePreview() {
+        super.pausePreview()
+        funController?.abort()
+    }
+
+    override fun resumePreview() {
+        super.resumePreview()
+        funController?.abort()
     }
 
     override fun onClear() {

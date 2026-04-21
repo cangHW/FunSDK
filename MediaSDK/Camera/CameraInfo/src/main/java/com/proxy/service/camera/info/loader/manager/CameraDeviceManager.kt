@@ -185,13 +185,15 @@ class CameraDeviceManager private constructor(
 
                 override fun onError(camera: CameraDevice, error: Int) {
                     val mode = errorCodeToMode(error)
-                    CsLogger.tag(TAG).e("onError. cameraId=$cameraId, mode=${mode.name}, camera=$camera")
+                    CsLogger.tag(TAG)
+                        .e("onError. cameraId=$cameraId, mode=${mode.name}, camera=$camera")
 
                     runMain {
                         cameraLoaderCallback?.onCameraError(camera.id, camera, mode)
                     }
 
-                    if (this@CameraDeviceManager.cameraDevice == camera) {
+                    val currentDevice = this@CameraDeviceManager.cameraDevice
+                    if (currentDevice == null || currentDevice == camera) {
                         clearCameraCache()
 
                         forEachCallbacks {

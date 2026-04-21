@@ -1,10 +1,7 @@
 package com.proxy.service.camera.info.loader.controller
 
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraDevice
 import android.view.Surface
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import kotlin.jvm.Throws
 
 /**
  * @author: cangHX
@@ -42,6 +39,11 @@ interface IFunController {
      * 设置参数控制器
      * */
     fun setParamsController(controller: IParamsController)
+
+    /**
+     * 打断
+     * */
+    fun abort()
 
     /**
      * 销毁

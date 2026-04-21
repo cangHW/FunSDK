@@ -29,7 +29,6 @@ class CameraViewActivity : BaseActivity<ActivityCameraViewBinding>() {
 
     override fun initView() {
         super.initView()
-
         cameraView = CsMediaCamera.createViewLoader()
 //            ?.setCameraFaceMode(CameraFaceMode.FaceBack)
             ?.setLifecycleOwner(this)

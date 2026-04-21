@@ -63,7 +63,7 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
             CameraPageSettingItemView.builder()
                 .setIcon(android.R.drawable.ic_menu_crop)
                 .setTitle(R.string.cs_camera_info_page_setting_photo_ratio)
-                .setContent(currentSelected.toSizeString())
+                .setContent(currentSelected.toFullSizeString())
                 .build()
         )
         binding?.csMediaCameraSettingItemPhotoResolution?.setOnViewClickListener { view ->
@@ -72,12 +72,12 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
                 .setDataSize(list.size)
                 .setDataBind { text, radio, position ->
                     val size = list[position]
-                    text.text = size.toSizeString()
+                    text.text = size.toFullSizeString()
                     radio.isChecked = size == currentSelected
                 }
                 .setItemClick {
                     currentSelected = list[it]
-                    view.updateContent(currentSelected.toSizeString())
+                    view.updateContent(currentSelected.toFullSizeString())
                     CameraSettingCache.savaPictureCaptureSize(faceMode, currentSelected)
                 }
                 .show(this)
@@ -92,7 +92,7 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
             CameraPageSettingItemView.builder()
                 .setIcon(android.R.drawable.ic_menu_slideshow)
                 .setTitle(R.string.cs_camera_info_page_setting_video_resolution)
-                .setContent(currentSelected.toSizeString())
+                .setContent(currentSelected.toFullSizeString())
                 .build()
         )
         binding?.csMediaCameraSettingItemVideoResolution?.setOnViewClickListener { view ->
@@ -101,12 +101,12 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
                 .setDataSize(list.size)
                 .setDataBind { text, radio, position ->
                     val size = list[position]
-                    text.text = size.toSizeString()
+                    text.text = size.toFullSizeString()
                     radio.isChecked = size == currentSelected
                 }
                 .setItemClick {
                     currentSelected = list[it]
-                    view.updateContent(currentSelected.toSizeString())
+                    view.updateContent(currentSelected.toFullSizeString())
                     CameraSettingCache.savaVideoRecordSize(faceMode, currentSelected)
                 }
                 .show(this)

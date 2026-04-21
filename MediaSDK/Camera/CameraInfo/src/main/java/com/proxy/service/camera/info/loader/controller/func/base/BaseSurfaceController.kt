@@ -49,6 +49,10 @@ abstract class BaseSurfaceController : IFunController, ICameraController {
         }
     }
 
+    override fun abort() {
+
+    }
+
     override fun destroy() {
         funSurfaceChangedCallback = null
         funParamsController = null

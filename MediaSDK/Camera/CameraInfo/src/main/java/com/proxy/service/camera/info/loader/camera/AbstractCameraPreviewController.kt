@@ -5,6 +5,7 @@ import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.CaptureFailure
 import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.TotalCaptureResult
 import android.view.Surface
 import androidx.annotation.CallSuper
 import com.proxy.service.camera.base.callback.loader.PreviewCallback
@@ -79,9 +80,14 @@ abstract class AbstractCameraPreviewController : AbstractCameraController(), ICa
         captureSessionManager.closeCaptureSession()
     }
 
+    override fun pausePreview() {
+        super.pausePreview()
+        previewController?.abort()
+    }
+
     override fun resumePreview() {
         super.resumePreview()
-
+        previewController?.abort()
         requestPreview(CameraDevice.TEMPLATE_PREVIEW, listOf(), null, null)
     }
 
@@ -158,6 +164,18 @@ abstract class AbstractCameraPreviewController : AbstractCameraController(), ICa
                                 frameNumber: Long
                             ) {
                                 super.onCaptureStarted(session, request, timestamp, frameNumber)
+
+                                if (isCallbackDone.compareAndSet(false, true)) {
+                                    success?.invoke()
+                                }
+                            }
+
+                            override fun onCaptureCompleted(
+                                session: CameraCaptureSession,
+                                request: CaptureRequest,
+                                result: TotalCaptureResult
+                            ) {
+                                super.onCaptureCompleted(session, request, result)
 
                                 if (isCallbackDone.compareAndSet(false, true)) {
                                     success?.invoke()

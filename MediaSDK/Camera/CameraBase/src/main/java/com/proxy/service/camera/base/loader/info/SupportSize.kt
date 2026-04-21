@@ -1,5 +1,6 @@
 package com.proxy.service.camera.base.loader.info
 
+import android.text.TextUtils
 import android.util.Size
 import com.proxy.service.core.framework.data.json.CsJsonUtils
 import org.json.JSONObject
@@ -73,8 +74,16 @@ class SupportSize private constructor(
         return Size(width, height)
     }
 
-    fun toSizeString():String{
+    fun toSizeString(): String {
         return "${width}x${height}"
+    }
+
+    fun toFullSizeString(): String {
+        val typeStr = typeString()
+        if (TextUtils.isEmpty(typeStr)){
+            return "${width}x${height}"
+        }
+        return "$typeStr ${width}x${height}"
     }
 
     fun toJson(): String {
@@ -86,8 +95,8 @@ class SupportSize private constructor(
         return json.toString()
     }
 
-    override fun toString(): String {
-        val name = when (type) {
+    fun typeString(): String {
+        return when (type) {
             TYPE_SIZE_1_1 -> {
                 "[1:1]"
             }
@@ -108,8 +117,12 @@ class SupportSize private constructor(
                 ""
             }
         }
-        return "{type=$name, ratio=$ratio, width=$width, height=$height}"
     }
+
+    override fun toString(): String {
+        return "{type=${typeString()}, ratio=$ratio, width=$width, height=$height}"
+    }
+
 
     override fun hashCode(): Int {
         return toSizeString().hashCode()

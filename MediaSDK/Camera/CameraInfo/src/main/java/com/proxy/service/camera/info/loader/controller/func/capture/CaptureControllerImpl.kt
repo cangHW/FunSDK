@@ -1,7 +1,9 @@
 package com.proxy.service.camera.info.loader.controller.func.capture
 
+import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraMetadata
+import android.hardware.camera2.CaptureFailure
 import android.hardware.camera2.CaptureRequest
 import android.os.Handler
 import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
@@ -152,7 +154,21 @@ open class CaptureControllerImpl private constructor(
             builder.addTarget(surface)
             builder.set(CaptureRequest.JPEG_ORIENTATION, rotation)
             builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
-            captureSession.capture(builder.build(), null, handler)
+            captureSession.capture(
+                builder.build(),
+                object : CameraCaptureSession.CaptureCallback() {
+                    override fun onCaptureFailed(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        failure: CaptureFailure
+                    ) {
+                        super.onCaptureFailed(session, request, failure)
+                        CsLogger.tag(getTag()).e("captureSession capture onCaptureFailed.")
+                        callFailed()
+                    }
+                },
+                handler
+            )
         } catch (throwable: Throwable) {
             CsLogger.tag(getTag()).e(throwable, "PictureCapture failed")
             callFailed()

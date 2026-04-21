@@ -3,6 +3,7 @@ package com.proxy.service.camera.info.view.impl
 import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
+import com.proxy.service.camera.base.mode.loader.VideoRecordState
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -18,6 +19,11 @@ class EmptyCameraRecordControllerImpl: ICameraRecordController {
 
     override fun setSurfaceSize(width: Int, height: Int) {
         CsLogger.tag(TAG).i("setSurfaceSize. width. width=$width, height=$height")
+    }
+
+    override fun getVideoRecordState(): VideoRecordState {
+        CsLogger.tag(TAG).i("setSurfaceSize.")
+        return VideoRecordState.STATE_IDLE
     }
 
     override fun startVideoRecording(callback: VideoRecordCallback?) {
