@@ -5,17 +5,13 @@ import android.media.MediaRecorder
 import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.base.mode.loader.VideoRecordState
 import com.proxy.service.camera.info.utils.FileUtils
+import com.proxy.service.camera.info.utils.ThreadUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.media.CsFileMediaUtils
 import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
 import com.proxy.service.core.framework.io.file.media.config.MimeType
-import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
-import com.proxy.service.threadpool.base.thread.task.ICallable
-import com.proxy.service.threadpool.base.thread.task.IConsumer
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
@@ -32,7 +28,6 @@ class RecordControllerImpl : AbstractRecordController() {
 
     private var recordState: VideoRecordState = VideoRecordState.STATE_IDLE
     private var pendingStop: Boolean = false
-    private var stopTask: ITaskDisposable? = null
 
     override fun setSurfaceSize(width: Int, height: Int) {
         synchronized(stateLock) {
@@ -51,32 +46,43 @@ class RecordControllerImpl : AbstractRecordController() {
         synchronized(stateLock) {
             if (recordState != VideoRecordState.STATE_IDLE) {
                 CsLogger.tag(getTag()).w("Already recording.")
+                ThreadUtils.postMain {
+                    callback?.onVideoRecordFailed()
+                }
                 return
             }
-
             recordBean = RecordBean(false, FileUtils.getVideoRecordFile(), callback, 0)
-            requestVideoRecord()
+            updateState(recordBean, VideoRecordState.STATE_STARTING)
         }
+
+        requestVideoRecord()
     }
 
     override fun startVideoRecordingToLocal(filePath: String, callback: VideoRecordCallback?) {
         CsLogger.tag(getTag()).i("startVideoRecordingToLocal. filePath=$filePath")
 
         synchronized(stateLock) {
+            if (!CsFileUtils.createFile(filePath)) {
+                CsLogger.tag(getTag()).w("filePath can not be use.")
+                ThreadUtils.postMain {
+                    callback?.onVideoRecordFailed()
+                }
+                return
+            }
+
             if (recordState != VideoRecordState.STATE_IDLE) {
                 CsLogger.tag(getTag()).w("Already recording.")
+                ThreadUtils.postMain {
+                    callback?.onVideoRecordFailed()
+                }
                 return
             }
 
             recordBean = RecordBean(false, File(filePath), callback, 0)
-
-            if (!CsFileUtils.createFile(recordBean?.localFile)) {
-                callFailed(recordBean)
-                return
-            }
-
-            requestVideoRecord()
+            updateState(recordBean, VideoRecordState.STATE_STARTING)
         }
+
+        requestVideoRecord()
     }
 
     override fun startVideoRecordingToAlbum(callback: VideoRecordCallback?) {
@@ -85,27 +91,38 @@ class RecordControllerImpl : AbstractRecordController() {
         synchronized(stateLock) {
             if (recordState != VideoRecordState.STATE_IDLE) {
                 CsLogger.tag(getTag()).w("Already recording.")
+                ThreadUtils.postMain {
+                    callback?.onVideoRecordFailed()
+                }
                 return
             }
 
             recordBean = RecordBean(true, FileUtils.getVideoRecordFile(), callback, 0)
-            requestVideoRecord()
+            updateState(recordBean, VideoRecordState.STATE_STARTING)
         }
+
+        requestVideoRecord()
     }
 
 
     override fun finishVideoRecording() {
         CsLogger.tag(getTag()).i("finishVideoRecording.")
 
-        synchronized(stateLock) {
-            val recorder = mediaRecorder
-            if (recorder == null) {
-                CsLogger.tag(getTag()).e("VideoRecord reader is null. do startPreview first")
-                return
-            }
+        val recorder = mediaRecorder
+        val bean = recordBean
 
-            val bean = recordBean
-            if (recordState == VideoRecordState.STATE_IDLE || bean == null) {
+        if (recorder == null) {
+            CsLogger.tag(getTag()).e("VideoRecord reader is null. do startPreview first")
+            return
+        }
+
+        if (bean == null) {
+            CsLogger.tag(getTag()).w("VideoRecord is not start.")
+            return
+        }
+
+        synchronized(stateLock) {
+            if (recordState == VideoRecordState.STATE_IDLE) {
                 CsLogger.tag(getTag()).w("VideoRecord is not start.")
                 return
             }
@@ -121,44 +138,15 @@ class RecordControllerImpl : AbstractRecordController() {
                 return
             }
 
-            recordState = VideoRecordState.STATE_STOPPING
-            cancelStopTaskLocked()
-
-            val elapsed = (System.currentTimeMillis() - bean.startTime).coerceAtLeast(0L)
-            val delay = (MIN_RECORD_TIME - elapsed).coerceAtLeast(0L)
-            if (delay <= 0L) {
-                finishVideoRecord(bean, recorder)
-                return
-            }
-
-            stopTask = CsTask.delay(delay, TimeUnit.MILLISECONDS)
-                ?.mainThread()
-                ?.doOnNext(object : IConsumer<Long> {
-                    override fun accept(value: Long) {
-                        synchronized(stateLock) {
-                            finishVideoRecord(bean, recorder)
-                        }
-                    }
-                })?.start()
+            updateState(recordBean, VideoRecordState.STATE_STOPPING)
         }
-    }
 
 
-    override fun destroy() {
-        synchronized(stateLock) {
-            if (recordState != VideoRecordState.STATE_IDLE) {
-                finishVideoRecording()
-            }
-        }
-        super.destroy()
-    }
-
-
-    private fun finishVideoRecord(bean: RecordBean, recorder: MediaRecorder) {
-        if (recordState != VideoRecordState.STATE_STOPPING) {
-            resetRecordRuntimeState()
+        if (bean.startTime == 0L || (System.currentTimeMillis() - bean.startTime) <= MIN_RECORD_TIME) {
+            callCancel(bean)
             return
         }
+
         try {
             recorder.stop()
             CsLogger.tag(getTag()).i("finishVideoRecording success.")
@@ -174,11 +162,14 @@ class RecordControllerImpl : AbstractRecordController() {
         }
     }
 
-    private fun requestVideoRecord() {
-        recordState = VideoRecordState.STATE_STARTING
-        pendingStop = false
-        cancelStopTaskLocked()
 
+    override fun destroy() {
+        cancelInternalByLifecycle()
+        super.destroy()
+    }
+
+
+    private fun requestVideoRecord() {
         val recorder = mediaRecorder
         if (recorder == null) {
             CsLogger.tag(getTag()).e("VideoRecord reader is null. do startPreview first")
@@ -208,27 +199,24 @@ class RecordControllerImpl : AbstractRecordController() {
                 success = {
                     try {
                         synchronized(stateLock) {
-                            val bean = recordBean
-                            if (bean == null) {
-                                CsLogger.tag(getTag()).w("RecordBean is null when start.")
-                                resetRecordRuntimeState()
+                            if (recordBean == null) {
+                                CsLogger.tag(getTag()).w("RecordBean has unknown error.")
+                                updateState(recordBean, VideoRecordState.STATE_IDLE)
                                 return@refreshPreview
                             }
 
                             if (pendingStop) {
                                 CsLogger.tag(getTag()).w("RecordBean is cancel.")
-                                callCancel(bean)
+                                callCancel(recordBean)
                                 return@refreshPreview
                             }
 
-                            pendingStop = false
-                            recordState = VideoRecordState.STATE_RECORDING
-
                             recorder.start()
-                            bean.startTime = System.currentTimeMillis()
+                            recordBean?.startTime = System.currentTimeMillis()
 
-                            CsLogger.tag(getTag()).i("startVideoRecording success.")
+                            updateState(recordBean, VideoRecordState.STATE_RECORDING)
                         }
+                        CsLogger.tag(getTag()).i("startVideoRecording success.")
                     } catch (throwable: Throwable) {
                         CsLogger.tag(getTag()).e(throwable, "startVideoRecording failed.")
                         callFailed(recordBean)
@@ -264,72 +252,124 @@ class RecordControllerImpl : AbstractRecordController() {
     }
 
 
+    private fun updateState(recordBean: RecordBean?, state: VideoRecordState) {
+        when (state) {
+            VideoRecordState.STATE_IDLE -> {
+                this.recordBean = null
+                pendingStop = false
+            }
+
+            VideoRecordState.STATE_STARTING -> {
+                pendingStop = false
+            }
+
+            VideoRecordState.STATE_RECORDING -> {}
+            VideoRecordState.STATE_STOPPING -> {}
+        }
+
+        recordState = state
+
+        ThreadUtils.postMain {
+            try {
+                recordBean?.callback?.onVideoRecordStateChanged(state)
+            } catch (throwable: Throwable) {
+                CsLogger.tag(getTag()).e(throwable)
+            }
+        }
+    }
+
     private fun callSuccess(recordBean: RecordBean?, filePath: String) {
         resetSurface()
+        updateState(recordBean, VideoRecordState.STATE_IDLE)
 
-        this.recordBean = null
-        resetRecordRuntimeState()
-
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                try {
-                    recordBean?.callback?.onVideoRecordSuccess(filePath)
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(getTag()).e(throwable)
-                }
-                return ""
+        ThreadUtils.postMain {
+            try {
+                recordBean?.callback?.onVideoRecordSuccess(filePath)
+            } catch (throwable: Throwable) {
+                CsLogger.tag(getTag()).e(throwable)
             }
-        })?.start()
+        }
     }
 
     private fun callFailed(recordBean: RecordBean?) {
         resetSurface()
+        updateState(recordBean, VideoRecordState.STATE_IDLE)
 
-        this.recordBean = null
-        resetRecordRuntimeState()
-
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                try {
-                    recordBean?.callback?.onVideoRecordFailed()
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(getTag()).e(throwable)
-                } finally {
-                    CsFileUtils.delete(recordBean?.localFile)
-                }
-                return ""
+        ThreadUtils.postMain {
+            try {
+                recordBean?.callback?.onVideoRecordFailed()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(getTag()).e(throwable)
+            } finally {
+                CsFileUtils.delete(recordBean?.localFile)
             }
-        })?.start()
+        }
     }
 
     private fun callCancel(recordBean: RecordBean?) {
         resetSurface()
+        updateState(recordBean, VideoRecordState.STATE_IDLE)
 
-        this.recordBean = null
-        resetRecordRuntimeState()
-
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                try {
-                    recordBean?.callback?.onVideoRecordCancel()
-                } catch (throwable: Throwable) {
-                    CsLogger.tag(getTag()).e(throwable)
-                } finally {
-                    CsFileUtils.delete(recordBean?.localFile)
-                }
-                return ""
+        ThreadUtils.postMain {
+            try {
+                recordBean?.callback?.onVideoRecordCancel()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(getTag()).e(throwable)
+            } finally {
+                CsFileUtils.delete(recordBean?.localFile)
             }
-        })?.start()
+        }
     }
 
-    private fun resetRecordRuntimeState() {
-        recordState = VideoRecordState.STATE_IDLE
-        pendingStop = false
-        cancelStopTaskLocked()
+    private fun cancelInternalByLifecycle() {
+        val snapshot: DestroySnapshot = synchronized(stateLock) {
+            if (recordState == VideoRecordState.STATE_IDLE) {
+                return
+            }
+            val bean = recordBean
+            val recorder = mediaRecorder
+            val canStop = bean != null && bean.startTime > 0L && recorder != null
+            recordState = VideoRecordState.STATE_STOPPING
+            pendingStop = false
+            DestroySnapshot(
+                recordBean = bean,
+                recorder = recorder,
+                shouldStopRecorder = canStop
+            )
+        }
+
+        if (snapshot.shouldStopRecorder) {
+            try {
+                snapshot.recorder?.stop()
+            } catch (throwable: Throwable) {
+                CsLogger.tag(getTag()).w(throwable)
+            }
+        }
+
+        val callbackBean = synchronized(stateLock) {
+            val bean = snapshot.recordBean
+            recordBean = null
+            recordState = VideoRecordState.STATE_IDLE
+            pendingStop = false
+            bean
+        }
+
+        callbackBean?.let { bean ->
+            CsFileUtils.delete(bean.localFile)
+            ThreadUtils.postMain {
+                try {
+                    bean.callback?.onVideoRecordStateChanged(VideoRecordState.STATE_IDLE)
+                    bean.callback?.onVideoRecordCancel()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(getTag()).w(throwable)
+                }
+            }
+        }
     }
 
-    private fun cancelStopTaskLocked() {
-        stopTask?.dispose()
-        stopTask = null
-    }
+    private data class DestroySnapshot(
+        val recordBean: RecordBean?,
+        val recorder: MediaRecorder?,
+        val shouldStopRecorder: Boolean
+    )
 }
