@@ -5,6 +5,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
 import java.lang.StringBuilder
+import java.text.DecimalFormat
 
 /**
  * @author: cangHX
@@ -31,15 +32,30 @@ object AjaxRequestMonitor : BaseMonitor() {
     override fun getJs(): String {
         val js = "var originalOpen = XMLHttpRequest.prototype.open;" +
                 "XMLHttpRequest.prototype.open = function(method, url) {" +
-                "    this._startTime = Date.now();" +
+                "    this._url = url;" +
+                "    this._startTime = performance.now();" +
                 "    this._isBinaryContent = false;" +
-                "    if (url.match(/\\.($TYPE_STREAM)\$/i)) {" +
+                "    if (this._url.match(/\\.($TYPE_STREAM)\$/i)) {" +
                 "        this._isBinaryContent = true;" +
                 "    };" +
                 "    this.addEventListener('readystatechange', function() {" +
                 "        if (this.readyState == 4) {" +
-                "            var endTime = Date.now();" +
+                "            var endTime = performance.now();" +
                 "            var duration = endTime - this._startTime;" +
+
+                "            const entries = performance.getEntriesByName(this._url);" +
+                "            var pDuration = {};" +
+                "            if (entries.length > 0) {" +
+                "                const entry = entries[0];" +
+                "                pDuration[startTime] = entry.startTime;" +
+                "                pDuration[domainLookupStart] = entry.domainLookupStart;" +
+                "                pDuration[domainLookupEnd] = entry.domainLookupEnd;" +
+                "                pDuration[connectStart] = entry.connectStart;" +
+                "                pDuration[connectEnd] = entry.connectEnd;" +
+                "                pDuration[requestStart] = entry.requestStart;" +
+                "                pDuration[responseStart] = entry.responseStart;" +
+                "                pDuration[responseEnd] = entry.responseEnd;" +
+                "            };" +
 
                 "            var requestHeaders = JSON.stringify(this._requestHeaders || {});" +
                 "            if (requestHeaders.length > $MAX_LENGTH) {" +
@@ -75,6 +91,7 @@ object AjaxRequestMonitor : BaseMonitor() {
                 "            var log = {" +
                 "                method: method," +
                 "                duration: duration," +
+                "                pDuration: pDuration," +
                 "                url: url," +
                 "                requestHeaders: requestHeaders," +
                 "                requestBody: requestBody," +
@@ -109,6 +126,8 @@ object AjaxRequestMonitor : BaseMonitor() {
             if (data == null) {
                 value = log
             } else {
+                val format = DecimalFormat("#.##")
+
                 val builder = StringBuilder()
                 builder.append("当前页面 ").append(url).append("\n")
 
@@ -117,9 +136,30 @@ object AjaxRequestMonitor : BaseMonitor() {
                     .append("\n")
 
                 builder.append("    请求耗时: ")
-                    .append(data.duration)
+                    .append(format.format(data.duration))
                     .append("ms")
                     .append("\n")
+
+                val pDuration = data.pDuration
+                if (pDuration != null) {
+                    builder.append("    网络层耗时: ")
+                        .append(format.format(pDuration.responseEnd - pDuration.startTime))
+                        .append("ms.")
+                        .append(" (PS: ")
+                        .append("1、DNS解析=")
+                        .append(format.format(pDuration.domainLookupEnd - pDuration.domainLookupStart))
+                        .append("ms. ")
+                        .append("2、TCP连接=")
+                        .append(format.format(pDuration.connectEnd - pDuration.connectStart))
+                        .append("ms. ")
+                        .append("3、请求发送=")
+                        .append(format.format(pDuration.requestStart - pDuration.connectEnd))
+                        .append("ms. ")
+                        .append("4、响应接收=")
+                        .append(format.format(pDuration.responseEnd - pDuration.responseStart))
+                        .append("ms")
+                        .append(")")
+                }
 
                 builder.append("    请求 url: ")
                     .append(data.url)
