@@ -1,6 +1,7 @@
 package com.proxy.service.camera.base.loader.controller
 
 import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
+import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
 import com.proxy.service.camera.base.mode.loader.VideoRecordState
 
 /**
@@ -9,6 +10,21 @@ import com.proxy.service.camera.base.mode.loader.VideoRecordState
  * @desc:
  */
 interface ICameraRecordController : ICameraController {
+
+    /**
+     * 设置视频编码格式
+     * */
+    fun setVideoEncoder(mode: VideoEncoderMode)
+
+    /**
+     * 设置视频帧率
+     * */
+    fun setVideoFrameRate(rate: Int)
+
+    /**
+     * 设置视频比特率
+     * */
+    fun setVideoEncodingBitRate(bitRate: Int)
 
     /**
      * 获取当前录制状态

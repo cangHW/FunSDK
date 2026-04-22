@@ -4,8 +4,10 @@ import com.proxy.service.api.CloudSystem
 import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.VideoPatternMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.base.view.ICameraViewLoader
 import com.proxy.service.core.constants.CoreConfig
@@ -68,6 +70,18 @@ object CsMediaCamera {
      * */
     fun getSupportedRecordSizes(mode: CameraFaceMode): List<SupportSize>? {
         return getService()?.getSupportedRecordSizes(mode)
+    }
+
+    /**
+     * 获取推荐的录制视频参数
+     *
+     * @param pattern   录像模式
+     * */
+    fun getRecommendRecordSizes(
+        mode: CameraFaceMode,
+        pattern: VideoPatternMode
+    ): List<VideoSupportInfo>? {
+        return getService()?.getRecommendRecordSizes(mode, pattern)
     }
 
     /**

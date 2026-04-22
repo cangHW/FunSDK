@@ -1,9 +1,13 @@
 package com.proxy.service.camera.info.page.cache
 
+import android.media.MediaRecorder
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.VideoPatternMode
 import com.proxy.service.camera.info.utils.CameraUtils
+import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.sp.CsSpManager
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
@@ -58,7 +62,7 @@ object CameraSettingCache {
     fun getPictureCaptureSize(mode: CameraFaceMode): SupportSize {
         try {
             val json = sp.getString(createKey(KEY_PICTURE_CAPTURE, mode), null)
-            val size = SupportSize.fromJson(json)
+            val size = CsJsonUtils.fromJson(json, SupportSize::class.java)
             if (size != null) {
                 return size
             }
@@ -84,14 +88,14 @@ object CameraSettingCache {
     }
 
     fun savaPictureCaptureSize(mode: CameraFaceMode, size: SupportSize) {
-        sp.put(createKey(KEY_PICTURE_CAPTURE, mode), size.toJson())
+        sp.put(createKey(KEY_PICTURE_CAPTURE, mode), CsJsonUtils.toJson(size))
     }
 
 
-    fun getVideoRecordSize(mode: CameraFaceMode): SupportSize {
+    fun getVideoRecordSize(mode: CameraFaceMode): VideoSupportInfo {
         try {
             val json = sp.getString(createKey(KEY_VIDEO_RECORD, mode), null)
-            val size = SupportSize.fromJson(json)
+            val size = CsJsonUtils.fromJson(json, VideoSupportInfo::class.java)
             if (size != null) {
                 return size
             }
@@ -101,24 +105,18 @@ object CameraSettingCache {
         return createDefaultVideoRecordSize(mode)
     }
 
-    fun getVideoRecordAllSupportSize(mode: CameraFaceMode): List<SupportSize> {
-        val list = ArrayList<SupportSize>()
+    fun getVideoRecordAllSupportSize(mode: CameraFaceMode): List<VideoSupportInfo> {
+        val list = ArrayList<VideoSupportInfo>()
 
-//        val type = getSupportSizeType()
-        val type = 9
-        val sizes = CsMediaCamera.getSupportedRecordSizes(mode)
-
-        sizes?.forEach {
-            if (it.type <= type) {
-                list.add(it)
-            }
+        CsMediaCamera.getRecommendRecordSizes(mode, VideoPatternMode.NORMAL)?.let {
+            list.addAll(it)
         }
 
         return list
     }
 
-    fun savaVideoRecordSize(mode: CameraFaceMode, size: SupportSize) {
-        sp.put(createKey(KEY_VIDEO_RECORD, mode), size.toJson())
+    fun savaVideoRecordSize(mode: CameraFaceMode, size: VideoSupportInfo) {
+        sp.put(createKey(KEY_VIDEO_RECORD, mode), CsJsonUtils.toJson(size))
     }
 
 
@@ -135,12 +133,23 @@ object CameraSettingCache {
         return size
     }
 
-    private fun createDefaultVideoRecordSize(mode: CameraFaceMode): SupportSize {
-        val sizes = CsMediaCamera.getSupportedRecordSizes(mode)
+    private fun createDefaultVideoRecordSize(mode: CameraFaceMode): VideoSupportInfo {
+        val sizes = CsMediaCamera.getRecommendRecordSizes(mode, VideoPatternMode.NORMAL)
         if (sizes.isNullOrEmpty()) {
-            return SupportSize.create(2560, 1080)
+            return VideoSupportInfo.create(
+                1920,
+                1080,
+                -1,
+                30,
+                20000000,
+                MediaRecorder.VideoEncoder.H264
+            )
         }
-        var size = CameraUtils.calculateSize(sizes, screenInfo.screenWidth, screenInfo.screenHeight)
+        var size = CameraUtils.calculateSize(
+            sizes,
+            screenInfo.screenWidth,
+            screenInfo.screenHeight
+        ) as? VideoSupportInfo?
         if (size == null) {
             size = sizes[0]
         }

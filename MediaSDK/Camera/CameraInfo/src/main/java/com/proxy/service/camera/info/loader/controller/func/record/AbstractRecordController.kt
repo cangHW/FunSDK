@@ -8,11 +8,11 @@ import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
 import com.proxy.service.camera.base.mode.loader.VideoRecordState
 import com.proxy.service.camera.info.loader.controller.func.base.BaseSurfaceController
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import com.proxy.service.core.service.media.CsMediaCamera
 import java.io.File
@@ -35,6 +35,10 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
         private const val TAG = "${CameraConstants.TAG}RecordController"
     }
 
+    private var videoEncoderMode: VideoEncoderMode = VideoEncoderMode.H264
+    private var videoFrameRate: Int = 30
+    private var videoEncodingBitRate: Int = 20000000
+
     @Volatile
     protected var recordSurface: Surface? = null
 
@@ -47,6 +51,22 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
 
     override fun getTag(): String {
         return TAG
+    }
+
+
+    override fun setVideoEncoder(mode: VideoEncoderMode) {
+        CsLogger.tag(TAG).i("setVideoEncoder. mode=$mode")
+        this.videoEncoderMode = mode
+    }
+
+    override fun setVideoFrameRate(rate: Int) {
+        CsLogger.tag(TAG).i("setVideoFrameRate. rate=$rate")
+        this.videoFrameRate = rate
+    }
+
+    override fun setVideoEncodingBitRate(bitRate: Int) {
+        CsLogger.tag(TAG).i("setVideoEncodingBitRate. bitRate=$bitRate")
+        this.videoEncodingBitRate = bitRate
     }
 
 
@@ -74,15 +94,14 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
         val bean = recordBean ?: return null
 
         try {
-            CsFileUtils.createFile(bean.localFile)
-
             val recorder = createMediaRecorder() ?: return null
             recorder.reset()
             recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+            recorder.setVideoEncoder(videoEncoderMode.encoder)
             recorder.setVideoSize(width, height)
-            recorder.setVideoFrameRate(30)
+            recorder.setVideoFrameRate(videoFrameRate)
+            recorder.setVideoEncodingBitRate(videoEncodingBitRate)
             recorder.setOrientationHint(calculateRotation())
             recorder.setOutputFile(bean.localFile.absolutePath)
             recorder.prepare()

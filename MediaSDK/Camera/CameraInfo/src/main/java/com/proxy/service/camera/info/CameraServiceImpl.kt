@@ -6,8 +6,10 @@ import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.VideoPatternMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.base.view.ICameraViewLoader
 import com.proxy.service.camera.info.loader.CameraLoaderImpl
@@ -65,6 +67,20 @@ class CameraServiceImpl : CameraService {
         }
 
         return CameraFactory.getSupportedRecordSizes(cameraId) ?: arrayListOf()
+    }
+
+    override fun getRecommendRecordSizes(
+        mode: CameraFaceMode,
+        pattern: VideoPatternMode
+    ): List<VideoSupportInfo> {
+        val cameraId = mode.getCameraId()
+        if (cameraId.isNullOrEmpty()) {
+            CsLogger.tag(tag)
+                .e("当前摄像头模式不支持. cameraId=$cameraId, desc=${mode.getCameraDesc()}, pattern=${pattern.name}")
+            return arrayListOf()
+        }
+
+        return CameraFactory.getRecommendRecordSizes(cameraId, pattern) ?: arrayListOf()
     }
 
     override fun getSensorOrientation(mode: CameraFaceMode): SensorOrientationMode {

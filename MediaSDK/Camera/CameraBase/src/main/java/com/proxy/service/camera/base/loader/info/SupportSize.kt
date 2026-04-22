@@ -2,15 +2,13 @@ package com.proxy.service.camera.base.loader.info
 
 import android.text.TextUtils
 import android.util.Size
-import com.proxy.service.core.framework.data.json.CsJsonUtils
-import org.json.JSONObject
 
 /**
  * @author: cangHX
  * @data: 2026/4/15 20:30
  * @desc:
  */
-class SupportSize private constructor(
+open class SupportSize(
     val type: Int,
     val ratio: Float,
     val width: Int,
@@ -18,11 +16,6 @@ class SupportSize private constructor(
 ) {
 
     companion object {
-        private const val KEY_TYPE = "type"
-        private const val KEY_RATIO = "ratio"
-        private const val KEY_WIDTH = "width"
-        private const val KEY_HEIGHT = "height"
-
         const val RATIO_1_1 = 1f
         const val RATIO_4_3 = 1.33333f
         const val RATIO_16_9 = 1.77777f
@@ -52,22 +45,6 @@ class SupportSize private constructor(
             }
             return SupportSize(TYPE_SIZE_UNKNOWN, width.toFloat() / height, width, height)
         }
-
-        fun fromJson(json: String?): SupportSize? {
-            if (json == null) {
-                return null
-            }
-            try {
-                val obj = JSONObject(json)
-                val type = obj.getInt(KEY_TYPE)
-                val ratio = obj.getString(KEY_RATIO).toFloat()
-                val width = obj.getInt(KEY_WIDTH)
-                val height = obj.getInt(KEY_HEIGHT)
-                return SupportSize(type, ratio, width, height)
-            } catch (_: Throwable) {
-            }
-            return CsJsonUtils.fromJson(json, SupportSize::class.java)
-        }
     }
 
     fun toSize(): Size {
@@ -84,15 +61,6 @@ class SupportSize private constructor(
             return "${width}x${height}"
         }
         return "$typeStr ${width}x${height}"
-    }
-
-    fun toJson(): String {
-        val json = JSONObject()
-        json.put(KEY_TYPE, type)
-        json.put(KEY_RATIO, ratio.toString())
-        json.put(KEY_WIDTH, width)
-        json.put(KEY_HEIGHT, height)
-        return json.toString()
     }
 
     fun typeString(): String {

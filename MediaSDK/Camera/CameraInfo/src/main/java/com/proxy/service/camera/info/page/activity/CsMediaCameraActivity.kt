@@ -9,6 +9,7 @@ import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
 import com.proxy.service.camera.base.mode.view.CameraViewAfMode
 import com.proxy.service.camera.base.mode.view.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
@@ -219,6 +220,9 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
             CameraFunMode.RECORD -> {
                 CameraSettingCache.getVideoRecordSize(faceMode).apply {
                     cameraRecordController?.setSurfaceSize(width, height)
+                    cameraRecordController?.setVideoFrameRate(frameRate)
+                    cameraRecordController?.setVideoEncodingBitRate(bitrate)
+                    cameraRecordController?.setVideoEncoder(VideoEncoderMode.value(encoder))
                 }
             }
 

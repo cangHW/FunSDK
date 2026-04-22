@@ -3,8 +3,10 @@ package com.proxy.service.camera.base
 import com.proxy.service.base.BaseService
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.VideoPatternMode
 import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.base.view.ICameraViewLoader
 
@@ -39,6 +41,16 @@ interface CameraService : BaseService {
      * 获取摄像头支持的录制视频尺寸
      * */
     fun getSupportedRecordSizes(mode: CameraFaceMode): List<SupportSize>
+
+    /**
+     * 获取推荐的录制视频参数
+     *
+     * @param pattern   录像模式
+     * */
+    fun getRecommendRecordSizes(
+        mode: CameraFaceMode,
+        pattern: VideoPatternMode
+    ): List<VideoSupportInfo>
 
     /**
      * 获取摄像头传感器角度
