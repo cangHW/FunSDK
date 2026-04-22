@@ -20,41 +20,68 @@ object AjaxRequestMonitor : BaseMonitor() {
     private const val TYPE_IMAGE = "content-type: image/"
     private const val TYPE_VIDEO = "content-type: video/"
 
+    private const val THREAD_MAIN = "main"
+    private const val THREAD_WORK = "work"
+
     private const val MAX_LENGTH = 1000
 
     override fun shouldRun(): Boolean {
-        val enableLog = config.isLogAjaxRequestEnable()
-        val callback = config.getLogAjaxRequestCallback()
-
-        return enableLog || callback != null
+        return config.isLogAjaxRequestEnable()
     }
 
     override fun getJs(): String {
         val js = "var originalOpen = XMLHttpRequest.prototype.open;" +
                 "XMLHttpRequest.prototype.open = function(method, url) {" +
-                "    this._url = url;" +
-                "    this._startTime = performance.now();" +
                 "    this._isBinaryContent = false;" +
-                "    if (this._url.match(/\\.($TYPE_STREAM)\$/i)) {" +
+                "    if (url.match(/\\.($TYPE_STREAM)\$/i)) {" +
                 "        this._isBinaryContent = true;" +
                 "    };" +
-                "    this.addEventListener('readystatechange', function() {" +
-                "        if (this.readyState == 4) {" +
-                "            var endTime = performance.now();" +
-                "            var duration = endTime - this._startTime;" +
+                "    try {" +
+                "        if (typeof window !== 'undefined' && typeof window.location !== 'undefined') {" +
+                "            this._threadType = \"$THREAD_MAIN\";" +
+                "        } else {" +
+                "            this._threadType = \"$THREAD_WORK\";" +
+                "        };" +
+                "    } catch (e) {" +
+                "        this._threadType = \"$THREAD_WORK\";" +
+                "    };" +
+                "    this._startTime = performance.now();" +
+                "    this._dnsStartTime = null;" +
+                "    this._tcpStartTime = null;" +
+                "    this._requestStartTime = null;" +
+                "    this._responseStartTime = null;" +
 
-                "            const entries = performance.getEntriesByName(this._url);" +
+                "    this.addEventListener('readystatechange', function() {" +
+                "        if (this.readyState == 1) {" +
+                "            this._dnsStartTime = performance.now();" +
+                "        } else if (this.readyState == 2) {" +
+                "            this._tcpStartTime = performance.now();" +
+                "        } else if (this.readyState == 3) {" +
+                "            this._requestStartTime = performance.now();" +
+                "        } else if (this.readyState == 4) {" +
+                "            this._responseStartTime = performance.now();" +
+                "            var duration = this._responseStartTime - this._startTime;" +
+
+                "            var tDuration = {" +
+                "                startTime: this._startTime," +
+                "                dnsStartTime: this._dnsStartTime," +
+                "                tcpStartTime: this._tcpStartTime," +
+                "                requestStartTime: this._requestStartTime," +
+                "                responseStartTime: this._responseStartTime," +
+                "            };" +
+
+                "            const entries = performance.getEntriesByName(url);" +
                 "            var pDuration = {};" +
                 "            if (entries.length > 0) {" +
                 "                const entry = entries[0];" +
-                "                pDuration[startTime] = entry.startTime;" +
-                "                pDuration[domainLookupStart] = entry.domainLookupStart;" +
-                "                pDuration[domainLookupEnd] = entry.domainLookupEnd;" +
-                "                pDuration[connectStart] = entry.connectStart;" +
-                "                pDuration[connectEnd] = entry.connectEnd;" +
-                "                pDuration[requestStart] = entry.requestStart;" +
-                "                pDuration[responseStart] = entry.responseStart;" +
-                "                pDuration[responseEnd] = entry.responseEnd;" +
+                "                pDuration[\"startTime\"] = entry.startTime;" +
+                "                pDuration[\"domainLookupStart\"] = entry.domainLookupStart;" +
+                "                pDuration[\"domainLookupEnd\"] = entry.domainLookupEnd;" +
+                "                pDuration[\"connectStart\"] = entry.connectStart;" +
+                "                pDuration[\"connectEnd\"] = entry.connectEnd;" +
+                "                pDuration[\"requestStart\"] = entry.requestStart;" +
+                "                pDuration[\"responseStart\"] = entry.responseStart;" +
+                "                pDuration[\"responseEnd\"] = entry.responseEnd;" +
                 "            };" +
 
                 "            var requestHeaders = JSON.stringify(this._requestHeaders || {});" +
@@ -90,7 +117,8 @@ object AjaxRequestMonitor : BaseMonitor() {
 
                 "            var log = {" +
                 "                method: method," +
-                "                duration: duration," +
+                "                threadType: this._threadType," +
+                "                tDuration: tDuration," +
                 "                pDuration: pDuration," +
                 "                url: url," +
                 "                requestHeaders: requestHeaders," +
@@ -120,72 +148,94 @@ object AjaxRequestMonitor : BaseMonitor() {
     }
 
     override fun dispatchLog(url: String, log: String) {
-        if (config.isLogAjaxRequestEnable()) {
-            val data = CsJsonUtils.fromJson(log, AjaxRequestData::class.java)
-            val value: String
-            if (data == null) {
-                value = log
-            } else {
-                val format = DecimalFormat("#.##")
+        val data = CsJsonUtils.fromJson(log, AjaxRequestData::class.java)
+        val value: String
+        if (data == null) {
+            value = log
+        } else {
+            val format = DecimalFormat("#.##")
 
-                val builder = StringBuilder()
-                builder.append("当前页面 ").append(url).append("\n")
+            val builder = StringBuilder()
+            builder.append("当前页面 ").append(url).append("\n")
 
-                builder.append("    请求方式: ")
-                    .append(data.method)
-                    .append("\n")
+            builder.append("    请求方式: ")
+                .append(data.method)
+                .append("\n")
 
-                builder.append("    请求耗时: ")
-                    .append(format.format(data.duration))
+            builder.append("    线程类型: ")
+                .append(data.threadType)
+                .append("\n")
+
+            val tDuration = data.tDuration
+            if (tDuration != null) {
+                builder.append("    请求总耗时: ")
+                    .append(format.format(tDuration.responseStartTime - tDuration.startTime))
                     .append("ms")
+                    .append(" (PS: ")
+                    .append("1、请求开始时间点=")
+                    .append(format.format(tDuration.startTime))
+                    .append("ms. ")
+                    .append("2、DNS开始时间点=")
+                    .append(format.format(tDuration.dnsStartTime))
+                    .append("ms. ")
+                    .append("3、TCP开始时间点=")
+                    .append(format.format(tDuration.tcpStartTime))
+                    .append("ms. ")
+                    .append("4、网络请求开始时间点=")
+                    .append(format.format(tDuration.requestStartTime))
+                    .append("ms. ")
+                    .append("5、网络应答开始时间点=")
+                    .append(format.format(tDuration.responseStartTime))
+                    .append("ms. ")
                     .append("\n")
-
-                val pDuration = data.pDuration
-                if (pDuration != null) {
-                    builder.append("    网络层耗时: ")
-                        .append(format.format(pDuration.responseEnd - pDuration.startTime))
-                        .append("ms.")
-                        .append(" (PS: ")
-                        .append("1、DNS解析=")
-                        .append(format.format(pDuration.domainLookupEnd - pDuration.domainLookupStart))
-                        .append("ms. ")
-                        .append("2、TCP连接=")
-                        .append(format.format(pDuration.connectEnd - pDuration.connectStart))
-                        .append("ms. ")
-                        .append("3、请求发送=")
-                        .append(format.format(pDuration.requestStart - pDuration.connectEnd))
-                        .append("ms. ")
-                        .append("4、响应接收=")
-                        .append(format.format(pDuration.responseEnd - pDuration.responseStart))
-                        .append("ms")
-                        .append(")")
-                }
-
-                builder.append("    请求 url: ")
-                    .append(data.url)
-                    .append("\n")
-
-                builder.append("    请求 header: ")
-                    .append(data.requestHeaders?.replace("\n", ""))
-                    .append("\n")
-
-                builder.append("    请求 body: ")
-                    .append(data.requestBody)
-                    .append("\n")
-
-                builder.append("    返回 header: ")
-                    .append(data.responseHeaders?.replace("\n", ""))
-                    .append("\n")
-
-                builder.append("    返回 body: ")
-                    .append(data.responseBody)
-                    .append("\n")
-
-                value = builder.toString()
             }
 
-            CsLogger.tag(TAG).d("Ajax Request: $value")
+            val pDuration = data.pDuration
+            if (pDuration != null) {
+                builder.append("    网络层耗时: ")
+                    .append(format.format(pDuration.responseEnd - pDuration.startTime))
+                    .append("ms.")
+                    .append(" (PS: ")
+                    .append("1、DNS解析=")
+                    .append(format.format(pDuration.domainLookupEnd - pDuration.domainLookupStart))
+                    .append("ms. ")
+                    .append("2、TCP连接=")
+                    .append(format.format(pDuration.connectEnd - pDuration.connectStart))
+                    .append("ms. ")
+                    .append("3、请求发送=")
+                    .append(format.format(pDuration.requestStart - pDuration.connectEnd))
+                    .append("ms. ")
+                    .append("4、响应接收=")
+                    .append(format.format(pDuration.responseEnd - pDuration.startTime))
+                    .append("ms")
+                    .append(")")
+                    .append("\n")
+            }
+
+            builder.append("    请求 url: ")
+                .append(data.url)
+                .append("\n")
+
+            builder.append("    请求 header: ")
+                .append(data.requestHeaders?.replace("\n", ""))
+                .append("\n")
+
+            builder.append("    请求 body: ")
+                .append(data.requestBody)
+                .append("\n")
+
+            builder.append("    返回 header: ")
+                .append(data.responseHeaders?.replace("\n", ""))
+                .append("\n")
+
+            builder.append("    返回 body: ")
+                .append(data.responseBody)
+                .append("\n")
+
+            value = builder.toString()
         }
+
+        CsLogger.tag(TAG).d("Ajax Request: $value")
 
         config.getLogAjaxRequestCallback()?.onMonitorCall(url, log)
     }

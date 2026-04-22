@@ -13,9 +13,14 @@ class AjaxRequestData {
     var method: String? = ""
 
     /**
+     * 线程类型
+     * */
+    var threadType: String? = ""
+
+    /**
      * 整体耗时
      * */
-    var duration: String? = ""
+    var tDuration: AjaxRequestH5Data? = null
 
     /**
      * 网络耗时
@@ -27,14 +32,53 @@ class AjaxRequestData {
      * */
     var url: String? = ""
 
+    /**
+     * 请求 header
+     * */
     var requestHeaders: String? = ""
 
+    /**
+     * 请求 body
+     * */
     var requestBody: String? = ""
 
+    /**
+     * 应答 header
+     * */
     var responseHeaders: String? = ""
 
+    /**
+     * 应答 body
+     * */
     var responseBody: String? = ""
 
+}
+
+class AjaxRequestH5Data {
+    /**
+     * 请求 开始时间
+     * */
+    var startTime: Float = 0f
+
+    /**
+     * dns 开始时间
+     * */
+    var dnsStartTime: Float = 0f
+
+    /**
+     * tcp 开始时间
+     * */
+    var tcpStartTime: Float = 0f
+
+    /**
+     * 网络请求 开始时间
+     * */
+    var requestStartTime: Float = 0f
+
+    /**
+     * 应答 开始时间
+     * */
+    var responseStartTime: Float = 0f
 }
 
 class AjaxRequestPerfData {
