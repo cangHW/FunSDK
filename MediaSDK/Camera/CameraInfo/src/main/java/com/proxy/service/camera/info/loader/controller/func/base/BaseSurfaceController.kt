@@ -12,8 +12,10 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 abstract class BaseSurfaceController : IFunController, ICameraController {
 
-    protected var width: Int = 1080
-    protected var height: Int = 720
+    protected var surfaceOrientationDegrees: Int? = null
+
+    protected var surfaceWidth: Int = 1080
+    protected var surfaceHeight: Int = 720
 
     protected var funSurfaceChangedCallback: IFunController.SurfaceChangedCallback? = null
     protected var funParamsController: IFunController.IParamsController? = null
@@ -35,15 +37,21 @@ abstract class BaseSurfaceController : IFunController, ICameraController {
         this.funParamsController = controller
     }
 
+
+    override fun setSurfaceOrientation(degrees: Int) {
+        CsLogger.tag(getTag()).i("setOrientationHint. degrees=$degrees")
+        this.surfaceOrientationDegrees = degrees
+    }
+
     override fun setSurfaceSize(width: Int, height: Int) {
         CsLogger.tag(getTag()).i("setSurfaceSize. width=$width, height=$height")
         if (width <= 0 || height <= 0) {
             CsLogger.tag(getTag()).w("Invalid size, ignore.")
             return
         }
-        if (this.width != width || this.height != height) {
-            this.width = width
-            this.height = height
+        if (this.surfaceWidth != width || this.surfaceHeight != height) {
+            this.surfaceWidth = width
+            this.surfaceHeight = height
             resetSurface()
             createSurface()
         }

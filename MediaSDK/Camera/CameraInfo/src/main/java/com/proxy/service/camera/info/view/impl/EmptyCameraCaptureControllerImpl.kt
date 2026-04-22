@@ -17,6 +17,10 @@ class EmptyCameraCaptureControllerImpl: ICameraCaptureController {
         private const val TAG = "${CameraConstants.TAG}EmptyCapture"
     }
 
+    override fun setOrientationHint(degrees: Int) {
+        CsLogger.tag(TAG).i("setOrientationHint. degrees=$degrees")
+    }
+
     override fun setSurfaceSize(width: Int, height: Int) {
         CsLogger.tag(TAG).i("setSurfaceSize. width=$width, height=$height")
     }

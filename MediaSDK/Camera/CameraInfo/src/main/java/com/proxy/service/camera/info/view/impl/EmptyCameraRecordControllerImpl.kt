@@ -22,6 +22,10 @@ class EmptyCameraRecordControllerImpl: ICameraRecordController {
         CsLogger.tag(TAG).i("setSurfaceSize. width. width=$width, height=$height")
     }
 
+    override fun setOrientationHint(degrees: Int) {
+        CsLogger.tag(TAG).i("setOrientationHint. degrees=${degrees}")
+    }
+
     override fun setVideoEncoder(mode: VideoEncoderMode) {
         CsLogger.tag(TAG).i("setVideoEncoder. mode=${mode}")
     }

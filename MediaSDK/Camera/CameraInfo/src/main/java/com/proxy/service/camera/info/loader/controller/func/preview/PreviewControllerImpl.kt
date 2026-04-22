@@ -52,7 +52,7 @@ class PreviewControllerImpl private constructor(
         CsLogger.tag(TAG).i("createSurface.")
         var reader = this.reader
         if (reader == null) {
-            reader = ImageReader.newInstance(width, height, imageFormat, 2)
+            reader = ImageReader.newInstance(surfaceWidth, surfaceHeight, imageFormat, 2)
             reader.setOnImageAvailableListener(this, handler)
             this.reader = reader
 

@@ -47,6 +47,10 @@ class SensorFactory : RotationChangedCallback {
     fun removeCallback(callback: SensorRotationCallback) {
         CsLogger.tag(TAG).d("removeCallback. callback=$callback")
         callbacks.removeSync(callback)
+
+        if (callbacks.size() <= 0) {
+            controller?.stop()
+        }
     }
 
     override fun onRotationChanged(orientation: Int) {

@@ -34,9 +34,9 @@ class CameraPageActivity : BaseActivity<ActivityCameraPageBinding>() {
                     CsLogger.tag(tag).e("onTakePictureFailed.")
                 }
             })
-//            ?.launch(this)
+            ?.launch(this)
 //            ?.launchLandscape(this)
-            ?.launchPortrait(this)
+//            ?.launchPortrait(this)
 
     }
 

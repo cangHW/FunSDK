@@ -140,19 +140,13 @@ open class CaptureControllerImpl private constructor(
         }
 
         try {
-            val orientation = CsMediaCamera.getSensorOrientation(cameraFaceMode)
-                ?: SensorOrientationMode.ORIENTATION_0
-
-            val rotation = calculateRotation(
-                orientation,
-                cameraFaceMode == CameraFaceMode.FaceFront
-            )
-
-            CsLogger.tag(getTag()).i("PictureCapture rotation = $rotation")
-
             val builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
             builder.addTarget(surface)
-            builder.set(CaptureRequest.JPEG_ORIENTATION, rotation)
+            if (surfaceOrientationDegrees != null) {
+                builder.set(CaptureRequest.JPEG_ORIENTATION, surfaceOrientationDegrees)
+            } else {
+                builder.set(CaptureRequest.JPEG_ORIENTATION, calculateRotation(cameraFaceMode))
+            }
             builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
             captureSession.capture(
                 builder.build(),
@@ -274,15 +268,6 @@ open class CaptureControllerImpl private constructor(
                     callSuccess(path)
                 }
             })
-    }
-
-    /**
-     * 获取拍照时的旋转角度
-     * */
-    private fun calculateRotation(som: SensorOrientationMode, isFrontCamera: Boolean): Int {
-        val rotationDegrees = CsScreenUtils.getScreenRotation().degree * 90
-        val sign = if (isFrontCamera) 1 else -1
-        return (som.degree + rotationDegrees * sign + 360) % 360
     }
 
 }

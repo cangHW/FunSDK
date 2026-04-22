@@ -7,8 +7,12 @@ import android.os.Handler
 import android.view.Surface
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
+import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
 import com.proxy.service.camera.info.loader.controller.func.base.BaseSurfaceController
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.screen.CsScreenUtils
+import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.nio.ByteBuffer
@@ -22,7 +26,7 @@ abstract class AbstractCaptureController(
     private val handler: Handler
 ) : BaseSurfaceController(), ICameraCaptureController, ImageReader.OnImageAvailableListener {
 
-    companion object{
+    companion object {
         private const val TAG = "${CameraConstants.TAG}CaptureController"
     }
 
@@ -40,7 +44,7 @@ abstract class AbstractCaptureController(
         CsLogger.tag(TAG).i("createSurface.")
         var reader = this.reader
         if (reader == null) {
-            reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1)
+            reader = ImageReader.newInstance(surfaceWidth, surfaceHeight, ImageFormat.JPEG, 1)
             reader.setOnImageAvailableListener(this, handler)
             this.reader = reader
 
@@ -96,4 +100,19 @@ abstract class AbstractCaptureController(
 
     protected abstract fun callFailed()
 
+    /**
+     * 获取拍照时的旋转角度
+     * */
+    protected fun calculateRotation(cameraFaceMode: CameraFaceMode): Int {
+        val orientation = CsMediaCamera.getSensorOrientation(cameraFaceMode)
+            ?: SensorOrientationMode.ORIENTATION_0
+
+        val rotationDegrees = CsScreenUtils.getScreenRotation().degree * 90
+        val sign = if (cameraFaceMode == CameraFaceMode.FaceFront) 1 else -1
+        val rotation = (orientation.degree + rotationDegrees * sign + 360) % 360
+
+        CsLogger.tag(getTag()).i("PictureCapture rotation = $rotation")
+
+        return rotation
+    }
 }

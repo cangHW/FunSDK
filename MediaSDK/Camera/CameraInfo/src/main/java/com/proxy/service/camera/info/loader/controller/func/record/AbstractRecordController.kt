@@ -35,6 +35,7 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
         private const val TAG = "${CameraConstants.TAG}RecordController"
     }
 
+
     private var videoEncoderMode: VideoEncoderMode = VideoEncoderMode.H264
     private var videoFrameRate: Int = 30
     private var videoEncodingBitRate: Int = 20000000
@@ -99,10 +100,14 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
             recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             recorder.setVideoEncoder(videoEncoderMode.encoder)
-            recorder.setVideoSize(width, height)
+            recorder.setVideoSize(surfaceWidth, surfaceHeight)
             recorder.setVideoFrameRate(videoFrameRate)
             recorder.setVideoEncodingBitRate(videoEncodingBitRate)
-            recorder.setOrientationHint(calculateRotation())
+            if (surfaceOrientationDegrees != null) {
+                recorder.setOrientationHint(surfaceOrientationDegrees!!)
+            } else {
+                recorder.setOrientationHint(calculateRotation())
+            }
             recorder.setOutputFile(bean.localFile.absolutePath)
             recorder.prepare()
             CsLogger.tag(TAG).i("prepareRecorder success.")
