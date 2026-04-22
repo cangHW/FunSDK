@@ -19,10 +19,7 @@ object PerformanceResourceMonitor : BaseMonitor() {
     private const val LINE_2 = "        "
 
     override fun shouldRun(): Boolean {
-        val enableLog = config.isLogLoadPageResourceTimeEnable()
-        val callback = config.getLogLoadPageResourceTimeCallback()
-
-        return enableLog || callback != null
+        return config.isLogLoadPageResourceTimeEnable()
     }
 
     override fun getJs(): String {
@@ -78,69 +75,67 @@ object PerformanceResourceMonitor : BaseMonitor() {
     }
 
     override fun dispatchLog(url: String, log: String) {
-        if (config.isLogLoadPageResourceTimeEnable()) {
-            val data = CsJsonUtils.fromJson(log, PerformanceResourceData::class.java)
-            if (data == null) {
-                CsLogger.tag(TAG).d("Performance Data: $log")
-            } else {
-                val builder = StringBuilder()
-                builder.append("当前页面 ").append(url).append("\n")
+        val data = CsJsonUtils.fromJson(log, PerformanceResourceData::class.java)
+        if (data == null) {
+            CsLogger.tag(TAG).d("Performance Data: $log")
+        } else {
+            val builder = StringBuilder()
+            builder.append("当前页面 ").append(url).append("\n")
 
-                builder.append(LINE_1).append("图片资源: ").append("\n")
-                data.img?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d("Performance Data: $builder")
-
-                builder.clear()
-                builder.append(LINE_1).append("脚本资源: ").append("\n")
-                data.script?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
-
-                builder.clear()
-                builder.append(LINE_1).append("样式资源: ").append("\n")
-                data.css?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
-
-                builder.clear()
-                builder.append(LINE_1).append("字体资源: ").append("\n")
-                data.font?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
-
-                builder.clear()
-                builder.append(LINE_1).append("视频资源: ").append("\n")
-                data.video?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
-
-                builder.clear()
-                builder.append(LINE_1).append("音频资源: ").append("\n")
-                data.audio?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
-
-                builder.clear()
-                builder.append(LINE_1).append("HTML 资源: ").append("\n")
-                data.iframe?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
-
-                builder.clear()
-                builder.append(LINE_1).append("其他资源: ").append("\n")
-                data.other?.forEach {
-                    builder.append(LINE_2).append(it).append("\n")
-                }
-                CsLogger.tag(TAG).d(builder.toString())
+            builder.append(LINE_1).append("图片资源: ").append("\n")
+            data.img?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
             }
+            CsLogger.tag(TAG).d("Performance Data: $builder")
+
+            builder.clear()
+            builder.append(LINE_1).append("脚本资源: ").append("\n")
+            data.script?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
+
+            builder.clear()
+            builder.append(LINE_1).append("样式资源: ").append("\n")
+            data.css?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
+
+            builder.clear()
+            builder.append(LINE_1).append("字体资源: ").append("\n")
+            data.font?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
+
+            builder.clear()
+            builder.append(LINE_1).append("视频资源: ").append("\n")
+            data.video?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
+
+            builder.clear()
+            builder.append(LINE_1).append("音频资源: ").append("\n")
+            data.audio?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
+
+            builder.clear()
+            builder.append(LINE_1).append("HTML 资源: ").append("\n")
+            data.iframe?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
+
+            builder.clear()
+            builder.append(LINE_1).append("其他资源: ").append("\n")
+            data.other?.forEach {
+                builder.append(LINE_2).append(it).append("\n")
+            }
+            CsLogger.tag(TAG).d(builder.toString())
         }
 
         config.getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)

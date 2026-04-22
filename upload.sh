@@ -20,7 +20,7 @@ upArray=(
 #  ":WebViewSDK:WebViewInfo"
 #  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
-#  ":WebViewSDK:WebViewMonitor"
+  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
 #  ":Permission:PermissionInfo"
@@ -42,8 +42,8 @@ upArray=(
 #  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
-  ":MediaSDK:Camera:CameraBase"
-  ":MediaSDK:Camera:CameraInfo"
+#  ":MediaSDK:Camera:CameraBase"
+#  ":MediaSDK:Camera:CameraInfo"
 )
 
 type_params="r"
