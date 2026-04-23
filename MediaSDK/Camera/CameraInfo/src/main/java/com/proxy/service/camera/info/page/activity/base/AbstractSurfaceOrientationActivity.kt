@@ -1,8 +1,8 @@
-package com.proxy.service.camera.info.page.activity
+package com.proxy.service.camera.info.page.activity.base
 
 import android.os.Bundle
-import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.info.page.activity.CsMediaCameraLandscapeActivity.Companion.TAG
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
@@ -11,15 +11,10 @@ import com.proxy.service.core.framework.system.screen.enums.RotationEnum
 
 /**
  * @author: cangHX
- * @data: 2026/2/6 15:09
+ * @data: 2026/4/23 17:31
  * @desc:
  */
-class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
-
-    companion object {
-
-        private const val TAG = "${CameraConstants.TAG}LandscapeActivity"
-    }
+abstract class AbstractSurfaceOrientationActivity: AbstractUiChangedActivity() {
 
     private var sensorRotation: RotationEnum = RotationEnum.ROTATION_0
     private var screenRotation: RotationEnum = RotationEnum.ROTATION_0
@@ -56,4 +51,5 @@ class CsMediaCameraLandscapeActivity : CsMediaCameraActivity() {
             sensorRotation = rotation
         }
     }
+
 }

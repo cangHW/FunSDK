@@ -53,15 +53,15 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
     private val cameraModeListAdapter = CameraModeListAdapter()
 
     protected var params: MediaCameraParams = MediaCameraParams()
-    private var cameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
+    protected var cameraFaceMode: CameraFaceMode = CameraFaceMode.FaceBack
     private var cameraFunMode: CameraFunMode? = null
 
     private var pictureCaptureManager: PictureCaptureManager? = null
     private var videoRecordManager: VideoRecordManager? = null
 
     private var iCameraView: ICameraView? = null
-    private var cameraCaptureController: ICameraCaptureController? = null
-    private var cameraRecordController: ICameraRecordController? = null
+    protected var cameraCaptureController: ICameraCaptureController? = null
+    protected var cameraRecordController: ICameraRecordController? = null
 
 
     override fun getViewBinding(inflater: LayoutInflater): CsCameraInfoPageActivityCameraBinding {
@@ -89,8 +89,14 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
 
         binding?.cameraActionIcon?.setOnClickListener {
             if (cameraFunMode == CameraFunMode.CAPTURE) {
+                getSurfaceOrientation()?.let {
+                    cameraCaptureController?.setSurfaceOrientation(it)
+                }
                 pictureCaptureManager?.startPictureCapture(cameraCaptureController)
             } else {
+                getSurfaceOrientation()?.let {
+                    cameraRecordController?.setSurfaceOrientation(it)
+                }
                 videoRecordManager?.startOrFinishRecord(cameraRecordController)
             }
         }
@@ -152,11 +158,6 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         binding?.cameraModeList?.setSelectedPosition(0, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        refreshUiSize()
-    }
-
 
     override fun moveLeft() {
         CsLogger.tag(TAG).i("向左滑动")
@@ -170,6 +171,12 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
         binding?.cameraModeList?.setSelectedPosition(0, true)
     }
 
+    /**
+     * 获取角度改变值
+     * */
+    protected open fun getSurfaceOrientation(): Int? {
+        return null
+    }
 
     override fun onSelectionChanged(oldPosition: Int, newPosition: Int) {
         CsLogger.tag(TAG)
@@ -196,6 +203,12 @@ open class CsMediaCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCamera
             }
         }
 
+        refreshUiSize()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
         refreshUiSize()
     }
 

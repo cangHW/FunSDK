@@ -10,7 +10,7 @@ interface ICameraController {
     /**
      * 设置旋转角度. [0、90、180、270]
      * */
-    fun setSurfaceOrientation(degrees:Int)
+    fun setSurfaceOrientation(degrees: Int)
 
     /**
      * 设置尺寸

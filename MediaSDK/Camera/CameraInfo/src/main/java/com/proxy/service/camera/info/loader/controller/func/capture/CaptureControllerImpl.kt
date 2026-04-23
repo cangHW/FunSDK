@@ -142,11 +142,13 @@ open class CaptureControllerImpl private constructor(
         try {
             val builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
             builder.addTarget(surface)
-            if (surfaceOrientationDegrees != null) {
-                builder.set(CaptureRequest.JPEG_ORIENTATION, surfaceOrientationDegrees)
-            } else {
-                builder.set(CaptureRequest.JPEG_ORIENTATION, calculateRotation(cameraFaceMode))
+            var rotation = calculateRotation(cameraFaceMode)
+            surfaceOrientationDegrees?.let {
+                rotation += it
             }
+            rotation = (rotation + 360) % 360
+            CsLogger.tag(getTag()).i("final rotation = $rotation")
+            builder.set(CaptureRequest.JPEG_ORIENTATION, rotation)
             builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
             captureSession.capture(
                 builder.build(),
