@@ -299,14 +299,16 @@ class RecordControllerImpl : AbstractRecordController() {
     private fun callSuccess(recordBean: RecordBean?, filePath: String) {
         CsLogger.tag(getTag()).i("callSuccess. recordBean=$recordBean, filePath=$filePath")
 
-        resetSurface()
-        updateState(recordBean, VideoRecordState.STATE_IDLE)
+        synchronized(stateLock) {
+            resetSurface()
+            updateState(recordBean, VideoRecordState.STATE_IDLE)
 
-        ThreadUtils.postMain {
-            try {
-                recordBean?.callback?.onVideoRecordSuccess(filePath)
-            } catch (throwable: Throwable) {
-                CsLogger.tag(getTag()).e(throwable)
+            ThreadUtils.postMain {
+                try {
+                    recordBean?.callback?.onVideoRecordSuccess(filePath)
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(getTag()).e(throwable)
+                }
             }
         }
     }
@@ -314,16 +316,18 @@ class RecordControllerImpl : AbstractRecordController() {
     private fun callFailed(recordBean: RecordBean?) {
         CsLogger.tag(getTag()).i("callFailed. recordBean=$recordBean")
 
-        resetSurface()
-        updateState(recordBean, VideoRecordState.STATE_IDLE)
+        synchronized(stateLock) {
+            resetSurface()
+            updateState(recordBean, VideoRecordState.STATE_IDLE)
 
-        ThreadUtils.postMain {
-            try {
-                recordBean?.callback?.onVideoRecordFailed()
-            } catch (throwable: Throwable) {
-                CsLogger.tag(getTag()).e(throwable)
-            } finally {
-                CsFileUtils.delete(recordBean?.localFile)
+            ThreadUtils.postMain {
+                try {
+                    recordBean?.callback?.onVideoRecordFailed()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(getTag()).e(throwable)
+                } finally {
+                    CsFileUtils.delete(recordBean?.localFile)
+                }
             }
         }
     }
@@ -331,16 +335,18 @@ class RecordControllerImpl : AbstractRecordController() {
     private fun callCancel(recordBean: RecordBean?) {
         CsLogger.tag(getTag()).i("callCancel. recordBean=$recordBean")
 
-        resetSurface()
-        updateState(recordBean, VideoRecordState.STATE_IDLE)
+        synchronized(stateLock){
+            resetSurface()
+            updateState(recordBean, VideoRecordState.STATE_IDLE)
 
-        ThreadUtils.postMain {
-            try {
-                recordBean?.callback?.onVideoRecordCancel()
-            } catch (throwable: Throwable) {
-                CsLogger.tag(getTag()).e(throwable)
-            } finally {
-                CsFileUtils.delete(recordBean?.localFile)
+            ThreadUtils.postMain {
+                try {
+                    recordBean?.callback?.onVideoRecordCancel()
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(getTag()).e(throwable)
+                } finally {
+                    CsFileUtils.delete(recordBean?.localFile)
+                }
             }
         }
     }

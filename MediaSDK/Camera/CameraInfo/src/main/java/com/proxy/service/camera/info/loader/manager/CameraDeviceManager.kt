@@ -61,6 +61,11 @@ class CameraDeviceManager private constructor(
         handler.post {
             CsLogger.tag(TAG).i("closeCamera Start. cameraId=$cameraId, camera=$cameraDevice")
 
+            forEachCallbacks { cb ->
+                cameraDevice?.let {
+                    cb.onClosed(it)
+                }
+            }
             realCloseCamera(cameraDevice)
             clearCameraCache()
         }
@@ -86,6 +91,11 @@ class CameraDeviceManager private constructor(
 
             if (this.cameraId != "" && this.cameraId != cameraId) {
                 CsLogger.tag(TAG).d("close old camera. camera=$cameraDevice")
+                forEachCallbacks { cb ->
+                    cameraDevice?.let {
+                        cb.onClosed(it)
+                    }
+                }
                 realCloseCamera(cameraDevice)
                 clearCameraCache()
             }
