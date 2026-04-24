@@ -82,11 +82,12 @@
 
         <activity android:name=".widget.WidgetActivity" />
         <activity
-            android:name=".widget.NotificationActivity"
+            android:name=".widget.notification.NotificationActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".widget.StatePageActivity" />
-        <activity android:name=".widget.ToastActivity" />
-        <activity android:name=".widget.DialogActivity" />
+        <activity android:name=".widget.state.StatePageActivity" />
+        <activity android:name=".widget.toast.ToastActivity" />
+        <activity android:name=".widget.dialog.DialogActivity" />
+        <activity android:name=".widget.view.centerSelect.CenterSelectActivity" />
 
         <activity android:name=".media.MediaActivity" />
         <activity

@@ -1,11 +1,10 @@
-package com.proxy.service.funsdk.widget
+package com.proxy.service.funsdk.widget.dialog
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
 import androidx.appcompat.widget.AppCompatTextView
 import com.proxy.service.core.framework.app.resource.CsDpUtils
 import com.proxy.service.core.service.task.CsTask
@@ -14,10 +13,8 @@ import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 import com.proxy.service.threadpool.base.thread.task.IConsumer
 import com.proxy.service.widget.info.dialog.window.CsBaseDialog
 import com.proxy.service.widget.info.dialog.window.info.DialogConfig
-import com.proxy.service.widget.info.dialog.window.info.DialogGravity
 import com.proxy.service.widget.info.dialog.window.info.PostConditionStrategy
 import com.proxy.service.widget.info.dialog.window.info.PreConditionStrategy
-import com.proxy.service.widget.info.dialog.window.info.ScreenOrientation
 import java.util.concurrent.TimeUnit
 
 /**

@@ -1,4 +1,4 @@
-package com.proxy.service.funsdk.widget
+package com.proxy.service.funsdk.widget.toast
 
 import android.app.Application
 import android.content.Context

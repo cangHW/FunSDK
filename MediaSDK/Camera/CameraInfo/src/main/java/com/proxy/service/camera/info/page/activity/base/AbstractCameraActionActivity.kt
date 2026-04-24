@@ -90,7 +90,7 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
         binding?.cameraModeList?.setSelectedPosition(0, true)
     }
 
-    override fun onSelectionChanged(oldPosition: Int, newPosition: Int) {
+    override fun onSelectionChanged(oldPosition: Int, newPosition: Int, fromUser: Boolean) {
         CsLogger.tag(getTag())
             .i("onSelectionChanged. oldPosition=$oldPosition, newPosition=$newPosition")
 

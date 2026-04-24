@@ -12,7 +12,7 @@ import com.proxy.service.widget.info.R
 /**
  * @author: cangHX
  * @data: 2025/9/24 10:01
- * @desc:
+ * @desc: 设置字重、字体、样式的 Textview
  */
 class CsFontStyleTextView : AppCompatTextView {
 

@@ -1,13 +1,11 @@
-package com.proxy.service.funsdk.widget
+package com.proxy.service.funsdk.widget.notification
 
 import android.app.Application
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.service.permission.CsPermission
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity

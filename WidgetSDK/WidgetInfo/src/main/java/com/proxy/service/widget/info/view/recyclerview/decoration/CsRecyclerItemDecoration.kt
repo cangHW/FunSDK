@@ -6,296 +6,337 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.proxy.service.core.framework.app.resource.CsDpUtils
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.widget.info.constants.WidgetConstants
+import kotlin.math.roundToInt
 
 /**
  * @author: cangHX
  * @data: 2025/7/9 15:32
- * @desc:
+ * @desc: RecyclerView item 间距管理
  */
-class CsRecyclerItemDecoration private constructor(
-    private val spaceInfo: SpaceInfo
-) : RecyclerView.ItemDecoration() {
+object CsRecyclerItemDecoration {
 
-    private class SpaceInfo {
-        var spaceHeightWithVertical = 0
-        var spaceWidthWithHorizontal = 0
+    private const val TAG = "${WidgetConstants.TAG}ItemDecoration"
 
-        var isSpaceShowOnViewTop = false
-        var isSpaceShowOnViewBottom = false
-        var isSpaceShowOnViewLeft = false
-        var isSpaceShowOnViewRight = false
-
-        var firstLineOutSize: Int? = null
-        var lastLineOutSize: Int? = null
+    fun builder(): Builder {
+        return Builder()
     }
 
-    companion object {
-        private val isSpaceShowOnViewTopLocal = ThreadLocal<Boolean>()
-        private val isSpaceShowOnViewBottomLocal = ThreadLocal<Boolean>()
-        private val isSpaceShowOnViewLeftLocal = ThreadLocal<Boolean>()
-        private val isSpaceShowOnViewRightLocal = ThreadLocal<Boolean>()
-
-        private val firstLineOutSizeLocal = ThreadLocal<Int>()
-        private val lastLineOutSizeLocal = ThreadLocal<Int>()
-
-        /**
-         * 间距是否出现在顶部
-         * */
-        fun setShowOnTop(isShow: Boolean): Companion {
-            isSpaceShowOnViewTopLocal.set(isShow)
-            return this
-        }
+    class Builder {
+        private var spaceVPx = 0
+        private var spaceHPx = 0
+        private var showOnTop = false
+        private var showOnBottom = false
+        private var showOnLeft = false
+        private var showOnRight = false
+        private var firstLineOutSizePx: Int? = null
+        private var lastLineOutSizePx: Int? = null
 
         /**
-         * 间距是否出现在底部
+         * 纵向间距，单位 dp
          * */
-        fun setShowOnBottom(isShow: Boolean): Companion {
-            isSpaceShowOnViewBottomLocal.set(isShow)
-            return this
-        }
+        fun verticalSpaceDp(dp: Float) = apply { spaceVPx = CsDpUtils.dp2px(dp) }
 
         /**
-         * 间距是否出现在左侧
+         * 横向间距，单位 dp
          * */
-        fun setShowOnLeft(isShow: Boolean): Companion {
-            isSpaceShowOnViewLeftLocal.set(isShow)
-            return this
-        }
+        fun horizontalSpaceDp(dp: Float) = apply { spaceHPx = CsDpUtils.dp2px(dp) }
 
         /**
-         * 间距是否出现在右侧
+         * 纵向间距，单位 px
          * */
-        fun setShowOnRight(isShow: Boolean): Companion {
-            isSpaceShowOnViewRightLocal.set(isShow)
-            return this
-        }
+        fun verticalSpacePx(px: Int) = apply { spaceVPx = maxOf(px, 0) }
 
         /**
-         * 设置行外间距默认大小
+         * 横向间距，单位 px
          * */
-        fun setOutLineSpaceSize(firstLineOutSize: Int, lastLineOutSize: Int): Companion {
-            if (firstLineOutSize > 0) {
-                firstLineOutSizeLocal.set(firstLineOutSize)
-            }
-            if (lastLineOutSize > 0) {
-                lastLineOutSizeLocal.set(lastLineOutSize)
-            }
-            return this
-        }
+        fun horizontalSpacePx(px: Int) = apply { spaceHPx = maxOf(px, 0) }
 
         /**
-         * 创建一个间距管理类，并设置横向纵向间距，数值格式：dp
+         * 顶部是否显示间距
          * */
-        fun createWithDp(spaceVDp: Float, spaceHDp: Float): CsRecyclerItemDecoration {
-            return createWithPx(CsDpUtils.dp2px(spaceVDp), CsDpUtils.dp2px(spaceHDp))
-        }
+        fun showOnTop(show: Boolean = true) = apply { showOnTop = show }
 
         /**
-         * 创建一个间距管理类，并设置横向纵向间距，数值格式：px
+         * 底部是否显示间距
          * */
-        fun createWithPx(spaceVPX: Int, spaceHPX: Int): CsRecyclerItemDecoration {
-            val realSpaceVPX = Math.max(spaceVPX, 0)
-            val realSpaceHPX = Math.max(spaceHPX, 0)
+        fun showOnBottom(show: Boolean = true) = apply { showOnBottom = show }
 
-            val isSpaceShowOnViewTop = isSpaceShowOnViewTopLocal.get() ?: false
-            isSpaceShowOnViewTopLocal.remove()
+        /**
+         * 左侧是否显示间距
+         * */
+        fun showOnLeft(show: Boolean = true) = apply { showOnLeft = show }
 
-            val isSpaceShowOnViewBottom = isSpaceShowOnViewBottomLocal.get() ?: false
-            isSpaceShowOnViewBottomLocal.remove()
+        /**
+         * 右侧是否显示间距
+         * */
+        fun showOnRight(show: Boolean = true) = apply { showOnRight = show }
 
-            val isSpaceShowOnViewLeft = isSpaceShowOnViewLeftLocal.get() ?: false
-            isSpaceShowOnViewLeftLocal.remove()
+        /**
+         * 第一行（列）外边距，单位 dp；未设置时复用主间距
+         * */
+        fun firstLineOutSizeDp(dp: Float) = apply { firstLineOutSizePx = CsDpUtils.dp2px(dp) }
 
-            val isSpaceShowOnViewRight = isSpaceShowOnViewRightLocal.get() ?: false
-            isSpaceShowOnViewRightLocal.remove()
+        /**
+         * 最后一行（列）外边距，单位 dp；未设置时复用主间距
+         * */
+        fun lastLineOutSizeDp(dp: Float) = apply { lastLineOutSizePx = CsDpUtils.dp2px(dp) }
 
-            val firstLineOutSize = firstLineOutSizeLocal.get()
-            firstLineOutSizeLocal.remove()
-            val lastLineOutSize = lastLineOutSizeLocal.get()
-            lastLineOutSizeLocal.remove()
+        /**
+         * 第一行（列）外边距，单位 px；未设置时复用主间距
+         * */
+        fun firstLineOutSizePx(px: Int) = apply { if (px > 0) firstLineOutSizePx = px }
 
-            val spaceInfo = SpaceInfo()
-            spaceInfo.spaceHeightWithVertical = realSpaceVPX
-            spaceInfo.spaceWidthWithHorizontal = realSpaceHPX
+        /**
+         * 最后一行（列）外边距，单位 px；未设置时复用主间距
+         * */
+        fun lastLineOutSizePx(px: Int) = apply { if (px > 0) lastLineOutSizePx = px }
 
-            spaceInfo.isSpaceShowOnViewTop = isSpaceShowOnViewTop
-            spaceInfo.isSpaceShowOnViewBottom = isSpaceShowOnViewBottom
-            spaceInfo.isSpaceShowOnViewLeft = isSpaceShowOnViewLeft
-            spaceInfo.isSpaceShowOnViewRight = isSpaceShowOnViewRight
-
-            spaceInfo.firstLineOutSize = firstLineOutSize
-            spaceInfo.lastLineOutSize = lastLineOutSize
-
-            return CsRecyclerItemDecoration(spaceInfo)
-        }
+        fun build(): RecyclerView.ItemDecoration = ItemDecorationImpl(
+            Config(
+                spaceVPx = spaceVPx,
+                spaceHPx = spaceHPx,
+                showOnTop = showOnTop,
+                showOnBottom = showOnBottom,
+                showOnLeft = showOnLeft,
+                showOnRight = showOnRight,
+                firstLineOutSizePx = firstLineOutSizePx,
+                lastLineOutSizePx = lastLineOutSizePx
+            )
+        )
     }
 
+    private data class Config(
+        val spaceVPx: Int,
+        val spaceHPx: Int,
+        val showOnTop: Boolean,
+        val showOnBottom: Boolean,
+        val showOnLeft: Boolean,
+        val showOnRight: Boolean,
+        val firstLineOutSizePx: Int?,
+        val lastLineOutSizePx: Int?
+    )
 
-    override fun getItemOffsets(
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State
-    ) {
-        outRect.set(0, 0, 0, 0)
+    private class ItemDecorationImpl(
+        private val config: Config
+    ) : RecyclerView.ItemDecoration() {
 
-        val layoutManager = parent.layoutManager
-        if (layoutManager is GridLayoutManager) {
-            processRectByGridLayoutManager(layoutManager, outRect, view, parent)
-        } else if (layoutManager is LinearLayoutManager) {
-            processRectByLinearLayoutManager(layoutManager, outRect, view, parent)
-        }
-    }
-
-    private fun processRectByLinearLayoutManager(
-        layoutManager: LinearLayoutManager,
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView
-    ) {
-        val isFirst = parent.getChildAdapterPosition(view) == 0
-        val isLast = parent.getChildAdapterPosition(view) == layoutManager.itemCount - 1
-
-        if (layoutManager.orientation == RecyclerView.VERTICAL) {
-            if (isFirst){
-                if (spaceInfo.isSpaceShowOnViewTop) {
-                    outRect.top = spaceInfo.firstLineOutSize ?: spaceInfo.spaceHeightWithVertical
-                } else {
-                    outRect.top = 0
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.set(0, 0, 0, 0)
+            when (val lm = parent.layoutManager) {
+                is GridLayoutManager -> {
+                    if (lm.spanSizeLookup !is GridLayoutManager.DefaultSpanSizeLookup) {
+                        CsLogger.tag(TAG)
+                            .e("Custom SpanSizeLookup is not supported; item offsets may be incorrect.")
+                    }
+                    processGrid(lm, outRect, view, parent)
                 }
-            }
 
-            outRect.bottom = spaceInfo.spaceHeightWithVertical
-
-            if (isLast){
-                if (spaceInfo.isSpaceShowOnViewBottom) {
-                    outRect.bottom = spaceInfo.lastLineOutSize ?: spaceInfo.spaceHeightWithVertical
-                } else {
-                    outRect.bottom = 0
-                }
-            }
-        } else if (layoutManager.orientation == RecyclerView.HORIZONTAL) {
-            if (isFirst){
-                if (spaceInfo.isSpaceShowOnViewLeft) {
-                    outRect.left = spaceInfo.firstLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-                } else {
-                    outRect.left = 0
-                }
-            }
-
-            outRect.right = spaceInfo.spaceWidthWithHorizontal
-
-            if (isLast){
-                if (spaceInfo.isSpaceShowOnViewRight) {
-                    outRect.right = spaceInfo.lastLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-                } else {
-                    outRect.right = 0
+                is LinearLayoutManager -> {
+                    processLinear(lm, outRect, view, parent)
                 }
             }
         }
-    }
 
-    private fun processRectByGridLayoutManager(
-        layoutManager: GridLayoutManager,
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView
-    ) {
-        var maxLine = layoutManager.itemCount / layoutManager.spanCount
-        if ((layoutManager.itemCount % layoutManager.spanCount) > 0) {
-            maxLine++
-        }
-        val line = parent.getChildAdapterPosition(view) / layoutManager.spanCount
-        val index = parent.getChildAdapterPosition(view) % layoutManager.spanCount
+        private fun processLinear(
+            lm: LinearLayoutManager,
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView
+        ) {
+            val position = parent.getChildAdapterPosition(view)
+            val isFirst = position == 0
+            val isLast = position == lm.itemCount - 1
 
-        if (layoutManager.orientation == RecyclerView.VERTICAL) {
-            gridLayoutManagerVertical(layoutManager, outRect, maxLine, line, index)
-        } else if (layoutManager.orientation == RecyclerView.HORIZONTAL) {
-            gridLayoutManagerHorizontal(layoutManager, outRect, maxLine, line, index)
-        }
-    }
+            if (lm.orientation == RecyclerView.VERTICAL) {
+                outRect.top = if (isFirst && config.showOnTop) {
+                    config.firstLineOutSizePx ?: config.spaceVPx
+                } else {
+                    0
+                }
 
-    private fun gridLayoutManagerVertical(
-        layoutManager: GridLayoutManager,
-        outRect: Rect,
-        maxLine: Int,
-        currentLine: Int,
-        currentIndex: Int
-    ) {
-        if (currentLine == 0){
-            if (spaceInfo.isSpaceShowOnViewTop) {
-                outRect.top = spaceInfo.firstLineOutSize ?: spaceInfo.spaceHeightWithVertical
+                outRect.bottom = if (isLast && config.showOnBottom) {
+                    config.lastLineOutSizePx ?: config.spaceVPx
+                } else if (isLast) {
+                    0
+                } else {
+                    config.spaceVPx
+                }
+
+                outRect.left = if (config.showOnLeft) {
+                    config.spaceHPx
+                } else {
+                    0
+                }
+
+                outRect.right = if (config.showOnRight) {
+                    config.spaceHPx
+                } else {
+                    0
+                }
             } else {
-                outRect.top = 0
+                // 主轴（左右）
+                outRect.left = if (isFirst && config.showOnLeft) {
+                    config.firstLineOutSizePx ?: config.spaceHPx
+                } else {
+                    0
+                }
+
+                outRect.right = if (isLast && config.showOnRight) {
+                    config.lastLineOutSizePx ?: config.spaceHPx
+                } else if (isLast) {
+                    0
+                } else {
+                    config.spaceHPx
+                }
+
+                outRect.top = if (config.showOnTop) {
+                    config.spaceVPx
+                } else {
+                    0
+                }
+
+                outRect.bottom = if (config.showOnBottom) {
+                    config.spaceVPx
+                } else {
+                    0
+                }
             }
         }
 
-        outRect.bottom = spaceInfo.spaceHeightWithVertical
+        private fun processGrid(
+            lm: GridLayoutManager,
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView
+        ) {
+            val position = parent.getChildAdapterPosition(view)
+            val spanCount = lm.spanCount
+            val lineCount = lm.itemCount.ceilDiv(spanCount)
+            val line = position / spanCount
+            val index = position % spanCount
 
-        if (currentLine == maxLine - 1){
-            if (spaceInfo.isSpaceShowOnViewBottom) {
-                outRect.bottom = spaceInfo.lastLineOutSize ?: spaceInfo.spaceHeightWithVertical
+            if (lm.orientation == RecyclerView.VERTICAL) {
+                gridVertical(outRect, spanCount, lineCount, line, index)
             } else {
-                outRect.bottom = 0
+                gridHorizontal(outRect, spanCount, lineCount, line, index)
             }
         }
 
-        if (spaceInfo.isSpaceShowOnViewLeft && spaceInfo.isSpaceShowOnViewRight) {
-            val eachSHSpace = spaceInfo.spaceWidthWithHorizontal / layoutManager.spanCount
-            outRect.left = (layoutManager.spanCount - currentIndex) * eachSHSpace
-            outRect.right = (currentIndex + 1) * eachSHSpace
-        } else if (spaceInfo.isSpaceShowOnViewLeft) {
-            outRect.left = spaceInfo.spaceWidthWithHorizontal
-            outRect.right = 0
-        } else if (spaceInfo.isSpaceShowOnViewRight) {
-            outRect.left = 0
-            outRect.right = spaceInfo.spaceWidthWithHorizontal
-        } else {
-            val eachSHSpace = spaceInfo.spaceWidthWithHorizontal / layoutManager.spanCount
-            outRect.left = currentIndex * eachSHSpace
-            outRect.right = spaceInfo.spaceWidthWithHorizontal - (currentIndex + 1) * eachSHSpace
+        /**
+         * 垂直 Grid：
+         * - 主轴（上下）首尾行特殊处理，中间行统一 bottom
+         * - 交叉轴（左右）浮点均分，消除整除截断误差；
+         *   单侧外边距只作用于边缘列，其余列保持均匀间距
+         */
+        private fun gridVertical(
+            outRect: Rect,
+            spanCount: Int,
+            lineCount: Int,
+            line: Int,
+            index: Int
+        ) {
+            outRect.top = if (line == 0 && config.showOnTop) {
+                config.firstLineOutSizePx ?: config.spaceVPx
+            } else {
+                0
+            }
+
+            outRect.bottom = if (line == lineCount - 1 && config.showOnBottom) {
+                config.lastLineOutSizePx ?: config.spaceVPx
+            } else if (line == lineCount - 1) {
+                0
+            } else {
+                config.spaceVPx
+            }
+
+            val space = config.spaceHPx.toFloat()
+            if (config.showOnLeft && config.showOnRight) {
+                // 两侧均有外边距，列间距 = 外边距 = spaceHPx
+                outRect.left = ((spanCount - index) * space / spanCount).roundToInt()
+                outRect.right = ((index + 1) * space / spanCount).roundToInt()
+            } else if (config.showOnLeft) {
+                // 仅最左列加外边距，其余列按无外边距公式均分，保证列间距不变
+                outRect.left = if (index == 0) {
+                    config.spaceHPx
+                } else {
+                    (index * space / spanCount).roundToInt()
+                }
+                outRect.right = (space - (index + 1) * space / spanCount).roundToInt()
+            } else if (config.showOnRight) {
+                // 仅最右列加外边距
+                outRect.left = (index * space / spanCount).roundToInt()
+                outRect.right = if (index == spanCount - 1) {
+                    config.spaceHPx
+                } else {
+                    (space - (index + 1) * space / spanCount).roundToInt()
+                }
+            } else {
+                // 无外边距，纯列间距均分
+                outRect.left = (index * space / spanCount).roundToInt()
+                outRect.right = (space - (index + 1) * space / spanCount).roundToInt()
+            }
         }
+
+        /**
+         * 水平 Grid：
+         * - 主轴（左右）首尾列特殊处理，中间列统一 right
+         * - 交叉轴（上下）浮点均分；单侧外边距只作用于边缘行
+         */
+        private fun gridHorizontal(
+            outRect: Rect,
+            spanCount: Int,
+            lineCount: Int,
+            line: Int,
+            index: Int
+        ) {
+            // 主轴间距
+            outRect.left = if (line == 0 && config.showOnLeft) {
+                config.firstLineOutSizePx ?: config.spaceHPx
+            } else {
+                0
+            }
+
+            outRect.right = if (line == lineCount - 1 && config.showOnRight) {
+                config.lastLineOutSizePx ?: config.spaceHPx
+            } else if (line == lineCount - 1) {
+                0
+            } else {
+                config.spaceHPx
+            }
+
+            // 交叉轴间距（浮点均分）
+            val space = config.spaceVPx.toFloat()
+            if (config.showOnTop && config.showOnBottom) {
+                outRect.top = ((spanCount - index) * space / spanCount).roundToInt()
+                outRect.bottom = ((index + 1) * space / spanCount).roundToInt()
+            } else if (config.showOnTop) {
+                outRect.top = if (index == 0) {
+                    config.spaceVPx
+                } else {
+                    (index * space / spanCount).roundToInt()
+                }
+                outRect.bottom = (space - (index + 1) * space / spanCount).roundToInt()
+            } else if (config.showOnBottom) {
+                outRect.top = (index * space / spanCount).roundToInt()
+                outRect.bottom = if (index == spanCount - 1) {
+                    config.spaceVPx
+                } else {
+                    (space - (index + 1) * space / spanCount).roundToInt()
+                }
+            } else {
+                outRect.top = (index * space / spanCount).roundToInt()
+                outRect.bottom = (space - (index + 1) * space / spanCount).roundToInt()
+            }
+        }
+
+        private fun Int.ceilDiv(other: Int) = (this + other - 1) / other
     }
 
-    private fun gridLayoutManagerHorizontal(
-        layoutManager: GridLayoutManager,
-        outRect: Rect,
-        maxLine: Int,
-        currentLine: Int,
-        currentIndex: Int
-    ) {
-        if (currentLine == 0){
-            if (spaceInfo.isSpaceShowOnViewLeft) {
-                outRect.left = spaceInfo.firstLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-            } else {
-                outRect.left = 0
-            }
-        }
-
-        outRect.right = spaceInfo.spaceWidthWithHorizontal
-
-        if (currentLine == maxLine - 1){
-            if (spaceInfo.isSpaceShowOnViewRight) {
-                outRect.right = spaceInfo.lastLineOutSize ?: spaceInfo.spaceWidthWithHorizontal
-            } else {
-                outRect.right = 0
-            }
-        }
-
-        if (spaceInfo.isSpaceShowOnViewTop && spaceInfo.isSpaceShowOnViewBottom) {
-            val eachSHSpace = spaceInfo.spaceHeightWithVertical / layoutManager.spanCount
-            outRect.top = (layoutManager.spanCount - currentIndex) * eachSHSpace
-            outRect.bottom = (currentIndex + 1) * eachSHSpace
-        } else if (spaceInfo.isSpaceShowOnViewTop) {
-            outRect.top = spaceInfo.spaceHeightWithVertical
-            outRect.bottom = 0
-        } else if (spaceInfo.isSpaceShowOnViewBottom) {
-            outRect.top = 0
-            outRect.bottom = spaceInfo.spaceHeightWithVertical
-        } else {
-            val eachSHSpace = spaceInfo.spaceHeightWithVertical / layoutManager.spanCount
-            outRect.top = currentIndex * eachSHSpace
-            outRect.bottom = spaceInfo.spaceHeightWithVertical - (currentIndex + 1) * eachSHSpace
-        }
-    }
 }

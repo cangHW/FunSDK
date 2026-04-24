@@ -1,13 +1,15 @@
 package com.proxy.service.funsdk.widget
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityWidgetBinding
+import com.proxy.service.funsdk.widget.dialog.DialogActivity
+import com.proxy.service.funsdk.widget.notification.NotificationActivity
+import com.proxy.service.funsdk.widget.state.StatePageActivity
+import com.proxy.service.funsdk.widget.toast.ToastActivity
+import com.proxy.service.funsdk.widget.view.centerSelect.CenterSelectActivity
 
 
 /**
@@ -39,6 +41,9 @@ class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
                 NotificationActivity.launch(this)
             }
 
+            R.id.view -> {
+                CenterSelectActivity.launch(this)
+            }
         }
     }
 }

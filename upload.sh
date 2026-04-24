@@ -39,11 +39,11 @@ upArray=(
 #  ":DocumentsSDK:Pdf:DocumentPdfBase"
 
     # 视图 UI 库
-#  ":WidgetSDK:WidgetInfo"
+  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
-  ":MediaSDK:Camera:CameraBase"
-  ":MediaSDK:Camera:CameraInfo"
+#  ":MediaSDK:Camera:CameraBase"
+#  ":MediaSDK:Camera:CameraInfo"
 )
 
 type_params="r"

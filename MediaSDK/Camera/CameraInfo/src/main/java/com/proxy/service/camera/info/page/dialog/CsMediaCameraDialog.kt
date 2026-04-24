@@ -42,7 +42,9 @@ class CsMediaCameraDialog : CsBaseDialog() {
         binding?.csCameraInfoPageSettingDialogRlv?.layoutManager = LinearLayoutManager(context)
         binding?.csCameraInfoPageSettingDialogRlv?.adapter = adapter
         binding?.csCameraInfoPageSettingDialogRlv?.addItemDecoration(
-            CsRecyclerItemDecoration.createWithPx(1, 1)
+            CsRecyclerItemDecoration.builder()
+                .verticalSpacePx(1)
+                .build()
         )
         binding?.root?.setOnClickListener {
             dismiss()

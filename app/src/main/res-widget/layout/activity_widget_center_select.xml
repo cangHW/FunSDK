@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/index_1"
+            style="@style/button_style"
+            android:text="第1项" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/index_2"
+            style="@style/button_style"
+            android:text="第3项" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/index_3"
+            style="@style/button_style"
+            android:text="第5项" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="10dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/center_select"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.proxy.service.widget.info.view.recyclerview.CsCenterSelectRecyclerView
+        android:id="@+id/center_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#cc000000"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
