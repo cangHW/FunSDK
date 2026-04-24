@@ -12,6 +12,7 @@ import com.proxy.service.camera.base.page.ICameraPageLoader
 import com.proxy.service.camera.info.page.activity.CsMediaCameraActivity
 import com.proxy.service.camera.info.page.activity.CsMediaCameraLandscapeActivity
 import com.proxy.service.camera.info.page.activity.CsMediaCameraPortraitActivity
+import com.proxy.service.camera.info.page.activity.base.AbstractCameraActionActivity
 import com.proxy.service.camera.info.page.cache.CameraParamsCache
 import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -112,12 +113,12 @@ class CameraPageLoaderImpl : ICameraPageLoader {
 
     private fun launch(
         context: Context?,
-        aClass: Class<out CsMediaCameraActivity>,
+        aClass: Class<out AbstractCameraActionActivity>,
         params: MediaCameraParams
     ) {
         val ctx = context ?: CsContextManager.getApplication()
         val intent = Intent(ctx, aClass)
-        intent.putExtra(CsMediaCameraActivity.TOKEN, CameraParamsCache.put(params))
+        intent.putExtra(CameraParamsCache.CAMERA_TOKEN, CameraParamsCache.put(params))
         if (ctx is Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }

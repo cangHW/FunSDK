@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit
  */
 object CameraParamsCache {
 
+    const val CAMERA_TOKEN = "camera_token"
+
     private const val TAG = "${CameraConstants.TAG}CameraParams"
 
     private const val DELAY_TIME = 5 * 1000L

@@ -2,7 +2,7 @@ package com.proxy.service.camera.info.page.activity.base
 
 import android.os.Bundle
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import com.proxy.service.camera.info.page.activity.CsMediaCameraLandscapeActivity.Companion.TAG
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import com.proxy.service.core.framework.system.screen.callback.ScreenRotationCallback
@@ -14,7 +14,7 @@ import com.proxy.service.core.framework.system.screen.enums.RotationEnum
  * @data: 2026/4/23 17:31
  * @desc:
  */
-abstract class AbstractSurfaceOrientationActivity: AbstractUiChangedActivity() {
+abstract class AbstractSurfaceOrientationActivity : AbstractUiChangedActivity() {
 
     private var sensorRotation: RotationEnum = RotationEnum.ROTATION_0
     private var screenRotation: RotationEnum = RotationEnum.ROTATION_0
@@ -33,21 +33,32 @@ abstract class AbstractSurfaceOrientationActivity: AbstractUiChangedActivity() {
         CsScreenUtils.removeScreenRotationCallback(screenRotationCallback)
     }
 
-    override fun getSurfaceOrientation(): Int {
+    override fun actionClick() {
+        if (cameraFunMode == CameraFunMode.CAPTURE) {
+            cameraCaptureController?.setSurfaceOrientation(getSurfaceOrientation())
+        } else {
+            cameraRecordController?.setSurfaceOrientation(getSurfaceOrientation())
+        }
+    }
+
+    /**
+     * 获取角度改变值
+     * */
+    private fun getSurfaceOrientation(): Int {
         val sign = if (cameraFaceMode == CameraFaceMode.FaceFront) -1 else 1
         return sign * (screenRotation.degree - sensorRotation.degree) * 90
     }
 
     private val screenRotationCallback = object : ScreenRotationCallback {
         override fun onRotation(rotation: RotationEnum) {
-            CsLogger.tag(TAG).d("screenRotationCallback. rotation=$rotation")
+            CsLogger.tag(getTag()).d("screenRotationCallback. rotation=$rotation")
             screenRotation = rotation
         }
     }
 
     private val sensorRotationCallback = object : SensorRotationCallback {
         override fun onRotation(orientation: Int, rotation: RotationEnum) {
-            CsLogger.tag(TAG).d("sensorRotationCallback. rotation=$rotation")
+            CsLogger.tag(getTag()).d("sensorRotationCallback. rotation=$rotation")
             sensorRotation = rotation
         }
     }
