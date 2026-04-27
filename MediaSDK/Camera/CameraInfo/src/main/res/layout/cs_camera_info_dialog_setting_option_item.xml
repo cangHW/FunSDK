@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#202020"
-        android:textSize="34px" />
+        android:textSize="18dp" />
 
     <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/cs_camera_info_dialog_option_item_radio"

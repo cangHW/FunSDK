@@ -1,7 +1,6 @@
 package com.proxy.service.widget.info.view
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Outline
 import android.graphics.Paint
@@ -12,28 +11,25 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
-import android.widget.RelativeLayout
-import androidx.annotation.StyleableRes
 import com.proxy.service.core.framework.app.resource.CsDpUtils
 import com.proxy.service.widget.info.R
 
 /**
  * @author: cangHX
  * @date: 2023/11/20 11:47
- * @desc:
+ * @desc: 圆角 layout
  */
 class CsRoundLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : RelativeLayout(context, attrs, defStyleAttr, defStyleRes) {
+) : CsMaxHeightLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     private val rectF = RectF()
     private val radiusF = FloatArray(8)
     private val path = Path()
 
-    private var maxHeight = -1
     private var pathDirty = true
     private var isUniformRadius = true
     private var uniformRadius = 0f
@@ -53,10 +49,6 @@ class CsRoundLayout @JvmOverloads constructor(
         init(context, attrs)
     }
 
-    private fun getDimenPixelSize(array: TypedArray, @StyleableRes index: Int): Int {
-        return array.getDimensionPixelSize(index, -1)
-    }
-
     private fun init(context: Context, attrs: AttributeSet?) {
         if (attrs == null) {
             return
@@ -68,7 +60,6 @@ class CsRoundLayout @JvmOverloads constructor(
         val rTr = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_top_right)
         val rBr = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_bottom_right)
         val rBl = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_bottom_left)
-        maxHeight = getDimenPixelSize(array, R.styleable.CsRoundLayout_max_height)
         array.recycle()
 
         var finalTL = 0f
@@ -146,15 +137,6 @@ class CsRoundLayout @JvmOverloads constructor(
         updateRadiusF(rTl.toFloat(), rTr.toFloat(), rBr.toFloat(), rBl.toFloat())
     }
 
-    /**
-     * 设置最大高度
-     * */
-    fun setMaxHeight(maxHeight: Int) {
-        this.maxHeight = maxHeight
-        requestLayout()
-        postInvalidate()
-    }
-
 
     private fun updateRadiusF(rTl: Float, rTr: Float, rBr: Float, rBl: Float) {
         radiusF[0] = rTl
@@ -168,34 +150,6 @@ class CsRoundLayout @JvmOverloads constructor(
         pathDirty = true
         rebuildPathIfNeeded()
         postInvalidate()
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var heightSpec = heightMeasureSpec
-        if (maxHeight >= 0) {
-            val parentSize = MeasureSpec.getSize(heightMeasureSpec)
-            val parentMode = MeasureSpec.getMode(heightMeasureSpec)
-            when (parentMode) {
-                MeasureSpec.EXACTLY -> {
-                    heightSpec = MeasureSpec.makeMeasureSpec(
-                        minOf(parentSize, maxHeight), MeasureSpec.EXACTLY
-                    )
-                }
-
-                MeasureSpec.AT_MOST -> {
-                    heightSpec = MeasureSpec.makeMeasureSpec(
-                        minOf(parentSize, maxHeight), MeasureSpec.AT_MOST
-                    )
-                }
-
-                else -> {
-                    heightSpec = MeasureSpec.makeMeasureSpec(
-                        maxHeight, MeasureSpec.AT_MOST
-                    )
-                }
-            }
-        }
-        super.onMeasure(widthMeasureSpec, heightSpec)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
