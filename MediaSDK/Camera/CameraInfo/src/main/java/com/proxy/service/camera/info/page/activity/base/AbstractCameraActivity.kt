@@ -47,15 +47,15 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
 
     override fun initView() {
         super.initView()
-        binding?.cameraSetting?.setOnClickListener {
+        binding?.csCameraInfoSetting?.setOnClickListener {
             CsMediaCameraSettingActivity.launch(this, cameraFaceMode.getCameraId() ?: "")
         }
 
-        binding?.changeCameraFace?.setOnClickListener {
+        binding?.csCameraInfoChangeFace?.setOnClickListener {
             changeCameraFace()
         }
 
-        binding?.cameraActionIcon?.setOnClickListener {
+        binding?.csCameraInfoActionIcon?.setOnClickListener {
             actionClick()
         }
     }
@@ -77,8 +77,8 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
             CsPermission.createAutoRequest()
                 ?.addPermission(Manifest.permission.CAMERA)
                 ?.setTitle(getString(R.string.cs_camera_info_page_camera_no_permission))
-                ?.setDialogSettingContent(getString(R.string.cs_camera_info_page_camera_request_camera_permission))
-                ?.setDialogRationaleContent(getString(R.string.cs_camera_info_page_camera_camera_permission_prompt))
+                ?.setDialogSettingContent(getString(R.string.cs_camera_info_page_camera_request_permission))
+                ?.setDialogRationaleContent(getString(R.string.cs_camera_info_page_camera_permission_prompt))
                 ?.setGrantedCallback(object : ActionCallback {
                     override fun onAction(list: Array<String>) {
                         onCameraPermissionGranted()
@@ -86,7 +86,7 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
                 })
                 ?.setDeniedCallback(object : ActionCallback {
                     override fun onAction(list: Array<String>) {
-                        CsToast.show(R.string.cs_camera_info_page_camera_no_camera_permission_toast)
+                        CsToast.show(R.string.cs_camera_info_page_camera_no_permission_toast)
                         finish()
                     }
                 })
@@ -102,7 +102,7 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
             ?.setCameraViewMode(CameraViewMode.SURFACE_VIEW)
             ?.setCameraFaceMode(cameraFaceMode)
             ?.setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
-            ?.createTo(findViewById(R.id.cs_media_camera))
+            ?.createTo(findViewById(R.id.cs_camera_info_preview))
     }
 
     protected abstract fun actionClick()

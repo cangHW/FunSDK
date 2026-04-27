@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextureView
-        android:id="@+id/view_texture"
+        android:id="@+id/cs_camera_info_texture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -13,12 +13,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.proxy.service.camera.info.view.touch.CameraTouchView
-        android:id="@+id/view_touch"
+        android:id="@+id/cs_camera_info_touch"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view_texture"
-        app:layout_constraintEnd_toEndOf="@+id/view_texture"
-        app:layout_constraintStart_toStartOf="@+id/view_texture"
-        app:layout_constraintTop_toTopOf="@+id/view_texture" />
+        app:layout_constraintBottom_toBottomOf="@+id/cs_camera_info_texture"
+        app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_texture"
+        app:layout_constraintStart_toStartOf="@+id/cs_camera_info_texture"
+        app:layout_constraintTop_toTopOf="@+id/cs_camera_info_texture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

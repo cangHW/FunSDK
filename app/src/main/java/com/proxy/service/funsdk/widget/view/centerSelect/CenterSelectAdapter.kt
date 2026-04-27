@@ -27,7 +27,7 @@ class CenterSelectAdapter  : CsBaseRecyclerViewAdapter<CenterSelectViewHolder, S
 
 open class CenterSelectViewHolder(itemView: View) : CsBaseRecyclerViewHolder<String>(itemView) {
 
-    private val cameraModeName: AppCompatTextView = itemView.findViewById(R.id.camera_mode_name)
+    private val cameraModeName: AppCompatTextView = itemView.findViewById(R.id.cs_camera_info_mode_name)
 
     override fun bindData(data: String, position: Int) {
         cameraModeName.text = data

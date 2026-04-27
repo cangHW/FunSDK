@@ -7,7 +7,7 @@
     android:background="@android:color/black">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cs_media_camera"
+        android:id="@+id/cs_camera_info_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,16 +16,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.proxy.service.camera.info.page.view.CameraGridLineView
-        android:id="@+id/camera_grid_line"
+        android:id="@+id/cs_camera_info_grid_line"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cs_media_camera"
-        app:layout_constraintEnd_toEndOf="@+id/cs_media_camera"
-        app:layout_constraintStart_toStartOf="@+id/cs_media_camera"
-        app:layout_constraintTop_toTopOf="@+id/cs_media_camera" />
+        app:layout_constraintBottom_toBottomOf="@+id/cs_camera_info_preview"
+        app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_preview"
+        app:layout_constraintStart_toStartOf="@+id/cs_camera_info_preview"
+        app:layout_constraintTop_toTopOf="@+id/cs_camera_info_preview" />
+
+    <com.proxy.service.camera.info.page.view.CameraLevelIndicatorView
+        android:id="@+id/cs_camera_info_level_indicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cs_camera_info_preview"
+        app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_preview"
+        app:layout_constraintStart_toStartOf="@+id/cs_camera_info_preview"
+        app:layout_constraintTop_toTopOf="@+id/cs_camera_info_preview" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/camera_setting"
+        android:id="@+id/cs_camera_info_setting"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="60dp"
@@ -35,18 +44,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.proxy.service.widget.info.view.recyclerview.CsCenterSelectRecyclerView
-        android:id="@+id/camera_mode_list"
+        android:id="@+id/cs_camera_info_mode_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/camera_action_icon"
+        app:layout_constraintBottom_toTopOf="@+id/cs_camera_info_action_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/camera_action_icon"
+        android:id="@+id/cs_camera_info_action_icon"
         android:layout_width="76dp"
         android:layout_height="76dp"
         android:layout_marginBottom="60dp"
@@ -58,28 +67,28 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/camera_action_icon"
-        app:layout_constraintEnd_toStartOf="@+id/camera_action_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/cs_camera_info_action_icon"
+        app:layout_constraintEnd_toStartOf="@+id/cs_camera_info_action_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/camera_action_icon">
+        app:layout_constraintTop_toTopOf="@+id/cs_camera_info_action_icon">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/left_line"
+            android:id="@+id/cs_camera_info_guideline_left"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.4" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/camera_album"
+            android:id="@+id/cs_camera_info_album"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="40dp"
             android:background="@drawable/cs_camera_info_change_camera_bg"
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/left_line"
-            app:layout_constraintStart_toStartOf="@+id/left_line"
+            app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_guideline_left"
+            app:layout_constraintStart_toStartOf="@+id/cs_camera_info_guideline_left"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -87,28 +96,28 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/camera_action_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/cs_camera_info_action_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/camera_action_icon"
-        app:layout_constraintTop_toTopOf="@+id/camera_action_icon">
+        app:layout_constraintStart_toEndOf="@+id/cs_camera_info_action_icon"
+        app:layout_constraintTop_toTopOf="@+id/cs_camera_info_action_icon">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/right_line"
+            android:id="@+id/cs_camera_info_guideline_right"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.6" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/change_camera_face"
+            android:id="@+id/cs_camera_info_change_face"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="40dp"
             android:background="@drawable/cs_camera_info_change_camera_bg"
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/right_line"
-            app:layout_constraintStart_toStartOf="@+id/right_line"
+            app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/cs_camera_info_guideline_right"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/cs_camera_info_change_camera" />
 

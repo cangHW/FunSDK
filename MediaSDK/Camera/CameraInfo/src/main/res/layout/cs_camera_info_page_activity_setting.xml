@@ -52,7 +52,7 @@
                 android:paddingHorizontal="16dp">
 
                 <com.proxy.service.camera.info.page.view.CameraPageSettingItemView
-                    android:id="@+id/cs_media_camera_setting_item_photo_resolution"
+                    android:id="@+id/cs_camera_info_setting_item_photo_ratio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -76,7 +76,7 @@
                 android:paddingHorizontal="16dp">
 
                 <com.proxy.service.camera.info.page.view.CameraPageSettingItemView
-                    android:id="@+id/cs_media_camera_setting_item_video_resolution"
+                    android:id="@+id/cs_camera_info_setting_item_video_resolution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -100,7 +100,7 @@
                 android:paddingHorizontal="16dp">
 
                 <com.proxy.service.camera.info.page.view.CameraPageSettingItemView
-                    android:id="@+id/cs_media_camera_setting_item_common_grid"
+                    android:id="@+id/cs_camera_info_setting_item_general_grid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -110,17 +110,7 @@
                     android:background="#24FFFFFF" />
 
                 <com.proxy.service.camera.info.page.view.CameraPageSettingItemView
-                    android:id="@+id/cs_media_camera_setting_item_common_level"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#24FFFFFF" />
-
-                <com.proxy.service.camera.info.page.view.CameraPageSettingItemView
-                    android:id="@+id/cs_media_camera_setting_item_common_timer"
+                    android:id="@+id/cs_camera_info_setting_item_general_level"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

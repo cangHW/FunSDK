@@ -80,10 +80,10 @@ class CameraViewLoaderImpl : ICameraViewLoader {
     private fun createByTextureView(viewGroup: ViewGroup): AbstractCameraSurfaceView {
         val rootView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.cs_camera_info_view_texture, viewGroup, true)
-        val textureView = rootView.findViewById<TextureView>(R.id.view_texture)
+        val textureView = rootView.findViewById<TextureView>(R.id.cs_camera_info_texture)
         val viewImpl = TextureViewImpl(config, textureView)
 
-        val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.view_touch)
+        val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.cs_camera_info_touch)
         cameraTouchView.setCustomTouchDispatch(touchDispatch)
         cameraTouchView.setOnCameraAfIntercept(viewImpl)
         return viewImpl
@@ -92,10 +92,10 @@ class CameraViewLoaderImpl : ICameraViewLoader {
     private fun createBySurfaceView(viewGroup: ViewGroup): AbstractCameraSurfaceView {
         val rootView = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.cs_camera_info_view_surface, viewGroup, true)
-        val surfaceView = rootView.findViewById<CustomSurfaceView>(R.id.view_surface)
+        val surfaceView = rootView.findViewById<CustomSurfaceView>(R.id.cs_camera_info_surface)
         val viewImpl = SurfaceViewImpl(config, surfaceView)
 
-        val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.view_touch)
+        val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.cs_camera_info_touch)
         cameraTouchView.setCustomTouchDispatch(touchDispatch)
         cameraTouchView.setOnCameraAfIntercept(viewImpl)
         return viewImpl

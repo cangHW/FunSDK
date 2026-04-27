@@ -51,7 +51,7 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
 
         updatePictureConfig(faceMode)
         updateVideoConfig(faceMode)
-        updateConfigConfig()
+        updateGeneralConfig()
     }
 
 
@@ -59,14 +59,14 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
         val list = CameraSettingCache.getPictureCaptureAllSupportSize(faceMode)
         var currentSelected = CameraSettingCache.getPictureCaptureSize(faceMode)
 
-        binding?.csMediaCameraSettingItemPhotoResolution?.show(
+        binding?.csCameraInfoSettingItemPhotoRatio?.show(
             CameraPageSettingItemView.builder()
-                .setIcon(android.R.drawable.ic_menu_crop)
+                .setIcon(R.drawable.cs_camera_info_setting_icon_photo_ratio)
                 .setTitle(R.string.cs_camera_info_page_setting_photo_ratio)
                 .setContent(currentSelected.toFullSizeString())
                 .build()
         )
-        binding?.csMediaCameraSettingItemPhotoResolution?.setOnViewClickListener { view ->
+        binding?.csCameraInfoSettingItemPhotoRatio?.setOnViewClickListener { view ->
             CsMediaCameraDialog()
                 .setTitle(R.string.cs_camera_info_page_setting_photo_ratio)
                 .setDataSize(list.size)
@@ -88,14 +88,14 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
         val list = CameraSettingCache.getVideoRecordAllSupportSize(faceMode)
         var currentSelected = CameraSettingCache.getVideoRecordSize(faceMode)
 
-        binding?.csMediaCameraSettingItemVideoResolution?.show(
+        binding?.csCameraInfoSettingItemVideoResolution?.show(
             CameraPageSettingItemView.builder()
-                .setIcon(android.R.drawable.ic_menu_slideshow)
+                .setIcon(R.drawable.cs_camera_info_setting_icon_video_resolution)
                 .setTitle(R.string.cs_camera_info_page_setting_video_resolution)
                 .setContent(currentSelected.toFullSizeString())
                 .build()
         )
-        binding?.csMediaCameraSettingItemVideoResolution?.setOnViewClickListener { view ->
+        binding?.csCameraInfoSettingItemVideoResolution?.setOnViewClickListener { view ->
             CsMediaCameraDialog()
                 .setTitle(R.string.cs_camera_info_page_setting_video_resolution)
                 .setDataSize(list.size)
@@ -113,32 +113,27 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
         }
     }
 
-    private fun updateConfigConfig() {
-        binding?.csMediaCameraSettingItemCommonGrid?.show(
+    private fun updateGeneralConfig() {
+        binding?.csCameraInfoSettingItemGeneralGrid?.show(
             CameraPageSettingItemView.builder()
-                .setIcon(android.R.drawable.ic_menu_sort_by_size)
+                .setIcon(R.drawable.cs_camera_info_setting_icon_grid)
                 .setTitle(R.string.cs_camera_info_page_setting_grid)
                 .setSelect(CameraSettingCache.isGridEnabled())
                 .build()
         )
-        binding?.csMediaCameraSettingItemCommonGrid?.setOnViewSelectListener {
+        binding?.csCameraInfoSettingItemGeneralGrid?.setOnViewSelectListener {
             CameraSettingCache.saveGridEnabled(it)
         }
 
-        binding?.csMediaCameraSettingItemCommonLevel?.show(
+        binding?.csCameraInfoSettingItemGeneralLevel?.show(
             CameraPageSettingItemView.builder()
-                .setIcon(android.R.drawable.ic_menu_compass)
+                .setIcon(R.drawable.cs_camera_info_setting_icon_level)
                 .setTitle(R.string.cs_camera_info_page_setting_level)
-                .setSelect(false)
+                .setSelect(CameraSettingCache.isLevelEnabled())
                 .build()
         )
-
-        binding?.csMediaCameraSettingItemCommonTimer?.show(
-            CameraPageSettingItemView.builder()
-                .setIcon(android.R.drawable.ic_menu_recent_history)
-                .setTitle(R.string.cs_camera_info_page_setting_timer)
-                .setContent(R.string.cs_camera_info_page_setting_value_off.toString())
-                .build()
-        )
+        binding?.csCameraInfoSettingItemGeneralLevel?.setOnViewSelectListener {
+            CameraSettingCache.saveLevelEnabled(it)
+        }
     }
 }

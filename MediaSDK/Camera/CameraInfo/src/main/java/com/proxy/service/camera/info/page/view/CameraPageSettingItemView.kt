@@ -111,26 +111,26 @@ class CameraPageSettingItemView : LinearLayoutCompat {
 
 
     fun show(builder: Builder) {
-        binding?.csMediaCameraSettingItemIcon?.setImageResource(builder.getIcon())
+        binding?.csCameraInfoSettingItemIcon?.setImageResource(builder.getIcon())
 
-        binding?.csMediaCameraSettingItemTitle?.text = builder.getTitle()
+        binding?.csCameraInfoSettingItemTitle?.text = builder.getTitle()
         builder.getSubTitle()?.let {
-            binding?.csMediaCameraSettingItemSubTitle?.visibility = View.VISIBLE
-            binding?.csMediaCameraSettingItemSubTitle?.text = it
+            binding?.csCameraInfoSettingItemSubTitle?.visibility = View.VISIBLE
+            binding?.csCameraInfoSettingItemSubTitle?.text = it
         }
 
         builder.isSelect()?.let {
-            binding?.csMediaCameraSettingItemTextLayout?.visibility = View.GONE
-            binding?.csMediaCameraSettingItemTextSwitch?.visibility = View.VISIBLE
-            binding?.csMediaCameraSettingItemTextSwitch?.isChecked = it
+            binding?.csCameraInfoSettingItemTextLayout?.visibility = View.GONE
+            binding?.csCameraInfoSettingItemTextSwitch?.visibility = View.VISIBLE
+            binding?.csCameraInfoSettingItemTextSwitch?.isChecked = it
 
-            binding?.csMediaCameraSettingItemTextSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            binding?.csCameraInfoSettingItemTextSwitch?.setOnCheckedChangeListener { _, isChecked ->
                 onViewSelectListener?.invoke(isChecked)
             }
         } ?: let {
-            binding?.csMediaCameraSettingItemTextSwitch?.visibility = View.GONE
-            binding?.csMediaCameraSettingItemTextLayout?.visibility = View.VISIBLE
-            binding?.csMediaCameraSettingItemTextContent?.text = builder.getContent()
+            binding?.csCameraInfoSettingItemTextSwitch?.visibility = View.GONE
+            binding?.csCameraInfoSettingItemTextLayout?.visibility = View.VISIBLE
+            binding?.csCameraInfoSettingItemTextContent?.text = builder.getContent()
         }
 
         binding?.root?.setOnClickListener {
@@ -139,8 +139,8 @@ class CameraPageSettingItemView : LinearLayoutCompat {
     }
 
     fun updateContent(content: String) {
-        if (binding?.csMediaCameraSettingItemTextContent?.visibility == View.VISIBLE) {
-            binding?.csMediaCameraSettingItemTextContent?.text = content
+        if (binding?.csCameraInfoSettingItemTextContent?.visibility == View.VISIBLE) {
+            binding?.csCameraInfoSettingItemTextContent?.text = content
         }
     }
 

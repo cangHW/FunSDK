@@ -39,9 +39,9 @@ class CsMediaCameraDialog : CsBaseDialog() {
 
     override fun onCreateView(context: Context, parent: ViewGroup): View? {
         binding = CsCameraInfoDialogSettingOptionBinding.inflate(LayoutInflater.from(context))
-        binding?.csCameraInfoPageSettingDialogRlv?.layoutManager = LinearLayoutManager(context)
-        binding?.csCameraInfoPageSettingDialogRlv?.adapter = adapter
-        binding?.csCameraInfoPageSettingDialogRlv?.addItemDecoration(
+        binding?.csCameraInfoDialogRlv?.layoutManager = LinearLayoutManager(context)
+        binding?.csCameraInfoDialogRlv?.adapter = adapter
+        binding?.csCameraInfoDialogRlv?.addItemDecoration(
             CsRecyclerItemDecoration.builder()
                 .verticalSpacePx(1)
                 .build()
@@ -49,11 +49,11 @@ class CsMediaCameraDialog : CsBaseDialog() {
         binding?.root?.setOnClickListener {
             dismiss()
         }
-        binding?.csCameraInfoPageSettingDialogCancel?.setOnClickListener {
+        binding?.csCameraInfoDialogCancel?.setOnClickListener {
             dismiss()
         }
         titleRes?.let {
-            binding?.csCameraInfoPageSettingDialogTitle?.text = context.getText(it)
+            binding?.csCameraInfoDialogTitle?.text = context.getText(it)
         }
         return binding?.root
     }
@@ -120,9 +120,9 @@ class CsMediaCameraDialog : CsBaseDialog() {
         }
 
         class CameraViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val textView = itemView.findViewById<AppCompatTextView>(R.id.dialog_option_item_text)
+            val textView = itemView.findViewById<AppCompatTextView>(R.id.cs_camera_info_dialog_option_item_text)
             val radioView =
-                itemView.findViewById<AppCompatRadioButton>(R.id.dialog_option_item_radio)
+                itemView.findViewById<AppCompatRadioButton>(R.id.cs_camera_info_dialog_option_item_radio)
         }
     }
 

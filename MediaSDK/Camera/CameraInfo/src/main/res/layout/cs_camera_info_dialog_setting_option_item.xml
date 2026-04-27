@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialog_option_item_root"
+    android:id="@+id/cs_camera_info_dialog_option_item_root"
     android:layout_width="match_parent"
     android:layout_height="54dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:background="@color/cs_camera_info_page_setting_dialog_bg"
+    android:background="@color/cs_camera_info_dialog_bg"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="18dp"
     android:paddingEnd="18dp">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/dialog_option_item_text"
+        android:id="@+id/cs_camera_info_dialog_option_item_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -21,7 +21,7 @@
         android:textSize="34px" />
 
     <androidx.appcompat.widget.AppCompatRadioButton
-        android:id="@+id/dialog_option_item_radio"
+        android:id="@+id/cs_camera_info_dialog_option_item_radio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"

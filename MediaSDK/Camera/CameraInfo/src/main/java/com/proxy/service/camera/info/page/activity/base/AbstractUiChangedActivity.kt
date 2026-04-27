@@ -23,6 +23,7 @@ abstract class AbstractUiChangedActivity : AbstractCameraActivity() {
     override fun onResume() {
         super.onResume()
         refreshGridLine()
+        refreshLevelIndicator()
         refreshUiSize()
     }
 
@@ -32,12 +33,16 @@ abstract class AbstractUiChangedActivity : AbstractCameraActivity() {
     }
 
     protected fun refreshGridLine() {
-        binding?.cameraGridLine?.setGridEnabled(CameraSettingCache.isGridEnabled())
+        binding?.csCameraInfoGridLine?.setGridEnabled(CameraSettingCache.isGridEnabled())
+    }
+
+    protected fun refreshLevelIndicator() {
+        binding?.csCameraInfoLevelIndicator?.setLevelEnabled(CameraSettingCache.isLevelEnabled())
     }
 
     protected fun refreshUiSize() {
         val cameraView = iCameraView ?: return
-        val view = binding?.csMediaCamera ?: return
+        val view = binding?.csCameraInfoPreview ?: return
         val funMode = cameraFunMode ?: return
         val faceMode = cameraFaceMode
 

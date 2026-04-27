@@ -26,7 +26,7 @@ class CameraModeListAdapter : CsBaseRecyclerViewAdapter<CameraModeListViewHolder
 
 open class CameraModeListViewHolder(itemView: View) : CsBaseRecyclerViewHolder<CameraFunMode>(itemView) {
 
-    private val cameraModeName: AppCompatTextView = itemView.findViewById(R.id.camera_mode_name)
+    private val cameraModeName: AppCompatTextView = itemView.findViewById(R.id.cs_camera_info_mode_name)
 
     override fun bindData(data: CameraFunMode, position: Int) {
         cameraModeName.text = data.getModeName()

@@ -22,7 +22,7 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
     CameraCustomTouchDispatch.CameraCustomTouchCallback,
     CsCenterSelectRecyclerView.OnSelectionChangedListener {
 
-    private val cameraModeListAdapter = CameraModeListAdapter()
+    private val csCameraInfoModeListAdapter = CameraModeListAdapter()
 
     private var pictureCaptureManager: PictureCaptureManager? = null
     private var videoRecordManager: VideoRecordManager? = null
@@ -34,8 +34,8 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
     override fun initView() {
         super.initView()
 
-        binding?.cameraModeList?.adapter = cameraModeListAdapter
-        binding?.cameraModeList?.setOnSelectionChangedListener(this)
+        binding?.csCameraInfoModeList?.adapter = csCameraInfoModeListAdapter
+        binding?.csCameraInfoModeList?.setOnSelectionChangedListener(this)
     }
 
     override fun initData(intent: Intent?) {
@@ -56,7 +56,7 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
         cameraFaceMode = params.defaultCameraFaceMode
         cameraFunMode = params.supportCameraFunModes.getOrNull(0)
 
-        cameraModeListAdapter.setData(params.supportCameraFunModes)
+        csCameraInfoModeListAdapter.setData(params.supportCameraFunModes)
 
         requestCamera()
     }
@@ -74,20 +74,20 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
     override fun onCameraPermissionGranted() {
         super.onCameraPermissionGranted()
 
-        binding?.cameraModeList?.setSelectedPosition(0, false)
+        binding?.csCameraInfoModeList?.setSelectedPosition(0, false)
     }
 
 
     override fun moveLeft() {
         CsLogger.tag(getTag()).i("向左滑动")
 
-        binding?.cameraModeList?.setSelectedPosition(1, true)
+        binding?.csCameraInfoModeList?.setSelectedPosition(1, true)
     }
 
     override fun moveRight() {
         CsLogger.tag(getTag()).i("向右滑动")
 
-        binding?.cameraModeList?.setSelectedPosition(0, true)
+        binding?.csCameraInfoModeList?.setSelectedPosition(0, true)
     }
 
     override fun onSelectionChanged(oldPosition: Int, newPosition: Int, fromUser: Boolean) {
@@ -98,7 +98,7 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
         cameraRecordController = null
 
         val funMode = params.supportCameraFunModes.getOrNull(newPosition)
-        binding?.cameraActionIcon?.setImageResource(funMode?.getModeRes() ?: 0)
+        binding?.csCameraInfoActionIcon?.setImageResource(funMode?.getModeRes() ?: 0)
         cameraFunMode = funMode
 
         when (funMode) {
