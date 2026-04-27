@@ -1,11 +1,13 @@
 package com.proxy.service.camera.info.loader.controller.func.record
 
+import android.Manifest
 import android.media.MediaRecorder
 import android.os.Build
 import android.view.Surface
 import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
+import com.proxy.service.camera.base.mode.loader.AudioEncoderMode
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
 import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
@@ -15,6 +17,7 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.screen.CsScreenUtils
 import com.proxy.service.core.service.media.CsMediaCamera
+import com.proxy.service.core.service.permission.CsPermission
 import java.io.File
 
 /**
@@ -39,6 +42,13 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
     private var videoEncoderMode: VideoEncoderMode = VideoEncoderMode.H264
     private var videoFrameRate: Int = 30
     private var videoEncodingBitRate: Int = 20000000
+
+    private var audioEnabled: Boolean = true
+    private var audioEncoderMode: AudioEncoderMode = AudioEncoderMode.AAC
+    private var audioSamplingRate: Int = 44100
+    private var audioEncodingBitRate: Int = 128000
+    private var audioChannels: Int = 1
+
 
     @Volatile
     protected var recordSurface: Surface? = null
@@ -71,6 +81,32 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
     }
 
 
+    override fun setAudioEnabled(enabled: Boolean) {
+        CsLogger.tag(TAG).i("setAudioEnabled. enabled=$enabled")
+        this.audioEnabled = enabled
+    }
+
+    override fun setAudioEncoder(mode: AudioEncoderMode) {
+        CsLogger.tag(TAG).i("setAudioEncoder. mode=$mode")
+        this.audioEncoderMode = mode
+    }
+
+    override fun setAudioSamplingRate(samplingRate: Int) {
+        CsLogger.tag(TAG).i("setAudioSamplingRate. samplingRate=$samplingRate")
+        this.audioSamplingRate = samplingRate
+    }
+
+    override fun setAudioEncodingBitRate(bitRate: Int) {
+        CsLogger.tag(TAG).i("setAudioEncodingBitRate. bitRate=$bitRate")
+        this.audioEncodingBitRate = bitRate
+    }
+
+    override fun setAudioChannels(channels: Int) {
+        CsLogger.tag(TAG).i("setAudioChannels. channels=$channels")
+        this.audioChannels = channels
+    }
+
+
     override fun getSurface(): Surface? {
         CsLogger.tag(TAG).i("getSurface. recordSurface=$recordSurface")
         createMediaRecorder()
@@ -93,16 +129,34 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
     override fun createSurface(): Surface? {
         CsLogger.tag(TAG).i("createSurface. recordBean=$recordBean")
         val bean = recordBean ?: return null
-
+        var isAudioEnabled = audioEnabled
+        if (audioEnabled && !CsPermission.isPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
+            CsLogger.tag(TAG)
+                .e("The recording permission is lacking, so the sound cannot be recorded.")
+            isAudioEnabled = false
+        }
         try {
             val recorder = createMediaRecorder() ?: return null
             recorder.reset()
+            if (isAudioEnabled) {
+                recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+            }
             recorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            recorder.setVideoEncoder(videoEncoderMode.encoder)
             recorder.setVideoSize(surfaceWidth, surfaceHeight)
+
+            recorder.setVideoEncoder(videoEncoderMode.encoder)
             recorder.setVideoFrameRate(videoFrameRate)
             recorder.setVideoEncodingBitRate(videoEncodingBitRate)
+
+            if (isAudioEnabled) {
+                recorder.setAudioEncoder(audioEncoderMode.encoder)
+                recorder.setAudioSamplingRate(audioSamplingRate)
+                recorder.setAudioEncodingBitRate(audioEncodingBitRate)
+                recorder.setAudioChannels(audioChannels)
+            }
+
+
             if (surfaceOrientationDegrees != null) {
                 recorder.setOrientationHint(surfaceOrientationDegrees!!)
             } else {

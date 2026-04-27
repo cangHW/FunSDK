@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity.CAMERA_SERVICE
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.loader.info.VideoParamsInfo
 import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.VideoPatternMode
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -332,13 +333,18 @@ object CameraFactory {
                 val profiles = CamcorderProfile.getAll(cameraId, quality)
                 if (profiles != null) {
                     profiles.videoProfiles.forEach {
+
+                        val videoParams = VideoParamsInfo.create(
+                            it.frameRate,
+                            it.bitrate,
+                            it.codec
+                        )
+
                         val info = VideoSupportInfo.create(
                             it.width,
                             it.height,
                             quality,
-                            it.frameRate,
-                            it.bitrate,
-                            it.codec
+                            videoParams
                         )
                         list.add(info)
                     }
@@ -359,13 +365,18 @@ object CameraFactory {
             val id = cameraId.toIntOrNull() ?: return null
             if (CamcorderProfile.hasProfile(id, quality)) {
                 val profile = CamcorderProfile.get(id, quality)
+
+                val videoParams = VideoParamsInfo.create(
+                    profile.videoFrameRate,
+                    profile.videoBitRate,
+                    profile.videoCodec
+                )
+
                 val info = VideoSupportInfo.create(
                     profile.videoFrameWidth,
                     profile.videoFrameHeight,
                     quality,
-                    profile.videoFrameRate,
-                    profile.videoBitRate,
-                    profile.videoCodec
+                    videoParams
                 )
                 list.add(info)
                 return list

@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.ui.view.action.click
 
+import android.os.SystemClock
 import android.view.View
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.ui.constants.UiViewConstants
@@ -23,11 +24,11 @@ class ClickActionImpl(private val view: View?) : IClickAction() {
             return
         }
         view.setOnClickListener {
-            val currentTime = System.nanoTime()
+            val currentTime = SystemClock.elapsedRealtime()
             val offset = if (debounceTime == 0L) {
                 debounceTime
             } else {
-                (currentTime - lastClickTime) / 1000 * 1000
+                currentTime - lastClickTime
             }
 
             if (offset >= debounceTime) {

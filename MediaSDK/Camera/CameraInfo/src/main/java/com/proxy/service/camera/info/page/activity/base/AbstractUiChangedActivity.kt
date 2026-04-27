@@ -56,9 +56,9 @@ abstract class AbstractUiChangedActivity : AbstractCameraActivity() {
             CameraFunMode.RECORD -> {
                 CameraSettingCache.getVideoRecordSize(faceMode).apply {
                     cameraRecordController?.setSurfaceSize(width, height)
-                    cameraRecordController?.setVideoFrameRate(frameRate)
-                    cameraRecordController?.setVideoEncodingBitRate(bitrate)
-                    cameraRecordController?.setVideoEncoder(VideoEncoderMode.value(encoder))
+                    cameraRecordController?.setVideoFrameRate(videoParams.frameRate)
+                    cameraRecordController?.setVideoEncodingBitRate(videoParams.bitrate)
+                    cameraRecordController?.setVideoEncoder(VideoEncoderMode.value(videoParams.encoder))
                 }
             }
 

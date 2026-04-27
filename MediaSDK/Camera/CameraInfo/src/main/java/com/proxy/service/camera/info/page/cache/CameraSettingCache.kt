@@ -3,6 +3,7 @@ package com.proxy.service.camera.info.page.cache
 import android.media.MediaRecorder
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.info.SupportSize
+import com.proxy.service.camera.base.loader.info.VideoParamsInfo
 import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.VideoPatternMode
@@ -157,13 +158,17 @@ object CameraSettingCache {
     private fun createDefaultVideoRecordSize(mode: CameraFaceMode): VideoSupportInfo {
         val sizes = CsMediaCamera.getRecommendRecordSizes(mode, VideoPatternMode.NORMAL)
         if (sizes.isNullOrEmpty()) {
+            val videoParams = VideoParamsInfo.create(
+                30,
+                20000000,
+                MediaRecorder.VideoEncoder.H264
+            )
+
             return VideoSupportInfo.create(
                 1920,
                 1080,
                 -1,
-                30,
-                20000000,
-                MediaRecorder.VideoEncoder.H264
+                videoParams
             )
         }
         var size = CameraUtils.calculateSize(

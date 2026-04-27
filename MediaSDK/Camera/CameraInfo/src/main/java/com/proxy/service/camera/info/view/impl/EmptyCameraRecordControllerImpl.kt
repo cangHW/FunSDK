@@ -3,6 +3,7 @@ package com.proxy.service.camera.info.view.impl
 import com.proxy.service.camera.base.callback.loader.VideoRecordCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
+import com.proxy.service.camera.base.mode.loader.AudioEncoderMode
 import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
 import com.proxy.service.camera.base.mode.loader.VideoRecordState
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -36,6 +37,26 @@ class EmptyCameraRecordControllerImpl: ICameraRecordController {
 
     override fun setVideoEncodingBitRate(bitRate: Int) {
         CsLogger.tag(TAG).i("setVideoEncodingBitRate. bitRate=$bitRate")
+    }
+
+    override fun setAudioEnabled(enabled: Boolean) {
+        CsLogger.tag(TAG).i("setAudioEnabled. enabled=$enabled")
+    }
+
+    override fun setAudioEncoder(mode: AudioEncoderMode) {
+        CsLogger.tag(TAG).i("setAudioEncoder. mode=$mode")
+    }
+
+    override fun setAudioSamplingRate(samplingRate: Int) {
+        CsLogger.tag(TAG).i("setAudioSamplingRate. samplingRate=$samplingRate")
+    }
+
+    override fun setAudioEncodingBitRate(bitRate: Int) {
+        CsLogger.tag(TAG).i("setAudioEncodingBitRate. bitRate=$bitRate")
+    }
+
+    override fun setAudioChannels(channels: Int) {
+        CsLogger.tag(TAG).i("setAudioChannels. channels=$channels")
     }
 
     override fun getVideoRecordState(): VideoRecordState {
