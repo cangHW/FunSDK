@@ -39,15 +39,15 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
     }
 
 
-    private var videoEncoderMode: VideoEncoderMode = VideoEncoderMode.H264
-    private var videoFrameRate: Int = 30
-    private var videoEncodingBitRate: Int = 20000000
+    private var videoEncoderMode: VideoEncoderMode = CameraConstants.DEFAULT_VIDEO_ENCODER_MODE
+    private var videoFrameRate: Int = CameraConstants.DEFAULT_VIDEO_FRAME_RATE
+    private var videoEncodingBitRate: Int = CameraConstants.DEFAULT_VIDEO_ENCODING_BIT_RATE
 
-    private var audioEnabled: Boolean = true
-    private var audioEncoderMode: AudioEncoderMode = AudioEncoderMode.AAC
-    private var audioSamplingRate: Int = 44100
-    private var audioEncodingBitRate: Int = 128000
-    private var audioChannels: Int = 1
+    private var audioEnabled: Boolean = CameraConstants.DEFAULT_AUDIO_ENABLED
+    private var audioEncoderMode: AudioEncoderMode = CameraConstants.DEFAULT_AUDIO_ENCODER_MODE
+    private var audioSamplingRate: Int = CameraConstants.DEFAULT_AUDIO_SAMPLING_RATE
+    private var audioEncodingBitRate: Int = CameraConstants.DEFAULT_AUDIO_ENCODING_BIT_RATE
+    private var audioChannels: Int = CameraConstants.DEFAULT_AUDIO_CHANNELS
 
 
     @Volatile

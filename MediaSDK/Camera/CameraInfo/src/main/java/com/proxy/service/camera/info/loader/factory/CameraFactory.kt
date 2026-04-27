@@ -9,6 +9,7 @@ import android.media.MediaRecorder
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity.CAMERA_SERVICE
 import com.proxy.service.camera.base.constants.CameraConstants
+import com.proxy.service.camera.base.loader.info.AudioParamsInfo
 import com.proxy.service.camera.base.loader.info.SupportSize
 import com.proxy.service.camera.base.loader.info.VideoParamsInfo
 import com.proxy.service.camera.base.loader.info.VideoSupportInfo
@@ -332,30 +333,36 @@ object CameraFactory {
             try {
                 val profiles = CamcorderProfile.getAll(cameraId, quality)
                 if (profiles != null) {
+                    val audioProfile = profiles.audioProfiles.getOrNull(0)
                     profiles.videoProfiles.forEach {
-
                         val videoParams = VideoParamsInfo.create(
                             it.frameRate,
                             it.bitrate,
                             it.codec
                         )
 
+                        val audioParams: AudioParamsInfo? = if (audioProfile == null) {
+                            null
+                        } else {
+                            AudioParamsInfo.create(
+                                audioProfile.channels,
+                                audioProfile.sampleRate,
+                                audioProfile.bitrate,
+                                audioProfile.codec
+                            )
+                        }
+
                         val info = VideoSupportInfo.create(
                             it.width,
                             it.height,
                             quality,
-                            videoParams
+                            videoParams,
+                            audioParams
                         )
                         list.add(info)
                     }
                     return list
                 }
-//                profiles?.audioProfiles?.get(0)?.let {
-//                    it.channels
-//                    it.sampleRate
-//                    it.bitrate
-//                    it.codec
-//                }
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).w(throwable)
             }
@@ -372,11 +379,19 @@ object CameraFactory {
                     profile.videoCodec
                 )
 
+                val audioParams = AudioParamsInfo.create(
+                    profile.audioChannels,
+                    profile.audioSampleRate,
+                    profile.audioBitRate,
+                    profile.audioCodec
+                )
+
                 val info = VideoSupportInfo.create(
                     profile.videoFrameWidth,
                     profile.videoFrameHeight,
                     quality,
-                    videoParams
+                    videoParams,
+                    audioParams
                 )
                 list.add(info)
                 return list

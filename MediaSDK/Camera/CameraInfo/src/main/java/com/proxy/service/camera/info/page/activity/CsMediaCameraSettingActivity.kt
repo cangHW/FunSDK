@@ -1,5 +1,6 @@
 package com.proxy.service.camera.info.page.activity
 
+import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -10,7 +11,10 @@ import com.proxy.service.camera.info.databinding.CsCameraInfoPageActivitySetting
 import com.proxy.service.camera.info.page.cache.CameraSettingCache
 import com.proxy.service.camera.info.page.dialog.CsMediaCameraDialog
 import com.proxy.service.camera.info.page.view.CameraPageSettingItemView
+import com.proxy.service.core.service.permission.CsPermission
+import com.proxy.service.permission.base.callback.ActionCallback
 import com.proxy.service.widget.info.base.CsBaseActivity
+import com.proxy.service.widget.info.toast.CsToast
 
 /**
  * @author: cangHX
@@ -110,6 +114,32 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
                     CameraSettingCache.savaVideoRecordSize(faceMode, currentSelected)
                 }
                 .show(this)
+        }
+
+        binding?.csCameraInfoSettingItemVideoAudio?.show(
+            CameraPageSettingItemView.builder()
+                .setIcon(R.drawable.cs_camera_info_setting_icon_video_audio)
+                .setTitle(R.string.cs_camera_info_page_setting_video_audio)
+                .setSelect(CameraSettingCache.isAudioEnable())
+                .build()
+        )
+        binding?.csCameraInfoSettingItemVideoAudio?.setOnViewSelectListener {
+            CameraSettingCache.saveAudioEnable(it)
+
+            if (it && !CsPermission.isPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
+                CsPermission.createAutoRequest()
+                    ?.addPermission(Manifest.permission.RECORD_AUDIO)
+                    ?.setTitle(getString(R.string.cs_camera_info_page_camera_no_permission))
+                    ?.setDialogSettingContent(getString(R.string.cs_camera_info_page_camera_request_audio_permission))
+                    ?.setDialogRationaleContent(getString(R.string.cs_camera_info_page_camera_audio_permission_prompt))
+                    ?.setDeniedCallback(object : ActionCallback {
+                        override fun onAction(list: Array<String>) {
+                            CsToast.show(R.string.cs_camera_info_page_camera_no_audio_permission_toast)
+                            binding?.csCameraInfoSettingItemVideoAudio?.updateChecked(false)
+                        }
+                    })
+                    ?.start(this)
+            }
         }
     }
 

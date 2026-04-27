@@ -1,7 +1,7 @@
 package com.proxy.service.camera.info.page.cache
 
-import android.media.MediaRecorder
 import com.proxy.service.camera.base.constants.CameraConstants
+import com.proxy.service.camera.base.loader.info.AudioParamsInfo
 import com.proxy.service.camera.base.loader.info.SupportSize
 import com.proxy.service.camera.base.loader.info.VideoParamsInfo
 import com.proxy.service.camera.base.loader.info.VideoSupportInfo
@@ -32,6 +32,7 @@ object CameraSettingCache {
     private const val KEY_PICTURE_CAPTURE = "key_picture_capture_"
     private const val KEY_VIDEO_RECORD = "key_video_record_"
 
+    private const val KEY_AUDIO_ENABLED = "key_audio_enabled"
     private const val KEY_GRID_ENABLED = "key_grid_enabled"
     private const val KEY_LEVEL_ENABLED = "key_level_enabled"
 
@@ -123,6 +124,14 @@ object CameraSettingCache {
         sp.put(createKey(KEY_VIDEO_RECORD, mode), CsJsonUtils.toJson(size))
     }
 
+    fun isAudioEnable(): Boolean {
+        return sp.getBoolean(KEY_AUDIO_ENABLED, CameraConstants.DEFAULT_AUDIO_ENABLED)
+    }
+
+    fun saveAudioEnable(enabled: Boolean) {
+        sp.put(KEY_AUDIO_ENABLED, enabled)
+    }
+
 
     fun isGridEnabled(): Boolean {
         return sp.getBoolean(KEY_GRID_ENABLED, false)
@@ -145,7 +154,10 @@ object CameraSettingCache {
     private fun createDefaultPictureCaptureSize(mode: CameraFaceMode): SupportSize {
         val sizes = CsMediaCamera.getSupportedCaptureSizes(mode)
         if (sizes.isNullOrEmpty()) {
-            return SupportSize.create(2560, 1080)
+            return SupportSize.create(
+                CameraConstants.DEFAULT_PICTURE_CAPTURE_SIZE_WIDTH,
+                CameraConstants.DEFAULT_PICTURE_CAPTURE_SIZE_HEIGHT
+            )
         }
         var size = CameraUtils.calculateSize(sizes, screenInfo.screenWidth, screenInfo.screenHeight)
         if (size == null) {
@@ -159,16 +171,24 @@ object CameraSettingCache {
         val sizes = CsMediaCamera.getRecommendRecordSizes(mode, VideoPatternMode.NORMAL)
         if (sizes.isNullOrEmpty()) {
             val videoParams = VideoParamsInfo.create(
-                30,
-                20000000,
-                MediaRecorder.VideoEncoder.H264
+                CameraConstants.DEFAULT_VIDEO_FRAME_RATE,
+                CameraConstants.DEFAULT_VIDEO_ENCODING_BIT_RATE,
+                CameraConstants.DEFAULT_VIDEO_ENCODER_MODE.encoder
+            )
+
+            val audioParams = AudioParamsInfo.create(
+                CameraConstants.DEFAULT_AUDIO_CHANNELS,
+                CameraConstants.DEFAULT_AUDIO_SAMPLING_RATE,
+                CameraConstants.DEFAULT_AUDIO_ENCODING_BIT_RATE,
+                CameraConstants.DEFAULT_AUDIO_ENCODER_MODE.encoder
             )
 
             return VideoSupportInfo.create(
-                1920,
-                1080,
+                CameraConstants.DEFAULT_VIDEO_RECORD_SIZE_WIDTH,
+                CameraConstants.DEFAULT_VIDEO_RECORD_SIZE_HEIGHT,
                 -1,
-                videoParams
+                videoParams,
+                audioParams
             )
         }
         var size = CameraUtils.calculateSize(

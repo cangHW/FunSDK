@@ -1,6 +1,7 @@
 package com.proxy.service.camera.info.page.activity.base
 
 import android.content.res.Configuration
+import com.proxy.service.camera.base.mode.loader.AudioEncoderMode
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
 import com.proxy.service.camera.info.page.cache.CameraSettingCache
@@ -59,6 +60,17 @@ abstract class AbstractUiChangedActivity : AbstractCameraActivity() {
                     cameraRecordController?.setVideoFrameRate(videoParams.frameRate)
                     cameraRecordController?.setVideoEncodingBitRate(videoParams.bitrate)
                     cameraRecordController?.setVideoEncoder(VideoEncoderMode.value(videoParams.encoder))
+
+                    val isAudioEnable = CameraSettingCache.isAudioEnable()
+                    cameraRecordController?.setAudioEnabled(isAudioEnable)
+                    if (isAudioEnable) {
+                        audioParams?.let { audio ->
+                            cameraRecordController?.setAudioEncoder(AudioEncoderMode.value(audio.encoder))
+                            cameraRecordController?.setAudioChannels(audio.channels)
+                            cameraRecordController?.setAudioSamplingRate(audio.samplingRate)
+                            cameraRecordController?.setAudioEncodingBitRate(audio.bitrate)
+                        }
+                    }
                 }
             }
 

@@ -3,10 +3,15 @@
 
     <string name="cs_camera_info_page_camera_no_params_toast">缺少相机参数</string>
 
-    <string name="cs_camera_info_page_camera_no_permission_toast">缺少相机权限</string>
     <string name="cs_camera_info_page_camera_no_permission">权限未开启</string>
-    <string name="cs_camera_info_page_camera_request_permission">请前往设置开启相机权限</string>
-    <string name="cs_camera_info_page_camera_permission_prompt">需要相机权限才能打开相机并提供对应的服务</string>
+
+    <string name="cs_camera_info_page_camera_no_camera_permission_toast">缺少相机权限</string>
+    <string name="cs_camera_info_page_camera_request_camera_permission">请前往设置开启相机权限</string>
+    <string name="cs_camera_info_page_camera_camera_permission_prompt">需要相机权限才能打开相机并提供对应的服务</string>
+
+    <string name="cs_camera_info_page_camera_no_audio_permission_toast">录音权限未开启</string>
+    <string name="cs_camera_info_page_camera_request_audio_permission">请前往设置开启录音权限</string>
+    <string name="cs_camera_info_page_camera_audio_permission_prompt">需要录音权限才能录制音频并提供对应的服务</string>
 
     <string name="cs_camera_info_page_setting_title">设置</string>
 
@@ -15,6 +20,7 @@
 
     <string name="cs_camera_info_page_setting_video_group">视频</string>
     <string name="cs_camera_info_page_setting_video_resolution">视频分辨率</string>
+    <string name="cs_camera_info_page_setting_video_audio">录制声音</string>
 
     <string name="cs_camera_info_page_setting_general_group">通用</string>
     <string name="cs_camera_info_page_setting_grid">参考线</string>

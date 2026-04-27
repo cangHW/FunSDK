@@ -144,6 +144,10 @@ class CameraPageSettingItemView : LinearLayoutCompat {
         }
     }
 
+    fun updateChecked(checked: Boolean) {
+        binding?.csCameraInfoSettingItemTextSwitch?.isChecked = checked
+    }
+
 
     fun setOnViewClickListener(listener: ((view: CameraPageSettingItemView) -> Unit)) {
         this.onViewClickListener = listener

@@ -13,6 +13,7 @@ import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.databinding.CsCameraInfoPageActivityCameraBinding
 import com.proxy.service.camera.info.page.activity.CsMediaCameraSettingActivity
+import com.proxy.service.camera.info.page.cache.CameraSettingCache
 import com.proxy.service.camera.info.page.params.MediaCameraParams
 import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.core.service.permission.CsPermission
@@ -77,8 +78,8 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
             CsPermission.createAutoRequest()
                 ?.addPermission(Manifest.permission.CAMERA)
                 ?.setTitle(getString(R.string.cs_camera_info_page_camera_no_permission))
-                ?.setDialogSettingContent(getString(R.string.cs_camera_info_page_camera_request_permission))
-                ?.setDialogRationaleContent(getString(R.string.cs_camera_info_page_camera_permission_prompt))
+                ?.setDialogSettingContent(getString(R.string.cs_camera_info_page_camera_request_camera_permission))
+                ?.setDialogRationaleContent(getString(R.string.cs_camera_info_page_camera_camera_permission_prompt))
                 ?.setGrantedCallback(object : ActionCallback {
                     override fun onAction(list: Array<String>) {
                         onCameraPermissionGranted()
@@ -86,7 +87,7 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
                 })
                 ?.setDeniedCallback(object : ActionCallback {
                     override fun onAction(list: Array<String>) {
-                        CsToast.show(R.string.cs_camera_info_page_camera_no_permission_toast)
+                        CsToast.show(R.string.cs_camera_info_page_camera_no_camera_permission_toast)
                         finish()
                     }
                 })
@@ -103,6 +104,27 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
             ?.setCameraFaceMode(cameraFaceMode)
             ?.setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
             ?.createTo(findViewById(R.id.cs_camera_info_preview))
+
+
+        if (CameraSettingCache.isAudioEnable()) {
+            if (!CsPermission.isPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
+                CsPermission.createRequest()
+                    ?.addPermission(Manifest.permission.RECORD_AUDIO)
+                    ?.setDeniedCallback(object : ActionCallback {
+                        override fun onAction(list: Array<String>) {
+                            CsToast.show(R.string.cs_camera_info_page_camera_no_audio_permission_toast)
+                            CameraSettingCache.saveAudioEnable(false)
+                        }
+                    })
+                    ?.setNoPromptCallback(object : ActionCallback {
+                        override fun onAction(list: Array<String>) {
+                            CsToast.show(R.string.cs_camera_info_page_camera_no_audio_permission_toast)
+                            CameraSettingCache.saveAudioEnable(false)
+                        }
+                    })
+                    ?.start(this)
+            }
+        }
     }
 
     protected abstract fun actionClick()

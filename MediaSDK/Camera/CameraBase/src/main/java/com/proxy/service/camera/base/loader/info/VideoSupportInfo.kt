@@ -11,7 +11,8 @@ class VideoSupportInfo private constructor(
     width: Int,
     height: Int,
     val quality: Int,
-    val videoParams: VideoParamsInfo
+    val videoParams: VideoParamsInfo,
+    val audioParams: AudioParamsInfo?
 ) : SupportSize(
     type,
     ratio,
@@ -20,12 +21,12 @@ class VideoSupportInfo private constructor(
 ) {
 
     companion object {
-
         fun create(
             width: Int,
             height: Int,
             quality: Int,
-            videoParams: VideoParamsInfo
+            videoParams: VideoParamsInfo,
+            audioParams: AudioParamsInfo?
         ): VideoSupportInfo {
             val size = create(width, height)
             return VideoSupportInfo(
@@ -34,13 +35,14 @@ class VideoSupportInfo private constructor(
                 size.width,
                 size.height,
                 quality,
-                videoParams
+                videoParams,
+                audioParams
             )
         }
     }
 
     override fun toString(): String {
-        return "{type=${typeString()}, ratio=$ratio, width=$width, height=$height, quality=$quality, videoParams=$videoParams}"
+        return "{type=${typeString()}, ratio=$ratio, width=$width, height=$height, quality=$quality, videoParams=$videoParams, audioParams=$audioParams}"
     }
 
 }
@@ -63,13 +65,17 @@ class VideoParamsInfo private constructor(
 
 class AudioParamsInfo private constructor(
     val channels: Int,
-    val sampleRate: Int,
+    val samplingRate: Int,
     val bitrate: Int,
     val encoder: Int
 ) {
     companion object {
-        fun create(channels: Int, sampleRate: Int, bitrate: Int, encoder: Int): AudioParamsInfo {
-            return AudioParamsInfo(channels, sampleRate, bitrate, encoder)
+        fun create(channels: Int, samplingRate: Int, bitrate: Int, encoder: Int): AudioParamsInfo {
+            return AudioParamsInfo(channels, samplingRate, bitrate, encoder)
         }
+    }
+
+    override fun toString(): String {
+        return "{channels=$channels, samplingRate=$samplingRate, bitrate=$bitrate, encoder=$encoder}"
     }
 }
