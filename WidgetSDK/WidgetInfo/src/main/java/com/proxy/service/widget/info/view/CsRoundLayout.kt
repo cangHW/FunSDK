@@ -1,11 +1,20 @@
 package com.proxy.service.widget.info.view
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
+import android.graphics.Outline
+import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.RelativeLayout
+import androidx.annotation.StyleableRes
+import com.proxy.service.core.framework.app.resource.CsDpUtils
 import com.proxy.service.widget.info.R
 
 /**
@@ -13,33 +22,39 @@ import com.proxy.service.widget.info.R
  * @date: 2023/11/20 11:47
  * @desc:
  */
-class CsRoundLayout : RelativeLayout {
+class CsRoundLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : RelativeLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     private val rectF = RectF()
     private val radiusF = FloatArray(8)
     private val path = Path()
 
-    private var radiusLT = 0f
-    private var radiusRT = 0f
-    private var radiusLB = 0f
-    private var radiusRB = 0f
-
     private var maxHeight = -1
+    private var pathDirty = true
+    private var isUniformRadius = true
+    private var uniformRadius = 0f
 
-    constructor(context: Context) : super(context) {
-        init(context, null)
+    private val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    private val roundOutlineProvider = object : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            outline.setRoundRect(0, 0, view.width, view.height, uniformRadius)
+        }
+    }
+
+    init {
+        setWillNotDraw(false)
         init(context, attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        init(context, attrs)
+    private fun getDimenPixelSize(array: TypedArray, @StyleableRes index: Int): Int {
+        return array.getDimensionPixelSize(index, -1)
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
@@ -47,73 +62,88 @@ class CsRoundLayout : RelativeLayout {
             return
         }
         val array = context.obtainStyledAttributes(attrs, R.styleable.CsRoundLayout)
-        val radius = array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius, -1)
-        val radius_l_t =
-            array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius_top_left, -1)
-        val radius_r_t =
-            array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius_top_right, -1)
-        val radius_r_b =
-            array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius_bottom_right, -1)
-        val radius_l_b =
-            array.getDimensionPixelSize(R.styleable.CsRoundLayout_round_radius_bottom_left, -1)
-        maxHeight =
-            array.getDimensionPixelSize(R.styleable.CsRoundLayout_max_height, -1)
+
+        val radius = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius)
+        val rTl = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_top_left)
+        val rTr = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_top_right)
+        val rBr = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_bottom_right)
+        val rBl = getDimenPixelSize(array, R.styleable.CsRoundLayout_round_radius_bottom_left)
+        maxHeight = getDimenPixelSize(array, R.styleable.CsRoundLayout_max_height)
         array.recycle()
 
+        var finalTL = 0f
+        var finalTR = 0f
+        var finalBR = 0f
+        var finalBL = 0f
+
         if (radius >= 0) {
-            radiusLT = radius.toFloat()
-            radiusRT = radius.toFloat()
-            radiusLB = radius.toFloat()
-            radiusRB = radius.toFloat()
+            finalTL = radius.toFloat()
+            finalTR = radius.toFloat()
+            finalBR = radius.toFloat()
+            finalBL = radius.toFloat()
         }
 
-        if (radius_l_t >= 0) {
-            radiusLT = radius_l_t.toFloat()
+        if (rTl >= 0) {
+            finalTL = rTl.toFloat()
         }
 
-        if (radius_r_t >= 0) {
-            radiusRT = radius_r_t.toFloat()
+        if (rTr >= 0) {
+            finalTR = rTr.toFloat()
         }
 
-        if (radius_r_b >= 0) {
-            radiusRB = radius_r_b.toFloat()
+        if (rBr >= 0) {
+            finalBR = rBr.toFloat()
         }
 
-        if (radius_l_b >= 0) {
-            radiusLB = radius_l_b.toFloat()
+        if (rBl >= 0) {
+            finalBL = rBl.toFloat()
         }
 
-        radiusF[0] = radiusLT
-        radiusF[1] = radiusLT
-        radiusF[2] = radiusRT
-        radiusF[3] = radiusRT
-        radiusF[4] = radiusRB
-        radiusF[5] = radiusRB
-        radiusF[6] = radiusLB
-        radiusF[7] = radiusLB
+        radiusF[0] = finalTL
+        radiusF[1] = finalTL
+        radiusF[2] = finalTR
+        radiusF[3] = finalTR
+        radiusF[4] = finalBR
+        radiusF[5] = finalBR
+        radiusF[6] = finalBL
+        radiusF[7] = finalBL
+
+        isUniformRadius = isUniform()
+        uniformRadius = if (isUniformRadius) radiusF[0] else 0f
     }
 
     /**
      * 设置圆角
      * */
-    fun setRadius(radius: Int) {
-        setRadius(radius, radius, radius, radius)
+    fun setRadiusDp(radius: Float) {
+        val r = CsDpUtils.dp2pxf(radius)
+        updateRadiusF(r, r, r, r)
     }
 
     /**
      * 设置圆角
      * */
-    fun setRadius(radiusLT: Int, radiusRT: Int, radiusRB: Int, radiusLB: Int) {
-        radiusF[0] = radiusLT.toFloat()
-        radiusF[1] = radiusLT.toFloat()
-        radiusF[2] = radiusRT.toFloat()
-        radiusF[3] = radiusRT.toFloat()
-        radiusF[4] = radiusRB.toFloat()
-        radiusF[5] = radiusRB.toFloat()
-        radiusF[6] = radiusLB.toFloat()
-        radiusF[7] = radiusLB.toFloat()
-        requestLayout()
-        postInvalidate()
+    fun setRadiusPx(radius: Int) {
+        setRadiusPx(radius, radius, radius, radius)
+    }
+
+    /**
+     * 设置圆角
+     * */
+    fun setRadiusDp(rTl: Float, rTr: Float, rBr: Float, rBl: Float) {
+        updateRadiusF(
+            CsDpUtils.dp2pxf(rTl),
+            CsDpUtils.dp2pxf(rTr),
+            CsDpUtils.dp2pxf(rBr),
+            CsDpUtils.dp2pxf(rBl)
+        )
+    }
+
+    /**
+     * 设置圆角
+     * */
+    fun setRadiusPx(rTl: Int, rTr: Int, rBr: Int, rBl: Int) {
+        updateRadiusF(rTl.toFloat(), rTr.toFloat(), rBr.toFloat(), rBl.toFloat())
     }
 
     /**
@@ -122,45 +152,98 @@ class CsRoundLayout : RelativeLayout {
     fun setMaxHeight(maxHeight: Int) {
         this.maxHeight = maxHeight
         requestLayout()
+        postInvalidate()
+    }
+
+
+    private fun updateRadiusF(rTl: Float, rTr: Float, rBr: Float, rBl: Float) {
+        radiusF[0] = rTl
+        radiusF[1] = rTl
+        radiusF[2] = rTr
+        radiusF[3] = rTr
+        radiusF[4] = rBr
+        radiusF[5] = rBr
+        radiusF[6] = rBl
+        radiusF[7] = rBl
+        pathDirty = true
+        rebuildPathIfNeeded()
+        postInvalidate()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var heightSpec = heightMeasureSpec
-        if (maxHeight > 0) {
-            heightSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST)
+        if (maxHeight >= 0) {
+            val parentSize = MeasureSpec.getSize(heightMeasureSpec)
+            val parentMode = MeasureSpec.getMode(heightMeasureSpec)
+            when (parentMode) {
+                MeasureSpec.EXACTLY -> {
+                    heightSpec = MeasureSpec.makeMeasureSpec(
+                        minOf(parentSize, maxHeight), MeasureSpec.EXACTLY
+                    )
+                }
+
+                MeasureSpec.AT_MOST -> {
+                    heightSpec = MeasureSpec.makeMeasureSpec(
+                        minOf(parentSize, maxHeight), MeasureSpec.AT_MOST
+                    )
+                }
+
+                else -> {
+                    heightSpec = MeasureSpec.makeMeasureSpec(
+                        maxHeight, MeasureSpec.AT_MOST
+                    )
+                }
+            }
         }
         super.onMeasure(widthMeasureSpec, heightSpec)
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
-        rectF.left = 0f
-        rectF.top = 0f
-        rectF.right = (r - l).toFloat()
-        rectF.bottom = (b - t).toFloat()
+        if (changed) {
+            pathDirty = true
+        }
+        rebuildPathIfNeeded()
+    }
 
+    private fun rebuildPathIfNeeded() {
+        if (!pathDirty || width == 0 || height == 0) {
+            return
+        }
+        pathDirty = false
+        rectF.set(0f, 0f, width.toFloat(), height.toFloat())
         path.reset()
         path.addRoundRect(rectF, radiusF, Path.Direction.CCW)
+        applyClippingMode()
     }
 
-    override fun dispatchDraw(canvas: Canvas) {
-        val num = canvas.save()
-        canvas.clipPath(path)
-        super.dispatchDraw(canvas)
-        canvas.restoreToCount(num)
+    private fun isUniform(): Boolean {
+        val r = radiusF[0]
+        return radiusF[2] == r && radiusF[4] == r && radiusF[6] == r
     }
 
-    override fun onDrawForeground(canvas: Canvas) {
-        val num = canvas.save()
-        canvas.clipPath(path)
-        super.onDrawForeground(canvas)
-        canvas.restoreToCount(num)
+    private fun applyClippingMode() {
+        isUniformRadius = isUniform()
+        uniformRadius = if (isUniformRadius) radiusF[0] else 0f
+
+        if (isUniformRadius && uniformRadius > 0f) {
+            outlineProvider = roundOutlineProvider
+            clipToOutline = true
+        } else {
+            outlineProvider = ViewOutlineProvider.BACKGROUND
+            clipToOutline = false
+        }
+        invalidateOutline()
     }
 
     override fun draw(canvas: Canvas) {
-        val num = canvas.save()
-        canvas.clipPath(path)
+        if (isUniformRadius) {
+            super.draw(canvas)
+            return
+        }
+        val count = canvas.saveLayer(rectF, null)
         super.draw(canvas)
-        canvas.restoreToCount(num)
+        canvas.drawPath(path, maskPaint)
+        canvas.restoreToCount(count)
     }
 }
