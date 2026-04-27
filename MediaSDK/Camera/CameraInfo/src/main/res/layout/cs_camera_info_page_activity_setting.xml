@@ -80,15 +80,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#24FFFFFF" />
-
-                <com.proxy.service.camera.info.page.view.CameraPageSettingItemView
-                    android:id="@+id/cs_media_camera_setting_item_video_fps"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView

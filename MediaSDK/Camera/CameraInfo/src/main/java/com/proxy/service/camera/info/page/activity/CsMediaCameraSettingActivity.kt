@@ -111,15 +111,6 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
                 }
                 .show(this)
         }
-
-
-        binding?.csMediaCameraSettingItemVideoFps?.show(
-            CameraPageSettingItemView.builder()
-                .setIcon(android.R.drawable.ic_menu_recent_history)
-                .setTitle(R.string.cs_camera_info_page_setting_video_fps)
-                .setContent(R.string.cs_camera_info_page_setting_value_60fps.toString())
-                .build()
-        )
     }
 
     private fun updateConfigConfig() {
@@ -127,9 +118,12 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
             CameraPageSettingItemView.builder()
                 .setIcon(android.R.drawable.ic_menu_sort_by_size)
                 .setTitle(R.string.cs_camera_info_page_setting_grid)
-                .setSelect(false)
+                .setSelect(CameraSettingCache.isGridEnabled())
                 .build()
         )
+        binding?.csMediaCameraSettingItemCommonGrid?.setOnViewSelectListener {
+            CameraSettingCache.saveGridEnabled(it)
+        }
 
         binding?.csMediaCameraSettingItemCommonLevel?.show(
             CameraPageSettingItemView.builder()

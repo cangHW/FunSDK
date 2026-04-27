@@ -30,6 +30,7 @@ object CameraSettingCache {
     private const val KEY_SCREEN_SUPPORT_SIZE_TYPE = "key_screen_support_size_type"
     private const val KEY_PICTURE_CAPTURE = "key_picture_capture_"
     private const val KEY_VIDEO_RECORD = "key_video_record_"
+    private const val KEY_GRID_ENABLED = "key_grid_enabled"
 
 
     fun getScreenSize(): ScreenInfo {
@@ -117,6 +118,14 @@ object CameraSettingCache {
 
     fun savaVideoRecordSize(mode: CameraFaceMode, size: VideoSupportInfo) {
         sp.put(createKey(KEY_VIDEO_RECORD, mode), CsJsonUtils.toJson(size))
+    }
+
+    fun isGridEnabled(): Boolean {
+        return sp.getBoolean(KEY_GRID_ENABLED, false)
+    }
+
+    fun saveGridEnabled(enabled: Boolean) {
+        sp.put(KEY_GRID_ENABLED, enabled)
     }
 
 

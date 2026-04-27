@@ -122,7 +122,7 @@ class CameraPageSettingItemView : LinearLayoutCompat {
         builder.isSelect()?.let {
             binding?.csMediaCameraSettingItemTextLayout?.visibility = View.GONE
             binding?.csMediaCameraSettingItemTextSwitch?.visibility = View.VISIBLE
-            binding?.csMediaCameraSettingItemTextSwitch?.isSelected = it
+            binding?.csMediaCameraSettingItemTextSwitch?.isChecked = it
 
             binding?.csMediaCameraSettingItemTextSwitch?.setOnCheckedChangeListener { _, isChecked ->
                 onViewSelectListener?.invoke(isChecked)

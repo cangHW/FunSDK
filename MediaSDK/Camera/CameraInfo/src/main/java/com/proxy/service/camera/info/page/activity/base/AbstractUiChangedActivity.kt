@@ -22,12 +22,17 @@ abstract class AbstractUiChangedActivity : AbstractCameraActivity() {
 
     override fun onResume() {
         super.onResume()
+        refreshGridLine()
         refreshUiSize()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         refreshUiSize()
+    }
+
+    protected fun refreshGridLine() {
+        binding?.cameraGridLine?.setGridEnabled(CameraSettingCache.isGridEnabled())
     }
 
     protected fun refreshUiSize() {

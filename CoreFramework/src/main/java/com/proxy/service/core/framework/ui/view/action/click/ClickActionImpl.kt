@@ -23,8 +23,14 @@ class ClickActionImpl(private val view: View?) : IClickAction() {
             return
         }
         view.setOnClickListener {
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastClickTime > debounceTime) {
+            val currentTime = System.nanoTime()
+            val offset = if (debounceTime == 0L) {
+                debounceTime
+            } else {
+                (currentTime - lastClickTime) / 1000 * 1000
+            }
+
+            if (offset >= debounceTime) {
                 lastClickTime = currentTime
                 try {
                     callback.onViewActionCall(Unit)
