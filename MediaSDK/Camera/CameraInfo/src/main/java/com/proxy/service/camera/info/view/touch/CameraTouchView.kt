@@ -5,7 +5,7 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
-import com.proxy.service.camera.info.view.touch.mode.AfModeDispatch
+import com.proxy.service.camera.info.view.touch.mode.MeteringModeDispatch
 import com.proxy.service.core.service.task.CsTask
 
 /**
@@ -19,7 +19,7 @@ class CameraTouchView : BaseTouchView {
 
     private var touchDispatch: ITouchDispatch? = null
 
-    private val afModeIntercept = AfModeDispatch(this, handler)
+    private val meteringModeIntercept = MeteringModeDispatch(this, handler)
 
 
     constructor(context: Context) : super(context)
@@ -30,8 +30,8 @@ class CameraTouchView : BaseTouchView {
         this.touchDispatch = touchDispatch
     }
 
-    fun setOnCameraAfIntercept(intercept: AfModeDispatch.OnCameraAfIntercept) {
-        afModeIntercept.setOnCameraAfIntercept(intercept)
+    fun setOnCameraMeteringIntercept(intercept: MeteringModeDispatch.OnCameraMeteringIntercept) {
+        meteringModeIntercept.setOnCameraMeteringIntercept(intercept)
     }
 
 
@@ -54,7 +54,7 @@ class CameraTouchView : BaseTouchView {
 
     override fun onViewSingleTap(e: MotionEvent) {
         touchDispatch?.onViewSingleTap(e)
-        afModeIntercept.onViewSingleTap(e)
+        meteringModeIntercept.onViewSingleTap(e)
     }
 
     override fun onViewDoubleTap(e: MotionEvent) {
@@ -63,12 +63,12 @@ class CameraTouchView : BaseTouchView {
 
     override fun onViewLongPress(e: MotionEvent) {
         touchDispatch?.onViewLongPress(e)
-        afModeIntercept.onViewLongPress(e)
+        meteringModeIntercept.onViewLongPress(e)
     }
 
     override fun onViewDraw(canvas: Canvas) {
         touchDispatch?.onViewDraw(canvas)
-        afModeIntercept.onViewDraw(canvas)
+        meteringModeIntercept.onViewDraw(canvas)
     }
 
 }

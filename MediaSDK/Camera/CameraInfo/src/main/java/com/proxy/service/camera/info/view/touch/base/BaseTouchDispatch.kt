@@ -8,7 +8,9 @@ import com.proxy.service.camera.base.callback.view.CustomTouchDispatch
  * @data: 2026/2/11 10:14
  * @desc:
  */
-abstract class BaseTouchDispatch(private val view: View) : CustomTouchDispatch() {
+abstract class BaseTouchDispatch(
+    private val view: View
+) : CustomTouchDispatch() {
 
     protected fun postInvalidate() {
         view.postInvalidate()

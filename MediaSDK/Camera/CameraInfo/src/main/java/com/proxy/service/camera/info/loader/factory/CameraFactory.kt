@@ -14,10 +14,10 @@ import com.proxy.service.camera.base.loader.info.SupportSize
 import com.proxy.service.camera.base.loader.info.VideoParamsInfo
 import com.proxy.service.camera.base.loader.info.VideoSupportInfo
 import com.proxy.service.camera.base.mode.loader.VideoPatternMode
+import com.proxy.service.camera.info.loader.factory.MeteringRegionsSupportInfo.RegionsSupport
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.Collections
-import java.util.Objects
 
 /**
  * @author: cangHX
@@ -35,10 +35,12 @@ object CameraFactory {
     private var faceBackId: String? = null
     private var faceFrontId: String? = null
 
+    private val meteringRegionsSupportInfo = MeteringRegionsSupportInfo()
+
     private val supportedPreviewSizesMap = HashMap<String, List<SupportSize>>()
     private val supportedCaptureSizesMap = HashMap<String, List<SupportSize>>()
     private val supportedRecordSizesMap = HashMap<String, List<SupportSize>>()
-    private val recommendPreviewSizesMap = HashMap<String, List<VideoSupportInfo>>()
+    private val recommendRecordSizesMap = HashMap<String, List<VideoSupportInfo>>()
 
     /**
      * 相机管理类
@@ -139,12 +141,12 @@ object CameraFactory {
     /**
      * 获取推荐的录制视频参数
      * */
-    fun getRecommendRecordSizes(
+    fun getRecommendRecordInfos(
         cameraId: String,
         pattern: VideoPatternMode
     ): List<VideoSupportInfo>? {
         val key = "${cameraId}_${pattern.name}"
-        val size = recommendPreviewSizesMap[key]
+        val size = recommendRecordSizesMap[key]
         if (size != null) {
             return size
         }
@@ -291,16 +293,24 @@ object CameraFactory {
             }
         })
 
-        recommendPreviewSizesMap[key] = sList.toSet().toList()
+        recommendRecordSizesMap[key] = sList.toSet().toList()
         return sList
     }
 
     /**
-     * 获取摄像头传感器角度
+     * 获取摄像头传感器旋转角度
      * */
     fun getSensorOrientation(cameraId: String): Int {
         val characteristics = manager?.getCameraCharacteristics(cameraId)
         return characteristics?.get(CameraCharacteristics.SENSOR_ORIENTATION) ?: 0
+    }
+
+    /**
+     * 获取摄像头传感器测光功能支持信息
+     * */
+    fun getSensorRegionsSupport(cameraId: String): RegionsSupport? {
+        val manager = this.manager ?: return null
+        return meteringRegionsSupportInfo.getRegionsSupport(manager, cameraId)
     }
 
 

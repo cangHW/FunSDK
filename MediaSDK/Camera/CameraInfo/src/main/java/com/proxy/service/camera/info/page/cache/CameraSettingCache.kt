@@ -97,7 +97,7 @@ object CameraSettingCache {
     }
 
 
-    fun getVideoRecordSize(mode: CameraFaceMode): VideoSupportInfo {
+    fun getVideoRecordInfo(mode: CameraFaceMode): VideoSupportInfo {
         try {
             val json = sp.getString(createKey(KEY_VIDEO_RECORD, mode), null)
             val size = CsJsonUtils.fromJson(json, VideoSupportInfo::class.java)
@@ -107,20 +107,20 @@ object CameraSettingCache {
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }
-        return createDefaultVideoRecordSize(mode)
+        return createDefaultVideoRecordInfo(mode)
     }
 
-    fun getVideoRecordAllSupportSize(mode: CameraFaceMode): List<VideoSupportInfo> {
+    fun getVideoRecordAllSupportInfos(mode: CameraFaceMode): List<VideoSupportInfo> {
         val list = ArrayList<VideoSupportInfo>()
 
-        CsMediaCamera.getRecommendRecordSizes(mode, VideoPatternMode.NORMAL)?.let {
+        CsMediaCamera.getRecommendRecordInfos(mode, VideoPatternMode.NORMAL)?.let {
             list.addAll(it)
         }
 
         return list
     }
 
-    fun savaVideoRecordSize(mode: CameraFaceMode, size: VideoSupportInfo) {
+    fun savaVideoRecordInfo(mode: CameraFaceMode, size: VideoSupportInfo) {
         sp.put(createKey(KEY_VIDEO_RECORD, mode), CsJsonUtils.toJson(size))
     }
 
@@ -167,8 +167,8 @@ object CameraSettingCache {
         return size
     }
 
-    private fun createDefaultVideoRecordSize(mode: CameraFaceMode): VideoSupportInfo {
-        val sizes = CsMediaCamera.getRecommendRecordSizes(mode, VideoPatternMode.NORMAL)
+    private fun createDefaultVideoRecordInfo(mode: CameraFaceMode): VideoSupportInfo {
+        val sizes = CsMediaCamera.getRecommendRecordInfos(mode, VideoPatternMode.NORMAL)
         if (sizes.isNullOrEmpty()) {
             val videoParams = VideoParamsInfo.create(
                 CameraConstants.DEFAULT_VIDEO_FRAME_RATE,
@@ -199,7 +199,7 @@ object CameraSettingCache {
         if (size == null) {
             size = sizes[0]
         }
-        savaVideoRecordSize(mode, size)
+        savaVideoRecordInfo(mode, size)
         return size
     }
 

@@ -57,25 +57,25 @@ class SensorFactory : RotationChangedCallback {
         when (orientation) {
             in 0..45, in 315..360 -> {
                 // 竖屏
-                CsLogger.tag(TAG).d("onRotationChanged. 竖屏")
+//                CsLogger.tag(TAG).d("onRotationChanged. 竖屏")
                 callRotation(orientation, RotationEnum.ROTATION_0)
             }
 
             in 135..225 -> {
                 // 倒置竖屏
-                CsLogger.tag(TAG).d("onRotationChanged. 倒置竖屏")
+//                CsLogger.tag(TAG).d("onRotationChanged. 倒置竖屏")
                 callRotation(orientation, RotationEnum.ROTATION_180)
             }
 
             in 45..135 -> {
                 // 横屏（逆时针旋转 90°）
-                CsLogger.tag(TAG).d("onRotationChanged. 横屏（逆时针旋转 90°）")
+//                CsLogger.tag(TAG).d("onRotationChanged. 横屏（逆时针旋转 90°）")
                 callRotation(orientation, RotationEnum.ROTATION_270)
             }
 
             in 225..315 -> {
                 // 横屏（顺时针旋转 90°）
-                CsLogger.tag(TAG).d("onRotationChanged. 横屏（顺时针旋转 90°）")
+//                CsLogger.tag(TAG).d("onRotationChanged. 横屏（顺时针旋转 90°）")
                 callRotation(orientation, RotationEnum.ROTATION_90)
             }
         }

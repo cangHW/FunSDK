@@ -3,7 +3,7 @@ package com.proxy.service.camera.base.view
 import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.loader.camera.ICameraAction
 import com.proxy.service.camera.base.loader.camera.ICameraFun
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 
 /**
  * @author: cangHX
@@ -21,9 +21,9 @@ interface ICameraView : ICameraAction, ICameraFun {
     fun setPreviewSize(width: Int, height: Int)
 
     /**
-     * 设置相机对焦模式
+     * 设置相机测光模式
      * */
-    fun setCameraViewAfMode(mode: CameraViewAfMode)
+    fun setCameraViewMeteringMode(mode: CameraViewMeteringMode)
 
 
 }

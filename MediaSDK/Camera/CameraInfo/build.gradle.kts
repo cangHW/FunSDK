@@ -48,8 +48,6 @@ dependencies {
     implementation(libs.service.widget)
     implementation(libs.service.threadpool)
 
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
-
     compileOnly(project(":MediaSDK:Camera:CameraBase"))
 }
 

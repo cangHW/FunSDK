@@ -1,6 +1,6 @@
 package com.proxy.service.camera.base.loader.camera
 
-import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraMeteringMode
 
 /**
  * @author: cangHX
@@ -10,8 +10,8 @@ import com.proxy.service.camera.base.mode.loader.CameraAfMode
 interface ICameraController : ICameraFun, ICameraPreview, ICameraActionGet, ICameraFunGet {
 
     /**
-     * 设置相机对焦模式
+     * 设置相机测光模式
      * */
-    fun setCameraAfMode(mode: CameraAfMode)
+    fun setCameraMeteringMode(mode: CameraMeteringMode)
 
 }

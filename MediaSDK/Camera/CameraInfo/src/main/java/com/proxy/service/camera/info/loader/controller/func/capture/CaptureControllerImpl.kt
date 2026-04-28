@@ -8,8 +8,8 @@ import android.hardware.camera2.CaptureRequest
 import android.os.Handler
 import com.proxy.service.camera.base.callback.loader.PictureCaptureByteCallback
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
-import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import com.proxy.service.camera.base.mode.loader.SensorOrientationMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
+import com.proxy.service.camera.info.loader.converter.CameraMeteringConverter
 import com.proxy.service.camera.info.loader.manager.CameraDeviceManager
 import com.proxy.service.camera.info.loader.manager.CaptureSessionManager
 import com.proxy.service.camera.info.utils.FileUtils
@@ -19,8 +19,6 @@ import com.proxy.service.core.framework.io.file.media.CsFileMediaUtils
 import com.proxy.service.core.framework.io.file.media.callback.InsertCallback
 import com.proxy.service.core.framework.io.file.media.config.MimeType
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
-import com.proxy.service.core.framework.system.screen.CsScreenUtils
-import com.proxy.service.core.service.media.CsMediaCamera
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.File
@@ -125,7 +123,7 @@ open class CaptureControllerImpl private constructor(
             callFailed()
             return
         }
-        val cameraFaceMode = funParamsController?.getCameraFaceMode()
+        val cameraFaceMode = funParamsController?.getCameraFaceModeFromFunController()
         if (cameraFaceMode == null) {
             CsLogger.tag(getTag()).e("cameraFaceMode is null.")
             callFailed()
@@ -150,6 +148,11 @@ open class CaptureControllerImpl private constructor(
             CsLogger.tag(getTag()).i("final rotation = $rotation")
             builder.set(CaptureRequest.JPEG_ORIENTATION, rotation)
             builder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO)
+
+            funParamsController?.getCameraMeteringModeFromFunController()?.let {
+                CameraMeteringConverter.applyMeteringMode(cameraFaceMode, it, CameraFunMode.CAPTURE, builder)
+            }
+
             captureSession.capture(
                 builder.build(),
                 object : CameraCaptureSession.CaptureCallback() {

@@ -27,7 +27,7 @@ abstract class AbstractCameraView(
 
     open fun init() {
         val loader = CsMediaCamera.createLoader()
-        loader?.setCameraAfMode(config.cameraViewAfMode.toCameraAfMode())
+        loader?.setCameraMeteringMode(config.cameraViewMeteringMode.toCameraMode())
         config.lifecycleOwner?.let {
             loader?.setLifecycleOwner(it)
         }

@@ -1,9 +1,9 @@
 package com.proxy.service.camera.base.constants
 
 import com.proxy.service.camera.base.mode.loader.AudioEncoderMode
-import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraMeteringMode
 import com.proxy.service.camera.base.mode.loader.VideoEncoderMode
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 import com.proxy.service.camera.base.mode.view.CameraViewMode
 
 /**
@@ -17,8 +17,9 @@ object CameraConstants {
 
     val DEFAULT_VIEW_MODE: CameraViewMode = CameraViewMode.SURFACE_VIEW
 
-    val DEFAULT_CAMERA_AF_MODE: CameraAfMode = CameraAfMode.AfAutoMode
-    val DEFAULT_CAMERA_VIEW_AF_MODE: CameraViewAfMode = CameraViewAfMode.AfTouchMode()
+    val DEFAULT_CAMERA_METERING_MODE: CameraMeteringMode = CameraMeteringMode.AutoMode
+    val DEFAULT_CAMERA_VIEW_METERING_MODE: CameraViewMeteringMode =
+        CameraViewMeteringMode.TouchMode()
 
 
     const val DEFAULT_PICTURE_CAPTURE_SIZE_WIDTH = 2560

@@ -1,5 +1,6 @@
 package com.proxy.service.core.service.media
 
+import android.graphics.Rect
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.camera.base.CameraService
 import com.proxy.service.camera.base.loader.ICameraLoader
@@ -77,18 +78,25 @@ object CsMediaCamera {
      *
      * @param pattern   录像模式
      * */
-    fun getRecommendRecordSizes(
+    fun getRecommendRecordInfos(
         mode: CameraFaceMode,
         pattern: VideoPatternMode
     ): List<VideoSupportInfo>? {
-        return getService()?.getRecommendRecordSizes(mode, pattern)
+        return getService()?.getRecommendRecordInfos(mode, pattern)
     }
 
     /**
-     * 获取摄像头传感器角度
+     * 获取摄像头传感器旋转角度
      * */
     fun getSensorOrientation(mode: CameraFaceMode): SensorOrientationMode? {
         return getService()?.getSensorOrientation(mode)
+    }
+
+    /**
+     * 获取摄像头传感器实际产生有效图像数据的像素区域
+     * */
+    fun getSensorActiveArraySize(mode: CameraFaceMode): Rect? {
+        return getService()?.getSensorActiveArraySize(mode)
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.proxy.service.camera.base
 
+import android.graphics.Rect
 import com.proxy.service.base.BaseService
 import com.proxy.service.camera.base.loader.ICameraLoader
 import com.proxy.service.camera.base.loader.info.SupportSize
@@ -47,15 +48,20 @@ interface CameraService : BaseService {
      *
      * @param pattern   录像模式
      * */
-    fun getRecommendRecordSizes(
+    fun getRecommendRecordInfos(
         mode: CameraFaceMode,
         pattern: VideoPatternMode
     ): List<VideoSupportInfo>
 
     /**
-     * 获取摄像头传感器角度
+     * 获取摄像头传感器旋转角度
      * */
     fun getSensorOrientation(mode: CameraFaceMode): SensorOrientationMode
+
+    /**
+     * 获取摄像头传感器实际产生有效图像数据的像素区域
+     * */
+    fun getSensorActiveArraySize(mode: CameraFaceMode): Rect?
 
     /**
      * 创建相机加载器

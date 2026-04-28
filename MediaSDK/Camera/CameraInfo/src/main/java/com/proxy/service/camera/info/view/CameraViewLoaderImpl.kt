@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 import com.proxy.service.camera.base.mode.view.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.base.view.ICameraViewLoader
@@ -51,8 +51,13 @@ class CameraViewLoaderImpl : ICameraViewLoader {
         return this
     }
 
-    override fun setCameraViewAfMode(mode: CameraViewAfMode): ICameraViewLoader {
-        config.cameraViewAfMode = mode
+    override fun setCameraViewMeteringMode(mode: CameraViewMeteringMode): ICameraViewLoader {
+        config.cameraViewMeteringMode = mode
+        return this
+    }
+
+    override fun setCameraViewMeteringRectVisible(visible: Boolean): ICameraViewLoader {
+        config.cameraViewMeteringRectVisible = visible
         return this
     }
 
@@ -85,7 +90,7 @@ class CameraViewLoaderImpl : ICameraViewLoader {
 
         val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.cs_camera_info_touch)
         cameraTouchView.setCustomTouchDispatch(touchDispatch)
-        cameraTouchView.setOnCameraAfIntercept(viewImpl)
+        cameraTouchView.setOnCameraMeteringIntercept(viewImpl)
         return viewImpl
     }
 
@@ -97,7 +102,7 @@ class CameraViewLoaderImpl : ICameraViewLoader {
 
         val cameraTouchView = rootView.findViewById<CameraTouchView>(R.id.cs_camera_info_touch)
         cameraTouchView.setCustomTouchDispatch(touchDispatch)
-        cameraTouchView.setOnCameraAfIntercept(viewImpl)
+        cameraTouchView.setOnCameraMeteringIntercept(viewImpl)
         return viewImpl
     }
 }

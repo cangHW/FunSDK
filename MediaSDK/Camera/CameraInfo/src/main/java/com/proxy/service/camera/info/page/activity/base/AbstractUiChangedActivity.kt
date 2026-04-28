@@ -55,7 +55,7 @@ abstract class AbstractUiChangedActivity : AbstractCameraActivity() {
             }
 
             CameraFunMode.RECORD -> {
-                CameraSettingCache.getVideoRecordSize(faceMode).apply {
+                CameraSettingCache.getVideoRecordInfo(faceMode).apply {
                     cameraRecordController?.setSurfaceSize(width, height)
                     cameraRecordController?.setVideoFrameRate(videoParams.frameRate)
                     cameraRecordController?.setVideoEncodingBitRate(videoParams.bitrate)

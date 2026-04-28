@@ -5,10 +5,8 @@ import com.proxy.service.camera.base.loader.camera.ICameraFun
 import com.proxy.service.camera.base.loader.camera.ICameraFunGet
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
-import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.camera.info.loader.controller.IFunController
-import com.proxy.service.camera.info.loader.controller.IFunController.IParamsController
 import com.proxy.service.camera.info.loader.controller.IFunController.SurfaceChangedCallback
 import com.proxy.service.camera.info.loader.controller.func.capture.CaptureControllerImpl
 import com.proxy.service.camera.info.loader.controller.func.record.RecordControllerImpl
@@ -50,8 +48,8 @@ abstract class AbstractCameraFunController : AbstractCameraPreviewController(), 
         return controller
     }
 
-    override fun findCaptureSessionSurfaces(list: ArrayList<Surface>) {
-        super.findCaptureSessionSurfaces(list)
+    override fun findCaptureSessionOutputSurfaces(list: ArrayList<Surface>) {
+        super.findCaptureSessionOutputSurfaces(list)
 
         funController?.getSurface()?.let {
             list.add(it)
@@ -93,11 +91,7 @@ abstract class AbstractCameraFunController : AbstractCameraPreviewController(), 
                 requestPreview(templateType, tempSurfaces, success, failed)
             }
         })
-        funController?.setParamsController(object : IParamsController {
-            override fun getCameraFaceMode(): CameraFaceMode? {
-                return cameraFaceMode
-            }
-        })
+        funController?.setParamsController(this)
     }
 
 }

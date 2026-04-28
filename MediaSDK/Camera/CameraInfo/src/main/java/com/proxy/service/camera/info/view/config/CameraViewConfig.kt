@@ -3,7 +3,7 @@ package com.proxy.service.camera.info.view.config
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 
 /**
  * @author: cangHX
@@ -15,6 +15,7 @@ class CameraViewConfig {
     var lifecycleOwner: LifecycleOwner? = null
 
     var cameraFaceMode: CameraFaceMode? = null
-    var cameraViewAfMode: CameraViewAfMode = CameraConstants.DEFAULT_CAMERA_VIEW_AF_MODE
+    var cameraViewMeteringMode: CameraViewMeteringMode = CameraConstants.DEFAULT_CAMERA_VIEW_METERING_MODE
+    var cameraViewMeteringRectVisible: Boolean = true
 
 }

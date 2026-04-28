@@ -58,6 +58,9 @@ abstract class AbstractSurfaceOrientationActivity : AbstractUiChangedActivity() 
 
     private val sensorRotationCallback = object : SensorRotationCallback {
         override fun onRotation(orientation: Int, rotation: RotationEnum) {
+            if (sensorRotation == rotation) {
+                return
+            }
             CsLogger.tag(getTag()).d("sensorRotationCallback. rotation=$rotation")
             sensorRotation = rotation
         }

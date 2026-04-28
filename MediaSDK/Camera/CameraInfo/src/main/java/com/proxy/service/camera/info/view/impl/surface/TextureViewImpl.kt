@@ -26,6 +26,7 @@ class TextureViewImpl(
     private var surfaceHeight: Int = 0
 
     private var surface: SurfaceTexture? = null
+    private val lastDisplayMatrix = Matrix()
 
     override fun init() {
         super.init()
@@ -43,7 +44,10 @@ class TextureViewImpl(
             return
         }
 
-        view.setTransform(createTransformImageMatrix(surfaceWidth, surfaceHeight))
+        val displayMatrix = createTransformImageMatrix(surfaceWidth, surfaceHeight)
+        lastDisplayMatrix.set(displayMatrix)
+
+        view.setTransform(displayMatrix)
         surface.setDefaultBufferSize(previewSize.width, previewSize.height)
         cameraController?.setPreviewSurface(Surface(surface))
         cameraController?.startPreview()
@@ -78,6 +82,7 @@ class TextureViewImpl(
             this@TextureViewImpl.surface = null
             surfaceWidth = 0
             surfaceHeight = 0
+            lastDisplayMatrix.reset()
             rotation = null
             stopPreview()
 
@@ -107,5 +112,9 @@ class TextureViewImpl(
         CsLogger.tag(tag).i("调整预览旋转角度 rotation = $rotation")
         matrix.postRotate(rotation.toFloat(), centerX, centerY)
         return matrix
+    }
+
+    override fun getPreviewDisplayMatrix(): Matrix {
+        return Matrix(lastDisplayMatrix)
     }
 }

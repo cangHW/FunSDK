@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraController
-import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraMeteringMode
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
@@ -25,9 +25,9 @@ interface ICameraLoader {
     fun setLifecycleOwner(owner: LifecycleOwner): ICameraLoader
 
     /**
-     * 设置相机对焦模式, 默认 [CameraConstants.DEFAULT_CAMERA_AF_MODE]
+     * 设置相机测光模式, 默认 [CameraConstants.DEFAULT_CAMERA_METERING_MODE]
      * */
-    fun setCameraAfMode(mode: CameraAfMode): ICameraLoader
+    fun setCameraMeteringMode(mode: CameraMeteringMode): ICameraLoader
 
     /**
      * 创建并开启相机

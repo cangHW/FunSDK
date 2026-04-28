@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 import com.proxy.service.camera.base.mode.view.CameraViewMode
 
 /**
@@ -36,9 +36,14 @@ interface ICameraViewLoader {
     fun setCameraViewMode(mode: CameraViewMode): ICameraViewLoader
 
     /**
-     * 设置相机对焦模式, 默认 [CameraConstants.DEFAULT_CAMERA_VIEW_AF_MODE]
+     * 设置相机测光模式, 默认 [CameraConstants.DEFAULT_CAMERA_VIEW_METERING_MODE]
      * */
-    fun setCameraViewAfMode(mode: CameraViewAfMode): ICameraViewLoader
+    fun setCameraViewMeteringMode(mode: CameraViewMeteringMode): ICameraViewLoader
+
+    /**
+     * 设置触摸测光框是否显示, 默认 true
+     * */
+    fun setCameraViewMeteringRectVisible(visible: Boolean): ICameraViewLoader
 
     /**
      * 创建相机 view 到 ViewGroup

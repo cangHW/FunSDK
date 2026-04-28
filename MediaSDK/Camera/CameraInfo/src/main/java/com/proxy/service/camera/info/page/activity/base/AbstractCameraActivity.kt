@@ -7,7 +7,7 @@ import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 import com.proxy.service.camera.base.mode.view.CameraViewMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.camera.info.R
@@ -102,7 +102,7 @@ abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityC
 //            ?.setCameraViewMode(CameraViewMode.TEXTURE_VIEW)
             ?.setCameraViewMode(CameraViewMode.SURFACE_VIEW)
             ?.setCameraFaceMode(cameraFaceMode)
-            ?.setCameraViewAfMode(CameraViewAfMode.AfTouchMode())
+            ?.setCameraViewMeteringMode(CameraViewMeteringMode.TouchMode())
             ?.createTo(findViewById(R.id.cs_camera_info_preview))
 
 

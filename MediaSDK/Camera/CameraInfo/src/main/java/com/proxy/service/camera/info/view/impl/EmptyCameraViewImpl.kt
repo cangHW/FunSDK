@@ -4,7 +4,7 @@ import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.controller.ICameraCaptureController
 import com.proxy.service.camera.base.loader.controller.ICameraRecordController
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
-import com.proxy.service.camera.base.mode.view.CameraViewAfMode
+import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 import com.proxy.service.camera.base.view.ICameraView
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -23,8 +23,8 @@ class EmptyCameraViewImpl: ICameraView {
         CsLogger.tag(TAG).i("setPreviewSize. width=$width, height=$height")
     }
 
-    override fun setCameraViewAfMode(mode: CameraViewAfMode) {
-        CsLogger.tag(TAG).i("setCameraViewAfMode. mode=$mode")
+    override fun setCameraViewMeteringMode(mode: CameraViewMeteringMode) {
+        CsLogger.tag(TAG).i("setCameraViewMeteringMode. mode=$mode")
     }
 
     override fun openCamera(mode: CameraFaceMode) {

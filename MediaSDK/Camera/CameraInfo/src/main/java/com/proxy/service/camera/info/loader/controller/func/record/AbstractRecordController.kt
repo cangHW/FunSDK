@@ -201,7 +201,7 @@ abstract class AbstractRecordController : BaseSurfaceController(), ICameraRecord
 
 
     private fun calculateRotation(): Int {
-        val cameraFaceMode = funParamsController?.getCameraFaceMode()
+        val cameraFaceMode = funParamsController?.getCameraFaceModeFromFunController()
         val orientation = if (cameraFaceMode == null) {
             SensorOrientationMode.ORIENTATION_0
         } else {

@@ -16,57 +16,76 @@ import java.util.concurrent.TimeUnit
  * @data: 2026/2/11 10:11
  * @desc:
  */
-class AfModeDispatch(
-    view: View,
+class MeteringModeDispatch(
+    private val view: View,
     private val handler: IHandlerOption?
 ) : BaseTouchDispatch(view) {
 
-    interface OnCameraAfIntercept {
+    data class MeteringTouchResult(
+        val rect: RectF?,
+        val needReset: Boolean = true
+    )
+
+    interface OnCameraMeteringIntercept {
         /**
-         * 检测是否触发手动对焦
+         * 检测是否触发触摸测光
          * */
-        fun onTouchAfIntercept(event: MotionEvent): RectF?
+        fun onTouchMeteringIntercept(
+            event: MotionEvent,
+            viewWidth: Int,
+            viewHeight: Int
+        ): MeteringTouchResult?
+
+        /**
+         * 触摸测光超时，恢复自动测光
+         * */
+        fun onTouchMeteringReset()
     }
 
     companion object {
-        private const val TASK_AF = "task_af"
-        private const val TASK_AF_DELAY_SECONDS = 5L
-        private val TASK_AF_LINE_WIDTH = CsDpUtils.dp2pxf(1f)
+        private const val TASK_METERING = "task_metering"
+        private const val TASK_METERING_DELAY_SECONDS = 3L
+        private val TASK_METERING_LINE_WIDTH = CsDpUtils.dp2pxf(1f)
 
     }
 
     private var paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    private var afRect: RectF? = null
+    private var meteringRect: RectF? = null
 
-    private var cameraAfIntercept: OnCameraAfIntercept? = null
+    private var meteringModeIntercept: OnCameraMeteringIntercept? = null
 
-    fun setOnCameraAfIntercept(intercept: OnCameraAfIntercept) {
-        this.cameraAfIntercept = intercept
+    fun setOnCameraMeteringIntercept(intercept: OnCameraMeteringIntercept) {
+        this.meteringModeIntercept = intercept
     }
 
     override fun onViewSingleTap(e: MotionEvent) {
         super.onViewSingleTap(e)
 
-        afRect = cameraAfIntercept?.onTouchAfIntercept(e)
-        afRect?.let {
-            handler?.clearAllTaskWithTag(TASK_AF)
+        val result = meteringModeIntercept?.onTouchMeteringIntercept(e, view.width, view.height)
+        meteringRect = result?.rect
+        meteringRect?.let {
             postInvalidate()
-            handler?.setDelay(TASK_AF_DELAY_SECONDS, TimeUnit.SECONDS)?.start(TASK_AF) {
-                afRect = null
+        }
+
+        if (result?.needReset == true) {
+            handler?.clearAllTaskWithTag(TASK_METERING)
+            handler?.setDelay(TASK_METERING_DELAY_SECONDS, TimeUnit.SECONDS)?.start(TASK_METERING) {
+                meteringRect = null
                 postInvalidate()
+                meteringModeIntercept?.onTouchMeteringReset()
             }
         }
     }
 
     override fun onViewDraw(canvas: Canvas) {
-        val rect = afRect ?: return
+        val rect = meteringRect ?: return
 
         val offsetW = rect.width() / 3
         val offsetH = rect.height() / 3
 
         paint.color = Color.WHITE
-        paint.strokeWidth = TASK_AF_LINE_WIDTH
+        paint.strokeWidth = TASK_METERING_LINE_WIDTH
 
         canvas.drawLine(rect.left, rect.top, rect.left + offsetW, rect.top, paint)
         canvas.drawLine(rect.right - offsetW, rect.top, rect.right, rect.top, paint)

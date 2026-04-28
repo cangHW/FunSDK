@@ -89,8 +89,8 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
     }
 
     private fun updateVideoConfig(faceMode: CameraFaceMode) {
-        val list = CameraSettingCache.getVideoRecordAllSupportSize(faceMode)
-        var currentSelected = CameraSettingCache.getVideoRecordSize(faceMode)
+        val list = CameraSettingCache.getVideoRecordAllSupportInfos(faceMode)
+        var currentSelected = CameraSettingCache.getVideoRecordInfo(faceMode)
 
         binding?.csCameraInfoSettingItemVideoResolution?.show(
             CameraPageSettingItemView.builder()
@@ -111,7 +111,7 @@ class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySett
                 .setItemClick {
                     currentSelected = list[it]
                     view.updateContent(currentSelected.toFullSizeString())
-                    CameraSettingCache.savaVideoRecordSize(faceMode, currentSelected)
+                    CameraSettingCache.savaVideoRecordInfo(faceMode, currentSelected)
                 }
                 .show(this)
         }

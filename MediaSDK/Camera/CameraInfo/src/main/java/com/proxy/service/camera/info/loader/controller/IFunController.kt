@@ -1,6 +1,7 @@
 package com.proxy.service.camera.info.loader.controller
 
 import android.view.Surface
+import com.proxy.service.camera.base.mode.loader.CameraMeteringMode
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
@@ -22,7 +23,9 @@ interface IFunController {
     }
 
     interface IParamsController {
-        fun getCameraFaceMode(): CameraFaceMode?
+        fun getCameraFaceModeFromFunController(): CameraFaceMode?
+
+        fun getCameraMeteringModeFromFunController(): CameraMeteringMode?
     }
 
     /**

@@ -5,7 +5,7 @@ import com.proxy.service.camera.base.callback.loader.CameraLoaderCallback
 import com.proxy.service.camera.base.constants.CameraConstants
 import com.proxy.service.camera.base.loader.camera.ICameraController
 import com.proxy.service.camera.base.loader.ICameraLoader
-import com.proxy.service.camera.base.mode.loader.CameraAfMode
+import com.proxy.service.camera.base.mode.loader.CameraMeteringMode
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 import com.proxy.service.camera.info.loader.camera.CameraControllerImpl
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -24,7 +24,7 @@ class CameraLoaderImpl : ICameraLoader {
 
     private var cameraLoaderCallback: CameraLoaderCallback? = null
     private var lifecycleOwner: LifecycleOwner? = null
-    private var cameraAfMode: CameraAfMode = CameraConstants.DEFAULT_CAMERA_AF_MODE
+    private var cameraMeteringMode: CameraMeteringMode = CameraConstants.DEFAULT_CAMERA_METERING_MODE
 
     override fun setCameraLoaderCallback(callback: CameraLoaderCallback): ICameraLoader {
         CsLogger.tag(TAG).i("setCameraLoaderCallback. callback=$callback")
@@ -38,9 +38,9 @@ class CameraLoaderImpl : ICameraLoader {
         return this
     }
 
-    override fun setCameraAfMode(mode: CameraAfMode): ICameraLoader {
-        CsLogger.tag(TAG).i("setCameraAfMode. mode=$mode")
-        this.cameraAfMode = mode
+    override fun setCameraMeteringMode(mode: CameraMeteringMode): ICameraLoader {
+        CsLogger.tag(TAG).i("setCameraMeteringMode. mode=$mode")
+        this.cameraMeteringMode = mode
         return this
     }
 
@@ -61,7 +61,7 @@ class CameraLoaderImpl : ICameraLoader {
         val controller = CameraControllerImpl()
 
         lifecycleOwner?.lifecycle?.addObserver(LifecycleObserverImpl(controller))
-        controller.setCameraAfMode(cameraAfMode)
+        controller.setCameraMeteringMode(cameraMeteringMode)
         controller.setCameraLoaderCallback(cameraLoaderCallback)
 
         return controller

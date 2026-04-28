@@ -1,5 +1,6 @@
 package com.proxy.service.camera.info
 
+import android.graphics.Rect
 import android.util.Size
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.camera.base.CameraService
@@ -69,7 +70,7 @@ class CameraServiceImpl : CameraService {
         return CameraFactory.getSupportedRecordSizes(cameraId) ?: arrayListOf()
     }
 
-    override fun getRecommendRecordSizes(
+    override fun getRecommendRecordInfos(
         mode: CameraFaceMode,
         pattern: VideoPatternMode
     ): List<VideoSupportInfo> {
@@ -80,7 +81,7 @@ class CameraServiceImpl : CameraService {
             return arrayListOf()
         }
 
-        return CameraFactory.getRecommendRecordSizes(cameraId, pattern) ?: arrayListOf()
+        return CameraFactory.getRecommendRecordInfos(cameraId, pattern) ?: arrayListOf()
     }
 
     override fun getSensorOrientation(mode: CameraFaceMode): SensorOrientationMode {
@@ -93,6 +94,17 @@ class CameraServiceImpl : CameraService {
 
         val so = CameraFactory.getSensorOrientation(cameraId)
         return SensorOrientationMode.valueOf(so) ?: return SensorOrientationMode.ORIENTATION_0
+    }
+
+    override fun getSensorActiveArraySize(mode: CameraFaceMode): Rect? {
+        val cameraId = mode.getCameraId()
+        if (cameraId.isNullOrEmpty()) {
+            CsLogger.tag(tag)
+                .e("当前摄像头模式不支持. cameraId=$cameraId, desc=${mode.getCameraDesc()}")
+            return null
+        }
+
+        return CameraFactory.getSensorRegionsSupport(cameraId)?.activeArraySizeRect
     }
 
     override fun createLoader(): ICameraLoader {
