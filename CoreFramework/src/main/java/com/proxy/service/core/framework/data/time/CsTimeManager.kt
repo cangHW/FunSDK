@@ -16,6 +16,11 @@ import com.proxy.service.core.framework.data.time.total.base.ITotalOption
  */
 object CsTimeManager {
 
+    const val SECONDS = 1000
+    const val MINUTES = 60 * SECONDS
+    const val HOURS = 60 * MINUTES
+    const val DAYS = 24 * HOURS
+
     private const val TAG = "${CoreConfig.TAG}TimeManager"
 
     private const val MAX_LENGTH = 13

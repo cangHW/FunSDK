@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 import com.proxy.service.camera.base.mode.loader.CameraFaceMode
+import com.proxy.service.camera.base.mode.loader.CameraFunMode
 import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.media.CsMediaCamera
@@ -24,6 +25,8 @@ class CameraPageActivity : BaseActivity<ActivityCameraPageBinding>() {
         super.onCreate(savedInstanceState)
 
         CsMediaCamera.createPageLoader()
+//            ?.setSupportCameraFunMode(listOf(CameraFunMode.CAPTURE))
+//            ?.setSupportCameraFunMode(listOf())
 //            ?.setDefaultCameraFaceMode(CameraFaceMode.FaceFront)
             ?.setPictureCaptureCallback(object : PictureCaptureCallback{
                 override fun onPictureCaptureSuccess(filePath: String) {

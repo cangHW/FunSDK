@@ -16,14 +16,18 @@ import com.proxy.service.core.framework.collections.type.Type
  * @desc:
  */
 class VideoRecordManager private constructor(
-    private val params: VideoRecordParams
+    private val params: VideoRecordParams,
+    private val stateChanged: ((VideoRecordState) -> Unit)?
 ) {
 
     companion object {
         private const val TAG = "${CameraConstants.TAG}Page_VideoRecordManager"
 
-        fun create(params: MediaCameraParams): VideoRecordManager {
-            return VideoRecordManager(params.videoRecordParams)
+        fun create(
+            params: MediaCameraParams,
+            stateChanged: ((VideoRecordState) -> Unit)? = null
+        ): VideoRecordManager {
+            return VideoRecordManager(params.videoRecordParams, stateChanged)
         }
     }
 
@@ -49,6 +53,8 @@ class VideoRecordManager private constructor(
             override fun onVideoRecordStateChanged(state: VideoRecordState) {
                 super.onVideoRecordStateChanged(state)
                 statusMap.putSync(cameraRecordController, state)
+                stateChanged?.invoke(state)
+                params.callback?.onVideoRecordStateChanged(state)
             }
 
             override fun onVideoRecordSuccess(filePath: String) {

@@ -39,7 +39,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="60dp"
-        android:src="@drawable/cs_camera_info_setting"
+        android:src="@drawable/cs_camera_info_camera_setting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,7 +84,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="40dp"
-            android:background="@drawable/cs_camera_info_change_camera_bg"
+            android:background="@drawable/cs_camera_info_camera_change_camera_bg"
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_guideline_left"
@@ -113,14 +113,29 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="40dp"
-            android:background="@drawable/cs_camera_info_change_camera_bg"
+            android:background="@drawable/cs_camera_info_camera_change_camera_bg"
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cs_camera_info_guideline_right"
             app:layout_constraintStart_toStartOf="@+id/cs_camera_info_guideline_right"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/cs_camera_info_change_camera" />
+            app:srcCompat="@drawable/cs_camera_info_camera_change_camera" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/cs_camera_info_record_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="00:00"
+        android:textColor="#FF1D1D"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

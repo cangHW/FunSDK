@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cs_camera_base_capture">照片</string>
+    <string name="cs_camera_base_record">录像</string>
+</resources>

@@ -1,8 +1,10 @@
 package com.proxy.service.camera.info.page.activity.base
 
 import android.content.Intent
+import android.view.View
 import com.proxy.service.camera.base.callback.view.ITouchDispatch
 import com.proxy.service.camera.base.mode.loader.CameraFunMode
+import com.proxy.service.camera.base.mode.loader.VideoRecordState
 import com.proxy.service.camera.info.R
 import com.proxy.service.camera.info.page.adapter.CameraModeListAdapter
 import com.proxy.service.camera.info.page.cache.CameraParamsCache
@@ -10,8 +12,15 @@ import com.proxy.service.camera.info.page.manager.CameraCustomTouchDispatch
 import com.proxy.service.camera.info.page.manager.PictureCaptureManager
 import com.proxy.service.camera.info.page.manager.VideoRecordManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.data.time.CsTimeManager
+import com.proxy.service.core.framework.data.time.enums.TimeIntervalFormat
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
+import com.proxy.service.threadpool.base.thread.task.IConsumer
+import com.proxy.service.threadpool.base.thread.task.IFunction
 import com.proxy.service.widget.info.toast.CsToast
 import com.proxy.service.widget.info.view.recyclerview.CsCenterSelectRecyclerView
+import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
@@ -51,7 +60,9 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
 
         params = tempParams
         pictureCaptureManager = PictureCaptureManager.create(tempParams)
-        videoRecordManager = VideoRecordManager.create(tempParams)
+        videoRecordManager = VideoRecordManager.create(tempParams) {
+            refreshRecordActionIcon(it)
+        }
 
         cameraFaceMode = params.defaultCameraFaceMode
         cameraFunMode = params.supportCameraFunModes.getOrNull(0)
@@ -66,7 +77,7 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
 
         if (cameraFunMode == CameraFunMode.CAPTURE) {
             pictureCaptureManager?.startPictureCapture(cameraCaptureController)
-        } else {
+        } else if (cameraFunMode == CameraFunMode.RECORD) {
             videoRecordManager?.startOrFinishRecord(cameraRecordController)
         }
     }
@@ -96,17 +107,20 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
 
         cameraCaptureController = null
         cameraRecordController = null
+        binding?.csCameraInfoRecordTime?.visibility = View.GONE
 
-        val funMode = params.supportCameraFunModes.getOrNull(newPosition)
-        binding?.csCameraInfoActionIcon?.setImageResource(funMode?.getModeRes() ?: 0)
-        cameraFunMode = funMode
+        cameraFunMode = params.supportCameraFunModes.getOrNull(newPosition)
 
-        when (funMode) {
+        when (cameraFunMode) {
             CameraFunMode.CAPTURE -> {
+                binding?.csCameraInfoActionIcon?.isSelected = false
+                binding?.csCameraInfoActionIcon?.setImageResource(R.drawable.cs_camera_info_camera_capture_photo)
                 cameraCaptureController = iCameraView?.chooseCaptureMode()
             }
 
             CameraFunMode.RECORD -> {
+                binding?.csCameraInfoActionIcon?.isSelected = false
+                binding?.csCameraInfoActionIcon?.setImageResource(R.drawable.cs_camera_info_camera_record_video_selector)
                 cameraRecordController = iCameraView?.chooseRecordMode()
             }
 
@@ -116,6 +130,64 @@ abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity
         }
 
         refreshUiSize()
+    }
+
+    private var recordTimeTask: ITaskDisposable? = null
+
+    private fun refreshRecordActionIcon(state: VideoRecordState) {
+        if (cameraFunMode != CameraFunMode.RECORD) {
+            return
+        }
+
+        CsLogger.tag(getTag()).e("refreshRecordActionIcon state=$state")
+
+        binding?.csCameraInfoActionIcon?.isSelected = when (state) {
+            VideoRecordState.STATE_STARTING -> {
+                true
+            }
+
+            VideoRecordState.STATE_RECORDING -> {
+                binding?.csCameraInfoRecordTime?.text = "00:00"
+                binding?.csCameraInfoRecordTime?.visibility = View.VISIBLE
+                recordTimeTask = CsTask.interval(0, 1, TimeUnit.SECONDS)
+                    ?.map(object : IFunction<Long, String> {
+                        override fun apply(value: Long): String {
+                            if (value <= 0L) {
+                                return "00:00"
+                            }
+                            val interval = CsTimeManager
+                                .createIntervalFactory(value * CsTimeManager.SECONDS)
+                            if (value < CsTimeManager.HOURS) {
+                                return interval.get("MM:SS")
+                            }
+
+                            if (value < CsTimeManager.DAYS) {
+                                return interval.get("HH:MM:SS")
+                            }
+
+                            return interval.get("DD:HH:MM:SS")
+                        }
+                    })
+                    ?.mainThread()
+                    ?.doOnNext(object : IConsumer<String> {
+                        override fun accept(value: String) {
+                            binding?.csCameraInfoRecordTime?.text = value
+                        }
+                    })
+                    ?.start()
+                true
+            }
+
+            VideoRecordState.STATE_STOPPING -> {
+                recordTimeTask?.dispose()
+                true
+            }
+
+            VideoRecordState.STATE_IDLE -> {
+                binding?.csCameraInfoRecordTime?.visibility = View.GONE
+                false
+            }
+        }
     }
 
 }

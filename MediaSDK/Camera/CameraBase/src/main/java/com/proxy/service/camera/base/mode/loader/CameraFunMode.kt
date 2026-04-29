@@ -1,6 +1,7 @@
 package com.proxy.service.camera.base.mode.loader
 
 import com.proxy.service.camera.base.R
+import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
  * @author: cangHX
@@ -8,36 +9,28 @@ import com.proxy.service.camera.base.R
  * @desc:
  */
 enum class CameraFunMode(
-    private val modeName: String,
-    private val modeRes: Int
+    private val modeNameRes: Int
 ) {
 
     /**
      * 拍照
      * */
-    CAPTURE("照片", R.drawable.cs_camera_base_capture_photo),
+    CAPTURE(R.string.cs_camera_base_capture),
 
     /**
      * 录像
      * */
-    RECORD("录像", 0);
+    RECORD(R.string.cs_camera_base_record);
 
     /**
      * 获取模式名称
      * */
     fun getModeName(): String {
-        return modeName
-    }
-
-    /**
-     * 获取模式图标
-     * */
-    fun getModeRes(): Int {
-        return modeRes
+        return CsContextManager.getApplication().getString(modeNameRes)
     }
 
     override fun toString(): String {
-        return "CameraFunMode(modeName='$modeName', modeRes=$modeRes)"
+        return "CameraFunMode(modeName='${getModeName()}')"
     }
 
     companion object {
@@ -48,7 +41,6 @@ enum class CameraFunMode(
             return list
         }
     }
-
 
 
 }
