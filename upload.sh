@@ -33,8 +33,8 @@ upArray=(
 #  ":ApmSDK:ApmInfo"
 
   # 文档库
-#  ":DocumentsSDK:Image:DocumentImageInfo"
-#  ":DocumentsSDK:Image:DocumentImageBase"
+  ":DocumentsSDK:Image:DocumentImageInfo"
+  ":DocumentsSDK:Image:DocumentImageBase"
 #  ":DocumentsSDK:Pdf:DocumentPdfInfo"
 #  ":DocumentsSDK:Pdf:DocumentPdfBase"
 
@@ -42,8 +42,8 @@ upArray=(
 #  ":WidgetSDK:WidgetInfo"
 
     # 媒体库
-  ":MediaSDK:Camera:CameraBase"
-  ":MediaSDK:Camera:CameraInfo"
+#  ":MediaSDK:Camera:CameraBase"
+#  ":MediaSDK:Camera:CameraInfo"
 )
 
 type_params="r"

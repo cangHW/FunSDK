@@ -9,6 +9,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.os.Looper
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.document.image.base.callback.base.OnBoundChangedCallback
 import com.proxy.service.document.image.base.callback.base.OnDrawCallback
@@ -58,7 +59,7 @@ open class BaseController(
         return super.onBoundChanged(bitmapRect, matrix, left, top, right, bottom)
     }
 
-    protected fun refreshCropPath(){
+    protected fun refreshCropPath() {
         val half = offset / 2
         cropPath.rewind()
         cropPath.moveTo(cropRect.left - half, cropRect.top - half)
@@ -158,21 +159,37 @@ open class BaseController(
             }
             return
         }
+        if (cropRect.isEmpty) {
+            runMainThread {
+                callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
+            }
+            return
+        }
         CsTask.computationThread()?.call(object : ICallable<String> {
             override fun accept(): String {
                 val mappedRect = RectF()
                 val inverseMatrix = Matrix()
                 if (matrix.invert(inverseMatrix)) {
                     inverseMatrix.mapRect(mappedRect, cropRect)
+                } else {
+                    runMainThread {
+                        callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
+                    }
+                    return ""
                 }
+
+                val left = mappedRect.left.toInt().coerceIn(0, bitmap.width - 1)
+                val top = mappedRect.top.toInt().coerceIn(0, bitmap.height - 1)
+                val right = mappedRect.right.toInt().coerceIn(left + 1, bitmap.width)
+                val bottom = mappedRect.bottom.toInt().coerceIn(top + 1, bitmap.height)
 
                 crop(
                     Bitmap.createBitmap(
                         bitmap,
-                        mappedRect.left.toInt(),
-                        mappedRect.top.toInt(),
-                        mappedRect.width().toInt(),
-                        mappedRect.height().toInt()
+                        left,
+                        top,
+                        right - left,
+                        bottom - top
                     )
                 )
                 return ""

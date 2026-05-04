@@ -65,12 +65,20 @@ class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {
     }
 
     override fun setMaskColorString(colorString: String): ICropOption {
-        this.maskColor = Color.parseColor(colorString)
+        try {
+            this.maskColor = Color.parseColor(colorString)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
         return this
     }
 
     override fun setMaskColorRes(id: Int): ICropOption {
-        this.maskColor = CsContextManager.getApplication().getColor(id)
+        try {
+            this.maskColor = CsContextManager.getApplication().getColor(id)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
         return this
     }
 
@@ -80,12 +88,20 @@ class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {
     }
 
     override fun setCropFrameLineColorString(colorString: String): ICropOption {
-        this.cropFrameLineColor = Color.parseColor(colorString)
+        try {
+            this.cropFrameLineColor = Color.parseColor(colorString)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
         return this
     }
 
     override fun setCropFrameLineColorRes(id: Int): ICropOption {
-        this.cropFrameLineColor = CsContextManager.getApplication().getColor(id)
+        try {
+            this.cropFrameLineColor = CsContextManager.getApplication().getColor(id)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
         return this
     }
 
