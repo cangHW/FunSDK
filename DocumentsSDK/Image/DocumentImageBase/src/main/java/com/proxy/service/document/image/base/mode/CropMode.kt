@@ -1,7 +1,7 @@
 package com.proxy.service.document.image.base.mode
 
 import com.proxy.service.document.image.base.constants.ImageConstants
-import com.proxy.service.document.image.base.mode.builder.IBaseImageMoveAndScaleModeBuilder
+import com.proxy.service.document.image.base.mode.builder.IImageMoveAndScaleModeBuilder
 import com.proxy.service.document.image.base.mode.builder.ICropFrameMoveAndScaleModeBuilder
 import com.proxy.service.document.image.base.mode.builder.ICropFrameMoveModeBuilder
 
@@ -16,8 +16,8 @@ open class CropMode private constructor() {
         /**
          * 创建底图移动与缩放模式
          * */
-        fun builderBaseImageMoveAndScaleMode(): IBaseImageMoveAndScaleModeBuilder {
-            return BaseImageMoveAndScaleMode()
+        fun builderBaseImageMoveAndScaleMode(): IImageMoveAndScaleModeBuilder {
+            return ImageMoveAndScaleMode()
         }
 
         /**
@@ -35,12 +35,12 @@ open class CropMode private constructor() {
         }
     }
 
-    class BaseImageMoveAndScaleMode : CropMode(), IBaseImageMoveAndScaleModeBuilder,
-        IBaseImageMoveAndScaleModeBuilder.IBaseImageMoveModeBuilderGet {
+    class ImageMoveAndScaleMode : CropMode(), IImageMoveAndScaleModeBuilder,
+        IImageMoveAndScaleModeBuilder.IImageMoveModeBuilderGet {
 
         private var maxScale = ImageConstants.DEFAULT_MAX_SCALE
 
-        override fun setMaxScale(maxScale: Float): IBaseImageMoveAndScaleModeBuilder {
+        override fun setMaxScale(maxScale: Float): IImageMoveAndScaleModeBuilder {
             this.maxScale = maxScale
             return this
         }

@@ -20,6 +20,7 @@ import com.proxy.service.document.image.base.callback.base.OnSingleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
 import com.proxy.service.document.image.base.loader.base.IController
 import com.proxy.service.document.image.base.loader.base.ILoader
+import com.proxy.service.document.image.base.mode.TouchConflictMode
 import com.proxy.service.document.image.info.drawable.ActionDrawable
 import com.proxy.service.document.image.info.drawable.ConfigInfo
 import com.proxy.service.document.image.info.func.preview.factory.LayoutFactory
@@ -37,6 +38,7 @@ open class LoaderImpl(
 
     protected var minScale = ImageConstants.DEFAULT_MIN_SCALE
     protected var maxScale = ImageConstants.DEFAULT_MAX_SCALE
+    protected var touchConflictMode = TouchConflictMode.AlwaysConsume
 
     protected var lockSizeWidthPx: Float? = null
     protected var lockSizeHeightPx: Float? = null
@@ -92,6 +94,7 @@ open class LoaderImpl(
                     val config = ConfigInfo()
                     config.minScale = minScale
                     config.maxScale = maxScale
+                    config.touchConflictMode = touchConflictMode
 
                     config.lockSizeWidthPx = lockSizeWidthPx
                     config.lockSizeHeightPx = lockSizeHeightPx
@@ -112,10 +115,9 @@ open class LoaderImpl(
                     val drawable = ActionDrawable(imageView.context, it, config)
                     controller.setDrawable(drawable)
                     imageView.setImageDrawable(drawable)
-                    imageView.setOnTouchListener { _, event ->
-                        drawable.onTouchEvent(event)
-                        true
-                    }
+                    imageView.setOnTouchListener(
+                        NestedPreviewTouchHandler(drawable, config.touchConflictMode)
+                    )
                 }
             }
         })

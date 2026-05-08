@@ -13,10 +13,10 @@ import com.proxy.service.document.image.info.func.crop.CropInfo
  * @data: 2025/6/3 10:16
  * @desc:
  */
-class BaseImageMoveAndScaleControllerImpl(
+class ImageMoveAndScaleControllerImpl(
     private val option: IOption,
     info: CropInfo,
-    private val mode: CropMode.BaseImageMoveAndScaleMode
+    private val mode: CropMode.ImageMoveAndScaleMode
 ) : BaseController(option, info), OnDragCallback, OnScaleCallback {
 
     override fun init() {

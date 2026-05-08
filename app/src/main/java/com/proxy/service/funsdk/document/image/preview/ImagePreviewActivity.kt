@@ -23,6 +23,7 @@ import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnDrawCallback
 import com.proxy.service.document.image.base.loader.base.IController
 import com.proxy.service.document.image.base.loader.base.IOption
+import com.proxy.service.document.image.base.mode.TouchConflictMode
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.databinding.ActivityDocumentImagePreviewBinding
 import com.proxy.service.funsdk.databinding.ActivityDocumentImagePreviewItemBinding
@@ -151,7 +152,9 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         fun bind() {
             binding?.layout?.let {
-                activity.controller = activity.createPreviewOption()?.into(it)
+                activity.controller = activity.createPreviewOption()
+                    ?.setTouchConflictMode(TouchConflictMode.NestedScrollCompatible)
+                    ?.into(it)
             }
         }
     }

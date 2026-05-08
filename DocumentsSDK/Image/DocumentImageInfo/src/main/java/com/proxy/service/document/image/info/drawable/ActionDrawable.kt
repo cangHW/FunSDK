@@ -176,6 +176,147 @@ class ActionDrawable(
         touchCallback.onScale(offset, focusX, focusY)
     }
 
+    /**
+     * 当前是否开启越界回弹.
+     * */
+    fun isOverScrollBounceEnabled(): Boolean {
+        return config.overScrollBounceEnabled
+    }
+
+    /**
+     * 判断手指沿 X 方向移动时, 图片自身是否还能继续处理位移.
+     *
+     * @param direction 手指移动方向, 大于 0 表示向右, 小于 0 表示向左.
+     * */
+    fun canScrollHorizontally(direction: Float): Boolean {
+        if (direction == 0f) {
+            return false
+        }
+        if (!mMatrix.mapRect(destRectF, mSrcRectF)) {
+            return false
+        }
+
+        val lockRect = config.lockRect
+        if (lockRect != null) {
+            return canMoveByLockRectHorizontally(direction, lockRect, destRectF)
+        }
+
+        if (destRectF.width() <= bounds.width()) {
+            return false
+        }
+        return if (direction > 0) {
+            destRectF.left < bounds.left
+        } else {
+            destRectF.right > bounds.right
+        }
+    }
+
+    /**
+     * 判断手指沿 Y 方向移动时, 图片自身是否还能继续处理位移.
+     *
+     * @param direction 手指移动方向, 大于 0 表示向下, 小于 0 表示向上.
+     * */
+    fun canScrollVertically(direction: Float): Boolean {
+        if (direction == 0f) {
+            return false
+        }
+        if (!mMatrix.mapRect(destRectF, mSrcRectF)) {
+            return false
+        }
+
+        val lockRect = config.lockRect
+        if (lockRect != null) {
+            return canMoveByLockRectVertically(direction, lockRect, destRectF)
+        }
+
+        if (destRectF.height() <= bounds.height()) {
+            return false
+        }
+        return if (direction > 0) {
+            destRectF.top < bounds.top
+        } else {
+            destRectF.bottom > bounds.bottom
+        }
+    }
+
+    /**
+     * 根据锁定区域判断手指沿 X 方向移动时, 图片是否还能继续处理位移.
+     *
+     * @param direction    手指移动方向, 大于 0 表示向右, 小于 0 表示向左.
+     * @param lockRect     锁定区域.
+     * @param currentRectF 图片当前显示区域.
+     * */
+    private fun canMoveByLockRectHorizontally(
+        direction: Float,
+        lockRect: RectF,
+        currentRectF: RectF
+    ): Boolean {
+        return if (config.canMoveInLockRect) {
+            if (currentRectF.width() < lockRect.width()) {
+                if (direction > 0) {
+                    currentRectF.right < lockRect.right
+                } else {
+                    currentRectF.left > lockRect.left
+                }
+            } else {
+                if (direction > 0) {
+                    currentRectF.left < lockRect.left
+                } else {
+                    currentRectF.right > lockRect.right
+                }
+            }
+        } else {
+            if (currentRectF.width() < lockRect.width()) {
+                false
+            } else {
+                if (direction > 0) {
+                    currentRectF.left < lockRect.left
+                } else {
+                    currentRectF.right > lockRect.right
+                }
+            }
+        }
+    }
+
+    /**
+     * 根据锁定区域判断手指沿 Y 方向移动时, 图片是否还能继续处理位移.
+     *
+     * @param direction    手指移动方向, 大于 0 表示向下, 小于 0 表示向上.
+     * @param lockRect     锁定区域.
+     * @param currentRectF 图片当前显示区域.
+     * */
+    private fun canMoveByLockRectVertically(
+        direction: Float,
+        lockRect: RectF,
+        currentRectF: RectF
+    ): Boolean {
+        return if (config.canMoveInLockRect) {
+            if (currentRectF.height() < lockRect.height()) {
+                if (direction > 0) {
+                    currentRectF.bottom < lockRect.bottom
+                } else {
+                    currentRectF.top > lockRect.top
+                }
+            } else {
+                if (direction > 0) {
+                    currentRectF.top < lockRect.top
+                } else {
+                    currentRectF.bottom > lockRect.bottom
+                }
+            }
+        } else {
+            if (currentRectF.height() < lockRect.height()) {
+                false
+            } else {
+                if (direction > 0) {
+                    currentRectF.top < lockRect.top
+                } else {
+                    currentRectF.bottom > lockRect.bottom
+                }
+            }
+        }
+    }
+
     private data class DistanceInfo(val distanceX: Float, val distanceY: Float) {
         override fun toString(): String {
             return "DistanceInfo(distanceX=$distanceX, distanceY=$distanceY)"

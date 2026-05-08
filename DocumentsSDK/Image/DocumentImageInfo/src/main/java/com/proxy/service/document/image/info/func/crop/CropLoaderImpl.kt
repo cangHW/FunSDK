@@ -15,7 +15,7 @@ import com.proxy.service.document.image.base.loader.base.IOption
 import com.proxy.service.document.image.base.loader.crop.ICropController
 import com.proxy.service.document.image.base.mode.CropMode
 import com.proxy.service.document.image.info.func.crop.controller.BaseController
-import com.proxy.service.document.image.info.func.crop.controller.BaseImageMoveAndScaleControllerImpl
+import com.proxy.service.document.image.info.func.crop.controller.ImageMoveAndScaleControllerImpl
 import com.proxy.service.document.image.info.func.crop.controller.CropFrameMoveAndScaleControllerImpl
 import com.proxy.service.document.image.info.func.crop.controller.CropFrameMoveControllerImpl
 
@@ -89,8 +89,8 @@ open class CropLoaderImpl(
         info.drawCropCallback = drawCropCallback
 
         val controller = when (mode) {
-            is CropMode.BaseImageMoveAndScaleMode -> {
-                BaseImageMoveAndScaleControllerImpl(option, info, mode)
+            is CropMode.ImageMoveAndScaleMode -> {
+                ImageMoveAndScaleControllerImpl(option, info, mode)
             }
 
             is CropMode.CropFrameMoveAndScaleMode -> {
@@ -103,8 +103,8 @@ open class CropLoaderImpl(
 
             else -> {
                 CsLogger.tag(TAG).e("Unsupported mode. ${mode.javaClass.name}")
-                val currentMode = CropMode.BaseImageMoveAndScaleMode()
-                BaseImageMoveAndScaleControllerImpl(option, info, currentMode)
+                val currentMode = CropMode.ImageMoveAndScaleMode()
+                ImageMoveAndScaleControllerImpl(option, info, currentMode)
             }
         }
 

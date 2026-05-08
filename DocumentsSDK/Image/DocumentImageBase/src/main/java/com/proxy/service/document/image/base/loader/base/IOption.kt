@@ -10,6 +10,7 @@ import com.proxy.service.document.image.base.callback.base.OnLongPressCallback
 import com.proxy.service.document.image.base.callback.base.OnScaleCallback
 import com.proxy.service.document.image.base.callback.base.OnSingleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
+import com.proxy.service.document.image.base.mode.TouchConflictMode
 
 /**
  * @author: cangHX
@@ -39,6 +40,13 @@ interface IOption : ILoader<IController> {
      * @param maxScale  最大缩放倍数, 默认: [ImageConstants.DEFAULT_MAX_SCALE]
      * */
     fun setScale(minScale: Float, maxScale: Float): IOption
+
+    /**
+     * 设置触摸冲突处理模式, 默认: [TouchConflictMode.AlwaysConsume]
+     *
+     * 嵌套在 ViewPager2 / RecyclerView 等父容器中时, 可使用 [TouchConflictMode.NestedScrollCompatible].
+     * */
+    fun setTouchConflictMode(mode: TouchConflictMode): IOption
 
     /**
      * 设置锁定 view, 锁定区域内允许移动, 默认锁定区域为空

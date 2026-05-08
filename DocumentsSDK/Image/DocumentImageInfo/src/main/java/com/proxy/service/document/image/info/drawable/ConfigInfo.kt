@@ -10,6 +10,7 @@ import com.proxy.service.document.image.base.callback.base.OnLongPressCallback
 import com.proxy.service.document.image.base.callback.base.OnScaleCallback
 import com.proxy.service.document.image.base.callback.base.OnSingleClickCallback
 import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
+import com.proxy.service.document.image.base.mode.TouchConflictMode
 
 /**
  * @author: cangHX
@@ -20,6 +21,7 @@ class ConfigInfo {
 
     var minScale: Float = ImageConstants.DEFAULT_MIN_SCALE
     var maxScale: Float = ImageConstants.DEFAULT_MAX_SCALE
+    var touchConflictMode: TouchConflictMode = TouchConflictMode.AlwaysConsume
 
     var lockSizeWidthPx: Float? = null
     var lockSizeHeightPx: Float? = null
