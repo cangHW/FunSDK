@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.document.image.base.constants.ImageConstants
 
 /**
  * @author: cangHX
@@ -15,7 +17,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
  */
 object LayoutFactory {
 
+    private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}LayoutFactory"
+
     fun loadImageView(viewGroup: ViewGroup): ImageView {
+        if (viewGroup.childCount > 0) {
+            CsLogger.tag(TAG).d("Clear ViewGroup children before loading image. childCount=${viewGroup.childCount}")
+        }
         viewGroup.removeAllViews()
         val imageView = ImageView(viewGroup.context)
         val params = when (viewGroup) {

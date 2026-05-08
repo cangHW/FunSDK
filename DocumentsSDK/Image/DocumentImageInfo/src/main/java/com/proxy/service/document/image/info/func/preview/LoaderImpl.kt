@@ -86,6 +86,7 @@ open class LoaderImpl(
     @SuppressLint("ClickableViewAccessibility")
     private fun bindView(imageView: ImageView?, controller: ControllerImpl) {
         if (imageView == null) {
+            CsLogger.tag(TAG).e("Target ImageView is null.")
             return
         }
         if (glideOption == null) {
@@ -95,6 +96,7 @@ open class LoaderImpl(
         }
         glideOption.into(object : CsCustomTarget<Bitmap>() {
             override fun onLoadCleared(placeholder: Drawable?) {
+                CsLogger.tag(TAG).i("Image load cleared.")
                 clearView(imageView, controller)
             }
 
@@ -131,6 +133,7 @@ open class LoaderImpl(
                 imageView.setOnTouchListener(
                     NestedPreviewTouchHandler(drawable, config.touchConflictMode)
                 )
+                CsLogger.tag(TAG).d("Image resource ready. width=${resource.width}, height=${resource.height}")
             }
         })
     }

@@ -88,6 +88,8 @@ open class CropLoaderImpl(
 
         info.drawCropCallback = drawCropCallback
 
+        CsLogger.tag(TAG).d("Create crop controller. mode=${mode.javaClass.simpleName}")
+
         val controller = when (mode) {
             is CropMode.ImageMoveAndScaleMode -> {
                 ImageMoveAndScaleControllerImpl(option, info, mode)

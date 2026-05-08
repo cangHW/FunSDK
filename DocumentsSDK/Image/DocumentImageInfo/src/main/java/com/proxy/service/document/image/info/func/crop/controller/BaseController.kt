@@ -14,6 +14,7 @@ import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.document.image.base.callback.base.OnBoundChangedCallback
 import com.proxy.service.document.image.base.callback.base.OnDrawCallback
 import com.proxy.service.document.image.base.callback.crop.OnCropCallback
+import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.loader.base.IController
 import com.proxy.service.document.image.base.loader.base.IOption
 import com.proxy.service.document.image.base.loader.crop.ICropController
@@ -30,6 +31,10 @@ open class BaseController(
     private val option: IOption,
     private val info: CropInfo
 ) : ICropController, OnBoundChangedCallback, OnDrawCallback {
+
+    companion object {
+        private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}CropController"
+    }
 
     protected val offset = info.cropFrameLineWidth
     protected val cropRect = RectF(0f, 0f, 0f, 0f)
@@ -106,6 +111,7 @@ open class BaseController(
 
     override fun startCrop(callback: OnCropCallback) {
         realCrop(callback) {
+            CsLogger.tag(TAG).d("Crop success. width=${it.width}, height=${it.height}")
             runMainThread {
                 callback.onCropResult(OnCropCallback.CROP_STATUS_OK, it)
             }
@@ -123,6 +129,7 @@ open class BaseController(
         callback: OnCropCallback
     ) {
         if (width <= 0 || height <= 0) {
+            CsLogger.tag(TAG).e("Crop target size is illegal. width=$width, height=$height")
             runMainThread {
                 callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
             }
@@ -150,6 +157,7 @@ open class BaseController(
 
             val scaledBitmap = Bitmap.createScaledBitmap(it, endWidth, endHeight, true)
             it.recycle()
+            CsLogger.tag(TAG).d("Crop success. width=${scaledBitmap.width}, height=${scaledBitmap.height}")
             runMainThread {
                 callback.onCropResult(OnCropCallback.CROP_STATUS_OK, scaledBitmap)
             }
@@ -160,12 +168,14 @@ open class BaseController(
         val bitmap = previewController?.getBitmap()
         val matrix = previewController?.getMatrix()
         if (bitmap == null || matrix == null) {
+            CsLogger.tag(TAG).e("Crop load error. bitmap=$bitmap, matrix=$matrix")
             runMainThread {
                 callback.onCropResult(OnCropCallback.CROP_STATUS_LOAD_ERROR, null)
             }
             return
         }
         if (cropRect.isEmpty) {
+            CsLogger.tag(TAG).e("Crop rect is empty. cropRect=$cropRect")
             runMainThread {
                 callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
             }
@@ -178,6 +188,7 @@ open class BaseController(
                 if (matrix.invert(inverseMatrix)) {
                     inverseMatrix.mapRect(mappedRect, cropRect)
                 } else {
+                    CsLogger.tag(TAG).e("Matrix invert failed. matrix=$matrix, cropRect=$cropRect")
                     runMainThread {
                         callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
                     }
@@ -202,6 +213,7 @@ open class BaseController(
             }
         })?.setOnFailedCallback(object : OnFailedCallback {
             override fun onCallback(throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
                 runMainThread {
                     callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
                 }
