@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.callback.base.OnBoundChangedCallback
 import com.proxy.service.document.image.base.callback.base.OnDoubleClickCallback
@@ -35,6 +36,10 @@ import com.proxy.service.imageloader.base.target.CsCustomTarget
 open class LoaderImpl(
     private val glideOption: IGlideOption<Bitmap>?
 ) : ILoader<IController> {
+
+    companion object {
+        private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}Loader"
+    }
 
     protected var minScale = ImageConstants.DEFAULT_MIN_SCALE
     protected var maxScale = ImageConstants.DEFAULT_MAX_SCALE
@@ -83,43 +88,57 @@ open class LoaderImpl(
         if (imageView == null) {
             return
         }
-        glideOption?.into(object : CsCustomTarget<Bitmap>() {
+        if (glideOption == null) {
+            CsLogger.tag(TAG).e("Image load option is null.")
+            clearView(imageView, controller)
+            return
+        }
+        glideOption.into(object : CsCustomTarget<Bitmap>() {
             override fun onLoadCleared(placeholder: Drawable?) {
-                imageView.setImageDrawable(null)
-                imageView.setOnTouchListener(null)
+                clearView(imageView, controller)
             }
 
             override fun onResourceReady(resource: Bitmap?) {
-                resource?.let {
-                    val config = ConfigInfo()
-                    config.minScale = minScale
-                    config.maxScale = maxScale
-                    config.touchConflictMode = touchConflictMode
-
-                    config.lockSizeWidthPx = lockSizeWidthPx
-                    config.lockSizeHeightPx = lockSizeHeightPx
-                    config.lockRect = lockRect
-                    config.lockView = lockView
-                    config.canMoveInLockRect = canMoveInLockRect
-                    config.overScrollBounceEnabled = overScrollBounceEnabled
-
-                    config.boundChangedCallback = boundChangedCallback
-                    config.touchEventCallback = touchEventCallback
-                    config.dragCallback = dragCallback
-                    config.scaleCallback = scaleCallback
-                    config.drawCallback = drawCallback
-                    config.singleClickCallback = singleClickCallback
-                    config.doubleClickCallback = doubleClickCallback
-                    config.longPressCallback = longPressCallback
-
-                    val drawable = ActionDrawable(imageView.context, it, config)
-                    controller.setDrawable(drawable)
-                    imageView.setImageDrawable(drawable)
-                    imageView.setOnTouchListener(
-                        NestedPreviewTouchHandler(drawable, config.touchConflictMode)
-                    )
+                if (resource == null) {
+                    CsLogger.tag(TAG).e("Image resource is null.")
+                    clearView(imageView, controller)
+                    return
                 }
+                val config = ConfigInfo()
+                config.minScale = minScale
+                config.maxScale = maxScale
+                config.touchConflictMode = touchConflictMode
+
+                config.lockSizeWidthPx = lockSizeWidthPx
+                config.lockSizeHeightPx = lockSizeHeightPx
+                config.lockRect = lockRect
+                config.lockView = lockView
+                config.canMoveInLockRect = canMoveInLockRect
+                config.overScrollBounceEnabled = overScrollBounceEnabled
+
+                config.boundChangedCallback = boundChangedCallback
+                config.touchEventCallback = touchEventCallback
+                config.dragCallback = dragCallback
+                config.scaleCallback = scaleCallback
+                config.drawCallback = drawCallback
+                config.singleClickCallback = singleClickCallback
+                config.doubleClickCallback = doubleClickCallback
+                config.longPressCallback = longPressCallback
+
+                val drawable = ActionDrawable(imageView.context, resource, config)
+                controller.setDrawable(drawable)
+                imageView.setImageDrawable(drawable)
+                imageView.setOnTouchListener(
+                    NestedPreviewTouchHandler(drawable, config.touchConflictMode)
+                )
             }
         })
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun clearView(imageView: ImageView, controller: ControllerImpl) {
+        controller.clearDrawable()
+        imageView.setImageDrawable(null)
+        imageView.setOnTouchListener(null)
     }
 }

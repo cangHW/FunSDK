@@ -13,6 +13,11 @@ import com.proxy.service.document.image.base.callback.base.OnTouchEventCallback
 import com.proxy.service.document.image.base.mode.TouchConflictMode
 
 /**
+ * 图片预览配置接口.
+ *
+ * 用于配置缩放范围、锁定区域、触摸冲突处理以及各类交互回调,
+ * 配置完成后通过 into 方法绑定到目标 View.
+ *
  * @author: cangHX
  * @data: 2025/5/30 10:09
  * @desc:
@@ -72,8 +77,8 @@ interface IOption : ILoader<IController> {
      * 3、图片向上最大移动到[130, 20, 180, 200]
      * 4、图片向下最大移动到[130, 100, 180, 280]
      *
-     * @param widthPx                   锁定区域宽度
-     * @param heightPx                  锁定区域高度
+     * @param widthPx                   锁定区域宽度, View 坐标系
+     * @param heightPx                  锁定区域高度, View 坐标系
      * @param overScrollBounceEnabled   是否使用越界回弹
      * */
     fun setLockSizeWithMovable(
@@ -92,7 +97,7 @@ interface IOption : ILoader<IController> {
      * 3、图片向上最大移动到[130, 20, 180, 200]
      * 4、图片向下最大移动到[130, 100, 180, 280]
      *
-     * @param lockRect                  锁定区域
+     * @param lockRect                  锁定区域, View 坐标系
      * @param overScrollBounceEnabled   是否使用越界回弹
      * */
     fun setLockRectWithMovable(lockRect: RectF, overScrollBounceEnabled: Boolean): IOption
@@ -121,8 +126,8 @@ interface IOption : ILoader<IController> {
      * 3、图片向上最大移动到[130, 20, 180, 200]
      * 4、图片向下最大移动到[130, 100, 180, 280]
      *
-     * @param widthPx                   锁定区域宽度
-     * @param heightPx                  锁定区域高度
+     * @param widthPx                   锁定区域宽度, View 坐标系
+     * @param heightPx                  锁定区域高度, View 坐标系
      * @param overScrollBounceEnabled   是否使用越界回弹
      * */
     fun setLockSizeWithImmovable(
@@ -141,7 +146,7 @@ interface IOption : ILoader<IController> {
      * 3、图片向上最大移动到[130, 20, 180, 200]
      * 4、图片向下最大移动到[130, 100, 180, 280]
      *
-     * @param lockRect                  锁定区域
+     * @param lockRect                  锁定区域, View 坐标系
      * @param overScrollBounceEnabled   是否使用越界回弹
      * */
     fun setLockRectWithImmovable(lockRect: RectF, overScrollBounceEnabled: Boolean): IOption

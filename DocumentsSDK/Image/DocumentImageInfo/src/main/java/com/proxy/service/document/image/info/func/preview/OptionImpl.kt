@@ -101,12 +101,12 @@ class OptionImpl(
         heightPx: Float,
         overScrollBounceEnabled: Boolean
     ): IOption {
-        if (widthPx < 0) {
-            CsLogger.tag(TAG).e("The widthPx in the locked size cannot be less than 0.")
+        if (widthPx <= 0) {
+            CsLogger.tag(TAG).e("The widthPx in the locked size cannot be less than or equal to 0.")
             return this
         }
-        if (heightPx < 0) {
-            CsLogger.tag(TAG).e("The heightPx in the locked size cannot be less than 0.")
+        if (heightPx <= 0) {
+            CsLogger.tag(TAG).e("The heightPx in the locked size cannot be less than or equal to 0.")
             return this
         }
         this.lockRect = null
@@ -122,12 +122,12 @@ class OptionImpl(
         lockRect: RectF,
         overScrollBounceEnabled: Boolean
     ): IOption {
-        if (lockRect.right < lockRect.left) {
-            CsLogger.tag(TAG).e("The rect right cannot be less than rect left.")
+        if (lockRect.right <= lockRect.left) {
+            CsLogger.tag(TAG).e("The rect right cannot be less than or equal to rect left.")
             return this
         }
-        if (lockRect.bottom < lockRect.top) {
-            CsLogger.tag(TAG).e("The rect bottom cannot be less than rect top.")
+        if (lockRect.bottom <= lockRect.top) {
+            CsLogger.tag(TAG).e("The rect bottom cannot be less than or equal to rect top.")
             return this
         }
         this.lockRect = lockRect
@@ -154,12 +154,12 @@ class OptionImpl(
         heightPx: Float,
         overScrollBounceEnabled: Boolean
     ): IOption {
-        if (widthPx < 0) {
-            CsLogger.tag(TAG).e("The widthPx in the locked size cannot be less than 0.")
+        if (widthPx <= 0) {
+            CsLogger.tag(TAG).e("The widthPx in the locked size cannot be less than or equal to 0.")
             return this
         }
-        if (heightPx < 0) {
-            CsLogger.tag(TAG).e("The heightPx in the locked size cannot be less than 0.")
+        if (heightPx <= 0) {
+            CsLogger.tag(TAG).e("The heightPx in the locked size cannot be less than or equal to 0.")
             return this
         }
         this.lockRect = null
@@ -175,12 +175,12 @@ class OptionImpl(
         lockRect: RectF,
         overScrollBounceEnabled: Boolean
     ): IOption {
-        if (lockRect.right < lockRect.left) {
-            CsLogger.tag(TAG).e("The rect right cannot be less than rect left.")
+        if (lockRect.right <= lockRect.left) {
+            CsLogger.tag(TAG).e("The rect right cannot be less than or equal to rect left.")
             return this
         }
-        if (lockRect.bottom < lockRect.top) {
-            CsLogger.tag(TAG).e("The rect bottom cannot be less than rect top.")
+        if (lockRect.bottom <= lockRect.top) {
+            CsLogger.tag(TAG).e("The rect bottom cannot be less than or equal to rect top.")
             return this
         }
         this.lockRect = lockRect

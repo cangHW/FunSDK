@@ -8,6 +8,8 @@ import androidx.annotation.RawRes
 import java.io.File
 
 /**
+ * 图片来源请求接口, 用于选择 Bitmap / Url / Uri / File 等加载来源.
+ *
  * @author: cangHX
  * @data: 2025/5/30 10:05
  * @desc:

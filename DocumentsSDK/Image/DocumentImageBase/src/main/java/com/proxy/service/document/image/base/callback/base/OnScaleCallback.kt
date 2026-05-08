@@ -14,7 +14,7 @@ interface OnScaleCallback {
      * 缩放回调
      *
      * @param bitmapRect    bitmap 原始信息
-     * @param matrix        矩阵
+     * @param matrix        当前显示矩阵
      * @param currentScale  当前的缩放比例
      * @param scale         变化的缩放比例
      * @param centerX       缩放时的 X 轴中心点
@@ -37,7 +37,7 @@ interface OnScaleCallback {
      * 缩放结束, 刷新之前回调
      *
      * @param bitmapRect    bitmap 原始信息
-     * @param matrix        矩阵
+     * @param matrix        当前显示矩阵
      * */
     fun onScaleEnd(
         bitmapRect: RectF,

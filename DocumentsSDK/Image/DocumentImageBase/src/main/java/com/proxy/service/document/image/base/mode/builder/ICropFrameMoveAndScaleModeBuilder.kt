@@ -11,7 +11,9 @@ import com.proxy.service.document.image.base.constants.ImageConstants
 interface ICropFrameMoveAndScaleModeBuilder {
 
     /**
-     * 设置裁剪区域最小宽高, 默认: [ImageConstants.DEFAULT_CROP_FRAME_MIN_SIZE]
+     * 设置裁剪框最小宽高, 单位 px, 必须大于 0.
+     *
+     * 默认: [ImageConstants.DEFAULT_CROP_FRAME_MIN_SIZE]
      * */
     fun setCropFrameMinSize(minWidthPx: Float, minHeightPx: Float): ICropFrameMoveAndScaleModeBuilder
 

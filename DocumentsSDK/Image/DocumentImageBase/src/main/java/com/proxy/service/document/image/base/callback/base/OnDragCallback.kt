@@ -15,7 +15,7 @@ interface OnDragCallback {
      * 拖动回调
      *
      * @param bitmapRect    bitmap 原始信息
-     * @param matrix        矩阵
+     * @param matrix        当前显示矩阵
      * @param oldEvent      变化之前的 MotionEvent
      * @param newEvent      变化之后的 MotionEvent
      * @param distanceX     拖动前后 X 轴变化距离
@@ -38,7 +38,7 @@ interface OnDragCallback {
      * 拖动结束, 刷新之前回调
      *
      * @param bitmapRect    bitmap 原始信息
-     * @param matrix        矩阵
+     * @param matrix        当前显示矩阵
      * */
     fun onDraggedEnd(
         bitmapRect: RectF,

@@ -9,6 +9,8 @@ import com.proxy.service.document.image.base.loader.base.IRequest
 import com.proxy.service.document.image.base.loader.crop.ICropOption
 
 /**
+ * 文档图片服务入口, 用于创建图片预览与图片裁剪加载链路.
+ *
  * @author: cangHX
  * @date: 2025/4/29 21:33
  * @desc:

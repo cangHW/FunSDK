@@ -9,6 +9,11 @@ import com.proxy.service.document.image.base.loader.base.ILoader
 import com.proxy.service.document.image.base.mode.CropMode
 
 /**
+ * 图片裁剪配置接口.
+ *
+ * 用于配置裁剪区域、裁剪框样式、遮罩样式、裁剪交互模式以及裁剪框绘制回调,
+ * 配置完成后通过 into 方法绑定到目标 View.
+ *
  * @author: cangHX
  * @data: 2025/6/3 09:58
  * @desc:
@@ -21,7 +26,7 @@ interface ICropOption : ILoader<ICropController> {
     fun setCropFrameRectToFitBitmap(): ICropOption
 
     /**
-     * 设置裁剪区域宽高, 视图居中区域, 注意预留出裁剪框的绘制区域.
+     * 设置裁剪区域宽高, View 坐标系, 视图居中区域, 注意预留出裁剪框的绘制区域.
      *
      * 举例: 裁剪区域为[100, 100, 200, 200], 裁剪框线宽为 8.
      * 则裁剪框绘制位置为:
@@ -33,7 +38,7 @@ interface ICropOption : ILoader<ICropController> {
     fun setCropFrameSize(widthPx: Float, heightPx: Float): ICropOption
 
     /**
-     * 设置裁剪区域位置, 注意预留出裁剪框的绘制区域.
+     * 设置裁剪区域位置, View 坐标系, 注意预留出裁剪框的绘制区域.
      *
      * 举例: 裁剪区域为[100, 100, 200, 200], 裁剪框线宽为 8.
      * 则裁剪框绘制位置为:
@@ -76,6 +81,8 @@ interface ICropOption : ILoader<ICropController> {
 
     /**
      * 设置裁剪框线宽, 默认宽度为 [ImageConstants.DEFAULT_CROP_FRAME_LINE_WIDTH]
+     *
+     * @param width 裁剪框线宽, 单位 px
      * */
     fun setCropFrameLineWidth(width: Float): ICropOption
 

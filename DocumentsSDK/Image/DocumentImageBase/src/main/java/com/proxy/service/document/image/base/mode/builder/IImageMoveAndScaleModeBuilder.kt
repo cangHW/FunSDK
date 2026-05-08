@@ -13,7 +13,7 @@ interface IImageMoveAndScaleModeBuilder {
     /**
      * 设置缩放倍数
      *
-     * @param maxScale  最小缩放倍数, 默认: [ImageConstants.DEFAULT_MAX_SCALE]
+     * @param maxScale  最大缩放倍数, 默认: [ImageConstants.DEFAULT_MAX_SCALE], 不能小于 1.
      * */
     fun setMaxScale(maxScale: Float): IImageMoveAndScaleModeBuilder
 

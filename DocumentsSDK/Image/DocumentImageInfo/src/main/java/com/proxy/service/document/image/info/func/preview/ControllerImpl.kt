@@ -18,6 +18,13 @@ class ControllerImpl : IController {
         this.drawable = drawable
     }
 
+    /**
+     * 清空当前绑定的 Drawable, 避免资源释放后继续暴露旧状态.
+     * */
+    fun clearDrawable() {
+        this.drawable = null
+    }
+
     override fun invalidate() {
         drawable?.invalidateSelf()
     }

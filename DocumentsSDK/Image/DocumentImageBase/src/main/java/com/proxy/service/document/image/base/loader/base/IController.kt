@@ -4,6 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 
 /**
+ * 图片预览控制器.
+ *
+ * 资源未加载成功或已被清理时, Bitmap 与 Matrix 可能为空.
+ *
  * @author: cangHX
  * @data: 2025/5/30 10:23
  * @desc:
@@ -41,8 +45,8 @@ interface IController {
      * 设置缩放倍数
      *
      * @param scale     目标缩放倍数
-     * @param focusX    缩放中心点 X 轴位置
-     * @param focusY    缩放中心点 Y 轴位置
+     * @param focusX    缩放中心点 X 轴位置, View 坐标系
+     * @param focusY    缩放中心点 Y 轴位置, View 坐标系
      * */
     fun setScale(scale: Float, focusX: Float, focusY: Float)
 
