@@ -32,7 +32,7 @@ open class CropLoaderImpl(
         private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}CropLoader"
     }
 
-    protected var mode: CropMode = CropMode.builderBaseImageMoveAndScaleMode().build()
+    protected var mode: CropMode = ImageConstants.DEFAULT_CROP_MODE
 
     protected var cropFrameFitBitmap: Boolean = false
     protected var cropFrameRect: RectF? = null

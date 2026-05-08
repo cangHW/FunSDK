@@ -80,7 +80,7 @@ interface ICropOption : ILoader<ICropController> {
     fun setCropFrameLineWidth(width: Float): ICropOption
 
     /**
-     * 设置裁剪模式, 默认为: BaseImageMoveAndScaleMode
+     * 设置裁剪模式, 默认为 [ImageConstants.DEFAULT_CROP_MODE]
      * */
     fun setCropMode(mode: CropMode): ICropOption
 

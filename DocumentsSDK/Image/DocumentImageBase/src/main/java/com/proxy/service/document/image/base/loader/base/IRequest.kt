@@ -40,7 +40,7 @@ interface IRequest<T> {
     fun loadFile(file: File): T
 
     /**
-     * 加载 File
+     * 加载资源
      * */
     fun loadRes(@RawRes @DrawableRes resourceId: Int): T
 

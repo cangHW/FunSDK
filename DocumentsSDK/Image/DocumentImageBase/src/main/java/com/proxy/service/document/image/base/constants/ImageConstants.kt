@@ -1,6 +1,7 @@
 package com.proxy.service.document.image.base.constants
 
 import com.proxy.service.core.framework.app.resource.CsDpUtils
+import com.proxy.service.document.image.base.mode.CropMode
 
 /**
  * @author: cangHX
@@ -24,4 +25,6 @@ object ImageConstants {
     const val DEFAULT_CROP_FRAME_EDGE_DRAGGABLE = true
     const val DEFAULT_CROP_FRAME_ASPECT_RATIO_LOCK = false
     var DEFAULT_CROP_TOUCH_OFFSET_WIDTH = CsDpUtils.dp2px(10f)
+
+    val DEFAULT_CROP_MODE: CropMode = CropMode.builderImageMoveAndScaleMode().build()
 }

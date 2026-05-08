@@ -122,6 +122,12 @@ open class BaseController(
         keepAspectRatio: Boolean,
         callback: OnCropCallback
     ) {
+        if (width <= 0 || height <= 0) {
+            runMainThread {
+                callback.onCropResult(OnCropCallback.CROP_STATUS_CROP_ERROR, null)
+            }
+            return
+        }
         realCrop(callback) {
             if (width == it.width && height == it.height) {
                 runMainThread {
@@ -138,8 +144,8 @@ open class BaseController(
                 val scaleH = height * 1.0f / it.height
                 val scale = Math.min(scaleW, scaleH)
 
-                endWidth = (it.width * scale).toInt()
-                endHeight = (it.height * scale).toInt()
+                endWidth = (it.width * scale).toInt().coerceAtLeast(1)
+                endHeight = (it.height * scale).toInt().coerceAtLeast(1)
             }
 
             val scaledBitmap = Bitmap.createScaledBitmap(it, endWidth, endHeight, true)

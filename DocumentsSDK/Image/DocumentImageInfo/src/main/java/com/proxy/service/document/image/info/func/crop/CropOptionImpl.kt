@@ -30,14 +30,14 @@ class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {
     }
 
     override fun setCropFrameSize(widthPx: Float, heightPx: Float): ICropOption {
-        if (widthPx < 0) {
+        if (widthPx <= 0) {
             CsLogger.tag(TAG)
-                .e("The widthPx in the crop size cannot be less than 0. widthPx = $widthPx")
+                .e("The widthPx in the crop size cannot be less than or equal to 0. widthPx = $widthPx")
             return this
         }
-        if (heightPx < 0) {
+        if (heightPx <= 0) {
             CsLogger.tag(TAG)
-                .e("The heightPx in the crop size cannot be less than 0. heightPx = $heightPx")
+                .e("The heightPx in the crop size cannot be less than or equal to 0. heightPx = $heightPx")
             return this
         }
         this.cropFrameFitBitmap = false
@@ -106,6 +106,11 @@ class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {
     }
 
     override fun setCropFrameLineWidth(width: Float): ICropOption {
+        if (width < 0) {
+            CsLogger.tag(TAG)
+                .e("The crop frame line width cannot be less than 0. width = $width")
+            return this
+        }
         this.cropFrameLineWidth = width
         return this
     }

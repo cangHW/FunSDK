@@ -27,7 +27,10 @@ class NestedPreviewTouchHandler(
     private var isScaling = false
 
     /**
-     * 处理图片预览触摸事件, 并按当前模式决定是否允许父容器拦截后续事件.
+     * 处理图片预览触摸事件.
+     *
+     * 当前监听器始终消费本次事件, 并通过 requestDisallowInterceptTouchEvent
+     * 决定父容器是否可以在后续事件中拦截.
      * */
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         if (mode == TouchConflictMode.AlwaysConsume) {
@@ -84,15 +87,15 @@ class NestedPreviewTouchHandler(
         val totalDx = event.x - downX
         val totalDy = event.y - downY
 
-        val canMove = if (abs(totalDx) > abs(totalDy)) {
-            drawable.canScrollHorizontally(dx)
+        val canHandleDrag = if (abs(totalDx) > abs(totalDy)) {
+            drawable.canHandleHorizontalDrag(dx)
         } else {
-            drawable.canScrollVertically(dy)
+            drawable.canHandleVerticalDrag(dy)
         }
 
         val shouldChildHandle = when {
             event.pointerCount > 1 || isScaling -> true
-            canMove -> true
+            canHandleDrag -> true
             childAcceptedGesture && drawable.isOverScrollBounceEnabled() -> true
             else -> false
         }

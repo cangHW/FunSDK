@@ -16,12 +16,12 @@ interface IController {
     fun invalidate()
 
     /**
-     * 获取原图
+     * 获取当前加载的 Bitmap
      * */
     fun getBitmap(): Bitmap?
 
     /**
-     * 获取矩阵
+     * 获取当前显示矩阵
      * */
     fun getMatrix(): Matrix?
 

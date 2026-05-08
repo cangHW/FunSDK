@@ -184,11 +184,11 @@ class ActionDrawable(
     }
 
     /**
-     * 判断手指沿 X 方向移动时, 图片自身是否还能继续处理位移.
+     * 判断图片预览是否应接管当前横向拖动.
      *
-     * @param direction 手指移动方向, 大于 0 表示向右, 小于 0 表示向左.
+     * @param direction 手指拖动方向, 大于 0 表示向右, 小于 0 表示向左.
      * */
-    fun canScrollHorizontally(direction: Float): Boolean {
+    fun canHandleHorizontalDrag(direction: Float): Boolean {
         if (direction == 0f) {
             return false
         }
@@ -198,7 +198,7 @@ class ActionDrawable(
 
         val lockRect = config.lockRect
         if (lockRect != null) {
-            return canMoveByLockRectHorizontally(direction, lockRect, destRectF)
+            return canHandleHorizontalDragInLockRect(direction, lockRect, destRectF)
         }
 
         if (destRectF.width() <= bounds.width()) {
@@ -212,11 +212,11 @@ class ActionDrawable(
     }
 
     /**
-     * 判断手指沿 Y 方向移动时, 图片自身是否还能继续处理位移.
+     * 判断图片预览是否应接管当前纵向拖动.
      *
-     * @param direction 手指移动方向, 大于 0 表示向下, 小于 0 表示向上.
+     * @param direction 手指拖动方向, 大于 0 表示向下, 小于 0 表示向上.
      * */
-    fun canScrollVertically(direction: Float): Boolean {
+    fun canHandleVerticalDrag(direction: Float): Boolean {
         if (direction == 0f) {
             return false
         }
@@ -226,7 +226,7 @@ class ActionDrawable(
 
         val lockRect = config.lockRect
         if (lockRect != null) {
-            return canMoveByLockRectVertically(direction, lockRect, destRectF)
+            return canHandleVerticalDragInLockRect(direction, lockRect, destRectF)
         }
 
         if (destRectF.height() <= bounds.height()) {
@@ -240,13 +240,13 @@ class ActionDrawable(
     }
 
     /**
-     * 根据锁定区域判断手指沿 X 方向移动时, 图片是否还能继续处理位移.
+     * 根据锁定区域判断图片预览是否应接管当前横向拖动.
      *
-     * @param direction    手指移动方向, 大于 0 表示向右, 小于 0 表示向左.
+     * @param direction    手指拖动方向, 大于 0 表示向右, 小于 0 表示向左.
      * @param lockRect     锁定区域.
      * @param currentRectF 图片当前显示区域.
      * */
-    private fun canMoveByLockRectHorizontally(
+    private fun canHandleHorizontalDragInLockRect(
         direction: Float,
         lockRect: RectF,
         currentRectF: RectF
@@ -279,13 +279,13 @@ class ActionDrawable(
     }
 
     /**
-     * 根据锁定区域判断手指沿 Y 方向移动时, 图片是否还能继续处理位移.
+     * 根据锁定区域判断图片预览是否应接管当前纵向拖动.
      *
-     * @param direction    手指移动方向, 大于 0 表示向下, 小于 0 表示向上.
+     * @param direction    手指拖动方向, 大于 0 表示向下, 小于 0 表示向上.
      * @param lockRect     锁定区域.
      * @param currentRectF 图片当前显示区域.
      * */
-    private fun canMoveByLockRectVertically(
+    private fun canHandleVerticalDragInLockRect(
         direction: Float,
         lockRect: RectF,
         currentRectF: RectF

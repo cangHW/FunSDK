@@ -16,7 +16,7 @@ open class CropMode private constructor() {
         /**
          * 创建底图移动与缩放模式
          * */
-        fun builderBaseImageMoveAndScaleMode(): IImageMoveAndScaleModeBuilder {
+        fun builderImageMoveAndScaleMode(): IImageMoveAndScaleModeBuilder {
             return ImageMoveAndScaleMode()
         }
 
