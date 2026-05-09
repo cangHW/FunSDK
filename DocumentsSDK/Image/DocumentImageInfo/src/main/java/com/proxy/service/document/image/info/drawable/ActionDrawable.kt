@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.RectF
 import android.view.MotionEvent
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.document.image.base.loader.base.IController
 import com.proxy.service.document.image.info.utils.AnimatorManager
 
 /**
@@ -15,8 +16,9 @@ import com.proxy.service.document.image.info.utils.AnimatorManager
 class ActionDrawable(
     context: Context,
     bitmap: Bitmap,
+    controller: IController,
     private val config: ConfigInfo
-) : CallbackDrawable(bitmap, config) {
+) : CallbackDrawable(bitmap, controller, config) {
 
     companion object {
         private const val DISTANCE_X = "distance_type_x"

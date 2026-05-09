@@ -1,6 +1,7 @@
 package com.proxy.service.document.image.base.callback.base
 
 import android.view.MotionEvent
+import com.proxy.service.document.image.base.loader.base.IController
 
 /**
  * @author: cangHX
@@ -14,6 +15,6 @@ interface OnSingleClickCallback {
      *
      * @param event 事件信息
      * */
-    fun onSingleClick(event: MotionEvent)
+    fun onSingleClick(controller: IController, event: MotionEvent)
 
 }

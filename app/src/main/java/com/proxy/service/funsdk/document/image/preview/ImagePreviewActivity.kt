@@ -48,7 +48,6 @@ class ImagePreviewActivity : AppCompatActivity() {
     private var binding: ActivityDocumentImagePreviewBinding? = null
 
     private var service: ImageService? = null
-    private var controller: IController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +78,7 @@ class ImagePreviewActivity : AppCompatActivity() {
     }
 
     private fun normalLoad(layout: AppCompatImageView) {
-        controller = createPreviewOption()?.into(layout)
+        createPreviewOption()?.into(layout)
     }
 
     private fun pagerLoad(view: ViewPager2) {
@@ -111,13 +110,11 @@ class ImagePreviewActivity : AppCompatActivity() {
     }
 
     private val doubleClickCallback = object : OnDoubleClickCallback {
-        override fun onDoubleClick(event: MotionEvent) {
-            controller?.let {
-                if (it.getCurrentScale() >= 2) {
-                    it.setScale(1f, event.x, event.y)
-                } else {
-                    it.setScale(2f, event.x, event.y)
-                }
+        override fun onDoubleClick(controller: IController, event: MotionEvent) {
+            if (controller.getCurrentScale() >= 2) {
+                controller.setScale(1f, event.x, event.y)
+            } else {
+                controller.setScale(2f, event.x, event.y)
             }
         }
     }
@@ -152,7 +149,7 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         fun bind() {
             binding?.layout?.let {
-                activity.controller = activity.createPreviewOption()
+                activity.createPreviewOption()
                     ?.setTouchConflictMode(TouchConflictMode.NestedScrollCompatible)
                     ?.into(it)
             }

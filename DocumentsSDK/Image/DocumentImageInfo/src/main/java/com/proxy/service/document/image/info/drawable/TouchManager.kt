@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.document.image.base.constants.ImageConstants
 
 /**
  * @author: cangHX
@@ -14,6 +16,10 @@ class TouchManager(
     context: Context,
     private val callback: OnTouchCallback
 ) {
+
+    companion object{
+        private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}TouchManager"
+    }
 
     interface OnTouchCallback {
         fun onTouchDown(event: MotionEvent)
@@ -48,16 +54,19 @@ class TouchManager(
         }
 
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+            CsLogger.tag(TAG).i("GestureDetector, onSingleTapConfirmed")
             callback.onSingleClick(e)
             return super.onSingleTapConfirmed(e)
         }
 
         override fun onDoubleTap(e: MotionEvent): Boolean {
+            CsLogger.tag(TAG).i("GestureDetector, onDoubleTap")
             callback.onDoubleClick(e)
             return super.onDoubleTap(e)
         }
 
         override fun onLongPress(e: MotionEvent) {
+            CsLogger.tag(TAG).i("GestureDetector, onLongPress")
             super.onLongPress(e)
             callback.onLongPress(e)
         }
@@ -72,12 +81,18 @@ class TouchManager(
         scaleGestureDetector?.onTouchEvent(event)
         gestureDetector?.onTouchEvent(event)
 
-        when (event.action) {
+        when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
+                CsLogger.tag(TAG).d("onTouchEvent, ACTION_DOWN")
                 callback.onTouchDown(event)
             }
 
-            MotionEvent.ACTION_UP -> {
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                if (event.actionMasked == MotionEvent.ACTION_UP) {
+                    CsLogger.tag(TAG).d("onTouchEvent, ACTION_UP")
+                }else{
+                    CsLogger.tag(TAG).d("onTouchEvent, ACTION_CANCEL")
+                }
                 callback.onTouchUp(event)
             }
         }

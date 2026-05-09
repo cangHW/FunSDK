@@ -3,6 +3,7 @@ package com.proxy.service.document.image.info.drawable
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.MotionEvent
+import com.proxy.service.document.image.base.loader.base.IController
 
 /**
  * @author: cangHX
@@ -11,6 +12,7 @@ import android.view.MotionEvent
  */
 open class CallbackDrawable(
     bitmap: Bitmap,
+    private val controller: IController,
     private val config: ConfigInfo
 ) : ImageDrawable(bitmap) {
 
@@ -85,15 +87,15 @@ open class CallbackDrawable(
     }
 
     protected fun callSingleClick(event: MotionEvent) {
-        config.singleClickCallback?.onSingleClick(event)
+        config.singleClickCallback?.onSingleClick(controller, event)
     }
 
     protected fun callDoubleClick(event: MotionEvent) {
-        config.doubleClickCallback?.onDoubleClick(event)
+        config.doubleClickCallback?.onDoubleClick(controller, event)
     }
 
     protected fun callLongPress(event: MotionEvent) {
-        config.longPressCallback?.onLongPress(event)
+        config.longPressCallback?.onLongPress(controller, event)
     }
 
 }

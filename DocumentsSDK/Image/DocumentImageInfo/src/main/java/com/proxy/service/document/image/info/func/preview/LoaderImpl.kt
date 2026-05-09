@@ -120,14 +120,16 @@ open class LoaderImpl(
 
                 config.boundChangedCallback = boundChangedCallback
                 config.touchEventCallback = touchEventCallback
+
                 config.dragCallback = dragCallback
                 config.scaleCallback = scaleCallback
                 config.drawCallback = drawCallback
+
                 config.singleClickCallback = singleClickCallback
                 config.doubleClickCallback = doubleClickCallback
                 config.longPressCallback = longPressCallback
 
-                val drawable = ActionDrawable(imageView.context, resource, config)
+                val drawable = ActionDrawable(imageView.context, resource, controller, config)
                 controller.setDrawable(drawable)
                 imageView.setImageDrawable(drawable)
                 imageView.setOnTouchListener(

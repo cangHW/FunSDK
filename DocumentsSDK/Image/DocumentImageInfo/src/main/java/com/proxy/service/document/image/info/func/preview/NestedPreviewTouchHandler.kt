@@ -1,7 +1,10 @@
 package com.proxy.service.document.image.info.func.preview
 
+import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.document.image.base.constants.ImageConstants
 import com.proxy.service.document.image.base.mode.TouchConflictMode
 import com.proxy.service.document.image.info.drawable.ActionDrawable
 import kotlin.math.abs
@@ -18,6 +21,10 @@ class NestedPreviewTouchHandler(
     private val mode: TouchConflictMode
 ) : View.OnTouchListener {
 
+    companion object{
+        private const val TAG = "${ImageConstants.LOG_TAG_IMAGE_START}TouchHandler"
+    }
+
     private var downX = 0f
     private var downY = 0f
     private var lastX = 0f
@@ -32,6 +39,7 @@ class NestedPreviewTouchHandler(
      * 当前监听器始终消费本次事件, 并通过 requestDisallowInterceptTouchEvent
      * 决定父容器是否可以在后续事件中拦截.
      * */
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         if (mode == TouchConflictMode.AlwaysConsume) {
             drawable.onTouchEvent(event)
@@ -40,6 +48,7 @@ class NestedPreviewTouchHandler(
 
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
+                CsLogger.tag(TAG).d("onTouch, ACTION_DOWN")
                 downX = event.x
                 downY = event.y
                 lastX = event.x
@@ -51,6 +60,7 @@ class NestedPreviewTouchHandler(
             }
 
             MotionEvent.ACTION_POINTER_DOWN -> {
+                CsLogger.tag(TAG).d("onTouch, ACTION_POINTER_DOWN")
                 isScaling = true
                 childAcceptedGesture = true
                 view.parent?.requestDisallowInterceptTouchEvent(true)
@@ -61,10 +71,16 @@ class NestedPreviewTouchHandler(
             }
 
             MotionEvent.ACTION_POINTER_UP -> {
+                CsLogger.tag(TAG).d("onTouch, ACTION_POINTER_UP")
                 isScaling = event.pointerCount > 2
             }
 
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                if (event.actionMasked == MotionEvent.ACTION_UP) {
+                    CsLogger.tag(TAG).d("onTouch, ACTION_UP")
+                }else{
+                    CsLogger.tag(TAG).d("onTouch, ACTION_CANCEL")
+                }
                 childAcceptedGesture = false
                 isScaling = false
                 view.parent?.requestDisallowInterceptTouchEvent(false)
@@ -92,6 +108,8 @@ class NestedPreviewTouchHandler(
         } else {
             drawable.canHandleVerticalDrag(dy)
         }
+
+        CsLogger.tag(TAG).d("handleMove, canHandleDrag=$canHandleDrag")
 
         val shouldChildHandle = when {
             event.pointerCount > 1 || isScaling -> true

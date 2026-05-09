@@ -1,6 +1,7 @@
 package com.proxy.service.document.image.base.callback.base
 
 import android.view.MotionEvent
+import com.proxy.service.document.image.base.loader.base.IController
 
 /**
  * @author: cangHX
@@ -14,6 +15,6 @@ interface OnLongPressCallback {
      *
      * @param event 事件信息
      * */
-    fun onLongPress(event: MotionEvent)
+    fun onLongPress(controller: IController, event: MotionEvent)
 
 }

@@ -32,9 +32,11 @@ class ConfigInfo {
 
     var boundChangedCallback: OnBoundChangedCallback? = null
     var touchEventCallback: OnTouchEventCallback? = null
+
     var dragCallback: OnDragCallback? = null
     var scaleCallback: OnScaleCallback? = null
     var drawCallback: OnDrawCallback? = null
+
     var singleClickCallback: OnSingleClickCallback? = null
     var doubleClickCallback: OnDoubleClickCallback? = null
     var longPressCallback: OnLongPressCallback? = null
