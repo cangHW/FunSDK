@@ -55,6 +55,10 @@ enum class StatusEnum(val status: Int) {
     companion object {
         fun value(status: Int): StatusEnum {
             when (status) {
+                RECORDED.status -> {
+                    return RECORDED
+                }
+
                 WAITING.status -> {
                     return WAITING
                 }
@@ -77,6 +81,10 @@ enum class StatusEnum(val status: Int) {
 
                 FAILED.status -> {
                     return FAILED
+                }
+
+                FILE_DELETE.status -> {
+                    return FILE_DELETE
                 }
             }
             return UNKNOWN

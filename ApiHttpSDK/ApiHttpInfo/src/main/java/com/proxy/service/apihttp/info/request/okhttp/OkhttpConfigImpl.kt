@@ -46,9 +46,9 @@ class OkhttpConfigImpl(
         val list = ArrayList<Interceptor>()
         list.add(BaseUrlInterceptor(config.getBaseUrl()))
         list.addAll(config.getInterceptor())
-        list.add(NetworkInterceptor())
         list.add(RetryWithDelayInterceptor())
         list.add(HttpLoggingInterceptor())
+        list.add(NetworkInterceptor())
         list.add(ExactTimeOutInterceptor())
         return list
     }

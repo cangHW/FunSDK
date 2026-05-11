@@ -4,6 +4,7 @@ import com.proxy.service.annotations.CloudApiNewInstance
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apihttp.base.request.RequestService
 import com.proxy.service.apihttp.base.request.config.RequestConfig
+import com.proxy.service.apihttp.info.request.BaseUrlManager
 import com.proxy.service.apihttp.info.request.retrofit.RetrofitManager
 import retrofit2.Retrofit
 
@@ -32,6 +33,10 @@ class RequestServiceImpl : RequestService {
                 }
             }
         }
+    }
+
+    override fun addGlobalBaseUrl(baseUrlKey: String, baseUrl: String) {
+        BaseUrlManager.addBaseUrl(baseUrlKey, baseUrl)
     }
 
     override fun <T> getService(service: Class<T>): T {

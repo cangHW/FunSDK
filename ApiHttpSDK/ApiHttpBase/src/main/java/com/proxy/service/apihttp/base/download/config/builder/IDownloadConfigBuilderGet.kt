@@ -13,7 +13,7 @@ interface IDownloadConfigBuilderGet : IBaseConfigGet {
     /**
      * 获取组信息
      * */
-    fun getGroups(): ArrayList<DownloadGroup>
+    fun getGroups(): MutableList<DownloadGroup>
 
     /**
      * 获取最大同时下载任务数量

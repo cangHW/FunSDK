@@ -1,7 +1,6 @@
 package com.proxy.service.apihttp.base.download.config
 
 import com.proxy.service.apihttp.base.common.config.BaseConfig
-import com.proxy.service.apihttp.base.common.config.BaseConfigGet
 import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.config.builder.IDownloadConfigBuilder
 import com.proxy.service.apihttp.base.download.config.builder.IDownloadConfigBuilderGet
@@ -13,34 +12,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/10/30 18:40
  * @desc:
  */
-class DownloadConfig private constructor(
-    private val builder: IDownloadConfigBuilderGet
-) : BaseConfigGet(builder), IDownloadConfigBuilderGet {
-
-    /**
-     * 获取组信息
-     * */
-    override fun getGroups(): ArrayList<DownloadGroup> {
-        return builder.getGroups()
-    }
-
-    /**
-     * 获取最大同时下载任务数量
-     * */
-    override fun getMaxTask(): Int {
-        return builder.getMaxTask()
-    }
-
-    /**
-     * 获取是否允许网络连接恢复时自动重新启动失败的下载任务
-     * */
-    override fun getAutoRestartOnNetworkReconnect(): Boolean {
-        return builder.getAutoRestartOnNetworkReconnect()
-    }
-
-    override fun getConnectTimeOut(): Long {
-        return builder.getConnectTimeOut()
-    }
+sealed interface DownloadConfig : IDownloadConfigBuilderGet {
 
     companion object {
         private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}DownloadConfig"
@@ -50,8 +22,14 @@ class DownloadConfig private constructor(
         }
     }
 
-    class Builder : BaseConfig<IDownloadConfigBuilder>(), IDownloadConfigBuilder,
-        IDownloadConfigBuilderGet {
+    fun newBuilder(): IDownloadConfigBuilder {
+        val builder = Builder()
+        builder.copyFrom(this)
+        return builder
+    }
+
+    private class Builder : BaseConfig<IDownloadConfigBuilder>(), IDownloadConfigBuilder,
+        DownloadConfig {
 
         companion object {
             private const val TIMEOUT_MIN: Long = 5 * 1000
@@ -99,24 +77,23 @@ class DownloadConfig private constructor(
 
         override fun setConnectTimeOut(timeout: Long, unit: TimeUnit): IDownloadConfigBuilder {
             unit.toMillis(timeout).let {
-                connectTimeOut =
-                    if (it > TIMEOUT_MIN) {
-                        it
-                    } else {
-                        TIMEOUT_MIN
-                    }
+                connectTimeOut = if (it > TIMEOUT_MIN) {
+                    it
+                } else {
+                    TIMEOUT_MIN
+                }
             }
             return this
         }
 
         override fun build(): DownloadConfig {
-            return DownloadConfig(this)
+            return this
         }
 
         /**
          * 获取组信息
          * */
-        override fun getGroups(): ArrayList<DownloadGroup> {
+        override fun getGroups(): MutableList<DownloadGroup> {
             return groups
         }
 
@@ -140,6 +117,18 @@ class DownloadConfig private constructor(
 
         override fun getInstance(): IDownloadConfigBuilder {
             return this
+        }
+
+
+        override fun copyFrom(any: Any) {
+            super.copyFrom(any)
+
+            if (any is Builder) {
+                groups.addAll(any.getGroups())
+                maxTask = any.maxTask
+                isAutoRestartOnNetworkReconnect = any.getAutoRestartOnNetworkReconnect()
+                connectTimeOut = any.getConnectTimeOut()
+            }
         }
 
     }

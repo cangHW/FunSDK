@@ -1,9 +1,10 @@
 package com.proxy.service.apihttp.base.upload.config
 
 import com.proxy.service.apihttp.base.common.config.BaseConfig
-import com.proxy.service.apihttp.base.common.config.BaseConfigGet
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.upload.config.builder.IUploadConfigBuilder
 import com.proxy.service.apihttp.base.upload.config.builder.IUploadConfigBuilderGet
+import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -11,45 +12,56 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/12/17 15:20
  * @desc:
  */
-class UploadConfig private constructor(
-    private val builder: IUploadConfigBuilderGet
-) : BaseConfigGet(builder), IUploadConfigBuilderGet {
-
-    override fun getConnectTimeOut(): Long {
-        return builder.getConnectTimeOut()
-    }
-
-    override fun getMaxTask(): Int {
-        return builder.getMaxTask()
-    }
+sealed interface UploadConfig : IUploadConfigBuilderGet {
 
     companion object {
+        private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}UploadConfig"
 
         fun builder(): IUploadConfigBuilder {
             return Builder()
         }
+    }
 
+    fun newBuilder(): IUploadConfigBuilder {
+        val builder = Builder()
+        builder.copyFrom(this)
+        return builder
     }
 
     private class Builder : BaseConfig<IUploadConfigBuilder>(), IUploadConfigBuilder,
-        IUploadConfigBuilderGet {
+        UploadConfig {
+
+        companion object {
+            private const val TIMEOUT_MIN: Long = 5 * 1000
+        }
 
         private var connectTimeOut: Long = 10 * 1000
 
-        private var maxTasks = 3
+        private var maxTask = 3
 
         override fun setConnectTimeOut(timeout: Long, unit: TimeUnit): IUploadConfigBuilder {
-            this.connectTimeOut = unit.toMillis(timeout)
+            unit.toMillis(timeout).let {
+                connectTimeOut = if (it > TIMEOUT_MIN) {
+                    it
+                } else {
+                    TIMEOUT_MIN
+                }
+            }
             return this
         }
 
         override fun setMaxTask(maxTasks: Int): IUploadConfigBuilder {
-            this.maxTasks = maxTasks
+            if (maxTasks <= 0 || maxTasks > 5) {
+                CsLogger.tag(TAG)
+                    .e("maxTasks must be greater than 0 and less than or equal to 5. maxTask = $maxTask")
+            } else {
+                this.maxTask = maxTasks
+            }
             return this
         }
 
         override fun build(): UploadConfig {
-            return UploadConfig(this)
+            return this
         }
 
         override fun getConnectTimeOut(): Long {
@@ -57,11 +69,20 @@ class UploadConfig private constructor(
         }
 
         override fun getMaxTask(): Int {
-            return maxTasks
+            return maxTask
         }
 
         override fun getInstance(): IUploadConfigBuilder {
             return this
+        }
+
+        override fun copyFrom(any: Any) {
+            super.copyFrom(any)
+
+            if (any is Builder) {
+                connectTimeOut = any.getConnectTimeOut()
+                maxTask = any.getMaxTask()
+            }
         }
     }
 }

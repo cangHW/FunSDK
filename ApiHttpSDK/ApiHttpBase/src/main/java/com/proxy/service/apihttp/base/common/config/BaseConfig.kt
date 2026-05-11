@@ -14,7 +14,7 @@ import javax.net.ssl.X509TrustManager
  * @data: 2025/3/27 20:57
  * @desc:
  */
-abstract class BaseConfig<T> : IBaseConfig<T>, IBase<T>, IBaseConfigGet {
+abstract class BaseConfig<T> : IBase<T>, IBaseConfig<T>, IBaseConfigGet {
 
     private var interceptors: MutableList<Interceptor> = ArrayList()
     private var networkInterceptors: MutableList<Interceptor> = ArrayList()
@@ -62,7 +62,7 @@ abstract class BaseConfig<T> : IBaseConfig<T>, IBase<T>, IBaseConfigGet {
     private var clientCerAssetsName: String? = null
     private var clientCerPassWord: String? = null
     private var x509TrustManager: X509TrustManager? = null
-    private var hostnameVerifier: HostnameVerifier?=null
+    private var hostnameVerifier: HostnameVerifier? = null
 
     override fun setSslSocket(serverCerAssetsName: String): T {
         this.serverCerAssetsName = serverCerAssetsName
@@ -111,4 +111,21 @@ abstract class BaseConfig<T> : IBaseConfig<T>, IBase<T>, IBaseConfigGet {
     override fun getHostnameVerifier(): HostnameVerifier? {
         return hostnameVerifier
     }
+
+
+    override fun copyFrom(any: Any) {
+        if (any is BaseConfig<*>) {
+            interceptors.addAll(any.interceptors)
+            networkInterceptors.addAll(any.networkInterceptors)
+            eventListener = any.eventListener
+            dns = any.dns
+
+            serverCerAssetsName = any.serverCerAssetsName
+            clientCerAssetsName = any.clientCerAssetsName
+            clientCerPassWord = any.clientCerPassWord
+            x509TrustManager = any.x509TrustManager
+            hostnameVerifier = any.hostnameVerifier
+        }
+    }
+
 }

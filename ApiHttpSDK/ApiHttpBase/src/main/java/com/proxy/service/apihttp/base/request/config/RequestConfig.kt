@@ -1,7 +1,6 @@
 package com.proxy.service.apihttp.base.request.config
 
 import com.proxy.service.apihttp.base.common.config.BaseConfig
-import com.proxy.service.apihttp.base.common.config.BaseConfigGet
 import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilder
 import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
@@ -14,43 +13,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/5/21 16:59
  * @desc:
  */
-class RequestConfig private constructor(private val builder: IRequestConfigBuilderGet) :
-    BaseConfigGet(builder), IRequestConfigBuilderGet {
-    override fun getBaseUrl(): String {
-        return builder.getBaseUrl()
-    }
-
-    override fun getConnectTimeOut(): Long {
-        return builder.getConnectTimeOut()
-    }
-
-    override fun getWriteTimeOut(): Long {
-        return builder.getWriteTimeOut()
-    }
-
-    override fun getReadTimeOut(): Long {
-        return builder.getReadTimeOut()
-    }
-
-    override fun getCacheMaxSize(): Long {
-        return builder.getCacheMaxSize()
-    }
-
-    override fun getCacheDir(): String {
-        return builder.getCacheDir()
-    }
-
-    override fun getConverterFactory(): MutableList<Converter.Factory> {
-        return builder.getConverterFactory()
-    }
-
-    override fun getCallAdapterFactory(): MutableList<CallAdapter.Factory> {
-        return builder.getCallAdapterFactory()
-    }
-
-    override fun getMaxRequest(): Int {
-        return builder.getMaxRequest()
-    }
+sealed interface RequestConfig : IRequestConfigBuilderGet {
 
     companion object {
         fun builder(baseUrl: String): IRequestConfigBuilder {
@@ -58,14 +21,19 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
         }
     }
 
-    private class Builder(baseUrl: String) : BaseConfig<IRequestConfigBuilder>(),
-        IRequestConfigBuilder, IRequestConfigBuilderGet {
+    fun newBuilder(): IRequestConfigBuilder {
+        val builder = Builder(getBaseUrl())
+        builder.copyFrom(this)
+        return builder
+    }
+
+    private class Builder(
+        private val baseUrl: String
+    ) : BaseConfig<IRequestConfigBuilder>(), IRequestConfigBuilder, RequestConfig {
 
         companion object {
             private const val TIMEOUT_MIN: Long = 5 * 1000
         }
-
-        private var baseUrl: String = ""
 
         private var connectTimeOut: Long = 30 * 1000
         private var writeTimeOut: Long = 30 * 1000
@@ -78,12 +46,6 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
         private var callAdapterFactory: MutableList<CallAdapter.Factory> = ArrayList()
 
         private var maxRequests = 4
-
-        init {
-            if (baseUrl.isNotBlank()) {
-                this.baseUrl = baseUrl
-            }
-        }
 
         override fun setConnectTimeOut(timeout: Long, unit: TimeUnit): Builder {
             unit.toMillis(timeout).let {
@@ -152,7 +114,7 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
         }
 
         override fun build(): RequestConfig {
-            return RequestConfig(this)
+            return this
         }
 
         override fun getBaseUrl(): String {
@@ -193,6 +155,24 @@ class RequestConfig private constructor(private val builder: IRequestConfigBuild
 
         override fun getInstance(): IRequestConfigBuilder {
             return this
+        }
+
+        override fun copyFrom(any: Any) {
+            super.copyFrom(any)
+
+            if (any is Builder) {
+                connectTimeOut = any.connectTimeOut
+                writeTimeOut = any.writeTimeOut
+                readTimeOut = any.readTimeOut
+
+                cacheDir = any.cacheDir
+                cacheMaxSize = any.cacheMaxSize
+
+                converterFactory.addAll(any.converterFactory)
+                callAdapterFactory.addAll(any.callAdapterFactory)
+
+                maxRequests = any.maxRequests
+            }
         }
 
     }

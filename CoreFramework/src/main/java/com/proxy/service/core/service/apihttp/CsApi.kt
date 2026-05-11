@@ -2,6 +2,7 @@ package com.proxy.service.core.service.apihttp
 
 import com.proxy.service.api.CloudSystem
 import com.proxy.service.apihttp.base.request.RequestService
+import com.proxy.service.apihttp.base.request.annotation.CsBaseUrlKey
 import com.proxy.service.apihttp.base.request.config.RequestConfig
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -23,7 +24,8 @@ object CsApi {
             service = CloudSystem.getService(RequestService::class.java)
         }
         if (service == null) {
-            CsLogger.tag(TAG).e("Please check to see if it is referenced. <io.github.canghw:Service-Apihttp:xxx>")
+            CsLogger.tag(TAG)
+                .e("Please check to see if it is referenced. <io.github.canghw:Service-Apihttp:xxx>")
         }
         return service
     }
@@ -35,6 +37,13 @@ object CsApi {
      * */
     fun init(config: RequestConfig) {
         CsApi.config = config
+    }
+
+    /**
+     * 添加全局 base url. 搭配注解使用[CsBaseUrlKey]
+     * */
+    fun addGlobalBaseUrl(baseUrlKey: String, baseUrl: String) {
+        getService()?.addGlobalBaseUrl(baseUrlKey, baseUrl)
     }
 
     /**

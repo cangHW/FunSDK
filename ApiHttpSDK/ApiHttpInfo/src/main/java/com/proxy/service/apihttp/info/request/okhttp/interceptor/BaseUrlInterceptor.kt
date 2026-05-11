@@ -2,6 +2,8 @@ package com.proxy.service.apihttp.info.request.okhttp.interceptor
 
 import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.request.annotation.CsBaseUrl
+import com.proxy.service.apihttp.base.request.annotation.CsBaseUrlKey
+import com.proxy.service.apihttp.info.request.BaseUrlManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -24,20 +26,31 @@ class BaseUrlInterceptor(private val baseUrl: String) : Interceptor {
         var request = chain.request()
 
         try {
-            request.tag(Invocation::class.java)
-                ?.method()
-                ?.getAnnotation(CsBaseUrl::class.java)
-                ?.let {
-                    if (it.baseUrl.isNotBlank()) {
-                        request.url
-                            .toString()
-                            .replace(baseUrl, it.baseUrl)
-                            .toHttpUrlOrNull()
-                            ?.let { httpUrl ->
-                                request = request.newBuilder().url(httpUrl).build()
-                            }
-                    }
+            val method = request.tag(Invocation::class.java)?.method()
+
+            var newUrl: String? = null
+
+            val csBaseUrl = method?.getAnnotation(CsBaseUrl::class.java)
+            if (csBaseUrl?.baseUrl?.isNotBlank() == true) {
+                newUrl = csBaseUrl.baseUrl
+            }
+
+            if (newUrl == null) {
+                val csBaseUrlKey = method?.getAnnotation(CsBaseUrlKey::class.java)
+                if (csBaseUrlKey?.baseUrlKey?.isNotBlank() == true) {
+                    newUrl = BaseUrlManager.getBaseUrl(csBaseUrlKey.baseUrlKey)
                 }
+            }
+
+            newUrl?.let {
+                request.url
+                    .toString()
+                    .replaceFirst(baseUrl, newUrl)
+                    .toHttpUrlOrNull()
+                    ?.let { httpUrl ->
+                        request = request.newBuilder().url(httpUrl).build()
+                    }
+            }
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }

@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.base.upload.config.builder
 
 import com.proxy.service.apihttp.base.common.config.base.IBaseConfig
+import com.proxy.service.apihttp.base.common.config.base.IBaseConfigGet
 import com.proxy.service.apihttp.base.upload.config.UploadConfig
 import java.util.concurrent.TimeUnit
 

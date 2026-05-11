@@ -7,6 +7,13 @@ package com.proxy.service.apihttp.base.common.config.base
  */
 interface IBase<T> {
 
+    /**
+     * 获取当前对象
+     * */
     fun getInstance(): T
 
+    /**
+     * 复制
+     * */
+    fun copyFrom(any: Any)
 }

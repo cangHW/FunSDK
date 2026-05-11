@@ -1,7 +1,6 @@
 package com.proxy.service.apihttp.base.download.config.builder
 
-import com.proxy.service.apihttp.base.common.config.common.ICommonBuilder
-import com.proxy.service.apihttp.base.common.config.safety.ISafetyBuilder
+import com.proxy.service.apihttp.base.common.config.base.IBaseConfig
 import com.proxy.service.apihttp.base.download.config.DownloadConfig
 import com.proxy.service.apihttp.base.download.config.DownloadGroup
 import java.util.concurrent.TimeUnit
@@ -11,8 +10,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/5/21 20:43
  * @desc:
  */
-interface IDownloadConfigBuilder : ISafetyBuilder<IDownloadConfigBuilder>,
-    ICommonBuilder<IDownloadConfigBuilder> {
+interface IDownloadConfigBuilder : IBaseConfig<IDownloadConfigBuilder> {
 
     /**
      * 添加组信息

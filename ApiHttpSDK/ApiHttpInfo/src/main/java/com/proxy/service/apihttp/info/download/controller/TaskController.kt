@@ -18,7 +18,7 @@ object TaskController : BaseController() {
     /**
      * 添加组信息
      * */
-    fun addGroup(list: ArrayList<DownloadGroup>) {
+    fun addGroup(list: MutableList<DownloadGroup>) {
         CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
             list.forEach {
                 if (groupCache.isHas(it.groupName)) {
