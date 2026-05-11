@@ -17,7 +17,7 @@ import com.proxy.service.apihttp.info.upload.manager.impl.OkhttpConfigImpl
  * @data: 2024/12/17 14:22
  * @desc:
  */
-@CloudApiService(serviceTag = "service/http_upload")
+@CloudApiService(serviceTag = "cs_service/http_upload")
 class UploadServiceImpl : UploadService {
 
     override fun init(config: UploadConfig) {

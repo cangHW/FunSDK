@@ -17,7 +17,7 @@ import com.proxy.service.document.image.info.func.crop.CropRequestImpl
  * @data: 2025/5/30 10:46
  * @desc:
  */
-@CloudApiService(serviceTag = "service/image")
+@CloudApiService(serviceTag = "cs_service/image")
 class ImageServiceImage : ImageService {
 
     override fun createPreviewLoader(activity: FragmentActivity): IRequest<IOption> {

@@ -13,7 +13,7 @@ import com.proxy.service.webview.bridge.ds.converter.WebServiceConverter
  * @data: 2024/8/10 15:20
  * @desc:
  */
-@CloudApiService(serviceTag = "web_bridge/application")
+@CloudApiService(serviceTag = "cs_application/web_bridge")
 class WebBridgeConfig : CsBaseConfig() {
 
     override fun moduleType(): ModuleType {

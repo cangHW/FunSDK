@@ -22,7 +22,7 @@ import com.proxy.service.permission.info.utils.PermissionUtils
  * @data: 2024/11/18 10:30
  * @desc:
  */
-@CloudApiService(serviceTag = "service/permission")
+@CloudApiService(serviceTag = "cs_service/permission")
 class PermissionServiceImpl : PermissionService {
 
     private val tag = "${PermConstants.LOG_TAG_START}Service"

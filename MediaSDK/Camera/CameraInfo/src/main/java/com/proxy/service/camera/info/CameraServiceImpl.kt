@@ -24,7 +24,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @data: 2026/2/4 16:17
  * @desc:
  */
-@CloudApiService(serviceTag = "service/camera")
+@CloudApiService(serviceTag = "cs_service/camera")
 class CameraServiceImpl : CameraService {
 
     private val tag = "${CameraConstants.TAG}Service"

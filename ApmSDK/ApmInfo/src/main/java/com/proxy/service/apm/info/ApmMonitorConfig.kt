@@ -13,7 +13,7 @@ import com.proxy.service.core.application.base.CsBaseConfig
  * @data: 2025/4/12 16:31
  * @desc:
  */
-@CloudApiService(serviceTag = "config/apm")
+@CloudApiService(serviceTag = "cs_config/apm")
 class ApmMonitorConfig : CsBaseConfig() {
 
     @SuppressLint("Range")

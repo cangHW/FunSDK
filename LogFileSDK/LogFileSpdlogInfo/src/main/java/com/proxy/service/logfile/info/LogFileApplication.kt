@@ -13,7 +13,7 @@ import com.proxy.service.logfile.info.manager.LogFileCore
  * @data: 2025/1/17 14:26
  * @desc:
  */
-@CloudApiService(serviceTag = "application/log_file")
+@CloudApiService(serviceTag = "cs_application/log_file")
 class LogFileApplication : CsBaseApplication(), OnAppVisibilityCallback {
 
     override fun moduleType(): ModuleType {

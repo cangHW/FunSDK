@@ -14,7 +14,7 @@ import com.proxy.service.document.pdf.info.view.PdfViewLoaderImpl
  * @data: 2025/4/30 14:55
  * @desc:
  */
-@CloudApiService(serviceTag = "service/pdf")
+@CloudApiService(serviceTag = "cs_service/pdf")
 class PdfServiceImpl : PdfService {
 
     override fun createLoader(config: PdfConfig, callback: LoadStateCallback): IPdfLoader {

@@ -17,7 +17,7 @@ import com.proxy.service.webview.base.constants.WebViewConstants
  * @data: 2024/8/1 16:37
  * @desc:
  */
-@CloudApiService(serviceTag = "application/web")
+@CloudApiService(serviceTag = "cs_application/web")
 class WebApplicationImpl : CsBaseApplication() {
 
     private val webTag = "${WebViewConstants.LOG_TAG_START}Application"

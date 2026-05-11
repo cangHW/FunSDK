@@ -14,7 +14,7 @@ import retrofit2.Retrofit
  * @desc:
  */
 @CloudApiNewInstance
-@CloudApiService(serviceTag = "service/http_request")
+@CloudApiService(serviceTag = "cs_service/http_request")
 class RequestServiceImpl : RequestService {
 
     private val lock = Any()

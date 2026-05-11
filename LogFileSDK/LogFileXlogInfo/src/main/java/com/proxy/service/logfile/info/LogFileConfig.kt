@@ -16,7 +16,7 @@ import com.tencent.mars.xlog.Xlog
  * @data: 2025/1/16 11:32
  * @desc:
  */
-@CloudApiService(serviceTag = "config/log_file")
+@CloudApiService(serviceTag = "cs_config/log_file")
 class LogFileConfig : CsBaseConfig(), Thread.UncaughtExceptionHandler {
 
     private var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler? = null

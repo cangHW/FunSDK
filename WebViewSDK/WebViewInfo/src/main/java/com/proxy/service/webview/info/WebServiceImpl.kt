@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @data: 2024/8/1 10:23
  * @desc:
  */
-@CloudApiService(serviceTag = "service/web_view")
+@CloudApiService(serviceTag = "cs_service/web_view")
 class WebServiceImpl : WebService {
 
     private val isAcceptCookie = AtomicBoolean(false)

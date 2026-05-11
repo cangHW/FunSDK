@@ -16,7 +16,7 @@ import com.proxy.service.imageloader.info.glide.type.DrawableType
  * @data: 2024/5/16 09:52
  * @desc:
  */
-@CloudApiService(serviceTag = "service/image_loader")
+@CloudApiService(serviceTag = "cs_service/image_loader")
 class ImageLoaderServiceImpl : ImageLoaderService {
 
     override fun with(activity: FragmentActivity): IType<Drawable> {

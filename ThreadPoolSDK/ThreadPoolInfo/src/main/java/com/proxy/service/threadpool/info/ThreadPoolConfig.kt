@@ -13,7 +13,7 @@ import io.reactivex.plugins.RxJavaPlugins
  * @data: 2024/9/14 16:27
  * @desc:
  */
-@CloudApiService(serviceTag = "config/thread_pool")
+@CloudApiService(serviceTag = "cs_config/thread_pool")
 class ThreadPoolConfig : CsBaseConfig() {
 
     override fun moduleType(): ModuleType {

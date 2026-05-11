@@ -13,7 +13,7 @@ import com.proxy.service.webview.monitor.converter.WebServiceConverter
  * @data: 2024/8/10 15:20
  * @desc:
  */
-@CloudApiService(serviceTag = "web_monitor/application")
+@CloudApiService(serviceTag = "cs_config/web_monitor")
 class WebMonitorConfig : CsBaseConfig() {
 
     override fun moduleType(): ModuleType {

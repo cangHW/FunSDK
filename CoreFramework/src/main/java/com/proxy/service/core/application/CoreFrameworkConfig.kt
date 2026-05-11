@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.app.context.ContextInit
  * @data: 2024/4/28 20:53
  * @desc:
  */
-@CloudApiService(serviceTag = "Core/Config")
+@CloudApiService(serviceTag = "cs_config/core")
 class CoreFrameworkConfig : CsBaseConfig() {
 
     override fun moduleType(): ModuleType {

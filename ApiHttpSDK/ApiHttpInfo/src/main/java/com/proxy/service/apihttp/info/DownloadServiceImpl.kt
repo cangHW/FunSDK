@@ -26,7 +26,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @data: 2024/10/31 11:06
  * @desc:
  */
-@CloudApiService(serviceTag = "service/http_download")
+@CloudApiService(serviceTag = "cs_service/http_download")
 class DownloadServiceImpl : DownloadService {
 
     private val tag = "${ApiConstants.LOG_DOWNLOAD_TAG_START}Service"

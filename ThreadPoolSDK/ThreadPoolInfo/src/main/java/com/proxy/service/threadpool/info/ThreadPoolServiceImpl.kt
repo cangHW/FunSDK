@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
  * @data: 2024/5/27 16:43
  * @desc:
  */
-@CloudApiService(serviceTag = "service/thread_pool")
+@CloudApiService(serviceTag = "cs_service/thread_pool")
 class ThreadPoolServiceImpl : ThreadPoolService {
 
     override fun <T : Any> call(task: ICallable<T>): ITaskOption<T> {
