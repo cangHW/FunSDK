@@ -8,20 +8,18 @@ import okhttp3.OkHttpClient
 import java.io.File
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLSession
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 17:51
+ * @date: 2024/12/17 17:51
  * @desc:
  */
-object OkhttpFactory {
+object OkHttpFactory {
 
     /**
      * 获取 OkHttpClient 对象
      * */
-    fun create(config: IOkhttpConfig): OkHttpClient {
+    fun create(config: IOkHttpConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
         config.getConnectTimeOut()?.let {
@@ -42,16 +40,16 @@ object OkhttpFactory {
             }
         }
 
-        if (config.getInterceptor().isNotEmpty()) {
+        if (config.getInterceptors().isNotEmpty()) {
             builder.addInterceptor(ExceptionInterceptor())
-            config.getInterceptor().forEach {
+            config.getInterceptors().forEach {
                 builder.addInterceptor(it)
             }
         }
 
-        if (config.getNetworkInterceptor().isNotEmpty()) {
+        if (config.getNetworkInterceptors().isNotEmpty()) {
             builder.addNetworkInterceptor(ExceptionInterceptor())
-            config.getNetworkInterceptor().forEach {
+            config.getNetworkInterceptors().forEach {
                 builder.addNetworkInterceptor(it)
             }
         }
@@ -63,6 +61,9 @@ object OkhttpFactory {
         config.getDns()?.let {
             builder.dns(it)
         }
+
+        builder.followRedirects(config.getFollowRedirects())
+        builder.followSslRedirects(config.getFollowSslRedirects())
 
         TrustCerManager.parse(builder, config)
         config.getHostnameVerifier()?.let {

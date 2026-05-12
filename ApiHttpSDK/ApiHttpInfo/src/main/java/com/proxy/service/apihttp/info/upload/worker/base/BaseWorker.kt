@@ -5,7 +5,7 @@ import okhttp3.Call
 
 /**
  * @author: cangHX
- * @data: 2024/12/19 20:09
+ * @date: 2024/12/19 20:09
  * @desc:
  */
 abstract class BaseWorker(task: UploadTask) : BaseCallbackWorker(task) {

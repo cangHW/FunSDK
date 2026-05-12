@@ -17,7 +17,7 @@ import com.proxy.service.core.service.media.CsMediaCamera
 
 /**
  * @author: cangHX
- * @data: 2026/4/12 15:40
+ * @date: 2026/4/12 15:40
  * @desc:
  */
 object CameraSettingCache {

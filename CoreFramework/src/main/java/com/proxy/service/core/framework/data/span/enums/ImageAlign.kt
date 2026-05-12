@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.data.span.enums
 
 /**
  * @author: cangHX
- * @data: 2025/7/11 17:35
+ * @date: 2025/7/11 17:35
  * @desc:
  */
 enum class ImageAlign {

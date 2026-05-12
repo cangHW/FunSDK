@@ -4,7 +4,7 @@ import com.proxy.service.permission.base.callback.ActionCallback
 
 /**
  * @author: cangHX
- * @data: 2024/11/25 09:49
+ * @date: 2024/11/25 09:49
  * @desc:
  */
 interface IShouldShowRequestRationaleCallback<T> {

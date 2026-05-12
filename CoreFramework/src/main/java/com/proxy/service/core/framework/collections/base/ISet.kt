@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.collections.base
 
 /**
  * @author: cangHX
- * @data: 2024/12/27 14:53
+ * @date: 2024/12/27 14:53
  * @desc:
  */
 interface ISet<K> : IDataChanged<K>, ITransaction {

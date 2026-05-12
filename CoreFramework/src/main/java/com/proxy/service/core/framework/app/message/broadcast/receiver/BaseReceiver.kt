@@ -13,7 +13,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 16:20
+ * @date: 2026/1/19 16:20
  * @desc:
  */
 abstract class BaseReceiver : BroadcastReceiver() {

@@ -2,7 +2,7 @@ package com.proxy.service.widget.info.dialog.window.info
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 14:39
+ * @date: 2025/11/27 14:39
  * @desc:
  */
 enum class ScreenOrientation {

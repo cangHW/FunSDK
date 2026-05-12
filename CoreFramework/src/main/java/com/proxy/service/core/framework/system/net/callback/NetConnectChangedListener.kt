@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.system.net.controller.IController
  * 网络连接状态变化监听
  *
  * @author: cangHX
- * @data: 2024/12/2 15:41
+ * @date: 2024/12/2 15:41
  * @desc:
  */
 interface NetConnectChangedListener {

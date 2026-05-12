@@ -8,7 +8,7 @@ import com.proxy.service.webview.base.web.IWeb
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 14:18
+ * @date: 2024/8/5 14:18
  * @desc:
  */
 class LifecycleObserverImpl(private val web: IWeb) : DefaultLifecycleObserver {

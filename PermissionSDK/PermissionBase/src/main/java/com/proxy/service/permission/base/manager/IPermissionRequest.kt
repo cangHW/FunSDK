@@ -9,7 +9,7 @@ import com.proxy.service.permission.base.manager.base.IShouldShowRequestRational
  * 请求权限
  *
  * @author: cangHX
- * @data: 2024/11/18 10:22
+ * @date: 2024/11/18 10:22
  * @desc:
  */
 interface IPermissionRequest : IPermissionCallback<IPermissionRequest>,

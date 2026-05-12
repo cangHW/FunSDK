@@ -12,7 +12,7 @@ import com.proxy.service.document.image.base.constants.ImageConstants
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 18:44
+ * @date: 2025/5/30 18:44
  * @desc:
  */
 object LayoutFactory {

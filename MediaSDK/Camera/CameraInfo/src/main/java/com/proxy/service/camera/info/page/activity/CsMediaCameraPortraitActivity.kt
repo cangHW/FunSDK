@@ -5,7 +5,7 @@ import com.proxy.service.camera.info.page.activity.base.AbstractCameraActionActi
 
 /**
  * @author: cangHX
- * @data: 2026/2/6 15:09
+ * @date: 2026/2/6 15:09
  * @desc:
  */
 class CsMediaCameraPortraitActivity : AbstractCameraActionActivity() {

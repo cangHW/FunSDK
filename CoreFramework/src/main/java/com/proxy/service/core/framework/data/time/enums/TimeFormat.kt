@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.data.time.enums
 
 /**
  * @author: cangHX
- * @data: 2025/4/14 11:24
+ * @date: 2025/4/14 11:24
  * @desc:
  */
 enum class TimeFormat(val pattern: String) {

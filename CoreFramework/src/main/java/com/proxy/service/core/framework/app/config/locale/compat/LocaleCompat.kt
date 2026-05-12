@@ -9,7 +9,7 @@ import java.util.Locale
 
 /**
  * @author: cangHX
- * @data: 2025/3/20 11:55
+ * @date: 2025/3/20 11:55
  * @desc:
  */
 object LocaleCompat : LocaleController {

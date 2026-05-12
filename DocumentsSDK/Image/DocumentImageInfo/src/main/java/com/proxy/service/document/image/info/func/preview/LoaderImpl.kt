@@ -30,7 +30,7 @@ import com.proxy.service.imageloader.base.target.CsCustomTarget
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 10:49
+ * @date: 2025/5/30 10:49
  * @desc:
  */
 open class LoaderImpl(

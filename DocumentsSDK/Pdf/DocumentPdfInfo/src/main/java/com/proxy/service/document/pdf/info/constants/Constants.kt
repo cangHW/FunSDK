@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.info.constants
 
 /**
  * @author: cangHX
- * @data: 2025/4/30 22:02
+ * @date: 2025/4/30 22:02
  * @desc:
  */
 object Constants {

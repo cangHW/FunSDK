@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.data.time.enums.TimeIntervalFormat
 
 /**
  * @author: cangHX
- * @data: 2024/10/21 11:26
+ * @date: 2024/10/21 11:26
  * @desc:
  */
 interface IWriteStatusLog {

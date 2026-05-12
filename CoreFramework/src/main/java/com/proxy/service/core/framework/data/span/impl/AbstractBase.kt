@@ -9,7 +9,7 @@ import com.proxy.service.core.framework.data.span.builder.base.IBaseBuilder
 
 /**
  * @author: cangHX
- * @data: 2025/7/14 10:07
+ * @date: 2025/7/14 10:07
  * @desc:
  */
 abstract class AbstractBase : IBaseBuilder {

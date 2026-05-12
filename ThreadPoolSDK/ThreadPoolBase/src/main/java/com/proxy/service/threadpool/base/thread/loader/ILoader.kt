@@ -8,7 +8,7 @@ import com.proxy.service.threadpool.base.thread.controller.ITaskDisposable
 
 /**
  * @author: cangHX
- * @data: 2024/6/13 11:41
+ * @date: 2024/6/13 11:41
  * @desc:
  */
 interface ILoader<T> {

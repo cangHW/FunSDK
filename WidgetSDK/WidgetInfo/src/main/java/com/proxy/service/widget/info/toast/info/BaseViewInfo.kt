@@ -8,7 +8,7 @@ import androidx.annotation.StringRes
 
 /**
  * @author: cangHX
- * @data: 2025/9/24 09:39
+ * @date: 2025/9/24 09:39
  * @desc:
  */
 open class BaseViewInfo(val rootView: View) {

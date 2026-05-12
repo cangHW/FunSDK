@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.io.sp.CsSpManager
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 20:51
+ * @date: 2024/12/25 20:51
  * @desc:
  */
 object UiModeImpl : BaseAction(), IUiMode {

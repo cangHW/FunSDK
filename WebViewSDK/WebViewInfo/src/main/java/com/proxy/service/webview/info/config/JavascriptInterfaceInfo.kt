@@ -4,7 +4,7 @@ import java.lang.reflect.Method
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 14:26
+ * @date: 2024/8/1 14:26
  * @desc:
  */
 class JavascriptInterfaceInfo(private val methodInfo: JavascriptInterfaceMethodInfo, private var any: Any) {

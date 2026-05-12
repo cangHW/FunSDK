@@ -7,7 +7,7 @@ import android.graphics.RectF
  * 图片显示区域变化回调.
  *
  * @author: cangHX
- * @data: 2025/6/2 18:37
+ * @date: 2025/6/2 18:37
  * @desc:
  */
 interface OnBoundChangedCallback {

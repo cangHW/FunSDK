@@ -13,7 +13,7 @@ import com.proxy.service.webview.bridge.ds.config.Config
 
 /**
  * @author: cangHX
- * @data: 2024/8/10 15:28
+ * @date: 2024/8/10 15:28
  * @desc:
  */
 class WebLoaderConverter(private val loader: IWebLoader) : IWebLoader {

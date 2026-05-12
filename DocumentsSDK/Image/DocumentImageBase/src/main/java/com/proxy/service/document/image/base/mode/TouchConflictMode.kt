@@ -4,7 +4,7 @@ package com.proxy.service.document.image.base.mode
  * 图片预览触摸冲突处理模式.
  *
  * @author: cangHX
- * @data: 2026/5/6 10:10
+ * @date: 2026/5/6 10:10
  * @desc:
  */
 enum class TouchConflictMode {

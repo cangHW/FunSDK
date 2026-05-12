@@ -4,7 +4,7 @@ import com.proxy.service.camera.base.mode.loader.bean.MeteringAreaInfo
 
 /**
  * @author: cangHX
- * @data: 2026/2/7 15:48
+ * @date: 2026/2/7 15:48
  * @desc: 相机测光模式。
  *
  *  用于统一配置 AF（对焦）、AE（曝光）的方式。

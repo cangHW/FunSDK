@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.collections.callback
 
 /**
  * @author: cangHX
- * @data: 2025/9/17 15:31
+ * @date: 2025/9/17 15:31
  * @desc:
  */
 abstract class OnDataChangedCallback<T> {

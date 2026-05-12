@@ -5,7 +5,7 @@ import java.io.Serializable
 
 /**
  * @author: cangHX
- * @data: 2025/7/14 10:17
+ * @date: 2025/7/14 10:17
  * @desc:
  */
 class SerializableSpannableStringBuilder : SpannableStringBuilder(), Serializable {

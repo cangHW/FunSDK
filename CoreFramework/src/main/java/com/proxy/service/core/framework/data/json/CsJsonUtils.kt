@@ -20,7 +20,7 @@ import java.lang.reflect.Type
  * json 序列化、反序列化工具
  *
  * @author: cangHX
- * @data: 2024/6/24 09:58
+ * @date: 2024/6/24 09:58
  * @desc:
  */
 object CsJsonUtils {

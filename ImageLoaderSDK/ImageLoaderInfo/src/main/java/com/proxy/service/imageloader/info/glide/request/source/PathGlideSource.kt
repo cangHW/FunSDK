@@ -4,7 +4,7 @@ import com.bumptech.glide.RequestBuilder
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:36
+ * @date: 2024/5/16 11:36
  * @desc:
  */
 class PathGlideSource(private val path: String) : BaseGlideSourceData() {

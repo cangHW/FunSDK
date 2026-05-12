@@ -6,7 +6,7 @@ import com.proxy.service.document.pdf.base.enums.ViewShowType
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:34
+ * @date: 2025/5/2 20:34
  * @desc:
  */
 object PdfConstants {

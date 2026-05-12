@@ -8,7 +8,7 @@ import retrofit2.Converter
 
 /**
  * @author: cangHX
- * @data: 2024/6/19 11:20
+ * @date: 2024/6/19 11:20
  * @desc:
  */
 class ScalarRequestBodyConverter<T> : Converter<T, RequestBody> {

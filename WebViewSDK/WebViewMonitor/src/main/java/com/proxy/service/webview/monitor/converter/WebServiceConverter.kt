@@ -7,7 +7,7 @@ import com.proxy.service.webview.base.web.callback.ValueCallback
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 13:29
+ * @date: 2026/1/23 13:29
  * @desc:
  */
 class WebServiceConverter(private val service: WebService): WebService {

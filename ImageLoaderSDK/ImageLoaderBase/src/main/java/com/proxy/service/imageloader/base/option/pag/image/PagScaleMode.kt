@@ -2,7 +2,7 @@ package com.proxy.service.imageloader.base.option.pag.image
 
 /**
  * @author: cangHX
- * @data: 2025/10/16 17:45
+ * @date: 2025/10/16 17:45
  * @desc:
  */
 enum class PagScaleMode {

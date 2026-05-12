@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.mode.loader
 
 /**
  * @author: cangHX
- * @data: 2026/3/23 10:37
+ * @date: 2026/3/23 10:37
  * @desc:
  */
 enum class CameraErrorMode {

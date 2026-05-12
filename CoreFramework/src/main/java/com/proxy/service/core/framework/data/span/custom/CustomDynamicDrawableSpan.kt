@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference
  * 图片展示位置适配
  *
  * @author: cangHX
- * @data: 2025/7/14 14:36
+ * @date: 2025/7/14 14:36
  * @desc:
  */
 abstract class CustomDynamicDrawableSpan(

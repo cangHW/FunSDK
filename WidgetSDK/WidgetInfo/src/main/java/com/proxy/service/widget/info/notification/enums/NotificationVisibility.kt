@@ -4,7 +4,7 @@ import androidx.core.app.NotificationCompat
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 14:47
+ * @date: 2025/12/16 14:47
  * @desc: 消息可见性
  */
 sealed class NotificationVisibility private constructor(val visibility: Int) {

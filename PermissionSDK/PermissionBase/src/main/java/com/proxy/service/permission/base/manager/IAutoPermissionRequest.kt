@@ -7,7 +7,7 @@ import com.proxy.service.permission.base.manager.base.IPermissionCallback
 
 /**
  * @author: cangHX
- * @data: 2026/2/10 17:36
+ * @date: 2026/2/10 17:36
  * @desc:
  */
 interface IAutoPermissionRequest : IPermissionCallback<IAutoPermissionRequest> {

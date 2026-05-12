@@ -2,7 +2,7 @@ package com.proxy.service.imageloader.base.option.base
 
 /**
  * @author: cangHX
- * @data: 2025/9/13 14:10
+ * @date: 2025/9/13 14:10
  * @desc:
  */
 interface IOption<T> {

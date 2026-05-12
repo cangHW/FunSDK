@@ -4,7 +4,7 @@ import android.widget.Toast
 
 /**
  * @author: cangHX
- * @data: 2025/7/8 15:51
+ * @date: 2025/7/8 15:51
  * @desc:
  */
 enum class ToastDuration(val value: Int) {

@@ -21,7 +21,7 @@ import com.proxy.service.document.image.info.func.crop.controller.CropFrameMoveC
 
 /**
  * @author: cangHX
- * @data: 2025/6/3 10:12
+ * @date: 2025/6/3 10:12
  * @desc:
  */
 open class CropLoaderImpl(

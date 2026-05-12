@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.ui.view.action.base
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 17:10
+ * @date: 2026/1/8 17:10
  * @desc:
  */
 fun interface IViewActionCallback<T> {

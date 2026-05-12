@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.mode.loader
 
 /**
  * @author: cangHX
- * @data: 2026/3/26 15:28
+ * @date: 2026/3/26 15:28
  * @desc:
  */
 enum class PreviewImageFormatMode {

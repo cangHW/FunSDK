@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/7/3 18:01
+ * @date: 2024/7/3 18:01
  * @desc:
  */
 interface ThreadService : IScheduler<ThreadService> {

@@ -14,7 +14,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/3/23 18:11
+ * @date: 2026/3/23 18:11
  * @desc:
  */
 abstract class AbstractCameraFunController : AbstractCameraPreviewController(), ICameraFun,

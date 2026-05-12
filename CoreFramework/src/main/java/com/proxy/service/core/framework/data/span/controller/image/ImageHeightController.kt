@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.data.span.controller.image
 
 /**
  * @author: cangHX
- * @data: 2025/9/10 10:24
+ * @date: 2025/9/10 10:24
  * @desc:
  */
 class ImageHeightController(

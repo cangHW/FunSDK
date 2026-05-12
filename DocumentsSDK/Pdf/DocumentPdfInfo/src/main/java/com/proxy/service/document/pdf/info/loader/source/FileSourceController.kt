@@ -9,7 +9,7 @@ import com.proxy.service.document.pdf.info.loader.utils.FileUtils
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:48
+ * @date: 2025/5/2 20:48
  * @desc:
  */
 class FileSourceController(private val source: FileSource) : BaseController() {

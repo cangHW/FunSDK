@@ -14,7 +14,7 @@ import com.proxy.service.permission.base.manager.base.ISettingDialog
  * 权限框架入口
  *
  * @author: cangHX
- * @data: 2024/11/18 15:54
+ * @date: 2024/11/18 15:54
  * @desc:
  */
 object CsPermission {

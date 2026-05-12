@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.message.process.callback
 
 /**
  * @author: cangHX
- * @data: 2025/9/17 20:38
+ * @date: 2025/9/17 20:38
  * @desc:
  */
 abstract class RequestCallback {

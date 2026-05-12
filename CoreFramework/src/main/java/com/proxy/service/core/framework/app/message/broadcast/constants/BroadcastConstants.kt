@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.message.broadcast.constants
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 10:51
+ * @date: 2026/1/19 10:51
  * @desc:
  */
 object BroadcastConstants {

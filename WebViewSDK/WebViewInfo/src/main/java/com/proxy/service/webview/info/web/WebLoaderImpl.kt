@@ -20,7 +20,7 @@ import com.proxy.service.webview.info.web.script.ScriptFactory
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 15:01
+ * @date: 2024/8/1 15:01
  * @desc:
  */
 class WebLoaderImpl(private val config: WebConfig) : IWebLoader {

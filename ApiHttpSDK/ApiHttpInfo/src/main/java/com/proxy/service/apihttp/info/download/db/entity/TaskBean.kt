@@ -7,7 +7,7 @@ import com.proxy.service.apihttp.base.download.task.DownloadTask
 
 /**
  * @author: cangHX
- * @data: 2024/11/4 16:56
+ * @date: 2024/11/4 16:56
  * @desc:
  */
 @Entity

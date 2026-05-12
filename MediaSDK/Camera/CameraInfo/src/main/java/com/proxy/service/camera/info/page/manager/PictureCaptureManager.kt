@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHXa
- * @data: 2026/4/9 17:59
+ * @date: 2026/4/9 17:59
  * @desc:
  */
 class PictureCaptureManager private constructor(

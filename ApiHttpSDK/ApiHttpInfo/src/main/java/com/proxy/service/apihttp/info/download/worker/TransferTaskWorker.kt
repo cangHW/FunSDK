@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2026/3/4 09:59
+ * @date: 2026/3/4 09:59
  * @desc:
  */
 class TransferTaskWorker(private val task: DownloadTask) : IWorker {
@@ -107,6 +107,7 @@ class TransferTaskWorker(private val task: DownloadTask) : IWorker {
                     }
                 })?.start()
             }
+            callback?.onFinished(this, task)
         }
     }
 

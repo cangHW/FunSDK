@@ -8,7 +8,7 @@ import java.io.OutputStream
 
 /**
  * @author: cangHX
- * @data: 2024/12/31 17:23
+ * @date: 2024/12/31 17:23
  * @desc:
  */
 class InputStreamSource(private val inputStream: InputStream) : ISourceWrite {

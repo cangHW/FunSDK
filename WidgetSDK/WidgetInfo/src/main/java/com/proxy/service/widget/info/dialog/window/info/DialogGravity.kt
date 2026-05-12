@@ -4,7 +4,7 @@ import android.view.Gravity
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 18:26
+ * @date: 2025/11/27 18:26
  * @desc:
  */
 enum class DialogGravity(val gravity: Int) {

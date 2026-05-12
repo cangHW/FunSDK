@@ -10,7 +10,7 @@ import com.proxy.service.imageloader.info.glide.info.GlideInfo
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 20:51
+ * @date: 2024/5/16 20:51
  * @desc:
  */
 open class GlideLoaderImpl<R>(

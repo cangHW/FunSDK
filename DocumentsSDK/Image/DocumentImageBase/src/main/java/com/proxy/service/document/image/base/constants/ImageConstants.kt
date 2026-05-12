@@ -5,7 +5,7 @@ import com.proxy.service.document.image.base.mode.CropMode
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:34
+ * @date: 2025/5/2 20:34
  * @desc:
  */
 object ImageConstants {

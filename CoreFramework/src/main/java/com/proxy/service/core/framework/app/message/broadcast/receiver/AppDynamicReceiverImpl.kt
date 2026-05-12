@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 10:31
+ * @date: 2026/1/19 10:31
  * @desc:
  */
 class AppDynamicReceiverImpl : BaseReceiver() {

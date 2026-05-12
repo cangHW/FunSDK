@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.system.screen.factory.rotation
 
 /**
  * @author: cangHX
- * @data: 2026/4/2 10:44
+ * @date: 2026/4/2 10:44
  * @desc:
  */
 interface RotationChangedCallback {

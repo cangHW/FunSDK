@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.io.monitor.info
 
 /**
  * @author: cangHX
- * @data: 2025/4/23 11:05
+ * @date: 2025/4/23 11:05
  * @desc:
  */
 class FileInfo {

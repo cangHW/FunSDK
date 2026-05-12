@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.mode.view
 
 /**
  * @author: cangHX
- * @data: 2026/2/6 14:09
+ * @date: 2026/2/6 14:09
  * @desc:
  */
 enum class CameraViewMode {

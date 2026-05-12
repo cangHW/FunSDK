@@ -7,7 +7,7 @@ import com.proxy.service.widget.info.notification.enums.NotificationVisibility
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 14:04
+ * @date: 2025/12/16 14:04
  * @desc:
  */
 class ChannelConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {

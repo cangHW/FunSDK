@@ -4,7 +4,7 @@ import com.bumptech.glide.RequestBuilder
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:34
+ * @date: 2024/5/16 11:34
  * @desc:
  */
 abstract class BaseGlideSourceData {

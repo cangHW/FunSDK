@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/9/15 17:57
+ * @date: 2025/9/15 17:57
  * @desc:
  */
 class ContentProviderImpl : ContentProvider() {

@@ -15,7 +15,7 @@ import java.security.MessageDigest
  * 颜色过滤转换器
  *
  * @author: cangHX
- * @data: 2024/5/18 11:53
+ * @date: 2024/5/18 11:53
  * @desc:
  */
 class ColorFilterTransformation(val color: Int) : BaseBitmapTransformation() {

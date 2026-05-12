@@ -4,7 +4,7 @@ import android.animation.ValueAnimator
 
 /**
  * @author: cangHX
- * @data: 2024/6/4 18:56
+ * @date: 2024/6/4 18:56
  * @desc:
  */
 enum class LottieLoopModel(val model: Int) {

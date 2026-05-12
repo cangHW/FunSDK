@@ -15,7 +15,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2026/3/19 20:02
+ * @date: 2026/3/19 20:02
  * @desc:
  */
 class CameraDeviceManager private constructor(

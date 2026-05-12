@@ -2,10 +2,9 @@ package com.proxy.service.apihttp.info.upload.worker.task
 
 import com.proxy.service.apihttp.base.upload.task.FormDataPart
 import com.proxy.service.apihttp.base.upload.task.UploadTask
-import com.proxy.service.apihttp.info.upload.manager.OkhttpManager
+import com.proxy.service.apihttp.info.upload.manager.OkHttpManager
 import com.proxy.service.apihttp.info.upload.worker.body.ProgressRequestBody
 import okhttp3.Call
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.Request
@@ -15,7 +14,7 @@ import okhttp3.Response
 
 /**
  * @author: cangHX
- * @data: 2024/12/19 20:24
+ * @date: 2024/12/19 20:24
  * @desc:
  */
 object Task {
@@ -28,7 +27,8 @@ object Task {
                 builder.addFormDataPart(data.name, data.value ?: "")
             } else if (data.type == FormDataPart.TYPE_STREAM) {
                 data.file?.let { file ->
-                    val fileBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                    val fileBody =
+                        RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                     val progressBody = ProgressRequestBody(fileBody)
                     builder.addFormDataPart(data.name, data.fileName, progressBody)
                 }
@@ -41,7 +41,8 @@ object Task {
             .post(body)
             .build()
 
-        val call = OkhttpManager.getOkhttpClient().newCall(request)
+        val client = OkHttpManager.getOkhttpClient() ?: throw NullPointerException("未初始化")
+        val call = client.newCall(request)
         callback(call)
         return call.execute()
     }

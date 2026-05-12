@@ -6,7 +6,7 @@ import com.proxy.service.imageloader.base.request.base.IRequest
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 14:58
+ * @date: 2025/10/10 14:58
  * @desc:
  */
 interface IPagRequest : IRequest<IPageOption> {

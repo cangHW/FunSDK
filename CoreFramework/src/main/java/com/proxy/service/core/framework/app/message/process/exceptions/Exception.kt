@@ -4,7 +4,7 @@ package com.proxy.service.core.framework.app.message.process.exceptions
  * 功能不支持
  *
  * @author: cangHX
- * @data: 2025/9/23 09:44
+ * @date: 2025/9/23 09:44
  * @desc:
  */
 class NotSupportException(
@@ -22,7 +22,7 @@ class NotSupportException(
  * 服务端异常
  *
  * @author: cangHX
- * @data: 2025/9/18 11:46
+ * @date: 2025/9/18 11:46
  * @desc:
  */
 class SeverException(
@@ -41,7 +41,7 @@ class SeverException(
  * 超时
  *
  * @author: cangHX
- * @data: 2025/9/18 11:46
+ * @date: 2025/9/18 11:46
  * @desc:
  */
 class TimeOutException(
@@ -60,7 +60,7 @@ class TimeOutException(
  * 未安装
  *
  * @author: cangHX
- * @data: 2025/9/18 11:44
+ * @date: 2025/9/18 11:44
  * @desc:
  */
 class UnInstallException(

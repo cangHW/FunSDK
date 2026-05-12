@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/6/18 17:28
+ * @date: 2024/6/18 17:28
  * @desc:
  */
 class HttpLoggingInterceptor : Interceptor {

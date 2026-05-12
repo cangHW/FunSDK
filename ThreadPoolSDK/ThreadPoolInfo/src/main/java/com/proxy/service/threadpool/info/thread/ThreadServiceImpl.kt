@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/7/3 18:03
+ * @date: 2024/7/3 18:03
  * @desc:
  */
 class ThreadServiceImpl : ThreadService {

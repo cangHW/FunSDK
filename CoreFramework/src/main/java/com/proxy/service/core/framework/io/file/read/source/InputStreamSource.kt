@@ -13,7 +13,7 @@ import java.nio.charset.Charset
 
 /**
  * @author: cangHX
- * @data: 2024/9/25 10:27
+ * @date: 2024/9/25 10:27
  * @desc:
  */
 open class InputStreamSource(private val stream: InputStream?) : IRead {

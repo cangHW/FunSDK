@@ -7,7 +7,7 @@ import com.proxy.service.webview.base.web.callback.ValueCallback
 
 /**
  * @author: cangHX
- * @data: 2024/7/31 18:27
+ * @date: 2024/7/31 18:27
  * @desc:
  */
 interface WebService : BaseService {

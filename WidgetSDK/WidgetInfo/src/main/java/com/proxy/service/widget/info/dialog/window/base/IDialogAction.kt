@@ -5,7 +5,7 @@ import com.proxy.service.widget.info.dialog.window.listener.OnDialogDismissListe
 
 /**
  * @author: cangHX
- * @data: 2025/11/28 15:36
+ * @date: 2025/11/28 15:36
  * @desc:
  */
 interface IDialogAction {

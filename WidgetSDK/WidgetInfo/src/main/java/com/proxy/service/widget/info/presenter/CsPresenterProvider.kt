@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 
 /**
  * @author: cangHX
- * @data: 2025/12/25 10:51
+ * @date: 2025/12/25 10:51
  * @desc: 类 mvp 架构, 用于生成自带生命周期的 presenter, 灵活管理 view 模块
  */
 class CsPresenterProvider {

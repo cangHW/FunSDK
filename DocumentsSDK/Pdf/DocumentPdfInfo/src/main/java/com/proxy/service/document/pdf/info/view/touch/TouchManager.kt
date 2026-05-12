@@ -9,7 +9,7 @@ import android.view.ScaleGestureDetector
 
 /**
  * @author: cangHX
- * @data: 2025/5/14 14:18
+ * @date: 2025/5/14 14:18
  * @desc:
  */
 class TouchManager private constructor(

@@ -6,7 +6,7 @@ import retrofit2.Converter
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 20:43
+ * @date: 2024/5/21 20:43
  * @desc:
  */
 interface IRequestConfigBuilderGet : IBaseConfigGet {

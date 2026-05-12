@@ -4,7 +4,7 @@ import com.proxy.service.webview.base.web.dialog.JsPromptResult
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 11:32
+ * @date: 2024/8/5 11:32
  * @desc:
  */
 class JsPromptResultImpl(

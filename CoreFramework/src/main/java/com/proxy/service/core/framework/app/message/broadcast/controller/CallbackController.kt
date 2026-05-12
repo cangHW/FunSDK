@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.collections.type.Type
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 16:15
+ * @date: 2026/1/19 16:15
  * @desc:
  */
 object CallbackController {

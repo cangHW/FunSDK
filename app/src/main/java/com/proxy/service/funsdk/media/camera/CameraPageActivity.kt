@@ -14,7 +14,7 @@ import com.proxy.service.funsdk.databinding.ActivityCameraPageBinding
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 17:53
+ * @date: 2026/2/4 17:53
  * @desc:
  */
 class CameraPageActivity : BaseActivity<ActivityCameraPageBinding>() {

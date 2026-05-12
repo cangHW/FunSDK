@@ -16,7 +16,7 @@ import java.nio.file.StandardOpenOption
 
 /**
  * @author: cangHX
- * @data: 2024/9/25 15:37
+ * @date: 2024/9/25 15:37
  * @desc:
  */
 class ByteSource(private val bytes: ByteArray) : AbstractWrite() {

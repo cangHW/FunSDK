@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/10/30 18:40
+ * @date: 2024/10/30 18:40
  * @desc:
  */
 sealed interface DownloadConfig : IDownloadConfigBuilderGet {
@@ -31,12 +31,8 @@ sealed interface DownloadConfig : IDownloadConfigBuilderGet {
     private class Builder : BaseConfig<IDownloadConfigBuilder>(), IDownloadConfigBuilder,
         DownloadConfig {
 
-        companion object {
-            private const val TIMEOUT_MIN: Long = 5 * 1000
-        }
-
         private val groups = ArrayList<DownloadGroup>()
-        private var maxTask: Int = 3
+        private var maxTaskNum: Int = ApiConstants.Download.MAX_TASK_NUM
         private var isAutoRestartOnNetworkReconnect = false
 
         private var connectTimeOut: Long = 10 * 1000
@@ -55,14 +51,14 @@ sealed interface DownloadConfig : IDownloadConfigBuilderGet {
         }
 
         /**
-         * 设置最大同时下载任务数量, 默认为：3
+         * 设置最大同时下载任务数量
          * */
-        override fun setMaxTask(maxTasks: Int): IDownloadConfigBuilder {
-            if (maxTasks <= 0 || maxTasks > 5) {
+        override fun setMaxTaskCount(maxTaskNum: Int): IDownloadConfigBuilder {
+            if (maxTaskNum <= 0 || maxTaskNum > 5) {
                 CsLogger.tag(TAG)
-                    .e("maxTasks must be greater than 0 and less than or equal to 5. maxTask = $maxTask")
+                    .e("maxTasks must be greater than 0 and less than or equal to 5. maxTaskNum = $maxTaskNum")
             } else {
-                this.maxTask = maxTasks
+                this.maxTaskNum = maxTaskNum
             }
             return this
         }
@@ -77,10 +73,10 @@ sealed interface DownloadConfig : IDownloadConfigBuilderGet {
 
         override fun setConnectTimeOut(timeout: Long, unit: TimeUnit): IDownloadConfigBuilder {
             unit.toMillis(timeout).let {
-                connectTimeOut = if (it > TIMEOUT_MIN) {
+                connectTimeOut = if (it > ApiConstants.DEFAULT_TIMEOUT_MIN) {
                     it
                 } else {
-                    TIMEOUT_MIN
+                    ApiConstants.DEFAULT_TIMEOUT_MIN
                 }
             }
             return this
@@ -100,8 +96,8 @@ sealed interface DownloadConfig : IDownloadConfigBuilderGet {
         /**
          * 获取最大同时下载任务数量
          * */
-        override fun getMaxTask(): Int {
-            return maxTask
+        override fun getMaxTaskCount(): Int {
+            return maxTaskNum
         }
 
         /**
@@ -125,7 +121,7 @@ sealed interface DownloadConfig : IDownloadConfigBuilderGet {
 
             if (any is Builder) {
                 groups.addAll(any.getGroups())
-                maxTask = any.maxTask
+                maxTaskNum = any.maxTaskNum
                 isAutoRestartOnNetworkReconnect = any.getAutoRestartOnNetworkReconnect()
                 connectTimeOut = any.getConnectTimeOut()
             }

@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 14:45
+ * @date: 2026/2/5 14:45
  * @desc:
  */
 class EmptyCameraViewImpl: ICameraView {

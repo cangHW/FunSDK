@@ -13,7 +13,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkSoundBinding
 
 /**
  * @author: cangHX
- * @data: 2024/12/6 16:45
+ * @date: 2024/12/6 16:45
  * @desc:
  */
 class SoundActivity : BaseActivity<ActivityFrameworkSoundBinding>() {

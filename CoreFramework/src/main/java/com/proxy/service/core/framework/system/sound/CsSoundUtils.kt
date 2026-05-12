@@ -17,7 +17,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * 音频工具类
  *
  * @author: cangHX
- * @data: 2024/12/5 20:06
+ * @date: 2024/12/5 20:06
  * @desc:
  */
 object CsSoundUtils {

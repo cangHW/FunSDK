@@ -7,7 +7,7 @@ import com.proxy.service.document.pdf.info.view.cache.PartCache
 
 /**
  * @author: cangHX
- * @data: 2025/5/14 15:48
+ * @date: 2025/5/14 15:48
  * @desc:
  */
 class LifecycleManager private constructor() {

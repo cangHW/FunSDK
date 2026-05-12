@@ -5,7 +5,7 @@ import com.proxy.service.document.pdf.info.core.PdfiumCore
 
 /**
  * @author: cangHX
- * @data: 2025/8/25 10:41
+ * @date: 2025/8/25 10:41
  * @desc:
  */
 class PageTextInfo(private val page_hand: Long) {

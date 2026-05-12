@@ -8,7 +8,7 @@ import java.security.MessageDigest
 
 /**
  * @author: cangHX
- * @data: 2024/6/3 14:40
+ * @date: 2024/6/3 14:40
  * @desc:
  */
 class FitXYTransformation : BaseBitmapTransformation() {

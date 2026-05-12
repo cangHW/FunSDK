@@ -6,26 +6,27 @@ import com.proxy.service.core.framework.convert.CsStorageUnit
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import java.util.concurrent.TimeUnit
+import com.proxy.service.apihttp.base.constants.ApiConstants
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 20:43
+ * @date: 2024/5/21 20:43
  * @desc:
  */
 interface IRequestConfigBuilder : IBaseConfig<IRequestConfigBuilder> {
 
     /**
-     * 设置连接超时时间
+     * 设置连接超时时间. 最小时间为 [ApiConstants.DEFAULT_TIMEOUT_MIN]
      * */
     fun setConnectTimeOut(timeout: Long, unit: TimeUnit): IRequestConfigBuilder
 
     /**
-     * 设置写入超时时间
+     * 设置写入超时时间. 最小时间为 [ApiConstants.DEFAULT_TIMEOUT_MIN]
      * */
     fun setWriteTimeOut(timeout: Long, unit: TimeUnit): IRequestConfigBuilder
 
     /**
-     * 设置读取超时时间
+     * 设置读取超时时间. 最小时间为 [ApiConstants.DEFAULT_TIMEOUT_MIN]
      * */
     fun setReadTimeOut(timeout: Long, unit: TimeUnit): IRequestConfigBuilder
 
@@ -44,7 +45,7 @@ interface IRequestConfigBuilder : IBaseConfig<IRequestConfigBuilder> {
     fun addConverterFactory(factory: Converter.Factory): IRequestConfigBuilder
 
     /**
-     * 添加返回管理器
+     * 添加请求适配器
      * */
     fun addCallAdapterFactory(factory: CallAdapter.Factory): IRequestConfigBuilder
 

@@ -7,14 +7,14 @@ import com.proxy.service.apihttp.base.upload.callback.UploadCallback
 import com.proxy.service.apihttp.base.upload.config.UploadConfig
 import com.proxy.service.apihttp.base.upload.task.UploadTask
 import com.proxy.service.apihttp.info.config.Config
+import com.proxy.service.apihttp.info.upload.manager.OkHttpManager
 import com.proxy.service.apihttp.info.upload.controller.TaskController
 import com.proxy.service.apihttp.info.upload.manager.CallbackManager
-import com.proxy.service.apihttp.info.upload.manager.impl.OkhttpConfigImpl
 
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 14:22
+ * @date: 2024/12/17 14:22
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/http_upload")
@@ -22,7 +22,7 @@ class UploadServiceImpl : UploadService {
 
     override fun init(config: UploadConfig) {
         Config.maxUploadTaskCount = config.getMaxTask()
-        OkhttpConfigImpl.instance.setUploadConfig(config)
+        OkHttpManager.createOkhttpClient(config)
     }
 
     override fun registerGlobalUploadCallback(callback: UploadCallback) {

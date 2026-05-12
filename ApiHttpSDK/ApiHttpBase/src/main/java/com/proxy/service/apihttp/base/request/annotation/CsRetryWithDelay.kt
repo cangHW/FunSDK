@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
  * 失败自动重试
  *
  * @author: cangHX
- * @data: 2024/5/21 17:20
+ * @date: 2024/5/21 17:20
  * @desc:
  */
 @MustBeDocumented

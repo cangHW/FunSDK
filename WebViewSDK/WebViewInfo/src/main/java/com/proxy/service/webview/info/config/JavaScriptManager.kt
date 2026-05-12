@@ -6,7 +6,7 @@ import com.proxy.service.webview.info.utils.WebUtils
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 10:37
+ * @date: 2024/8/1 10:37
  * @desc:
  */
 object JavaScriptManager {

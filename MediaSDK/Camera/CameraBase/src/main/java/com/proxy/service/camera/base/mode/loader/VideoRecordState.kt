@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.mode.loader
 
 /**
  * @author: cangHX
- * @data: 2026/4/21 10:40
+ * @date: 2026/4/21 10:40
  * @desc:
  */
 enum class VideoRecordState {

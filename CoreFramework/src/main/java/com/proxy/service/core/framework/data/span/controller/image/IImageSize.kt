@@ -5,7 +5,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/9/10 10:20
+ * @date: 2025/9/10 10:20
  * @desc:
  */
 abstract class IImageSize {

@@ -9,7 +9,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/4/29 14:15
+ * @date: 2026/4/29 14:15
  * @desc:
  */
 class MeteringRegionsSupportInfo {

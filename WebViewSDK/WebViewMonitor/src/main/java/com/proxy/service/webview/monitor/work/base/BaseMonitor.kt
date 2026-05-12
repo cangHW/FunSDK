@@ -10,7 +10,7 @@ import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 13:52
+ * @date: 2026/1/23 13:52
  * @desc:
  */
 abstract class BaseMonitor {

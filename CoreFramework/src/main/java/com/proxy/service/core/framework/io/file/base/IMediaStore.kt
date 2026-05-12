@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.io.file.media.config.MimeType
 
 /**
  * @author: cangHX
- * @data: 2024/12/31 14:03
+ * @date: 2024/12/31 14:03
  * @desc:
  */
 interface IMediaStore<T> {

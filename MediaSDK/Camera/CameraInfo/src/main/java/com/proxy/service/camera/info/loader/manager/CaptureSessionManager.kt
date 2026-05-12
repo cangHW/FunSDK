@@ -9,7 +9,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/3/23 10:47
+ * @date: 2026/3/23 10:47
  * @desc:
  */
 class CaptureSessionManager private constructor(private val handler: Handler) {

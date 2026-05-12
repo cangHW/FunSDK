@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author: cangHX
- * @data: 2025/9/26 11:43
+ * @date: 2025/9/26 11:43
  * @desc:
  */
 class InitializerCache<T> {

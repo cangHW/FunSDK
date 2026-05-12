@@ -18,7 +18,7 @@ import javax.crypto.spec.IvParameterSpec
 
 /**
  * @author: cangHX
- * @data: 2024/11/14 15:13
+ * @date: 2024/11/14 15:13
  * @desc:
  */
 class SecurityActivity : BaseActivity<ActivityFrameworkSecurityBinding>() {

@@ -5,7 +5,7 @@ import java.io.OutputStream
 
 /**
  * @author: cangHX
- * @data: 2024/12/31 17:24
+ * @date: 2024/12/31 17:24
  * @desc:
  */
 interface ISourceWrite {

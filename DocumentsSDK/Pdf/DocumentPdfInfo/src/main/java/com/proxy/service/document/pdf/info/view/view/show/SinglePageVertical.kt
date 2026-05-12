@@ -11,7 +11,7 @@ import com.proxy.service.document.pdf.info.view.view.utils.CheckSelectManager
 
 /**
  * @author: cangHX
- * @data: 2025/7/21 18:46
+ * @date: 2025/7/21 18:46
  * @desc:
  */
 class SinglePageVertical : BaseShow(), CheckSelectManager.OnSelectChangedCallback {

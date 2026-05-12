@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.info.config
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 18:09
+ * @date: 2024/5/21 18:09
  * @desc:
  */
 object Config {

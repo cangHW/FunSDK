@@ -4,7 +4,7 @@ import com.proxy.service.core.service.media.CsMediaCamera
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 10:48
+ * @date: 2026/2/5 10:48
  * @desc:
  */
 sealed class CameraFaceMode {

@@ -7,7 +7,7 @@ import com.proxy.service.document.image.base.loader.base.IController
 
 /**
  * @author: cangHX
- * @data: 2025/6/2 18:29
+ * @date: 2025/6/2 18:29
  * @desc:
  */
 open class CallbackDrawable(

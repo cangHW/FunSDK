@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 
 /**
  * @author: cangHX
- * @data: 2026/4/22 09:51
+ * @date: 2026/4/22 09:51
  * @desc:
  */
 sealed class VideoEncoderMode private constructor(

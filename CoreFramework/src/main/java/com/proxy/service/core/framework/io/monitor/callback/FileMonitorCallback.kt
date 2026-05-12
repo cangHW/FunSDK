@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.io.monitor.info.FileInfo
 
 /**
  * @author: cangHX
- * @data: 2025/4/23 11:15
+ * @date: 2025/4/23 11:15
  * @desc:
  */
 interface FileMonitorCallback {

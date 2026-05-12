@@ -5,7 +5,7 @@ import com.proxy.service.apihttp.base.common.config.safety.ISafetyBuilderGet
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 20:55
+ * @date: 2025/3/27 20:55
  * @desc:
  */
 interface IBaseConfigGet : ICommonBuilderGet, ISafetyBuilderGet {

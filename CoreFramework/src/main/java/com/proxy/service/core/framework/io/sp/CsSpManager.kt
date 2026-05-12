@@ -8,7 +8,7 @@ import com.tencent.mmkv.MMKV
  * 类sp，key-value，键值对存储相关工具
  *
  * @author: cangHX
- * @data: 2024/7/20 14:28
+ * @date: 2024/7/20 14:28
  * @desc:
  */
 object CsSpManager : ISpAction {

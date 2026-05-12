@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.system.screen.enums.RotationEnum
 
 /**
  * @author: cangHX
- * @data: 2026/4/23 17:31
+ * @date: 2026/4/23 17:31
  * @desc:
  */
 abstract class AbstractSurfaceOrientationActivity : AbstractUiChangedActivity() {

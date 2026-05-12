@@ -5,7 +5,7 @@ import androidx.annotation.IntRange
 
 /**
  * @author: cangHX
- * @data: 2026/2/7 16:05
+ * @date: 2026/2/7 16:05
  * @desc: 测光区域
  */
 class MeteringAreaInfo private constructor(

@@ -19,7 +19,7 @@ import com.proxy.service.document.image.base.mode.TouchConflictMode
  * 配置完成后通过 into 方法绑定到目标 View.
  *
  * @author: cangHX
- * @data: 2025/5/30 10:09
+ * @date: 2025/5/30 10:09
  * @desc:
  */
 interface IOption : ILoader<IController> {

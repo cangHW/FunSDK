@@ -13,7 +13,7 @@ import com.proxy.service.document.pdf.info.loader.info.DocumentInfo
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:49
+ * @date: 2025/5/2 20:49
  * @desc:
  */
 abstract class BaseController {

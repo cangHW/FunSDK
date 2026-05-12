@@ -4,7 +4,7 @@ import com.proxy.service.camera.base.mode.loader.CameraFunMode
 
 /**
  * @author: cangHX
- * @data: 2026/3/30 15:07
+ * @date: 2026/3/30 15:07
  * @desc:
  */
 interface ICameraFunGet {

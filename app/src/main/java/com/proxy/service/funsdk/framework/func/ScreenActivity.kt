@@ -16,7 +16,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkScreenBinding
 
 /**
  * @author: cangHX
- * @data: 2024/10/18 18:25
+ * @date: 2024/10/18 18:25
  * @desc:
  */
 class ScreenActivity : BaseActivity<ActivityFrameworkScreenBinding>() {

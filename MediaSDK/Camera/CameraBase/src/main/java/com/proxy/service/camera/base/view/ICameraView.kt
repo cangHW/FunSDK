@@ -7,7 +7,7 @@ import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 10:26
+ * @date: 2026/2/5 10:26
  * @desc:
  */
 interface ICameraView : ICameraAction, ICameraFun {

@@ -9,7 +9,7 @@ import android.graphics.RectF
  * 图片预览绘制回调.
  *
  * @author: cangHX
- * @data: 2025/6/2 18:55
+ * @date: 2025/6/2 18:55
  * @desc:
  */
 interface OnDrawCallback {

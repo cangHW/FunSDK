@@ -13,7 +13,7 @@ import java.net.SocketTimeoutException
 
 /**
  * @author: cangHX
- * @data: 2024/5/23 18:43
+ * @date: 2024/5/23 18:43
  * @desc:
  */
 class ExactTimeOutInterceptor : Interceptor {

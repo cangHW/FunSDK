@@ -14,7 +14,7 @@ import com.proxy.service.widget.info.dialog.window.manager.WManager
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 16:47
+ * @date: 2025/11/27 16:47
  * @desc:
  */
 abstract class AbstractActionDialog : AbstractConfigDialog(), IDialogAction {

@@ -9,7 +9,7 @@ import com.proxy.service.core.framework.system.screen.bar.impl.MeizuStatusBarImp
 
 /**
  * @author: cangHX
- * @data: 2026/1/15 22:00
+ * @date: 2026/1/15 22:00
  * @desc:
  */
 object BarStatusFactory {

@@ -8,7 +8,7 @@ import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
- * @data: 2024/12/18 10:37
+ * @date: 2024/12/18 10:37
  * @desc:
  */
 object TaskController : BaseTaskController() {

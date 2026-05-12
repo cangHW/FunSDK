@@ -21,7 +21,7 @@ import org.libpag.PAGScaleMode
 
 /**
  * @author: cangHX
- * @data: 2025/10/13 20:39
+ * @date: 2025/10/13 20:39
  * @desc:
  */
 class ImageConfig private constructor(

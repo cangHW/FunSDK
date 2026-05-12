@@ -7,7 +7,7 @@ import java.util.Locale
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 11:09
+ * @date: 2024/12/25 11:09
  * @desc:
  */
 object LocaleStore : BaseStore<Locale>() {

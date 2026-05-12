@@ -10,7 +10,7 @@ import java.io.IOException
 
 /**
  * @author: cangHX
- * @data: 2024/4/3 14:01
+ * @date: 2024/4/3 14:01
  * @desc:
  */
 object AssetUtils {

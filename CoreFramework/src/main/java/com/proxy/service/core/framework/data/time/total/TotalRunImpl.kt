@@ -15,7 +15,7 @@ import java.util.Date
 
 /**
  * @author: cangHX
- * @data: 2025/4/14 18:22
+ * @date: 2025/4/14 18:22
  * @desc:
  */
 open class TotalRunImpl : ITotalRun {

@@ -13,7 +13,7 @@ import com.proxy.service.widget.info.toast.info.ToastWithIconViewInfo
  * toast 视图工厂
  *
  * @author: cangHX
- * @data: 2025/7/8 15:53
+ * @date: 2025/7/8 15:53
  * @desc:
  */
 open class ToastViewFactory {

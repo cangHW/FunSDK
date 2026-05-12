@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2026/4/23 20:22
+ * @date: 2026/4/23 20:22
  * @desc:
  */
 abstract class AbstractCameraActionActivity : AbstractSurfaceOrientationActivity(),

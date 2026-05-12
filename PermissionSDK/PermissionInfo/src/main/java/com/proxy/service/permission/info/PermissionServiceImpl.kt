@@ -19,7 +19,7 @@ import com.proxy.service.permission.info.utils.PermissionUtils
 
 /**
  * @author: cangHX
- * @data: 2024/11/18 10:30
+ * @date: 2024/11/18 10:30
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/permission")

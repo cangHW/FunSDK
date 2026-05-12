@@ -5,7 +5,7 @@ import com.proxy.service.apihttp.base.download.task.DownloadTask
 
 /**
  * @author: cangHX
- * @data: 2024/10/31 11:40
+ * @date: 2024/10/31 11:40
  * @desc:
  */
 interface DownloadCallback {

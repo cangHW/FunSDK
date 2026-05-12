@@ -6,7 +6,7 @@ import com.proxy.service.webview.base.web.request.WebResourceRequest
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 16:19
+ * @date: 2024/8/3 16:19
  * @desc:
  */
 class WebResourceRequestImpl(

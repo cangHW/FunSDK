@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2026/3/20 15:21
+ * @date: 2026/3/20 15:21
  * @desc:
  */
 abstract class AbstractCameraController : ICameraAction, ICameraActionGet {

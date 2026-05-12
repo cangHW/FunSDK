@@ -17,7 +17,7 @@ import java.io.InputStream
  * 自定义 图片加载 span
  *
  * @author: cangHX
- * @data: 2025/7/14 14:42
+ * @date: 2025/7/14 14:42
  * @desc:
  */
 open class CustomImageSpan : CustomDynamicDrawableSpan {

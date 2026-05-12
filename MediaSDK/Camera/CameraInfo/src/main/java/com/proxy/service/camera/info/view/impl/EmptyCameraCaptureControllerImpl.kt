@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/3/30 10:36
+ * @date: 2026/3/30 10:36
  * @desc:
  */
 class EmptyCameraCaptureControllerImpl: ICameraCaptureController {

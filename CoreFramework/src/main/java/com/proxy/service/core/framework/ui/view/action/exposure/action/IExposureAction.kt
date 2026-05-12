@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2026/1/9 14:10
+ * @date: 2026/1/9 14:10
  * @desc:
  */
 abstract class IExposureAction : IAction<IExposureAction>(),

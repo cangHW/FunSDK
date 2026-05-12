@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.mode.loader
 
 /**
  * @author: cangHX
- * @data: 2026/4/21 18:07
+ * @date: 2026/4/21 18:07
  * @desc:
  */
 enum class VideoPatternMode {

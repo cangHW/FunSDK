@@ -11,7 +11,7 @@ import com.proxy.service.document.pdf.info.view.cache.PartCache
 
 /**
  * @author: cangHX
- * @data: 2025/7/22 20:54
+ * @date: 2025/7/22 20:54
  * @desc:
  */
 class TwoPageAdapter(

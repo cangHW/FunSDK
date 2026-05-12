@@ -6,7 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 
 /**
  * @author: cangHX
- * @data: 2025/7/24 17:02
+ * @date: 2025/7/24 17:02
  * @desc:
  */
 class CheckSelectManager(private val callback: OnSelectChangedCallback) {

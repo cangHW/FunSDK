@@ -4,7 +4,7 @@ import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
- * @data: 2025/9/15 23:12
+ * @date: 2025/9/15 23:12
  * @desc:
  */
 object ShareDataConstants {

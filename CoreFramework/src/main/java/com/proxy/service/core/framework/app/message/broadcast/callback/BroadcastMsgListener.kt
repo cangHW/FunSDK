@@ -8,7 +8,7 @@ import android.os.Bundle
  * 接收消息回调
  *
  * @author: cangHX
- * @data: 2024/12/2 15:20
+ * @date: 2024/12/2 15:20
  * @desc:
  */
 interface BroadcastMsgListener {

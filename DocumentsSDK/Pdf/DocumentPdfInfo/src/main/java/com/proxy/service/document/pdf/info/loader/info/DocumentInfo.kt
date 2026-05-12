@@ -6,7 +6,7 @@ import com.proxy.service.document.pdf.info.loader.source.BaseController
 
 /**
  * @author: cangHX
- * @data: 2025/4/30 17:37
+ * @date: 2025/4/30 17:37
  * @desc:
  */
 class DocumentInfo(private val controller: BaseController, val hand: Long) {

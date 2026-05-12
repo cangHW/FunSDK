@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.base.bean
 
 /**
  * @author: cangHX
- * @data: 2025/4/30 16:08
+ * @date: 2025/4/30 16:08
  * @desc: 目录信息
  */
 class CatalogueData {

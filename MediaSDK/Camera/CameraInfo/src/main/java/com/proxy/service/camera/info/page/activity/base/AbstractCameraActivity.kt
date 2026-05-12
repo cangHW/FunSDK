@@ -23,7 +23,7 @@ import com.proxy.service.widget.info.toast.CsToast
 
 /**
  * @author: cangHX
- * @data: 2026/4/23 17:08
+ * @date: 2026/4/23 17:08
  * @desc:
  */
 abstract class AbstractCameraActivity : CsBaseActivity<CsCameraInfoPageActivityCameraBinding>() {

@@ -5,7 +5,7 @@ import android.widget.TextView
 
 /**
  * @author: cangHX
- * @data: 2025/7/11 17:11
+ * @date: 2025/7/11 17:11
  * @desc:
  */
 interface IBaseBuilder {

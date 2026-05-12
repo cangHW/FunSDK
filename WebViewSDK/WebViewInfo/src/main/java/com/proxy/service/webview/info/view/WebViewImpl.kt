@@ -13,7 +13,7 @@ import com.proxy.service.webview.base.listener.WebLifecycleCallback
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 15:11
+ * @date: 2024/8/1 15:11
  * @desc:
  */
 class WebViewImpl : WebView {

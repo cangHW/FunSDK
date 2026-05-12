@@ -10,7 +10,7 @@ import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 11:38
+ * @date: 2024/12/2 11:38
  * @desc:
  */
 abstract class BaseLifecycleActiveSend<T : IEvent>(

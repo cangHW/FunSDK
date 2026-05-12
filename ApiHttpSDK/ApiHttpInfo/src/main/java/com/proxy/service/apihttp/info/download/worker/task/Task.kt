@@ -4,7 +4,7 @@ import androidx.annotation.WorkerThread
 import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
-import com.proxy.service.apihttp.info.download.manager.OkhttpManager
+import com.proxy.service.apihttp.info.download.manager.OkHttpManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
@@ -18,7 +18,7 @@ import java.net.UnknownHostException
 
 /**
  * @author: cangHX
- * @data: 2024/11/1 19:08
+ * @date: 2024/11/1 19:08
  * @desc:
  */
 object Task {
@@ -136,7 +136,9 @@ object Task {
         }
 
         val response = try {
-            OkhttpManager.getOkhttpClient().newCall(request).execute()
+            val client = OkHttpManager.getOkhttpClient()
+                ?: throw DownloadException.create(DownloadException.UNKNOWN, "未初始化")
+            client.newCall(request).execute()
         } catch (exception: UnknownHostException) {
             throw DownloadException.create(DownloadException.UNKNOWN_HOST, exception.message)
         } catch (exception: SocketTimeoutException) {

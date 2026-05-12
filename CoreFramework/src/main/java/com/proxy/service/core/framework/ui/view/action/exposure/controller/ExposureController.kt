@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.ui.view.action.exposure.controller
 
 /**
  * @author: cangHX
- * @data: 2026/1/9 14:22
+ * @date: 2026/1/9 14:22
  * @desc:
  */
 interface ExposureController {

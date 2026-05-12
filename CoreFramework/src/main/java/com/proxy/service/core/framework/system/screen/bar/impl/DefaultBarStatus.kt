@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.system.screen.bar.IBarStatus
 
 /**
  * @author: cangHX
- * @data: 2026/1/15 21:47
+ * @date: 2026/1/15 21:47
  * @desc: 默认
  */
 open class DefaultBarStatus : IBarStatus {

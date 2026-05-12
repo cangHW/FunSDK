@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 
 /**
  * @author: cangHX
- * @data: 2024/6/13 20:17
+ * @date: 2024/6/13 20:17
  * @desc:
  */
 class TaskInfo<T> {

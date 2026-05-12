@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 
 /**
  * @author: cangHX
- * @data: 2025/12/25 16:40
+ * @date: 2025/12/25 16:40
  * @desc:
  */
 abstract class BasePresenter : ILifecycle {

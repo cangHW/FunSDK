@@ -9,7 +9,7 @@ import com.proxy.service.document.pdf.info.loader.cache.LruPageTextCache
 
 /**
  * @author: cangHX
- * @data: 2025/4/30 17:55
+ * @date: 2025/4/30 17:55
  * @desc:
  */
 class PageInfo(private val doc_hand: Long, val page_hand: Long, private val pageIndex:Int) {

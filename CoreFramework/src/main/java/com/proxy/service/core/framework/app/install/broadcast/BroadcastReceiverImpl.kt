@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/10/29 18:37
+ * @date: 2024/10/29 18:37
  * @desc:
  */
 class BroadcastReceiverImpl : BroadcastReceiver() {

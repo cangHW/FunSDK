@@ -5,7 +5,7 @@ import com.bumptech.glide.signature.ObjectKey
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:36
+ * @date: 2024/5/16 11:36
  * @desc:
  */
 class UrlGlideSource(

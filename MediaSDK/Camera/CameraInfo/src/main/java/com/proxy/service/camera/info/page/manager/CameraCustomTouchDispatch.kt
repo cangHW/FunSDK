@@ -8,7 +8,7 @@ import kotlin.math.abs
 
 /**
  * @author: cangHX
- * @data: 2026/4/9 17:32
+ * @date: 2026/4/9 17:32
  * @desc:
  */
 class CameraCustomTouchDispatch private constructor(

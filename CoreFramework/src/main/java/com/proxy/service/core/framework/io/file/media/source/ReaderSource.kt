@@ -8,7 +8,7 @@ import java.io.Reader
 
 /**
  * @author: cangHX
- * @data: 2024/12/31 17:47
+ * @date: 2024/12/31 17:47
  * @desc:
  */
 class ReaderSource(private val reader: Reader) : ISourceWrite {

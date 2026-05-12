@@ -8,7 +8,7 @@ import com.bumptech.glide.request.transition.Transition
 
 /**
  * @author: cangHX
- * @data: 2025/7/6 17:31
+ * @date: 2025/7/6 17:31
  * @desc:
  */
 abstract class ViewTarget<R : Drawable>(

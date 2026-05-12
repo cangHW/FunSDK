@@ -13,7 +13,7 @@ import com.proxy.service.permission.info.utils.PermissionUtils
 
 /**
  * @author: cangHX
- * @data: 2024/11/18 11:42
+ * @date: 2024/11/18 11:42
  * @desc:
  */
 class PermissionRequestImpl : IPermissionRequest {

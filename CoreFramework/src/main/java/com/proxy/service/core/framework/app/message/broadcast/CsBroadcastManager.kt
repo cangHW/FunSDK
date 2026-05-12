@@ -13,7 +13,7 @@ import com.proxy.service.core.framework.app.message.broadcast.utils.BroadcastUti
  * 广播相关操作工具，只能接收到当前类发送的广播。
  *
  * @author: cangHX
- * @data: 2024/9/23 16:07
+ * @date: 2024/9/23 16:07
  * @desc:
  */
 object CsBroadcastManager {

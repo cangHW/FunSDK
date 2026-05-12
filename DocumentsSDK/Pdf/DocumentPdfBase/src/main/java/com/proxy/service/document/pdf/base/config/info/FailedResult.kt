@@ -5,7 +5,7 @@ import com.proxy.service.document.pdf.base.config.source.BaseSource
 
 /**
  * @author: cangHX
- * @data: 2025/5/5 15:03
+ * @date: 2025/5/5 15:03
  * @desc:
  */
 class FailedResult(val source: BaseSource, val error: LoadErrorEnum){

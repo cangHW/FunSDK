@@ -4,7 +4,7 @@ import com.proxy.service.webview.base.web.permissions.PermissionRequest
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 11:46
+ * @date: 2024/8/5 11:46
  * @desc:
  */
 class PermissionRequestImpl(

@@ -5,7 +5,7 @@ import android.os.Bundle
 
 /**
  * @author: cangHX
- * @data: 2024/7/2 11:47
+ * @date: 2024/7/2 11:47
  * @desc:
  */
 abstract class AbstractActivityLifecycle {

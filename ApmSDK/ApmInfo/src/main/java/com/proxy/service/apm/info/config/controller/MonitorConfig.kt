@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/4/22 18:33
+ * @date: 2025/4/22 18:33
  * @desc:
  */
 class MonitorConfig private constructor(private val controller: IMonitorConfigGet) : IMonitorConfigGet {

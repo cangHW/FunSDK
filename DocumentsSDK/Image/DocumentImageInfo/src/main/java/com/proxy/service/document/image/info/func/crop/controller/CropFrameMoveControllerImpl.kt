@@ -13,7 +13,7 @@ import com.proxy.service.document.image.info.utils.RectUtils
 
 /**
  * @author: cangHX
- * @data: 2025/6/26 10:28
+ * @date: 2025/6/26 10:28
  * @desc:
  */
 class CropFrameMoveControllerImpl(

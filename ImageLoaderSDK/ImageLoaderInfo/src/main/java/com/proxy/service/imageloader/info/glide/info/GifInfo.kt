@@ -7,7 +7,7 @@ import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:13
+ * @date: 2024/5/16 11:13
  * @desc:
  */
 open class GifInfo<R> : GlideInfo<R>() {

@@ -14,7 +14,7 @@ import com.proxy.service.widget.info.view.recyclerview.decoration.CsRecyclerItem
 
 /**
  * @author: cangHX
- * @data: 2026/4/24 16:28
+ * @date: 2026/4/24 16:28
  * @desc:
  */
 class CenterSelectActivity : BaseActivity<ActivityWidgetCenterSelectBinding>(),

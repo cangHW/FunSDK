@@ -19,7 +19,7 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 16:20
+ * @date: 2026/2/4 16:20
  * @desc:
  */
 class CameraPageLoaderImpl : ICameraPageLoader {

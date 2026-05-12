@@ -16,7 +16,7 @@ import java.util.concurrent.CountDownLatch
 
 /**
  * @author: cangHX
- * @data: 2025/9/30 10:55
+ * @date: 2025/9/30 10:55
  * @desc:
  */
 class BroadcastFactory private constructor() : BaseFactory(), OrderedBroadcastMsgListener {

@@ -11,7 +11,7 @@ import java.lang.reflect.WildcardType
 
 /**
  * @author: cangHX
- * @data: 2025/11/5 18:10
+ * @date: 2025/11/5 18:10
  * @desc:
  */
 object TypeUtils {

@@ -19,7 +19,7 @@ import com.proxy.service.core.service.task.CsTask
  * 应用内 event 消息相关工具
  *
  * @author: cangHX
- * @data: 2024/11/28 20:22
+ * @date: 2024/11/28 20:22
  * @desc:
  */
 object CsEventManager {

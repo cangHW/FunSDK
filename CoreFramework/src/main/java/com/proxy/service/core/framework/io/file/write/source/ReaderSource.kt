@@ -17,7 +17,7 @@ import java.nio.file.StandardOpenOption
 
 /**
  * @author: cangHX
- * @data: 2024/9/25 10:27
+ * @date: 2024/9/25 10:27
  * @desc:
  */
 class ReaderSource(private val reader: Reader) : AbstractWrite() {

@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.io.file.media.compat.VideoStoreCompat
  * 兼容 Android 高版本 MediaStore 操作
  *
  * @author: cangHX
- * @data: 2024/12/31 11:51
+ * @date: 2024/12/31 11:51
  * @desc:
  *
  * 需要权限才能访问对应文件，否则只能访问当前应用关联的文件

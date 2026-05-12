@@ -4,7 +4,7 @@ import com.proxy.service.widget.info.toast.enums.ToastGravity
 
 /**
  * @author: cangHX
- * @data: 2025/7/8 18:35
+ * @date: 2025/7/8 18:35
  * @desc:
  */
 class ToastConfig {

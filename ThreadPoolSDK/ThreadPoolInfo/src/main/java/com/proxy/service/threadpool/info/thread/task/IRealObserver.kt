@@ -4,7 +4,7 @@ import io.reactivex.Observable
 
 /**
  * @author: cangHX
- * @data: 2024/6/14 17:02
+ * @date: 2024/6/14 17:02
  * @desc:
  */
 interface IRealObserver<T> {

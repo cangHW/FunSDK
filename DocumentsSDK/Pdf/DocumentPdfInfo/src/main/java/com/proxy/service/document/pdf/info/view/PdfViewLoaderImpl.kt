@@ -20,7 +20,7 @@ import com.proxy.service.document.pdf.info.view.config.RenderConfig
 
 /**
  * @author: cangHX
- * @data: 2025/5/15 09:47
+ * @date: 2025/5/15 09:47
  * @desc:
  */
 class PdfViewLoaderImpl(private val config: PdfConfig) : IPdfViewLoader {

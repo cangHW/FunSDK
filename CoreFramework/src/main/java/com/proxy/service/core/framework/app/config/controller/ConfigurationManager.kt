@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.app.config.base.BaseConfigurationCheck
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 10:05
+ * @date: 2024/12/25 10:05
  * @desc:
  */
 object ConfigurationManager {

@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.app.context.lifecycle.TopActivityImpl
 
 /**
  * @author: cangHX
- * @data: 2024/7/2 11:28
+ * @date: 2024/7/2 11:28
  * @desc:
  */
 object ContextInit {

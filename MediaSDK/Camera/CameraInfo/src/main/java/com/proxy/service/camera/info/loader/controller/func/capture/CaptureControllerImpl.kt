@@ -25,7 +25,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2026/3/23 18:34
+ * @date: 2026/3/23 18:34
  * @desc:
  */
 open class CaptureControllerImpl private constructor(

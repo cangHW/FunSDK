@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 20:34
+ * @date: 2024/12/2 20:34
  * @desc:
  */
 class SecretKeySpecOnlyImpl(

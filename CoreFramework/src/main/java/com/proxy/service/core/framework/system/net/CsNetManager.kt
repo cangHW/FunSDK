@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
  *
  * @author: cangHX
- * @data: 2024/4/28 15:34
+ * @date: 2024/4/28 15:34
  * @desc:
  */
 object CsNetManager {

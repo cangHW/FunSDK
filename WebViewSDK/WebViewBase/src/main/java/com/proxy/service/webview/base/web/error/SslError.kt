@@ -4,7 +4,7 @@ import android.net.http.SslCertificate
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 10:48
+ * @date: 2024/8/3 10:48
  * @desc:
  */
 interface SslError {

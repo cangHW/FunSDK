@@ -11,7 +11,7 @@ import com.proxy.service.permission.base.manager.DialogFactory
 
 /**
  * @author: cangHX
- * @data: 2024/11/20 09:53
+ * @date: 2024/11/20 09:53
  * @desc:
  */
 class DialogFactoryImpl : DialogFactory {

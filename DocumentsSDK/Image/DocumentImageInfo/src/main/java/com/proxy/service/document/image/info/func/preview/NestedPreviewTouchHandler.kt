@@ -13,7 +13,7 @@ import kotlin.math.abs
  * 图片预览与父容器滑动冲突处理器.
  *
  * @author: cangHX
- * @data: 2026/5/6 10:25
+ * @date: 2026/5/6 10:25
  * @desc:
  */
 class NestedPreviewTouchHandler(

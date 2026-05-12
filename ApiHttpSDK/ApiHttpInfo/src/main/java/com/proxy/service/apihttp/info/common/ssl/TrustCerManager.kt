@@ -1,7 +1,7 @@
 package com.proxy.service.apihttp.info.common.ssl
 
 import android.annotation.SuppressLint
-import com.proxy.service.apihttp.info.common.okhttp.IOkhttpConfig
+import com.proxy.service.apihttp.info.common.okhttp.IOkHttpConfig
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import okhttp3.OkHttpClient
@@ -18,12 +18,12 @@ import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 21:03
+ * @date: 2024/5/21 21:03
  * @desc:
  */
 object TrustCerManager {
 
-    fun parse(builder: OkHttpClient.Builder, config: IOkhttpConfig) {
+    fun parse(builder: OkHttpClient.Builder, config: IOkHttpConfig) {
         if (
             config.getServerCerAssetsName().isNullOrEmpty() &&
             config.getClientCerAssetsName().isNullOrEmpty() &&

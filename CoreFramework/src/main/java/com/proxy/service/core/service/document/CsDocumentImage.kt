@@ -15,7 +15,7 @@ import com.proxy.service.document.image.base.loader.crop.ICropOption
  * 文档-图片 加载框架入口
  *
  * @author: cangHX
- * @data: 2025/6/7 14:45
+ * @date: 2025/6/7 14:45
  * @desc:
  */
 object CsDocumentImage {

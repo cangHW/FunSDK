@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 
 /**
  * @author: cangHX
- * @data: 2025/9/15 23:03
+ * @date: 2025/9/15 23:03
  * @desc:
  */
 abstract class AbstractWorker {

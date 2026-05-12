@@ -6,7 +6,7 @@ import com.proxy.service.webview.info.config.JavascriptInterfaceMethodInfo
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 17:21
+ * @date: 2024/8/1 17:21
  * @desc:
  */
 object WebUtils {

@@ -4,7 +4,7 @@ import android.net.Uri
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 16:17
+ * @date: 2024/8/3 16:17
  * @desc:
  */
 interface WebResourceRequest {

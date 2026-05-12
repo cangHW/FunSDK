@@ -25,7 +25,7 @@ import com.proxy.service.widget.info.toast.CsToast
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 18:28
+ * @date: 2024/8/3 18:28
  * @desc:
  */
 class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {

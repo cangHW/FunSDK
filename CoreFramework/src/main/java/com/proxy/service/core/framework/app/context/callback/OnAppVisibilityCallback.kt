@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.context.callback
 
 /**
  * @author: cangHX
- * @data: 2024/7/2 11:32
+ * @date: 2024/7/2 11:32
  * @desc:
  */
 interface OnAppVisibilityCallback {

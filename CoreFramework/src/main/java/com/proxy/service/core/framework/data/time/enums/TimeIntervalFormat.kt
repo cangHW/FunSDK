@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.data.time.enums
 
 /**
  * @author: cangHX
- * @data: 2025/4/14 11:24
+ * @date: 2025/4/14 11:24
  * @desc: F- 代表不确定性规则
  * F- 会把为 0 的值移除
  * F-+ 会把为 0 的值移除，如果最终值为空，则保留最后一个为 0 的值

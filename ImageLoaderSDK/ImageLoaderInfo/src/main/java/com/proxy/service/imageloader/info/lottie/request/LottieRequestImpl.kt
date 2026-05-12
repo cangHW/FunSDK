@@ -11,7 +11,7 @@ import com.proxy.service.imageloader.info.lottie.request.source.UrlLottieSource
 
 /**
  * @author: cangHX
- * @data: 2024/6/7 10:43
+ * @date: 2024/6/7 10:43
  * @desc:
  */
 class LottieRequestImpl(

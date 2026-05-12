@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/9/24 20:20
+ * @date: 2025/9/24 20:20
  * @desc:
  */
 class StartupManager {

@@ -5,7 +5,7 @@ import java.util.Locale
 
 /**
  * @author: cangHX
- * @data: 2024/12/24 17:57
+ * @date: 2024/12/24 17:57
  * @desc:
  */
 interface ILocale : IAction<ILocale> {

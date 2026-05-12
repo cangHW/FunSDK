@@ -8,7 +8,7 @@ import android.text.style.ReplacementSpan
  * 空格 span
  *
  * @author: cangHX
- * @data: 2025/7/14 10:47
+ * @date: 2025/7/14 10:47
  * @desc:
  */
 class SpaceSpan(

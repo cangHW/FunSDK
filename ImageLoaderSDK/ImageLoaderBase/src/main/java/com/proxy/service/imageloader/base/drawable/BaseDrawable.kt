@@ -8,7 +8,7 @@ import com.proxy.service.imageloader.base.option.glide.callback.AnimationCallbac
 
 /**
  * @author: cangHX
- * @data: 2025/7/7 11:24
+ * @date: 2025/7/7 11:24
  * @desc:
  */
 abstract class BaseDrawable<T : Drawable> : Drawable(), Animatable, Animatable2Compat {

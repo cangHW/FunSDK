@@ -4,7 +4,7 @@ import com.proxy.service.apihttp.base.upload.task.UploadTask
 
 /**
  * @author: cangHX
- * @data: 2024/12/18 09:55
+ * @date: 2024/12/18 09:55
  * @desc:
  */
 interface UploadCallback {

@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.base.loader
 
 /**
  * @author: cangHX
- * @data: 2025/8/25 11:15
+ * @date: 2025/8/25 11:15
  * @desc:
  */
 interface IPdfText : IPdfEdit {

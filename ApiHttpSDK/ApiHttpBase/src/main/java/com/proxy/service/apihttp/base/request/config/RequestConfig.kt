@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.base.request.config
 
 import com.proxy.service.apihttp.base.common.config.BaseConfig
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilder
 import com.proxy.service.apihttp.base.request.config.builder.IRequestConfigBuilderGet
 import com.proxy.service.core.framework.convert.CsStorageUnit
@@ -10,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 16:59
+ * @date: 2024/5/21 16:59
  * @desc:
  */
 sealed interface RequestConfig : IRequestConfigBuilderGet {
@@ -31,10 +32,6 @@ sealed interface RequestConfig : IRequestConfigBuilderGet {
         private val baseUrl: String
     ) : BaseConfig<IRequestConfigBuilder>(), IRequestConfigBuilder, RequestConfig {
 
-        companion object {
-            private const val TIMEOUT_MIN: Long = 5 * 1000
-        }
-
         private var connectTimeOut: Long = 30 * 1000
         private var writeTimeOut: Long = 30 * 1000
         private var readTimeOut: Long = 30 * 1000
@@ -49,10 +46,10 @@ sealed interface RequestConfig : IRequestConfigBuilderGet {
 
         override fun setConnectTimeOut(timeout: Long, unit: TimeUnit): Builder {
             unit.toMillis(timeout).let {
-                connectTimeOut = if (it > TIMEOUT_MIN) {
+                connectTimeOut = if (it > ApiConstants.DEFAULT_TIMEOUT_MIN) {
                     it
                 } else {
-                    TIMEOUT_MIN
+                    ApiConstants.DEFAULT_TIMEOUT_MIN
                 }
             }
             return this
@@ -60,10 +57,10 @@ sealed interface RequestConfig : IRequestConfigBuilderGet {
 
         override fun setWriteTimeOut(timeout: Long, unit: TimeUnit): Builder {
             unit.toMillis(timeout).let {
-                writeTimeOut = if (it > TIMEOUT_MIN) {
+                writeTimeOut = if (it > ApiConstants.DEFAULT_TIMEOUT_MIN) {
                     it
                 } else {
-                    TIMEOUT_MIN
+                    ApiConstants.DEFAULT_TIMEOUT_MIN
                 }
             }
             return this
@@ -71,10 +68,10 @@ sealed interface RequestConfig : IRequestConfigBuilderGet {
 
         override fun setReadTimeOut(timeout: Long, unit: TimeUnit): Builder {
             unit.toMillis(timeout).let {
-                readTimeOut = if (it > TIMEOUT_MIN) {
+                readTimeOut = if (it > ApiConstants.DEFAULT_TIMEOUT_MIN) {
                     it
                 } else {
-                    TIMEOUT_MIN
+                    ApiConstants.DEFAULT_TIMEOUT_MIN
                 }
             }
             return this

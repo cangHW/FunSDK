@@ -10,7 +10,7 @@ import com.proxy.service.permission.base.callback.DialogDismissCallback
  * 弹窗工厂
  *
  * @author: cangHX
- * @data: 2024/11/20 09:46
+ * @date: 2024/11/20 09:46
  * @desc:
  */
 interface DialogFactory {

@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.base.idle.controller
 
 /**
  * @author: cangHX
- * @data: 2024/11/27 20:12
+ * @date: 2024/11/27 20:12
  * @desc:
  */
 interface IIdleTaskController {

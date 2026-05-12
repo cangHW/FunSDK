@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.data.span.builder.base.IAppendBuilder
 
 /**
  * @author: cangHX
- * @data: 2025/7/14 10:07
+ * @date: 2025/7/14 10:07
  * @desc:
  */
 class SpanImpl : AbstractText(), IAppendBuilder {

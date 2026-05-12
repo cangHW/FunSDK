@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/3/19 20:00
+ * @date: 2026/3/19 20:00
  * @desc:
  */
 class CameraControllerImpl : AbstractCameraFunController(), ICameraController {

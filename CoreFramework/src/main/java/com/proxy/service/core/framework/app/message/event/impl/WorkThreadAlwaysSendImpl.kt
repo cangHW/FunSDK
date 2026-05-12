@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
 
 /**
  * @author: cangHX
- * @data: 2024/11/29 10:39
+ * @date: 2024/11/29 10:39
  * @desc:
  */
 class WorkThreadAlwaysSendImpl(

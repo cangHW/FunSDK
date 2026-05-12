@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.system.security.aes.base.action
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 19:35
+ * @date: 2024/12/2 19:35
  * @desc:
  */
 interface ISource<T> {

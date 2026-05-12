@@ -12,7 +12,7 @@ import com.proxy.service.imageloader.base.option.glide.format.GlideDecodeFormat
  * 配置管理器
  *
  * @author: cangHX
- * @data: 2024/5/16 09:47
+ * @date: 2024/5/16 09:47
  * @desc:
  */
 interface IBaseOption<L : IBaseOption<L, R>, R> : IGlideLoader<R> {

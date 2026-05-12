@@ -13,7 +13,7 @@ import org.libpag.PAGText
 
 /**
  * @author: cangHX
- * @data: 2025/10/13 20:39
+ * @date: 2025/10/13 20:39
  * @desc:
  */
 class TextConfig private constructor(

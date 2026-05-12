@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.base.download.task.builder
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 20:43
+ * @date: 2024/5/21 20:43
  * @desc:
  */
 interface IBuilderGet {

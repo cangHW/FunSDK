@@ -11,7 +11,7 @@ import com.proxy.service.widget.info.view.recyclerview.adapter.CsBaseRecyclerVie
 
 /**
  * @author: cangHX
- * @data: 2026/4/24 16:35
+ * @date: 2026/4/24 16:35
  * @desc:
  */
 class CenterSelectAdapter  : CsBaseRecyclerViewAdapter<CenterSelectViewHolder, String>() {

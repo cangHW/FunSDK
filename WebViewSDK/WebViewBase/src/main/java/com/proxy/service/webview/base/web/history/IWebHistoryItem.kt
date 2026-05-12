@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 
 /**
  * @author: cangHX
- * @data: 2026/1/16 14:25
+ * @date: 2026/1/16 14:25
  * @desc:
  */
 interface IWebHistoryItem {

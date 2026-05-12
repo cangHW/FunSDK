@@ -8,7 +8,7 @@ import com.proxy.service.widget.info.statepage.empty.EmptyController
 
 /**
  * @author: cangHX
- * @data: 2025/7/10 17:26
+ * @date: 2025/7/10 17:26
  * @desc:
  */
 class WithOutRefreshEmpty : EmptyController {

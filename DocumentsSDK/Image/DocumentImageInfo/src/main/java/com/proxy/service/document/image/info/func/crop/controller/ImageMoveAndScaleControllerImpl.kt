@@ -10,7 +10,7 @@ import com.proxy.service.document.image.info.func.crop.CropInfo
 
 /**
  * @author: cangHX
- * @data: 2025/6/3 10:16
+ * @date: 2025/6/3 10:16
  * @desc:
  */
 class ImageMoveAndScaleControllerImpl(

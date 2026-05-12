@@ -4,7 +4,7 @@ import java.util.WeakHashMap
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 10:15
+ * @date: 2025/3/27 10:15
  * @desc:
  */
 class WeakCache<T> {

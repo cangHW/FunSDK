@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.data.span.impl.SpanImpl
  * 富文本生成器
  *
  * @author: cangHX
- * @data: 2025/7/11 17:07
+ * @date: 2025/7/11 17:07
  * @desc:
  */
 object CsSpanUtils {

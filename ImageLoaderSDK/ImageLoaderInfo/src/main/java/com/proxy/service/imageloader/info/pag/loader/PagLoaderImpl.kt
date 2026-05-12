@@ -18,7 +18,7 @@ import com.proxy.service.imageloader.info.utils.ViewUtils
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 17:08
+ * @date: 2025/10/10 17:08
  * @desc:
  */
 open class PagLoaderImpl(

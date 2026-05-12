@@ -7,7 +7,7 @@ import com.proxy.service.webview.base.listener.WebDownloadListener
 
 /**
  * @author: cangHX
- * @data: 2024/7/31 18:28
+ * @date: 2024/7/31 18:28
  * @desc:
  */
 class WebConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {

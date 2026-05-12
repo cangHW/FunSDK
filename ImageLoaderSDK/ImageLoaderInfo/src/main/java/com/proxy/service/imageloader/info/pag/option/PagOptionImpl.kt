@@ -14,7 +14,7 @@ import com.proxy.service.imageloader.info.pag.option.config.TextConfig
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 17:07
+ * @date: 2025/10/10 17:07
  * @desc:
  */
 class PagOptionImpl(

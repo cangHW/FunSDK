@@ -5,7 +5,7 @@ import com.proxy.service.document.image.base.loader.base.IController
 
 /**
  * @author: cangHX
- * @data: 2025/6/6 09:48
+ * @date: 2025/6/6 09:48
  * @desc:
  */
 interface OnLongPressCallback {

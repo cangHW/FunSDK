@@ -14,7 +14,7 @@ import com.proxy.service.document.image.base.mode.builder.ICropFrameMoveModeBuil
  * 3. [CropFrameMoveAndScaleMode]: 图片固定, 用户移动和缩放裁剪框.
  *
  * @author: cangHX
- * @data: 2025/6/25 20:50
+ * @date: 2025/6/25 20:50
  * @desc:
  */
 open class CropMode private constructor() {

@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author: cangHX
- * @data: 2024/11/18 11:47
+ * @date: 2024/11/18 11:47
  * @desc:
  */
 object Config {

@@ -15,7 +15,7 @@ import com.proxy.service.imageloader.base.request.pag.IPagRequest
  * 加载转换器
  *
  * @author: cangHX
- * @data: 2024/5/15 21:01
+ * @date: 2024/5/15 21:01
  * @desc:
  */
 interface IType<R> : IGlideRequest<IGlideOption<Drawable>, Drawable> {

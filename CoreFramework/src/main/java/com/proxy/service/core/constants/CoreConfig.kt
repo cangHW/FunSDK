@@ -2,7 +2,7 @@ package com.proxy.service.core.constants
 
 /**
  * @author: cangHX
- * @data: 2024/9/23 20:42
+ * @date: 2024/9/23 20:42
  * @desc:
  */
 object CoreConfig {

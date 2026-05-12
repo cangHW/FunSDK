@@ -9,7 +9,7 @@ import java.text.DecimalFormat
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 14:07
+ * @date: 2026/1/23 14:07
  * @desc:
  */
 object AjaxRequestMonitor : BaseMonitor() {

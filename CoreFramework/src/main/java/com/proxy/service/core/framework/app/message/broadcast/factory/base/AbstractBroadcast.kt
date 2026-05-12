@@ -19,7 +19,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 10:32
+ * @date: 2026/1/19 10:32
  * @desc:
  */
 abstract class AbstractBroadcast<T>(

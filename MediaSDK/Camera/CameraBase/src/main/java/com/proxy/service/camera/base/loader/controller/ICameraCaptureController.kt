@@ -5,7 +5,7 @@ import com.proxy.service.camera.base.callback.loader.PictureCaptureCallback
 
 /**
  * @author: cangHX
- * @data: 2026/3/19 19:13
+ * @date: 2026/3/19 19:13
  * @desc:
  */
 interface ICameraCaptureController : ICameraController {

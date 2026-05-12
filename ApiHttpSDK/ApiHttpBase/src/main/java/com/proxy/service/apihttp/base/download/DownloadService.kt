@@ -11,7 +11,7 @@ import com.proxy.service.base.BaseService
  * 下载服务
  *
  * @author: cangHX
- * @data: 2024/5/21 10:26
+ * @date: 2024/5/21 10:26
  * @desc:
  */
 interface DownloadService : BaseService {
@@ -56,7 +56,7 @@ interface DownloadService : BaseService {
      *
      * @return 是否重新开始成功
      * */
-    fun reStartTask(taskTag: String): Boolean
+    fun restartTask(taskTag: String): Boolean
 
     /**
      * 重置并还原正在运行的任务到未运行状态, 可用于让高优先级任务立刻执行

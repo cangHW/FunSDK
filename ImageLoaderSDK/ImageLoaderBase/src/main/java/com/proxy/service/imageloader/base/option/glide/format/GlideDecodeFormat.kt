@@ -2,7 +2,7 @@ package com.proxy.service.imageloader.base.option.glide.format
 
 /**
  * @author: cangHX
- * @data: 2025/6/2 12:15
+ * @date: 2025/6/2 12:15
  * @desc:
  */
 enum class GlideDecodeFormat {

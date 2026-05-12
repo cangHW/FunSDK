@@ -19,7 +19,7 @@ import com.proxy.service.widget.info.toast.CsToast
 
 /**
  * @author: cangHX
- * @data: 2026/3/23 18:43
+ * @date: 2026/3/23 18:43
  * @desc:
  */
 class CameraLoaderActivity : BaseActivity<ActivityCameraLoaderBinding>() {

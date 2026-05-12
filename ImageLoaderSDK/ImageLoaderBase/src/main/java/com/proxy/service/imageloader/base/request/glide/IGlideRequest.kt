@@ -11,7 +11,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2024/6/7 10:09
+ * @date: 2024/6/7 10:09
  * @desc:
  */
 interface IGlideRequest<L : IBaseOption<L, R>, R> : IRequest<L> {

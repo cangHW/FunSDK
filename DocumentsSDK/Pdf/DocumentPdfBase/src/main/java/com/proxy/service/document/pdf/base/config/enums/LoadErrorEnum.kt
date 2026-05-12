@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.base.config.enums
 
 /**
  * @author: cangHX
- * @data: 2025/5/5 15:04
+ * @date: 2025/5/5 15:04
  * @desc:
  */
 enum class LoadErrorEnum(val errorCode: Long) {

@@ -4,7 +4,7 @@ import com.proxy.service.apihttp.base.common.config.base.IBaseConfigGet
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 15:20
+ * @date: 2024/12/17 15:20
  * @desc:
  */
 interface IUploadConfigBuilderGet : IBaseConfigGet {

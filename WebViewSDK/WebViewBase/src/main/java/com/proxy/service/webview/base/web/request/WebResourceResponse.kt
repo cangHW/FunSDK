@@ -4,7 +4,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 17:49
+ * @date: 2024/8/3 17:49
  * @desc:
  */
 interface WebResourceResponse {

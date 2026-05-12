@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.ui.view.action.base
 
 /**
  * @author: cangHX
- * @data: 2026/1/9 14:18
+ * @date: 2026/1/9 14:18
  * @desc:
  */
 interface ICall<T, R> {

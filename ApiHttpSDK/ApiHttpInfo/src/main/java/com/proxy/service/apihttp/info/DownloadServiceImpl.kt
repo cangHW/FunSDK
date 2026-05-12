@@ -15,7 +15,7 @@ import com.proxy.service.apihttp.info.download.db.DownloadRoom
 import com.proxy.service.apihttp.info.download.dispatcher.TaskDispatcher
 import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.apihttp.info.download.manager.NetworkManager
-import com.proxy.service.apihttp.info.download.manager.impl.OkhttpConfigImpl
+import com.proxy.service.apihttp.info.download.manager.OkHttpManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.service.task.CsTask
@@ -23,7 +23,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/10/31 11:06
+ * @date: 2024/10/31 11:06
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/http_download")
@@ -40,10 +40,10 @@ class DownloadServiceImpl : DownloadService {
         if (!isInit) {
             synchronized(lock) {
                 if (!isInit) {
-                    OkhttpConfigImpl.instance.setDownloadConfig(config)
+                    OkHttpManager.createOkhttpClient(config)
+                    Config.maxDownloadTaskCount = config.getMaxTaskCount()
                     TaskController.addGroup(config.getGroups())
-                    Config.maxDownloadTaskCount = config.getMaxTask()
-                    NetworkManager.reStartTask(config.getAutoRestartOnNetworkReconnect())
+                    NetworkManager.restartTask(config.getAutoRestartOnNetworkReconnect())
                     isInit = true
                 }
             }
@@ -63,9 +63,14 @@ class DownloadServiceImpl : DownloadService {
         callback: DownloadCallback?,
         lifecycleOwner: LifecycleOwner?
     ): String {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return ""
+        }
         if (task.getDownloadUrl().trim().isEmpty()) {
             CsTask.mainThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
+                    callback?.onWaiting(task)
                     callback?.onStart(task)
                     callback?.onFailed(
                         task,
@@ -92,7 +97,11 @@ class DownloadServiceImpl : DownloadService {
         }
     }
 
-    override fun reStartTask(taskTag: String): Boolean {
+    override fun restartTask(taskTag: String): Boolean {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return false
+        }
         val task = DownloadRoom.INSTANCE.getTaskDao().query(taskTag)?.getDownloadTask()
         if (task == null) {
             CsLogger.tag(tag).e("该任务未记录, taskTag = $taskTag")
@@ -103,14 +112,26 @@ class DownloadServiceImpl : DownloadService {
     }
 
     override fun resetRunningTask() {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return
+        }
         TaskDispatcher.resetAllRunningTask()
     }
 
     override fun getTask(taskTag: String): DownloadTask? {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return null
+        }
         return TaskController.getTask(taskTag)
     }
 
     override fun getDownloadStatus(taskTag: String): StatusEnum {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return StatusEnum.UNKNOWN
+        }
         val status = DownloadRoom.INSTANCE.getTaskDao().queryStatus(taskTag)
         var statusEnum = StatusEnum.value(status)
         if (statusEnum == StatusEnum.UNKNOWN) {
@@ -130,14 +151,26 @@ class DownloadServiceImpl : DownloadService {
     }
 
     override fun cancel(taskTag: String) {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return
+        }
         TaskController.cancelTask(taskTag)
     }
 
     override fun cancelGroup(groupName: String) {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return
+        }
         TaskController.cancelTaskByGroup(groupName)
     }
 
     override fun cancelAllTask() {
+        if (!isInit) {
+            CsLogger.tag(tag).e("init first.")
+            return
+        }
         TaskController.cancelAllTask()
     }
 

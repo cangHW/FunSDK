@@ -16,7 +16,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2025/1/2 10:19
+ * @date: 2025/1/2 10:19
  * @desc:
  */
 class NormalStore : BaseStore() {

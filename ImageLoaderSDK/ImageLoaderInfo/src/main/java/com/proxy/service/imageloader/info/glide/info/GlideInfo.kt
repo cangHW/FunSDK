@@ -12,7 +12,7 @@ import com.proxy.service.imageloader.info.glide.type.BaseSourceType
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:13
+ * @date: 2024/5/16 11:13
  * @desc:
  */
 open class GlideInfo<R> : BaseInfo() {

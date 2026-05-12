@@ -14,7 +14,7 @@ import com.proxy.service.widget.info.notification.notification.pending.CsPending
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 14:06
+ * @date: 2025/12/16 14:06
  * @desc:
  */
 class NotificationConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {

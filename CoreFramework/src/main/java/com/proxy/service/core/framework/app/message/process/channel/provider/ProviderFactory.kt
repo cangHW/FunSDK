@@ -15,7 +15,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/9/18 18:12
+ * @date: 2025/9/18 18:12
  * @desc:
  */
 class ProviderFactory private constructor() : BaseFactory(), ProviderMessageListener {

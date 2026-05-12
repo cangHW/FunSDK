@@ -4,7 +4,7 @@ import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 21:19
+ * @date: 2024/12/2 21:19
  * @desc:
  */
 object Config {

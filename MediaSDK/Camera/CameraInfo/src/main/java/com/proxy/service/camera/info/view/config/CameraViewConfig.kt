@@ -7,7 +7,7 @@ import com.proxy.service.camera.base.mode.view.CameraViewMeteringMode
 
 /**
  * @author: cangHX
- * @data: 2026/3/27 18:37
+ * @date: 2026/3/27 18:37
  * @desc:
  */
 class CameraViewConfig {

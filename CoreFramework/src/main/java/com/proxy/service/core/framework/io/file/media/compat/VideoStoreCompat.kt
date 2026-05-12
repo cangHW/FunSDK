@@ -11,7 +11,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2025/1/3 11:19
+ * @date: 2025/1/3 11:19
  * @desc:
  */
 class VideoStoreCompat : AbstractSource<IMediaStore.IVideo>(), IMediaStore.IVideo {

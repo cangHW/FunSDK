@@ -13,7 +13,7 @@ import com.proxy.service.funsdk.databinding.ActivityWidgetDialogBinding
 
 /**
  * @author: cangHX
- * @data: 2025/12/24 10:09
+ * @date: 2025/12/24 10:09
  * @desc:
  */
 class DialogActivity : BaseActivity<ActivityWidgetDialogBinding>() {

@@ -4,7 +4,7 @@ import com.proxy.service.permission.base.callback.ActionCallback
 
 /**
  * @author: cangHX
- * @data: 2024/11/20 20:49
+ * @date: 2024/11/20 20:49
  * @desc:
  */
 interface IPermissionCallback<T> {

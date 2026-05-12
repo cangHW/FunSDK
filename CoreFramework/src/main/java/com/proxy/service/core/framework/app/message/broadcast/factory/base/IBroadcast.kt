@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.app.message.broadcast.callback.OrderBroa
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 11:14
+ * @date: 2026/1/19 11:14
  * @desc:
  */
 interface IBroadcast<T> {

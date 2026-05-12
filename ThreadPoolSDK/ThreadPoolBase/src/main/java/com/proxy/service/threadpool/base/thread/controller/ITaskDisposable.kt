@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.base.thread.controller
 
 /**
  * @author: cangHX
- * @data: 2024/6/13 18:38
+ * @date: 2024/6/13 18:38
  * @desc: 任务控制器
  */
 interface ITaskDisposable {

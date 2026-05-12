@@ -10,7 +10,7 @@ import com.proxy.service.document.pdf.base.view.callback.OnShouldCreateCoverView
 
 /**
  * @author: cangHX
- * @data: 2025/5/15 09:42
+ * @date: 2025/5/15 09:42
  * @desc:
  */
 interface IPdfViewLoader {

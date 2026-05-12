@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/12/27 14:53
+ * @date: 2024/12/27 14:53
  * @desc:
  */
 interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {

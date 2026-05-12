@@ -12,7 +12,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkLogBinding
 
 /**
  * @author: cangHX
- * @data: 2025/11/17 11:13
+ * @date: 2025/11/17 11:13
  * @desc:
  */
 class LogActivity : BaseActivity<ActivityFrameworkLogBinding>() {

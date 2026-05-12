@@ -4,7 +4,7 @@ import com.proxy.service.webview.base.constants.WebViewConstants
 
 /**
  * @author: cangHX
- * @data: 2024/8/10 16:28
+ * @date: 2024/8/10 16:28
  * @desc:
  */
 object Config {

@@ -8,7 +8,7 @@ import com.proxy.service.imageloader.info.utils.StringUtils
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 16:55
+ * @date: 2025/10/10 16:55
  * @desc:
  */
 class UrlPagSource(

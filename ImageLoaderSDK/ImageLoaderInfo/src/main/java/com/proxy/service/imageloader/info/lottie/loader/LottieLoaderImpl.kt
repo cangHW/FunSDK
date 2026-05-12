@@ -14,7 +14,7 @@ import com.proxy.service.imageloader.info.utils.ViewUtils
 
 /**
  * @author: cangHX
- * @data: 2024/6/4 17:45
+ * @date: 2024/6/4 17:45
  * @desc:
  */
 open class LottieLoaderImpl(

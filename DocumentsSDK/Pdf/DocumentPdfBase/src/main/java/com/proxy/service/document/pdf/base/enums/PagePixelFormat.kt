@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 
 /**
  * @author: cangHX
- * @data: 2025/6/25 15:17
+ * @date: 2025/6/25 15:17
  * @desc:
  */
 enum class PagePixelFormat(val value: Bitmap.Config) {

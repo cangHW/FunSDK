@@ -24,7 +24,7 @@ import java.io.FileNotFoundException
 
 /**
  * @author: cangHX
- * @data: 2024/9/20 18:03
+ * @date: 2024/9/20 18:03
  * @desc: 如果需要配置默认共享路径可以按以下方式进行配置.
  *
  * 在项目的 src/main/res/xml 文件夹下(如果不存在对应文件夹则自行创建)创建 cs_proxy_provider.xml 文件, 文件内容如下:

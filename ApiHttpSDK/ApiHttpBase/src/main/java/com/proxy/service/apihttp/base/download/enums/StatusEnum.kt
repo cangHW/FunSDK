@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.base.download.enums
 
 /**
  * @author: cangHX
- * @data: 2024/11/7 14:39
+ * @date: 2024/11/7 14:39
  * @desc:
  */
 enum class StatusEnum(val status: Int) {

@@ -8,7 +8,7 @@ import com.proxy.service.document.pdf.base.view.IPdfViewLoader
 
 /**
  * @author: cangHX
- * @data: 2025/4/29 21:33
+ * @date: 2025/4/29 21:33
  * @desc:
  */
 interface PdfService : BaseService {

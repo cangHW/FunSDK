@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
  * @author: cangHX
- * @data: 2024/11/4 16:46
+ * @date: 2024/11/4 16:46
  * @desc:
  */
 @Database(entities = [TaskBean::class, GroupBean::class], version = 1, exportSchema = false)

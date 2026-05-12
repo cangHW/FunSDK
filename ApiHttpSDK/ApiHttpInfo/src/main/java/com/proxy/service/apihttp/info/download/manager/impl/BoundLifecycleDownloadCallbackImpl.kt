@@ -11,7 +11,7 @@ import com.proxy.service.apihttp.info.download.manager.CallbackManager
 
 /**
  * @author: cangHX
- * @data: 2024/11/8 14:38
+ * @date: 2024/11/8 14:38
  * @desc:
  */
 class BoundLifecycleDownloadCallbackImpl(

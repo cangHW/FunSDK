@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 17:59
+ * @date: 2026/2/4 17:59
  * @desc:
  */
 object LaunchUtils {

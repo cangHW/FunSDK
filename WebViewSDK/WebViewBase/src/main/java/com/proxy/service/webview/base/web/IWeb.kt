@@ -13,7 +13,7 @@ import com.proxy.service.webview.base.web.setting.ISetting
 
 /**
  * @author: cangHX
- * @data: 2024/7/31 18:40
+ * @date: 2024/7/31 18:40
  * @desc:
  */
 interface IWeb {

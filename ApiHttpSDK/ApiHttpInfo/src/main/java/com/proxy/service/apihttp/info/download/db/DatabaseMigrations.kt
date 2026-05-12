@@ -4,7 +4,7 @@ import androidx.room.migration.Migration
 
 /**
  * @author: cangHX
- * @data: 2024/11/4 16:58
+ * @date: 2024/11/4 16:58
  * @desc:
  */
 object DatabaseMigrations {

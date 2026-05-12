@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
  * 线程安全、支持异步操作 list
  *
  * @author: cangHX
- * @data: 2025/9/17 16:32
+ * @date: 2025/9/17 16:32
  * @desc:
  */
 class CsExcellentList<V> : IList<V> {

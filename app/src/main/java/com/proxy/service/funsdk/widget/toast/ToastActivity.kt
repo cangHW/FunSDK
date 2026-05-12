@@ -12,7 +12,7 @@ import com.proxy.service.widget.info.toast.CsToast
 
 /**
  * @author: cangHX
- * @data: 2025/12/24 10:06
+ * @date: 2025/12/24 10:06
  * @desc:
  */
 class ToastActivity : BaseActivity<ActivityWidgetToastBinding>() {

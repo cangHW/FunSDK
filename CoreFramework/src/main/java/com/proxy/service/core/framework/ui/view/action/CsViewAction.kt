@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.ui.view.action.longclick.LongClickAction
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 16:40
+ * @date: 2026/1/8 16:40
  * @desc: view 行为事件绑定处理
  */
 object CsViewAction {

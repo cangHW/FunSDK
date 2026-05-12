@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
  * @author: cangHX
- * @data: 2026/4/16 16:58
+ * @date: 2026/4/16 16:58
  * @desc:
  */
 class CameraPageSettingItemView : LinearLayoutCompat {

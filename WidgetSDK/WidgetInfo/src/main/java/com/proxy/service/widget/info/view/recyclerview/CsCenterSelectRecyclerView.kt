@@ -12,7 +12,7 @@ import com.proxy.service.widget.info.constants.WidgetConstants
 
 /**
  * @author: cangHX
- * @data: 2026/2/11 16:44
+ * @date: 2026/2/11 16:44
  * @desc: 居中选中 RecyclerView
  */
 class CsCenterSelectRecyclerView : RecyclerView {

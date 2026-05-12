@@ -4,7 +4,7 @@ import com.proxy.service.core.application.base.BaseCoreFw
 
 /**
  * @author: cangHX
- * @data: 2025/9/28 14:25
+ * @date: 2025/9/28 14:25
  * @desc:
  */
 internal object PriorityUtils {

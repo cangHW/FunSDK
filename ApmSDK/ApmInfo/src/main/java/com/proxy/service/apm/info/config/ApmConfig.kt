@@ -4,7 +4,7 @@ import com.proxy.service.apm.info.config.controller.MonitorConfig
 
 /**
  * @author: cangHX
- * @data: 2025/4/22 17:39
+ * @date: 2025/4/22 17:39
  * @desc:
  */
 class ApmConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {

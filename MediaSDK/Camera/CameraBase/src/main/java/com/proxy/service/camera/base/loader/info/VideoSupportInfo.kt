@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.loader.info
 
 /**
  * @author: cangHX
- * @data: 2026/4/21 18:00
+ * @date: 2026/4/21 18:00
  * @desc:
  */
 class VideoSupportInfo private constructor(

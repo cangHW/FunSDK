@@ -30,7 +30,7 @@ import com.proxy.service.funsdk.databinding.ActivityDocumentImagePreviewItemBind
 
 /**
  * @author: cangHX
- * @data: 2025/6/4 20:03
+ * @date: 2025/6/4 20:03
  * @desc:
  */
 class ImagePreviewActivity : AppCompatActivity() {

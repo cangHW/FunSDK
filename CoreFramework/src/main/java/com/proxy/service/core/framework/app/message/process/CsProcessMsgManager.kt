@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
  * 跨进程共享数据
  *
  * @author: cangHX
- * @data: 2025/9/17 18:53
+ * @date: 2025/9/17 18:53
  * @desc:
  */
 class CsProcessMsgManager private constructor(private val toPkg: String, private val method: String) {

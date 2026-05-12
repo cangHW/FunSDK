@@ -7,7 +7,7 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 
 /**
  * @author: cangHX
- * @data: 2025/10/16 17:05
+ * @date: 2025/10/16 17:05
  * @desc:
  */
 interface IPagImageDataBuilderGet {

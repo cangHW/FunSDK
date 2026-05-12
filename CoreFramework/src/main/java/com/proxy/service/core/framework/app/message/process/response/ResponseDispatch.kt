@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/9/15 19:39
+ * @date: 2025/9/15 19:39
  * @desc:
  */
 object ResponseDispatch {

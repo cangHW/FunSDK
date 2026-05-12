@@ -5,7 +5,7 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
  * @author: cangHX
- * @data: 2026/2/7 13:55
+ * @date: 2026/2/7 13:55
  * @desc:
  */
 enum class CameraFunMode(

@@ -4,7 +4,7 @@ import com.proxy.service.document.pdf.base.loader.IPdfText
 
 /**
  * @author: cangHX
- * @data: 2025/8/25 11:13
+ * @date: 2025/8/25 11:13
  * @desc:
  */
 open class PdfText : PdfEdit(), IPdfText {

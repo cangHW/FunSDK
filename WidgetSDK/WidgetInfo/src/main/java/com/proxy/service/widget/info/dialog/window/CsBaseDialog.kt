@@ -12,7 +12,7 @@ import com.proxy.service.widget.info.dialog.window.manager.DialogManager
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 10:55
+ * @date: 2025/11/27 10:55
  * @desc:
  */
 abstract class CsBaseDialog : AbstractLifecycleDialog() {

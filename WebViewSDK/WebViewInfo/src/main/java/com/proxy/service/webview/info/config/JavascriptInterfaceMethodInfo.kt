@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 14:26
+ * @date: 2024/8/1 14:26
  * @desc:
  */
 class JavascriptInterfaceMethodInfo(private val tClass: Class<*>) {

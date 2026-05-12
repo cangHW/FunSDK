@@ -10,7 +10,7 @@ import io.reactivex.plugins.RxJavaPlugins
 
 /**
  * @author: cangHX
- * @data: 2024/9/14 16:27
+ * @date: 2024/9/14 16:27
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_config/thread_pool")

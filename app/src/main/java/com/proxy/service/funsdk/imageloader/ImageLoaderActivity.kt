@@ -17,7 +17,7 @@ import com.proxy.service.imageloader.base.option.pag.txt.PagTextFont
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 15:03
+ * @date: 2024/5/16 15:03
  * @desc:
  */
 class ImageLoaderActivity : BaseActivity<ActivityImageLoaderBinding>() {

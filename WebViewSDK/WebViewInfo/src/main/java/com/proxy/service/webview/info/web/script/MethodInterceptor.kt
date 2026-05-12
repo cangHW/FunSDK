@@ -8,7 +8,7 @@ import java.lang.reflect.Method
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 16:08
+ * @date: 2024/8/1 16:08
  * @desc:
  */
 class MethodInterceptor(private val method: Method, private val obj: Any) {

@@ -12,7 +12,7 @@ import java.io.IOException
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:48
+ * @date: 2025/5/2 20:48
  * @desc:
  */
 class AssetPathSourceController(private val source: AssetPathSource) : BaseController() {

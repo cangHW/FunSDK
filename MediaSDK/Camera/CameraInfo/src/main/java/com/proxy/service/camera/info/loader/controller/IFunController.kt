@@ -6,7 +6,7 @@ import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
  * @author: cangHX
- * @data: 2026/3/24 14:11
+ * @date: 2026/3/24 14:11
  * @desc:
  */
 interface IFunController {

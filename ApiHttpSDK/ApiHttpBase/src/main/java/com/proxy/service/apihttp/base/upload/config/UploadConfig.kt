@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 15:20
+ * @date: 2024/12/17 15:20
  * @desc:
  */
 sealed interface UploadConfig : IUploadConfigBuilderGet {

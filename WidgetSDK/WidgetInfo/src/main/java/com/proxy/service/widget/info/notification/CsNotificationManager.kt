@@ -15,7 +15,7 @@ import com.proxy.service.widget.info.notification.notification.config.Notificati
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 10:37
+ * @date: 2025/12/16 10:37
  * @desc:
  */
 object CsNotificationManager {

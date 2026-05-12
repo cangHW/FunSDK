@@ -8,7 +8,7 @@ import com.proxy.service.widget.info.statepage.error.ErrorController
 
 /**
  * @author: cangHX
- * @data: 2025/7/10 18:10
+ * @date: 2025/7/10 18:10
  * @desc:
  */
 class WithRefreshError : ErrorController {

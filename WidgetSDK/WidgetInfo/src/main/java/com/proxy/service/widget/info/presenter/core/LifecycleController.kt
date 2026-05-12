@@ -7,7 +7,7 @@ import com.proxy.service.widget.info.presenter.constants.PresenterConstants
 
 /**
  * @author: cangHX
- * @data: 2025/12/25 10:54
+ * @date: 2025/12/25 10:54
  * @desc:
  */
 class LifecycleController(private var iLifecycle: ILifecycle?) : DefaultLifecycleObserver {

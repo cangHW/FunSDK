@@ -5,7 +5,7 @@ import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 12:55
+ * @date: 2026/1/23 12:55
  * @desc:
  */
 class MonitorConfig private constructor(

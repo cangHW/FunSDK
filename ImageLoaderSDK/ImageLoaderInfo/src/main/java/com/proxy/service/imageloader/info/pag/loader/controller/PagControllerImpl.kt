@@ -5,7 +5,7 @@ import com.proxy.service.imageloader.info.pag.loader.view.IView
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 18:40
+ * @date: 2025/10/10 18:40
  * @desc:
  */
 class PagControllerImpl(

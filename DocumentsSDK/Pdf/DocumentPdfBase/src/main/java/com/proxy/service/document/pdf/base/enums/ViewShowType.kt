@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.base.enums
 
 /**
  * @author: cangHX
- * @data: 2025/7/21 17:15
+ * @date: 2025/7/21 17:15
  * @desc:
  */
 enum class ViewShowType {

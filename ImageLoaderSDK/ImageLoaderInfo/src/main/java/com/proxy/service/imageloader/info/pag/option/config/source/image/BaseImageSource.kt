@@ -4,7 +4,7 @@ import org.libpag.PAGImage
 
 /**
  * @author: cangHX
- * @data: 2025/10/16 18:04
+ * @date: 2025/10/16 18:04
  * @desc:
  */
 abstract class BaseImageSource {

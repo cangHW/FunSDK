@@ -15,7 +15,7 @@ import com.proxy.service.imageloader.info.glide.loader.base.ViewTarget
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 20:51
+ * @date: 2024/5/16 20:51
  * @desc:
  */
 open class WebpLoaderImpl(

@@ -7,7 +7,7 @@ import com.proxy.service.imageloader.info.glide.type.BaseSourceType
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 14:39
+ * @date: 2024/5/16 14:39
  * @desc:
  */
 class DrawableType: BaseSourceType<Drawable>() {

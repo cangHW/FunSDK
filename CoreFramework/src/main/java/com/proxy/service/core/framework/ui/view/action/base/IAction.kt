@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.ui.view.action.base
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 16:57
+ * @date: 2026/1/8 16:57
  * @desc:
  */
 abstract class IAction<R> {

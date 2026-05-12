@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 /**
  * @author: cangHX
- * @data: 2024/11/5 19:40
+ * @date: 2024/11/5 19:40
  * @desc:
  */
 @Entity

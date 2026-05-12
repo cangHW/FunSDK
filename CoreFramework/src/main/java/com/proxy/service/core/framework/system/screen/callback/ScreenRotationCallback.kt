@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.system.screen.enums.RotationEnum
 
 /**
  * @author: cangHX
- * @data: 2025/5/23 17:50
+ * @date: 2025/5/23 17:50
  * @desc:
  */
 interface ScreenRotationCallback {

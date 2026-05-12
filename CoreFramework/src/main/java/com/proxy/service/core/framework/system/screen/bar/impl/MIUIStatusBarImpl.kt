@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/1/15 21:48
+ * @date: 2026/1/15 21:48
  * @desc: 小米
  */
 class MIUIStatusBarImpl: DefaultBarStatus() {

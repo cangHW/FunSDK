@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 
 /**
  * @author: cangHX
- * @data: 2024/5/18 13:56
+ * @date: 2024/5/18 13:56
  * @desc:
  */
 interface BitmapPoolCallback {

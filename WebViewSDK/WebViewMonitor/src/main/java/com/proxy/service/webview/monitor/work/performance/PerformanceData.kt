@@ -2,7 +2,7 @@ package com.proxy.service.webview.monitor.work.performance
 
 /**
  * @author: cangHX
- * @data: 2026/1/25 20:46
+ * @date: 2026/1/25 20:46
  * @desc:
  */
 class PerformanceData {

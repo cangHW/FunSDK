@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.io.uri.CsUriManager
  * 系统分享相关工具
  *
  * @author: cangHX
- * @data: 2024/10/30 10:06
+ * @date: 2024/10/30 10:06
  * @desc:
  */
 object CsSystemShareUtils {

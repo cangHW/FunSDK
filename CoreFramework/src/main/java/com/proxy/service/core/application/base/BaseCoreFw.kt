@@ -9,7 +9,7 @@ import com.proxy.service.core.application.startup.PriorityUtils
  * 基础类, 用于优化性能
  *
  * @author: cangHX
- * @data: 2024/12/4 15:11
+ * @date: 2024/12/4 15:11
  * @desc:
  */
 abstract class BaseCoreFw : BaseService {

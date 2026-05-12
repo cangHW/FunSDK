@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 20:52
+ * @date: 2024/12/25 20:52
  * @desc:
  */
 object UiModeStore : BaseStore<Int>() {

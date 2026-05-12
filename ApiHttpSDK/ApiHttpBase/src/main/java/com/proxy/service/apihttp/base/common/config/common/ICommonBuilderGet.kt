@@ -6,7 +6,7 @@ import okhttp3.Interceptor
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 20:04
+ * @date: 2025/3/27 20:04
  * @desc:
  */
 interface ICommonBuilderGet {
@@ -14,12 +14,12 @@ interface ICommonBuilderGet {
     /**
      * 获取应用级别拦截器
      * */
-    fun getInterceptor(): MutableList<Interceptor>
+    fun getInterceptors(): MutableList<Interceptor>
 
     /**
      * 获取网络级别拦截器
      * */
-    fun getNetworkInterceptor(): MutableList<Interceptor>
+    fun getNetworkInterceptors(): MutableList<Interceptor>
 
     /**
      * 获取事件节点回调

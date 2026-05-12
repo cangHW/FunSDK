@@ -8,7 +8,7 @@ import com.proxy.service.document.image.base.callback.crop.OnCropCallback
  * 用于在资源加载完成后发起裁剪, 并通过 [OnCropCallback] 返回裁剪结果.
  *
  * @author: cangHX
- * @data: 2025/6/3 09:58
+ * @date: 2025/6/3 09:58
  * @desc:
  */
 interface ICropController {

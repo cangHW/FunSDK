@@ -6,7 +6,7 @@ import com.proxy.service.logfile.info.manager.LogLevelMode
 
 /**
  * @author: cangHX
- * @data: 2025/1/16 19:48
+ * @date: 2025/1/16 19:48
  * @desc:
  */
 interface IBuilderGet {

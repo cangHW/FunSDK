@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.info.common.cache
 
 /**
  * @author: cangHX
- * @data: 2024/12/19 18:39
+ * @date: 2024/12/19 18:39
  * @desc:
  */
 class MaxCache<T>(private val maxCount: Int = Int.MAX_VALUE) {

@@ -4,7 +4,7 @@ import android.view.Window
 
 /**
  * @author: cangHX
- * @data: 2026/1/15 22:00
+ * @date: 2026/1/15 22:00
  * @desc:
  */
 interface IBarStatus {

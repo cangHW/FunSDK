@@ -22,7 +22,7 @@ import com.proxy.service.funsdk.databinding.ActivityDocumentImageCropBinding
 
 /**
  * @author: cangHX
- * @data: 2025/6/4 20:03
+ * @date: 2025/6/4 20:03
  * @desc:
  */
 class ImageCropActivity : AppCompatActivity() {

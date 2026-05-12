@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/7/2 11:23
+ * @date: 2024/7/2 11:23
  * @desc:
  */
 class AppVisibilityImpl : ActivityLifecycleCallbacks {

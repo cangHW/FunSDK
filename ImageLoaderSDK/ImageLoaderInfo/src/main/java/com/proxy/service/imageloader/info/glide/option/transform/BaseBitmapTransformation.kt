@@ -13,7 +13,7 @@ import java.security.MessageDigest
 
 /**
  * @author: cangHX
- * @data: 2024/5/18 11:49
+ * @date: 2024/5/18 11:49
  * @desc:
  */
 abstract class BaseBitmapTransformation : Transformation<Bitmap> {

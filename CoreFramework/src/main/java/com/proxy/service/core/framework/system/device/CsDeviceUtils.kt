@@ -25,7 +25,7 @@ import java.util.UUID
  * 设备信息相关工具
  *
  * @author: cangHX
- * @data: 2024/7/25 17:26
+ * @date: 2024/7/25 17:26
  * @desc:
  */
 object CsDeviceUtils {

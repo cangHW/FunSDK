@@ -4,7 +4,7 @@ package com.proxy.service.core.framework.system.security.aes.base.action
  * 流处理
  *
  * @author: cangHX
- * @data: 2024/12/4 10:01
+ * @date: 2024/12/4 10:01
  * @desc:
  */
 interface IInstantRun {

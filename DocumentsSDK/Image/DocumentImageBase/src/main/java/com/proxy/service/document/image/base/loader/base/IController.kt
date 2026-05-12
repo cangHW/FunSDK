@@ -9,7 +9,7 @@ import android.graphics.Matrix
  * 资源未加载成功或已被清理时, Bitmap 与 Matrix 可能为空.
  *
  * @author: cangHX
- * @data: 2025/5/30 10:23
+ * @date: 2025/5/30 10:23
  * @desc:
  */
 interface IController {

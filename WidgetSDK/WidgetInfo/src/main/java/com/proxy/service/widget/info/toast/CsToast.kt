@@ -15,7 +15,7 @@ import com.proxy.service.widget.info.toast.info.BaseViewInfo
 
 /**
  * @author: cangHX
- * @data: 2025/7/8 14:31
+ * @date: 2025/7/8 14:31
  * @desc:
  */
 object CsToast {

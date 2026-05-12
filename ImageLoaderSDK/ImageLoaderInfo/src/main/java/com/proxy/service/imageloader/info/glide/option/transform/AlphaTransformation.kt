@@ -14,7 +14,7 @@ import java.security.MessageDigest
  * 透明度转换器
  *
  * @author: cangHX
- * @data: 2024/5/18 13:34
+ * @date: 2024/5/18 13:34
  * @desc:
  */
 class AlphaTransformation(

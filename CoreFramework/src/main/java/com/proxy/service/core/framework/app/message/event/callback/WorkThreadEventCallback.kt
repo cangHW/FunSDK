@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.app.message.event.base.IEvent
 
 /**
  * @author: cangHX
- * @data: 2024/11/28 20:24
+ * @date: 2024/11/28 20:24
  * @desc:
  */
 interface WorkThreadEventCallback : IEvent {

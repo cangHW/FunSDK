@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.io.file.media.config
 
 /**
  * @author: cangHX
- * @data: 2025/1/2 16:19
+ * @date: 2025/1/2 16:19
  * @desc:
  */
 class DataInfo {

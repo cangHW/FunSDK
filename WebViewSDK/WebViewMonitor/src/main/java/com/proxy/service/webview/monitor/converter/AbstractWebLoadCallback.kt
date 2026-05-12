@@ -7,7 +7,7 @@ import com.proxy.service.webview.base.web.error.SslErrorHandler
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 13:48
+ * @date: 2026/1/23 13:48
  * @desc:
  */
 abstract class AbstractWebLoadCallback : WebLoadCallback {

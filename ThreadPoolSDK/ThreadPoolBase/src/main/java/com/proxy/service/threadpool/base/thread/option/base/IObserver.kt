@@ -5,7 +5,7 @@ import com.proxy.service.threadpool.base.thread.task.IConsumer
 
 /**
  * @author: cangHX
- * @data: 2024/6/14 14:44
+ * @date: 2024/6/14 14:44
  * @desc:
  */
 interface IObserver<T> {

@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.system.net
 
 /**
  * @author: cangHX
- * @data: 2024/7/22 20:27
+ * @date: 2024/7/22 20:27
  * @desc:
  */
 enum class NetType {

@@ -13,7 +13,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2025/5/6 20:04
+ * @date: 2025/5/6 20:04
  * @desc:
  */
 class InputStreamSourceController(private val source: InputStreamSource) : BaseController() {

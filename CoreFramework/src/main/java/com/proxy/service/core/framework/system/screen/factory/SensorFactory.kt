@@ -15,7 +15,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2026/4/2 11:31
+ * @date: 2026/4/2 11:31
  * @desc:
  */
 class SensorFactory : RotationChangedCallback {

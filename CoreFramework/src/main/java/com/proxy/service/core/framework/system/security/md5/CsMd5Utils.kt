@@ -15,7 +15,7 @@ import java.security.MessageDigest
  * 安全相关 —— md5 工具
  *
  * @author: cangHX
- * @data: 2024/4/28 17:31
+ * @date: 2024/4/28 17:31
  * @desc:
  */
 object CsMd5Utils {

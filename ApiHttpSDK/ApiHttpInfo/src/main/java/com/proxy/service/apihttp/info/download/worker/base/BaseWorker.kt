@@ -5,19 +5,16 @@ import com.proxy.service.apihttp.base.common.DownloadException
 import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.common.cache.MaxCache
-import com.proxy.service.apihttp.info.download.manager.CallbackManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
-import com.proxy.service.core.service.task.CsTask
-import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.io.File
 import java.io.InputStream
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/11/13 11:26
+ * @date: 2024/11/13 11:26
  * @desc:
  */
 abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
@@ -36,13 +33,13 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
     }
 
     private val isClear = AtomicBoolean(false)
-    protected val msgMaxCache = MaxCache<BaseTaskMsg>()
+    protected val partMsgCache = MaxCache<BaseTaskMsg>()
 
     /**
      * 添加下载任务信息
      * */
     protected fun addTaskMsg(msg: BaseTaskMsg) {
-        msgMaxCache.tryAdd(msg)
+        partMsgCache.tryAdd(msg)
     }
 
     final override fun startTask() {
@@ -64,7 +61,7 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
             return
         }
         CsLogger.tag(tag).i("取消任务. taskTag = ${task.getTaskTag()}")
-        msgMaxCache.getAllCache().forEach {
+        partMsgCache.getAllCache().forEach {
             CsFileUtils.close(it.stream)
         }
         if (isNeedCallback) {
@@ -92,7 +89,7 @@ abstract class BaseWorker(task: DownloadTask) : BaseCallbackWorker(task) {
         try {
             if (CsFileUtils.length(task.getFilePath()) > 0) {
                 endTaskCheck(task.getFilePath())
-                //文件已存在, 且满足要求v
+                //文件已存在, 且满足要求
                 CsLogger.tag(tag)
                     .i("文件已存在, 且满足要求. taskTag = ${task.getTaskTag()}, path = ${task.getFilePath()}")
 

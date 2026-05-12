@@ -4,7 +4,7 @@ import com.proxy.service.threadpool.base.idle.controller.IIdleTaskController
 
 /**
  * @author: cangHX
- * @data: 2024/11/27 20:08
+ * @date: 2024/11/27 20:08
  * @desc:
  */
 interface IdleService {

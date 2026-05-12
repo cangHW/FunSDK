@@ -8,7 +8,7 @@ import com.proxy.service.camera.base.mode.loader.CameraFunMode
 
 /**
  * @author: cangHX
- * @data: 2026/2/8 18:00
+ * @date: 2026/2/8 18:00
  * @desc:
  */
 class MediaCameraParams {

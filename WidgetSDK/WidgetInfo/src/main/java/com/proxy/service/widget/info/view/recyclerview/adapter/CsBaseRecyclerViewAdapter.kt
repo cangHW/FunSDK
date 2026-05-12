@@ -8,7 +8,7 @@ import com.proxy.service.widget.info.constants.WidgetConstants
 
 /**
  * @author: cangHX
- * @data: 2026/2/11 17:29
+ * @date: 2026/2/11 17:29
  * @desc:
  */
 abstract class CsBaseRecyclerViewAdapter<VH : CsBaseRecyclerViewHolder<DATA>, DATA : Any> :

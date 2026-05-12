@@ -16,7 +16,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2024/11/5 20:28
+ * @date: 2024/11/5 20:28
  * @desc:
  */
 abstract class BaseController {
@@ -32,7 +32,7 @@ abstract class BaseController {
     private val onWorkerIdleCallback = object : BaseDispatcher.OnWorkerIdleCallback {
         override fun onWorkerIdle(task: DownloadTask?) {
             taskCache.remove(task)
-            task?.getTaskTag()?.let {
+            task?.getGroupName()?.let {
                 groupCache.getOrNull(it)?.removeTask(task)
             }
             tryStartTask()
@@ -64,7 +64,7 @@ abstract class BaseController {
         if (TaskDispatcher.isTaskFull()) {
             return
         }
-        CsLogger.tag(tag).i("尝试执行执行一个高优先级下载任务")
+        CsLogger.tag(tag).i("尝试执行一个高优先级下载任务")
         for (group in groupCache.getAllValues()) {
             CsLogger.tag(tag)
                 .i("检查任务组 GroupName = ${group.name}, GroupPriority = ${group.priority}, WaitingTaskNum = ${group.getWaitingTaskNum()}")

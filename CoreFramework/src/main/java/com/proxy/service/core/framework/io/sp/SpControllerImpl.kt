@@ -6,7 +6,7 @@ import com.tencent.mmkv.MMKV
 
 /**
  * @author: cangHX
- * @data: 2025/10/15 20:29
+ * @date: 2025/10/15 20:29
  * @desc:
  */
 class SpControllerImpl(private val mmkv: MMKV) : ISpController {

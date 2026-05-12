@@ -4,7 +4,7 @@ import android.view.ViewGroup
 
 /**
  * @author: cangHX
- * @data: 2025/7/10 09:54
+ * @date: 2025/7/10 09:54
  * @desc:
  */
 interface ErrorController {

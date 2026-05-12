@@ -14,7 +14,7 @@ import com.proxy.service.webview.base.constants.WebViewConstants
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 16:37
+ * @date: 2024/8/1 16:37
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_application/web")

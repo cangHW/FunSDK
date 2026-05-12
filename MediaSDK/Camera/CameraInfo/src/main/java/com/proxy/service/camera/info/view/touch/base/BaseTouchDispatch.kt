@@ -5,7 +5,7 @@ import com.proxy.service.camera.base.callback.view.CustomTouchDispatch
 
 /**
  * @author: cangHX
- * @data: 2026/2/11 10:14
+ * @date: 2026/2/11 10:14
  * @desc:
  */
 abstract class BaseTouchDispatch(

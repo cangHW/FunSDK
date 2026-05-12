@@ -9,7 +9,7 @@ import java.nio.ByteBuffer
 
 /**
  * @author: cangHX
- * @data: 2025/7/6 22:27
+ * @date: 2025/7/6 22:27
  * @desc:
  */
 abstract class CsWebpDrawable(

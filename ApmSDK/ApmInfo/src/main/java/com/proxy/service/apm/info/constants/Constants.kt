@@ -2,7 +2,7 @@ package com.proxy.service.apm.info.constants
 
 /**
  * @author: cangHX
- * @data: 2025/4/12 17:44
+ * @date: 2025/4/12 17:44
  * @desc:
  */
 object Constants {

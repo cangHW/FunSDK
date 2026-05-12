@@ -7,7 +7,7 @@ import java.util.Date
 
 /**
  * @author: cangHX
- * @data: 2025/4/14 10:40
+ * @date: 2025/4/14 10:40
  * @desc:
  */
 class TotalOptionImpl : TotalRunImpl(), ITotalOption {

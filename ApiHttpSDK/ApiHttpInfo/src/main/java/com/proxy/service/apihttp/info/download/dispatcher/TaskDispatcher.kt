@@ -13,7 +13,7 @@ import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
- * @data: 2024/10/31 11:32
+ * @date: 2024/10/31 11:32
  * @desc:
  */
 object TaskDispatcher : BaseDispatcher() {
@@ -33,7 +33,7 @@ object TaskDispatcher : BaseDispatcher() {
             SingleTaskWorker(task)
         }
 
-        if (!workerRunningList.tryAdd(worker)) {
+        if (!runningWorkers.tryAdd(worker)) {
             return false
         }
         worker.setOnFinishedCallback(taskWorkerFinishCallback)
@@ -46,8 +46,8 @@ object TaskDispatcher : BaseDispatcher() {
      * */
     fun resetAllRunningTask() {
         CsTask.launchTaskGroup(Config.DOWNLOAD_DISPATCHER_THREAD_NAME)?.start {
-            CsLogger.tag(tag).i("重置全部正在运行的任务 taskNum = ${workerRunningList.size()}")
-            workerRunningList.getAllCache().forEach {
+            CsLogger.tag(tag).i("重置全部正在运行的任务 taskNum = ${runningWorkers.size()}")
+            runningWorkers.getAllCache().forEach {
                 CsLogger.tag(tag).i("准备重置任务 taskTag = ${it.getDownloadTask().getTaskTag()}")
                 cancelRunningTask(it.getDownloadTask().getTaskTag(), false)
                 TaskController.addTask(it.getDownloadTask())

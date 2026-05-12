@@ -9,7 +9,7 @@ import com.proxy.service.document.image.base.constants.ImageConstants
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 18:33
+ * @date: 2025/5/30 18:33
  * @desc:
  */
 class TouchManager(

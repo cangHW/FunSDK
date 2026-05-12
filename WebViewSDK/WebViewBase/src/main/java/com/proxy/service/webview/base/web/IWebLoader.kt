@@ -8,7 +8,7 @@ import com.proxy.service.webview.base.listener.WebLoadCallback
 
 /**
  * @author: cangHX
- * @data: 2024/7/31 18:40
+ * @date: 2024/7/31 18:40
  * @desc:
  */
 interface IWebLoader {

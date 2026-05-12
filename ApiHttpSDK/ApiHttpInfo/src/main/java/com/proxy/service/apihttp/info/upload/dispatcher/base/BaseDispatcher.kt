@@ -9,7 +9,7 @@ import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
- * @data: 2024/12/18 11:18
+ * @date: 2024/12/18 11:18
  * @desc:
  */
 abstract class BaseDispatcher {

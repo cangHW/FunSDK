@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2026/4/28 14:30
+ * @date: 2026/4/28 14:30
  * @desc:
  */
 class CustomCaptureCallback(

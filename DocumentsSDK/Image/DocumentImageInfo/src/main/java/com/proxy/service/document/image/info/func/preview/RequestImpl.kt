@@ -11,7 +11,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 10:49
+ * @date: 2025/5/30 10:49
  * @desc:
  */
 class RequestImpl(private val glideRequest: IGlideRequest<IGlideOption<Bitmap>, Bitmap>?) : IRequest<IOption> {

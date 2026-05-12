@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/1/15 21:58
+ * @date: 2026/1/15 21:58
  * @desc: 魅族
  */
 class MeizuStatusBarImpl : DefaultBarStatus() {

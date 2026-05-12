@@ -5,7 +5,7 @@ import com.proxy.service.document.pdf.base.config.source.BaseSource
 
 /**
  * @author: cangHX
- * @data: 2025/5/5 13:56
+ * @date: 2025/5/5 13:56
  * @desc:
  */
 interface LoadStateCallback {

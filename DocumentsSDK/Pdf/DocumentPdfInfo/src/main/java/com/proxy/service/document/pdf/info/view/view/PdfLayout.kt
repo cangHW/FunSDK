@@ -18,7 +18,7 @@ import com.proxy.service.document.pdf.info.view.view.show.TwoPageLandscape
 
 /**
  * @author: cangHX
- * @data: 2025/5/9 09:54
+ * @date: 2025/5/9 09:54
  * @desc:
  */
 class PdfLayout : FrameLayout, BaseShow.OnPageShowCallback, OnShouldCreateCoverViewCallback {

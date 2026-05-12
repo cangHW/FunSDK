@@ -6,7 +6,7 @@ import com.proxy.service.webview.base.web.setting.ISettingGet
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 19:46
+ * @date: 2024/8/1 19:46
  * @desc:
  */
 interface IBuilderGet : ISettingGet {

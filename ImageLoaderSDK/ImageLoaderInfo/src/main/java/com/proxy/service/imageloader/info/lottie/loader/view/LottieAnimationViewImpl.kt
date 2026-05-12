@@ -11,7 +11,7 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 
 /**
  * @author: cangHX
- * @data: 2025/9/23 11:11
+ * @date: 2025/9/23 11:11
  * @desc:
  */
 class LottieAnimationViewImpl : LottieAnimationView {

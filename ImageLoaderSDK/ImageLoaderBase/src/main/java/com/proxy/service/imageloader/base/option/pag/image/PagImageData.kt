@@ -7,7 +7,7 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 
 /**
  * @author: cangHX
- * @data: 2025/10/13 20:32
+ * @date: 2025/10/13 20:32
  * @desc:
  */
 class PagImageData private constructor(

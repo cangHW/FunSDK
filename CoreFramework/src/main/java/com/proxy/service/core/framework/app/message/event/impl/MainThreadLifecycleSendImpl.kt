@@ -10,7 +10,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/11/29 10:39
+ * @date: 2024/11/29 10:39
  * @desc:
  */
 class MainThreadLifecycleSendImpl(

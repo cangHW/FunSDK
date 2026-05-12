@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.ui.view.action.base.IViewActionCallback
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 20:51
+ * @date: 2026/1/8 20:51
  * @desc:
  */
 class LongClickActionImpl(private val view: View?) : ILongClickAction() {

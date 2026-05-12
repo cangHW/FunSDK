@@ -5,7 +5,7 @@ import com.proxy.service.core.framework.system.sound.enums.UsageTypeEnum
 
 /**
  * @author: cangHX
- * @data: 2024/12/5 20:43
+ * @date: 2024/12/5 20:43
  * @desc:
  */
 interface IBuilderGet {

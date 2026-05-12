@@ -8,7 +8,7 @@ import java.lang.reflect.Type
 
 /**
  * @author: cangHX
- * @data: 2024/6/19 11:18
+ * @date: 2024/6/19 11:18
  * @desc:
  */
 class ScalarsConverterFactory private constructor() : Converter.Factory() {

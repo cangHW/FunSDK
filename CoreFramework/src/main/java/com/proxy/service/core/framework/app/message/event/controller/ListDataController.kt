@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.app.message.event.base.IController
 
 /**
  * @author: cangHX
- * @data: 2024/11/29 15:29
+ * @date: 2024/11/29 15:29
  * @desc:
  */
 class ListDataController : IController {

@@ -7,7 +7,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/12/19 20:55
+ * @date: 2024/12/19 20:55
  * @desc:
  */
 abstract class BaseCallbackWorker(task: UploadTask) : BaseStatusWorker(task) {

@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.message.event.base
 
 /**
  * @author: cangHX
- * @data: 2024/11/29 11:41
+ * @date: 2024/11/29 11:41
  * @desc:
  */
 interface ISend {

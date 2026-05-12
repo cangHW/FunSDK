@@ -9,7 +9,7 @@ import android.text.style.UpdateAppearance
  * 渐变效果
  *
  * @author: cangHX
- * @data: 2025/7/14 14:56
+ * @date: 2025/7/14 14:56
  * @desc:
  */
 class ShaderSpan(

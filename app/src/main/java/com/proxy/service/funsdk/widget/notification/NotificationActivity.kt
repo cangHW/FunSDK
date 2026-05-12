@@ -16,7 +16,7 @@ import com.proxy.service.widget.info.notification.notification.config.Notificati
 
 /**
  * @author: cangHX
- * @data: 2025/12/24 09:59
+ * @date: 2025/12/24 09:59
  * @desc:
  */
 class NotificationActivity : BaseActivity<ActivityWidgetNotificationBinding>() {

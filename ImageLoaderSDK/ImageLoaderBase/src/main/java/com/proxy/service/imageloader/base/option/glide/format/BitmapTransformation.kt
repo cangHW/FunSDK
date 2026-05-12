@@ -6,7 +6,7 @@ import java.security.MessageDigest
 
 /**
  * @author: cangHX
- * @data: 2024/5/18 13:51
+ * @date: 2024/5/18 13:51
  * @desc:
  */
 abstract class BitmapTransformation {

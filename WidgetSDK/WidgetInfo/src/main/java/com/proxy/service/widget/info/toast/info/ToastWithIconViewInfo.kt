@@ -8,7 +8,7 @@ import android.widget.TextView
 
 /**
  * @author: cangHX
- * @data: 2025/9/24 09:40
+ * @date: 2025/9/24 09:40
  * @desc:
  */
 open class ToastWithIconViewInfo(

@@ -7,7 +7,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/7/23 11:26
+ * @date: 2024/7/23 11:26
  * @desc:
  */
 interface IController {

@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2024/12/26 10:19
+ * @date: 2024/12/26 10:19
  * @desc:
  */
 object RefreshManager {

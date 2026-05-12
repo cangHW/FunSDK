@@ -10,7 +10,7 @@ import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
- * @data: 2024/11/1 10:11
+ * @date: 2024/11/1 10:11
  * @desc:
  */
 object TaskController : BaseController() {

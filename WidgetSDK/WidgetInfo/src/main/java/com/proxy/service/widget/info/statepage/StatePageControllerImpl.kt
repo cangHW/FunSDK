@@ -16,7 +16,7 @@ import com.proxy.service.widget.info.statepage.loading.LoadingController
 
 /**
  * @author: cangHX
- * @data: 2025/7/9 20:21
+ * @date: 2025/7/9 20:21
  * @desc:
  */
 class StatePageControllerImpl(

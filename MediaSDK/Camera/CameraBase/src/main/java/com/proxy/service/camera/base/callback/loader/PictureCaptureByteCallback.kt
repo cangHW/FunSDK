@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.callback.loader
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 15:33
+ * @date: 2026/2/5 15:33
  * @desc:
  */
 interface PictureCaptureByteCallback {

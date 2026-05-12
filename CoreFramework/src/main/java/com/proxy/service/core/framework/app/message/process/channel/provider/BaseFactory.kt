@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/9/29 15:51
+ * @date: 2025/9/29 15:51
  * @desc:
  */
 abstract class BaseFactory {

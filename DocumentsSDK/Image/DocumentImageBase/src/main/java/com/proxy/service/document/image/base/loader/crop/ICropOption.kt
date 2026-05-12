@@ -15,7 +15,7 @@ import com.proxy.service.document.image.base.mode.CropMode
  * 配置完成后通过 into 方法绑定到目标 View.
  *
  * @author: cangHX
- * @data: 2025/6/3 09:58
+ * @date: 2025/6/3 09:58
  * @desc:
  */
 interface ICropOption : ILoader<ICropController> {

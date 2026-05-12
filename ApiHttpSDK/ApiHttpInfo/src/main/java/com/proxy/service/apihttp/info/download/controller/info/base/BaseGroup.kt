@@ -6,7 +6,7 @@ import com.proxy.service.apihttp.info.common.cache.GroupCache
 
 /**
  * @author: cangHX
- * @data: 2024/11/6 10:06
+ * @date: 2024/11/6 10:06
  * @desc:
  */
 abstract class BaseGroup : Comparator<DownloadTask> {

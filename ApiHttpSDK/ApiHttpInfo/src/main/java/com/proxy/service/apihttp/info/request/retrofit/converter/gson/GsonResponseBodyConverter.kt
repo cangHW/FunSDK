@@ -9,7 +9,7 @@ import java.lang.reflect.Type
 
 /**
  * @author: cangHX
- * @data: 2024/6/22 18:00
+ * @date: 2024/6/22 18:00
  * @desc:
  */
 internal class GsonResponseBodyConverter<T>(

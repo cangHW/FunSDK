@@ -9,7 +9,7 @@ import com.proxy.service.permission.base.manager.base.ISettingDialog
 
 /**
  * @author: cangHX
- * @data: 2024/11/18 10:02
+ * @date: 2024/11/18 10:02
  * @desc:
  */
 interface PermissionService : BaseService {

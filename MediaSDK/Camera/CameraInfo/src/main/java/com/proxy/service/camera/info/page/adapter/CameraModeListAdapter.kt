@@ -11,7 +11,7 @@ import com.proxy.service.widget.info.view.recyclerview.adapter.CsBaseRecyclerVie
 
 /**
  * @author: cangHX
- * @data: 2026/2/11 14:28
+ * @date: 2026/2/11 14:28
  * @desc:
  */
 class CameraModeListAdapter : CsBaseRecyclerViewAdapter<CameraModeListViewHolder, CameraFunMode>() {

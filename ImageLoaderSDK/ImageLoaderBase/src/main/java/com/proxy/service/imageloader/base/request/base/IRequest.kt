@@ -4,7 +4,7 @@ package com.proxy.service.imageloader.base.request.base
  * 资源加载器
  *
  * @author: cangHX
- * @data: 2024/5/15 21:02
+ * @date: 2024/5/15 21:02
  * @desc:
  */
 interface IRequest<R> {

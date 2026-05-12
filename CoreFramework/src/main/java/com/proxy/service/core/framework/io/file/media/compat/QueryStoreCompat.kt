@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.io.file.media.config.StoreType
 
 /**
  * @author: cangHX
- * @data: 2025/1/2 15:50
+ * @date: 2025/1/2 15:50
  * @desc:
  */
 class QueryStoreCompat : AbstractMedia<IMediaStore.IQuery>(), IMediaStore.IQuery {

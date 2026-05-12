@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 17:36
+ * @date: 2024/5/21 17:36
  * @desc:
  */
 @CloudApiNewInstance
@@ -40,14 +40,12 @@ class RequestServiceImpl : RequestService {
     }
 
     override fun <T> getService(service: Class<T>): T {
-        if (requestConfig == null) {
-            throw NullPointerException("Are you init ApiHttp first?")
-        }
+        val config = requestConfig ?: throw NullPointerException("Are you init ApiHttp first?")
 
         if (retrofit == null) {
             synchronized(lock) {
                 if (retrofit == null) {
-                    retrofit = RetrofitManager.getRetrofit(requestConfig!!)
+                    retrofit = RetrofitManager.getRetrofit(config)
                 }
             }
         }

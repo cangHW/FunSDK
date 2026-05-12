@@ -10,7 +10,7 @@ import android.widget.RelativeLayout
  * 资源绑定接口, 用于将已选择的图片资源加载到指定 View.
  *
  * @author: cangHX
- * @data: 2025/5/30 10:14
+ * @date: 2025/5/30 10:14
  * @desc:
  */
 interface ILoader<T> {

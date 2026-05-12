@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/11/19 10:25
+ * @date: 2024/11/19 10:25
  * @desc:
  */
 class RationaleDialogImpl : IRationaleDialog {

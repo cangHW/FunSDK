@@ -4,7 +4,7 @@ import com.proxy.service.widget.info.constants.WidgetConstants
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 11:34
+ * @date: 2025/11/27 11:34
  * @desc:
  */
 object DialogConstants {

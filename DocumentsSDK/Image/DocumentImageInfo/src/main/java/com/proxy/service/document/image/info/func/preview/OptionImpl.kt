@@ -19,7 +19,7 @@ import com.proxy.service.imageloader.base.option.glide.IGlideOption
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 10:50
+ * @date: 2025/5/30 10:50
  * @desc:
  */
 class OptionImpl(

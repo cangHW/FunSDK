@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.base.handler.controller
 
 /**
  * @author: cangHX
- * @data: 2024/12/13 10:31
+ * @date: 2024/12/13 10:31
  * @desc: 组任务控制器
  */
 interface IGroupController {

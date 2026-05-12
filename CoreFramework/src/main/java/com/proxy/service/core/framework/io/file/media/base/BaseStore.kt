@@ -16,7 +16,7 @@ import java.util.Arrays
 
 /**
  * @author: cangHX
- * @data: 2025/1/2 09:49
+ * @date: 2025/1/2 09:49
  * @desc:
  */
 abstract class BaseStore : IMediaStore<BaseStore>, IMediaStore.IInsertAction,

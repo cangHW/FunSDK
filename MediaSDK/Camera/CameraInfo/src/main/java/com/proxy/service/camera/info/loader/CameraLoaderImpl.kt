@@ -13,7 +13,7 @@ import com.proxy.service.camera.info.loader.lifecycle.LifecycleObserverImpl
 
 /**
  * @author: cangHX
- * @data: 2026/3/19 19:59
+ * @date: 2026/3/19 19:59
  * @desc:
  */
 class CameraLoaderImpl : ICameraLoader {

@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.system.security.aes.base.action.ISource
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 19:40
+ * @date: 2024/12/2 19:40
  * @desc:
  */
 interface ILoader {

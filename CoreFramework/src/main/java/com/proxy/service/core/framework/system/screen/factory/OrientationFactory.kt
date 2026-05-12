@@ -17,7 +17,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2025/5/23 17:44
+ * @date: 2025/5/23 17:44
  * @desc:
  */
 class OrientationFactory private constructor() : OrientationChangedCallback {

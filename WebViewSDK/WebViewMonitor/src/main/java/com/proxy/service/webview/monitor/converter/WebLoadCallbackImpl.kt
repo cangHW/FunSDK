@@ -8,7 +8,7 @@ import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 13:40
+ * @date: 2026/1/23 13:40
  * @desc:
  */
 class WebLoadCallbackImpl : AbstractWebLoadCallback() {

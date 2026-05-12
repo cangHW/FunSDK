@@ -22,7 +22,7 @@ import com.proxy.service.camera.info.view.view.CustomSurfaceView
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 16:20
+ * @date: 2026/2/4 16:20
  * @desc:
  */
 class CameraViewLoaderImpl : ICameraViewLoader {

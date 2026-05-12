@@ -21,7 +21,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 16:17
+ * @date: 2026/2/4 16:17
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/camera")

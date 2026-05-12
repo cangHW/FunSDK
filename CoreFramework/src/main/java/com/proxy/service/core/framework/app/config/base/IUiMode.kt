@@ -4,7 +4,7 @@ import android.content.Context
 
 /**
  * @author: cangHX
- * @data: 2024/12/26 10:03
+ * @date: 2024/12/26 10:03
  * @desc:
  */
 interface IUiMode : IAction<IUiMode> {

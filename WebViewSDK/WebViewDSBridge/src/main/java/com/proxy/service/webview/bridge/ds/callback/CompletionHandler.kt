@@ -2,7 +2,7 @@ package com.proxy.service.webview.bridge.ds.callback
 
 /**
  * @author: cangHX
- * @data: 2024/8/10 17:41
+ * @date: 2024/8/10 17:41
  * @desc:
  */
 interface CompletionHandler {

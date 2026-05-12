@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.base.thread.schedulers
 
 /**
  * @author: cangHX
- * @data: 2024/6/7 15:30
+ * @date: 2024/6/7 15:30
  * @desc:
  */
 interface IScheduler<T> {

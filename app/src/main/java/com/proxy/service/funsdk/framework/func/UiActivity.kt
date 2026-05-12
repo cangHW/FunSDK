@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 17:47
+ * @date: 2026/1/8 17:47
  * @desc:
  */
 class UiActivity : BaseActivity<ActivityFrameworkUiBinding>() {

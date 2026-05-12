@@ -2,7 +2,7 @@ package com.proxy.service.permission.base.constants
 
 /**
  * @author: cangHX
- * @data: 2025/6/25 18:28
+ * @date: 2025/6/25 18:28
  * @desc:
  */
 object PermConstants {

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/4/15 17:14
+ * @date: 2025/4/15 17:14
  * @desc:
  */
 object CommonLog {

@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.collections.CsExcellentMap
 
 /**
  * @author: cangHX
- * @data: 2026/5/11 10:56
+ * @date: 2026/5/11 10:56
  * @desc:
  */
 object BaseUrlManager {

@@ -2,7 +2,7 @@ package com.proxy.service.widget.info.statepage.config
 
 /**
  * @author: cangHX
- * @data: 2025/7/9 20:19
+ * @date: 2025/7/9 20:19
  * @desc:
  */
 class ErrorPageType private constructor(val key: String) {

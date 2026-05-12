@@ -9,7 +9,7 @@ import com.airbnb.lottie.LottieTask
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:38
+ * @date: 2024/5/16 11:38
  * @desc:
  */
 class ResLottieSource(

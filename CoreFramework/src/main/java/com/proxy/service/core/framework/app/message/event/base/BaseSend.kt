@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author: cangHX
- * @data: 2024/11/29 10:37
+ * @date: 2024/11/29 10:37
  * @desc:
  */
 abstract class BaseSend<T : IEvent>(

@@ -11,7 +11,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2025/9/15 23:03
+ * @date: 2025/9/15 23:03
  * @desc:
  */
 abstract class AbstractAsyncWorker : AbstractWorker() {

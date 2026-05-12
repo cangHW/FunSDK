@@ -2,7 +2,7 @@ package com.proxy.service.widget.info.presenter.core
 
 /**
  * @author: cangHX
- * @data: 2025/12/25 10:53
+ * @date: 2025/12/25 10:53
  * @desc:
  */
 interface ILifecycle {

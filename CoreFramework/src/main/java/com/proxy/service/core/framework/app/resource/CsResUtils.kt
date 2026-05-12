@@ -13,7 +13,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * 资源，基于名称获取相关工具
  *
  * @author: cangHX
- * @data: 2024/9/20 15:06
+ * @date: 2024/9/20 15:06
  * @desc:
  */
 object CsResUtils {

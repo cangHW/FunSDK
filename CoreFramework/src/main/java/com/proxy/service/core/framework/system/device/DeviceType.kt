@@ -4,7 +4,7 @@ import android.os.Build
 
 /**
  * @author: cangHX
- * @data: 2024/7/25 17:27
+ * @date: 2024/7/25 17:27
  * @desc:
  */
 enum class DeviceType {

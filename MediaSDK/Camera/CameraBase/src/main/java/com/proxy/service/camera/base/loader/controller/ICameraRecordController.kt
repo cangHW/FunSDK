@@ -7,7 +7,7 @@ import com.proxy.service.camera.base.mode.loader.VideoRecordState
 
 /**
  * @author: cangHX
- * @data: 2026/3/19 19:17
+ * @date: 2026/3/19 19:17
  * @desc:
  */
 interface ICameraRecordController : ICameraController {

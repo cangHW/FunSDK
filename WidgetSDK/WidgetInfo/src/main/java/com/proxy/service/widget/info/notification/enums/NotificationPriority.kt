@@ -7,7 +7,7 @@ import androidx.core.app.NotificationCompat
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 14:43
+ * @date: 2025/12/16 14:43
  * @desc:通知类别, 用于控制横幅、声音、震动等效果
  */
 sealed class NotificationPriority {

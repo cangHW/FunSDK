@@ -12,7 +12,7 @@ import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 13:30
+ * @date: 2026/1/23 13:30
  * @desc:
  */
 class WebLoaderConverter(private val loader: IWebLoader) : IWebLoader {

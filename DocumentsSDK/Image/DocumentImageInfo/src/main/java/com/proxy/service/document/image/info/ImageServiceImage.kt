@@ -14,7 +14,7 @@ import com.proxy.service.document.image.info.func.crop.CropRequestImpl
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 10:46
+ * @date: 2025/5/30 10:46
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/image")

@@ -28,7 +28,7 @@ import com.proxy.service.imageloader.info.glide.type.GifDrawableType
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 09:54
+ * @date: 2024/5/16 09:54
  * @desc:
  */
 class TypeImpl(

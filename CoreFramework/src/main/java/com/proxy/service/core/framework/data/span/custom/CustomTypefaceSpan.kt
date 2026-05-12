@@ -9,7 +9,7 @@ import android.text.style.TypefaceSpan
  * 字体适配器
  *
  * @author: cangHX
- * @data: 2025/7/14 14:27
+ * @date: 2025/7/14 14:27
  * @desc:
  */
 class CustomTypefaceSpan : TypefaceSpan {

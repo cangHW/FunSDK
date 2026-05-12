@@ -8,7 +8,7 @@ import com.proxy.service.widget.info.dialog.window.info.PreConditionStrategy
  * 弹窗基础
  *
  * @author: cangHX
- * @data: 2025/11/27 10:57
+ * @date: 2025/11/27 10:57
  * @desc:
  */
 interface IDialog {

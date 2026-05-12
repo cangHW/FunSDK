@@ -11,7 +11,7 @@ import com.proxy.service.funsdk.R
 
 /**
  * @author: cangHX
- * @data: 2024/12/9 17:37
+ * @date: 2024/12/9 17:37
  * @desc:
  */
 class PermissionFragment: Fragment() {

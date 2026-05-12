@@ -27,7 +27,7 @@ import com.proxy.service.core.framework.data.span.enums.TextSizeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/7/14 10:10
+ * @date: 2025/7/14 10:10
  * @desc:
  */
 abstract class AbstractText : AbstractImage(), ITextBuilder {

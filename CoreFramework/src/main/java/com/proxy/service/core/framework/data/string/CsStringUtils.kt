@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * 字符串工具
  *
  * @author: cangHX
- * @data: 2024/12/3 11:50
+ * @date: 2024/12/3 11:50
  * @desc:
  */
 object CsStringUtils {

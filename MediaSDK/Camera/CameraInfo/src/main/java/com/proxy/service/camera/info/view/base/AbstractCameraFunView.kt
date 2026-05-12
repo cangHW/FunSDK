@@ -11,7 +11,7 @@ import com.proxy.service.camera.info.view.touch.mode.MeteringModeDispatch
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 17:45
+ * @date: 2026/2/5 17:45
  * @desc:
  */
 abstract class AbstractCameraFunView(

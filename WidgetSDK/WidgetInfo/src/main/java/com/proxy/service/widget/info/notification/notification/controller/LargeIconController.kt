@@ -15,7 +15,7 @@ import com.proxy.service.widget.info.notification.constants.NotificationConstant
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 16:10
+ * @date: 2025/12/16 16:10
  * @desc:
  */
 class LargeIconController private constructor(

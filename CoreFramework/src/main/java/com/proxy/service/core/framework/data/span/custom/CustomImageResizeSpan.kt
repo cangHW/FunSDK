@@ -11,7 +11,7 @@ import com.proxy.service.core.framework.data.span.enums.ImageAlign
  * 重置图片大小并加载 span
  *
  * @author: cangHX
- * @data: 2025/7/14 14:42
+ * @date: 2025/7/14 14:42
  * @desc:
  */
 class CustomImageResizeSpan : CustomImageSpan {

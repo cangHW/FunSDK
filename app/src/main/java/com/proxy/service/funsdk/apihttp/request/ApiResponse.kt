@@ -2,7 +2,7 @@ package com.proxy.service.funsdk.apihttp.request
 
 /**
  * @author: cangHX
- * @data: 2024/6/24 16:34
+ * @date: 2024/6/24 16:34
  * @desc:
  */
 class ApiResponse {

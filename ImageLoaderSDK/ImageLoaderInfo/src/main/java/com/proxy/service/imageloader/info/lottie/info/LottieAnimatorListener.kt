@@ -4,7 +4,7 @@ import android.animation.Animator
 
 /**
  * @author: cangHX
- * @data: 2024/6/5 09:29
+ * @date: 2024/6/5 09:29
  * @desc:
  */
 class LottieAnimatorListener(

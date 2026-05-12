@@ -5,7 +5,7 @@ import com.proxy.service.core.service.task.CsTask
 
 /**
  * @author: cangHX
- * @data: 2024/11/7 10:45
+ * @date: 2024/11/7 10:45
  * @desc:
  */
 object ThreadUtils {

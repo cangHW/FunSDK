@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/12/24 18:21
+ * @date: 2024/12/24 18:21
  * @desc:
  */
 object AppConfigInit {

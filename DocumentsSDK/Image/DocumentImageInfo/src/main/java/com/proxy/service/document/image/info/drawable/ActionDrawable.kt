@@ -10,7 +10,7 @@ import com.proxy.service.document.image.info.utils.AnimatorManager
 
 /**
  * @author: cangHX
- * @data: 2025/6/2 18:24
+ * @date: 2025/6/2 18:24
  * @desc:
  */
 class ActionDrawable(

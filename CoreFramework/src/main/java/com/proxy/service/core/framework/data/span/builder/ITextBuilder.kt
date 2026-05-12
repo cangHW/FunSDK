@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.data.span.enums.TextSizeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/7/11 17:11
+ * @date: 2025/7/11 17:11
  * @desc:
  */
 interface ITextBuilder : IAppendBuilder {

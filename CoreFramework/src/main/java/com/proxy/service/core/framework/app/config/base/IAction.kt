@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.config.base
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 10:22
+ * @date: 2024/12/25 10:22
  * @desc:
  */
 interface IAction<T> {

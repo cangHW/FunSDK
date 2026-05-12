@@ -30,7 +30,7 @@ import com.proxy.service.imageloader.info.glide.option.transform.SaturationTrans
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 09:55
+ * @date: 2024/5/16 09:55
  * @desc:
  */
 class WebpGlideOptionImpl(

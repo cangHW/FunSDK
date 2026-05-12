@@ -9,7 +9,7 @@ import com.proxy.service.core.framework.app.context.ContextInit
 
 /**
  * @author: cangHX
- * @data: 2024/4/28 20:53
+ * @date: 2024/4/28 20:53
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_config/core")

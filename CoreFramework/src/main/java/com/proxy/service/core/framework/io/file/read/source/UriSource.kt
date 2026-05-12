@@ -8,7 +8,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2026/1/6 15:02
+ * @date: 2026/1/6 15:02
  * @desc:
  */
 class UriSource(private val uri: Uri) : InputStreamSource(null) {

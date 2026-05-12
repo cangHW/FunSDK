@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 16:48
+ * @date: 2025/11/27 16:48
  * @desc:
  */
 abstract class AbstractLifecycleDialog : AbstractActionDialog(), ILifecycleDialog {

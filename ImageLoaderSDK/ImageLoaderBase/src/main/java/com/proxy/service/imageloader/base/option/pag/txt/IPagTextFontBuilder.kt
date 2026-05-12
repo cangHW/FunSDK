@@ -4,7 +4,7 @@ import com.proxy.service.imageloader.base.constants.ImageLoaderConstants
 
 /**
  * @author: cangHX
- * @data: 2025/10/15 22:49
+ * @date: 2025/10/15 22:49
  * @desc:
  */
 interface IPagTextFontBuilder {

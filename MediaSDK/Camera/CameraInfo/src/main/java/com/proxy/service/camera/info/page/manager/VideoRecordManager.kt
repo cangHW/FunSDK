@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.collections.type.Type
 
 /**
  * @author: cangHX
- * @data: 2026/4/20 17:18
+ * @date: 2026/4/20 17:18
  * @desc:
  */
 class VideoRecordManager private constructor(

@@ -14,7 +14,7 @@ import com.proxy.service.funsdk.widget.view.centerSelect.CenterSelectActivity
 
 /**
  * @author: cangHX
- * @data: 2025/7/8 17:55
+ * @date: 2025/7/8 17:55
  * @desc:
  */
 class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {

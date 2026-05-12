@@ -14,7 +14,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * 系统页面相关工具
  *
  * @author: cangHX
- * @data: 2024/9/26 10:01
+ * @date: 2024/9/26 10:01
  * @desc:
  */
 object CsSystemPageUtils {

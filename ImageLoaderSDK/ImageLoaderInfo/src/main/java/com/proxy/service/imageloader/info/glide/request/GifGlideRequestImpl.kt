@@ -22,7 +22,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 09:53
+ * @date: 2024/5/16 09:53
  * @desc:
  */
 class GifGlideRequestImpl(

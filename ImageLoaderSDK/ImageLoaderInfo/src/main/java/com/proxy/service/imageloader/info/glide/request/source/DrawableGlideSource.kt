@@ -5,7 +5,7 @@ import com.bumptech.glide.RequestBuilder
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 11:41
+ * @date: 2025/5/30 11:41
  * @desc:
  */
 class DrawableGlideSource(private val drawable: Drawable) : BaseGlideSourceData() {

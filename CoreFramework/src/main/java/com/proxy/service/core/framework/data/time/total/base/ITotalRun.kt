@@ -5,7 +5,7 @@ import kotlin.jvm.Throws
 
 /**
  * @author: cangHX
- * @data: 2025/4/14 10:36
+ * @date: 2025/4/14 10:36
  * @desc:
  */
 interface ITotalRun {

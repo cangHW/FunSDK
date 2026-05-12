@@ -10,7 +10,7 @@ import java.io.OutputStream
 
 /**
  * @author: cangHX
- * @data: 2024/9/25 15:29
+ * @date: 2024/9/25 15:29
  * @desc:
  */
 abstract class AbstractWrite : IWrite, IWriteStatusLog {

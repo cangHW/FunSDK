@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/12/24 10:02
+ * @date: 2025/12/24 10:02
  * @desc:
  */
 class StatePageActivity : BaseActivity<ActivityWidgetStatePageBinding>() {

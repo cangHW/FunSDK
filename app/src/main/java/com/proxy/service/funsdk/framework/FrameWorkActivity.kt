@@ -22,7 +22,7 @@ import com.proxy.service.funsdk.framework.func.UiActivity
 
 /**
  * @author: cangHX
- * @data: 2024/9/23 10:11
+ * @date: 2024/9/23 10:11
  * @desc:
  */
 class FrameWorkActivity : BaseActivity<ActivityFrameworkBinding>() {

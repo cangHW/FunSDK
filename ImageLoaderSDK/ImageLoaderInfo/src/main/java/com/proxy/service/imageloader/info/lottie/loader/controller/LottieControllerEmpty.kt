@@ -6,7 +6,7 @@ import com.proxy.service.imageloader.base.option.lottie.LottieLoopModel
 
 /**
  * @author: cangHX
- * @data: 2024/6/5 09:52
+ * @date: 2024/6/5 09:52
  * @desc:
  */
 class LottieControllerEmpty : LottieController {

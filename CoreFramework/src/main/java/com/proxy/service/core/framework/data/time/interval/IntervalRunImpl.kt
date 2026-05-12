@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/4/15 11:42
+ * @date: 2025/4/15 11:42
  * @desc:
  */
 open class IntervalRunImpl : IIntervalRun {

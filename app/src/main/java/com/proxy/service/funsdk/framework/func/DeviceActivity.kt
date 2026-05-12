@@ -13,7 +13,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkDeviceBinding
 
 /**
  * @author: cangHX
- * @data: 2024/11/11 14:18
+ * @date: 2024/11/11 14:18
  * @desc:
  */
 class DeviceActivity : BaseActivity<ActivityFrameworkDeviceBinding>() {

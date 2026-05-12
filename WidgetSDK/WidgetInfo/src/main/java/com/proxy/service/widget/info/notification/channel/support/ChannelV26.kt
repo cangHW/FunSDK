@@ -11,7 +11,7 @@ import com.proxy.service.widget.info.notification.channel.config.ChannelConfig
 
 /**
  * @author: cangHX
- * @data: 2025/12/18 20:55
+ * @date: 2025/12/18 20:55
  * @desc:
  */
 object ChannelV26 {

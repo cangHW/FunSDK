@@ -8,7 +8,7 @@ import com.proxy.service.widget.info.notification.enums.NotificationVisibility
 
 /**
  * @author: cangHX
- * @data: 2025/12/17 20:41
+ * @date: 2025/12/17 20:41
  * @desc:
  */
 interface IBuilder {

@@ -7,7 +7,7 @@ import com.proxy.service.threadpool.base.thread.ThreadService
 
 /**
  * @author: cangHX
- * @data: 2024/5/27 16:28
+ * @date: 2024/5/27 16:28
  * @desc:
  */
 interface ThreadPoolService : BaseService, ThreadService, HandlerService, IdleService

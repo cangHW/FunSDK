@@ -14,7 +14,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * http 下载框架入口
  *
  * @author: cangHX
- * @data: 2024/11/5 13:38
+ * @date: 2024/11/5 13:38
  * @desc:
  */
 object CsApiDownload {
@@ -99,7 +99,7 @@ object CsApiDownload {
     fun reStartTask(taskTag: String): Boolean {
         getService()?.let {
             it.init(config)
-            return it.reStartTask(taskTag)
+            return it.restartTask(taskTag)
         }
         return false
     }

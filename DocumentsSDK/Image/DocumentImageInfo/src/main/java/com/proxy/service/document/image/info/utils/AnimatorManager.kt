@@ -5,7 +5,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 
 /**
  * @author: cangHX
- * @data: 2025/6/7 10:39
+ * @date: 2025/6/7 10:39
  * @desc:
  */
 class AnimatorManager private constructor() {

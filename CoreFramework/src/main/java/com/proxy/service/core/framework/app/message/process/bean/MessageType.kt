@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.message.process.bean
 
 /**
  * @author: cangHX
- * @data: 2025/9/29 16:15
+ * @date: 2025/9/29 16:15
  * @desc:
  */
 enum class MessageType {

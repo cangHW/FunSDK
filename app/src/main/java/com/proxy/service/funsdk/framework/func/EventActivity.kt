@@ -31,7 +31,7 @@ import java.lang.StringBuilder
 
 /**
  * @author: cangHX
- * @data: 2024/10/29 11:37
+ * @date: 2024/10/29 11:37
  * @desc:
  */
 class EventActivity : BaseActivity<ActivityFrameworkEventBinding>() {

@@ -6,7 +6,7 @@ import com.proxy.service.logfile.info.config.LogConfig
  * logfile 日志文件框架入口
  *
  * @author: cangHX
- * @data: 2025/1/16 19:41
+ * @date: 2025/1/16 19:41
  * @desc:
  */
 object CsLogFile {

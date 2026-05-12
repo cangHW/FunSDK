@@ -4,7 +4,7 @@ import androidx.core.app.NotificationCompat
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 14:45
+ * @date: 2025/12/16 14:45
  * @desc: 通知类别, 效果例如：在“请勿打扰”模式下，某些类别的通知（如 CATEGORY_ALARM 或 CATEGORY_CALL）可能会被系统允许显示，而其他类别的通知可能会被屏蔽
  */
 sealed class NotificationCategory private constructor(val category: String) {

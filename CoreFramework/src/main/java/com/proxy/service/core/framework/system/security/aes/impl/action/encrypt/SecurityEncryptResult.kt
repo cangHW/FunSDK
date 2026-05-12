@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.system.security.aes.base.controller.ICon
 
 /**
  * @author: cangHX
- * @data: 2024/12/3 11:40
+ * @date: 2024/12/3 11:40
  * @desc:
  */
 open class SecurityEncryptResult(

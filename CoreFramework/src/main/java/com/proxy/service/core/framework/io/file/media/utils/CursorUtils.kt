@@ -5,7 +5,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/1/7 10:13
+ * @date: 2025/1/7 10:13
  * @desc:
  */
 object CursorUtils {

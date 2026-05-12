@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 17:01
+ * @date: 2026/1/8 17:01
  * @desc:
  */
 abstract class IClickAction : IAction<IClickAction>(), ICall<Unit, Unit> {

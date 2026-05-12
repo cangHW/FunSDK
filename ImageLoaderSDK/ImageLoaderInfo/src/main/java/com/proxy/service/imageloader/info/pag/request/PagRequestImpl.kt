@@ -11,7 +11,7 @@ import com.proxy.service.imageloader.info.pag.request.source.UrlPagSource
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 15:10
+ * @date: 2025/10/10 15:10
  * @desc:
  */
 class PagRequestImpl(

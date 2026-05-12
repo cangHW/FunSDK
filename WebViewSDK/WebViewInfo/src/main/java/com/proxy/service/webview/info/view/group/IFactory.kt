@@ -9,7 +9,7 @@ import com.proxy.service.webview.info.view.WebViewImpl
 
 /**
  * @author: cangHX
- * @data: 2024/6/5 07:59
+ * @date: 2024/6/5 07:59
  * @desc:
  */
 interface IFactory<T : ViewGroup> {

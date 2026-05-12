@@ -15,7 +15,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkMonitorBinding
 
 /**
  * @author: cangHX
- * @data: 2024/12/5 16:36
+ * @date: 2024/12/5 16:36
  * @desc:
  */
 class MonitorActivity : BaseActivity<ActivityFrameworkMonitorBinding>() {

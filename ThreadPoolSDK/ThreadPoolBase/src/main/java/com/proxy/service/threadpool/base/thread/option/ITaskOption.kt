@@ -8,7 +8,7 @@ import com.proxy.service.threadpool.base.thread.schedulers.IScheduler
 
 /**
  * @author: cangHX
- * @data: 2024/6/7 16:41
+ * @date: 2024/6/7 16:41
  * @desc:
  */
 interface ITaskOption<T> : IObserver<T>, IOption<T>, IAction<T>, IScheduler<ITaskOption<T>>,

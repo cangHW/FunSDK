@@ -4,7 +4,7 @@ import com.proxy.service.apihttp.base.constants.ApiConstants
 
 /**
  * @author: cangHX
- * @data: 2024/10/31 10:15
+ * @date: 2024/10/31 10:15
  * @desc:
  */
 class DownloadGroup private constructor(val groupName: String, val priority: Int, val fileDir: String) {

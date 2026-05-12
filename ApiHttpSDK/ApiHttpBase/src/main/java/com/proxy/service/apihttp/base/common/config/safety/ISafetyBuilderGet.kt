@@ -1,14 +1,25 @@
 package com.proxy.service.apihttp.base.common.config.safety
 
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 20:04
+ * @date: 2025/3/27 20:04
  * @desc:
  */
 interface ISafetyBuilderGet {
+
+    /**
+     * http 重定向是否允许
+     * */
+    fun getFollowRedirects(): Boolean
+
+    /**
+     * https 重定向是否允许
+     * */
+    fun getFollowSslRedirects(): Boolean
 
     /**
      * 获取服务端证书路径

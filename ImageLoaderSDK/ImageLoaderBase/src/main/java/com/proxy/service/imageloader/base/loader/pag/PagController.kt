@@ -4,7 +4,7 @@ import com.proxy.service.imageloader.base.option.pag.IPagAction
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 17:16
+ * @date: 2025/10/10 17:16
  * @desc:
  */
 interface PagController : IPagAction<Unit> {

@@ -4,7 +4,7 @@ import com.proxy.service.webview.base.web.dialog.JsResult
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 11:30
+ * @date: 2024/8/5 11:30
  * @desc:
  */
 class JsResultImpl(private val jsResult: android.webkit.JsResult?) : JsResult {

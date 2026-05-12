@@ -2,7 +2,7 @@ package com.proxy.service.webview.base.web.permissions
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 10:47
+ * @date: 2024/8/5 10:47
  * @desc:
  */
 interface PermissionRequest {

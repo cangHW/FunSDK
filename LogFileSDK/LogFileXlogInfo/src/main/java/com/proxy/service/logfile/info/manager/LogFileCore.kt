@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2025/12/29 10:56
+ * @date: 2025/12/29 10:56
  * @desc:
  */
 class LogFileCore private constructor() {

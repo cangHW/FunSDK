@@ -12,7 +12,7 @@ import com.proxy.service.core.framework.io.sp.CsSpManager
  * 应用配置工具类
  *
  * @author: cangHX
- * @data: 2024/12/24 17:45
+ * @date: 2024/12/24 17:45
  * @desc:
  */
 object CsConfigUtils {

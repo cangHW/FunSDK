@@ -16,7 +16,7 @@ import com.proxy.service.widget.info.statepage.loading.LoadingController
  * 状态页面管理器（loading、error、empty）
  *
  * @author: cangHX
- * @data: 2025/7/9 20:09
+ * @date: 2025/7/9 20:09
  * @desc:
  */
 object CsStatePageManager {

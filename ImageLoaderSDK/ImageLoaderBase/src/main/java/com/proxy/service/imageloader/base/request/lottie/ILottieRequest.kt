@@ -6,7 +6,7 @@ import com.proxy.service.imageloader.base.request.base.IRequest
 
 /**
  * @author: cangHX
- * @data: 2024/6/7 10:09
+ * @date: 2024/6/7 10:09
  * @desc:
  */
 interface ILottieRequest : IRequest<ILottieOption> {

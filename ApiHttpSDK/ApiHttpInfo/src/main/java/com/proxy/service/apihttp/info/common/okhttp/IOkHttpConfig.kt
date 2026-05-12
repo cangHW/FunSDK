@@ -8,10 +8,10 @@ import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 17:53
+ * @date: 2024/12/17 17:53
  * @desc:
  */
-interface IOkhttpConfig {
+interface IOkHttpConfig {
 
     /**
      * 获取连接超时时间
@@ -41,12 +41,12 @@ interface IOkhttpConfig {
     /**
      * 获取应用拦截器
      * */
-    fun getInterceptor(): MutableList<Interceptor>
+    fun getInterceptors(): MutableList<Interceptor>
 
     /**
      * 获取网络拦截器
      * */
-    fun getNetworkInterceptor(): MutableList<Interceptor>
+    fun getNetworkInterceptors(): MutableList<Interceptor>
 
     /**
      * 获取事件节点回调
@@ -57,6 +57,16 @@ interface IOkhttpConfig {
      * 获取 dns
      * */
     fun getDns(): Dns?
+
+    /**
+     * http 重定向是否允许
+     * */
+    fun getFollowRedirects(): Boolean
+
+    /**
+     * https 重定向是否允许
+     * */
+    fun getFollowSslRedirects(): Boolean
 
     /**
      * 获取服务端证书路径

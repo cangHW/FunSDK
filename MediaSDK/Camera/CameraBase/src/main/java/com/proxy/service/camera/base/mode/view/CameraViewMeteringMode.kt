@@ -5,7 +5,7 @@ import com.proxy.service.core.framework.app.resource.CsDpUtils
 
 /**
  * @author: cangHX
- * @data: 2026/2/7 15:48
+ * @date: 2026/2/7 15:48
  * @desc:
  */
 sealed class CameraViewMeteringMode private constructor() {

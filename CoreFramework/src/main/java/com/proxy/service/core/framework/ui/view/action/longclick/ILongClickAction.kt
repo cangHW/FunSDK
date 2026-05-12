@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.ui.view.action.base.IViewActionCallback
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 20:54
+ * @date: 2026/1/8 20:54
  * @desc:
  */
 abstract class ILongClickAction : IAction<ILongClickAction>(), ICall<Unit, Unit> {

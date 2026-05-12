@@ -11,7 +11,7 @@ import com.proxy.service.document.pdf.info.view.view.utils.CheckSelectManager
 
 /**
  * @author: cangHX
- * @data: 2025/7/24 15:08
+ * @date: 2025/7/24 15:08
  * @desc:
  */
 class TwoPageLandscape : BaseShow(), CheckSelectManager.OnSelectChangedCallback {

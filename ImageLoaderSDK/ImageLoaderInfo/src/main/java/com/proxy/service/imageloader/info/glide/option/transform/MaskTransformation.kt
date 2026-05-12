@@ -16,7 +16,7 @@ import java.security.MessageDigest
  * 水印遮罩转换器
  *
  * @author: cangHX
- * @data: 2024/5/18 11:57
+ * @date: 2024/5/18 11:57
  * @desc:
  */
 class MaskTransformation(@DrawableRes val drawableId: Int) :

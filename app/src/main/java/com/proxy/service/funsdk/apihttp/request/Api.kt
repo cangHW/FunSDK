@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 /**
  * @author: cangHX
- * @data: 2024/6/19 11:06
+ * @date: 2024/6/19 11:06
  * @desc:
  */
 interface Api {

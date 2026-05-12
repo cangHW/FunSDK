@@ -8,7 +8,7 @@ import com.airbnb.lottie.LottieTask
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:37
+ * @date: 2024/5/16 11:37
  * @desc:
  */
 class AssetLottieSource(

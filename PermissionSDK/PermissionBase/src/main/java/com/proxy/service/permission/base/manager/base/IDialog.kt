@@ -7,7 +7,7 @@ import com.proxy.service.permission.base.callback.DialogDismissCallback
 
 /**
  * @author: cangHX
- * @data: 2024/11/19 18:40
+ * @date: 2024/11/19 18:40
  * @desc:
  */
 interface IDialog<T> : IPermissionCallback<T> {

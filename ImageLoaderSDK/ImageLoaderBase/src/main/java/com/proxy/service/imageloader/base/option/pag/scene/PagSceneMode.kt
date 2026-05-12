@@ -2,7 +2,7 @@ package com.proxy.service.imageloader.base.option.pag.scene
 
 /**
  * @author: cangHX
- * @data: 2025/11/11 15:42
+ * @date: 2025/11/11 15:42
  * @desc:
  */
 enum class PagSceneMode {

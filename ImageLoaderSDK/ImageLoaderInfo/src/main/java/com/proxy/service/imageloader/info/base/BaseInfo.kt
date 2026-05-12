@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 
 /**
  * @author: cangHX
- * @data: 2024/6/4 16:32
+ * @date: 2024/6/4 16:32
  * @desc:
  */
 open class BaseInfo {

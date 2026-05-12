@@ -2,7 +2,7 @@ package com.proxy.service.webview.bridge.ds.bridge
 
 /**
  * @author: cangHX
- * @data: 2024/8/10 15:47
+ * @date: 2024/8/10 15:47
  * @desc:
  */
 object GlobalBridgeManager {

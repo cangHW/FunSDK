@@ -12,7 +12,7 @@ import com.proxy.service.funsdk.document.image.preview.ImagePreviewActivity
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 18:58
+ * @date: 2025/5/30 18:58
  * @desc:
  */
 class ImageActivity : AppCompatActivity() {

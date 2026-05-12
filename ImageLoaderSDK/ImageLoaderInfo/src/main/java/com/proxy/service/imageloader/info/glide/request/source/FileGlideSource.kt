@@ -5,7 +5,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:36
+ * @date: 2024/5/16 11:36
  * @desc:
  */
 class FileGlideSource(private val file: File) : BaseGlideSourceData() {

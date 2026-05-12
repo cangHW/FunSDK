@@ -12,7 +12,7 @@ import java.util.Locale
 
 /**
  * @author: cangHX
- * @data: 2024/12/24 17:58
+ * @date: 2024/12/24 17:58
  * @desc:
  */
 object LocaleImpl : BaseAction(), ILocale {

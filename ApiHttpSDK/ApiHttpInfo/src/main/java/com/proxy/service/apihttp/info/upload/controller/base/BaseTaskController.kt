@@ -8,7 +8,7 @@ import com.proxy.service.apihttp.info.upload.utils.ThreadUtils
 
 /**
  * @author: cangHX
- * @data: 2024/12/19 18:20
+ * @date: 2024/12/19 18:20
  * @desc:
  */
 abstract class BaseTaskController {

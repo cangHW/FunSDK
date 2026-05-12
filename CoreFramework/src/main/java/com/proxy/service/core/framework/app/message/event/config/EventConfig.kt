@@ -4,7 +4,7 @@ import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
- * @data: 2024/11/29 11:13
+ * @date: 2024/11/29 11:13
  * @desc:
  */
 object EventConfig {

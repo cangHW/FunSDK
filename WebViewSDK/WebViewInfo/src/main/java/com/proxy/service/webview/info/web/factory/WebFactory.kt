@@ -13,7 +13,7 @@ import com.proxy.service.webview.info.view.WebViewImpl
 
 /**
  * @author: cangHX
- * @data: 2024/10/24 14:42
+ * @date: 2024/10/24 14:42
  * @desc:
  */
 class WebFactory {

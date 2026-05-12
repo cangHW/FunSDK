@@ -14,7 +14,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2024/12/31 17:14
+ * @date: 2024/12/31 17:14
  * @desc:
  */
 class ImageStoreCompat : AbstractSource<IMediaStore.IImage>(), IMediaStore.IImage {

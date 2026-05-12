@@ -6,7 +6,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 18:49
+ * @date: 2024/12/17 18:49
  * @desc:
  */
 interface IUploadTaskBuilderGet {

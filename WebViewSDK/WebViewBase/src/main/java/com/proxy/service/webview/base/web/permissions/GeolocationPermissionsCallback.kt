@@ -2,7 +2,7 @@ package com.proxy.service.webview.base.web.permissions
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 10:38
+ * @date: 2024/8/5 10:38
  * @desc:
  */
 interface GeolocationPermissionsCallback {

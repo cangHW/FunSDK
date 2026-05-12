@@ -17,7 +17,7 @@ import org.libpag.PAGFile
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 15:09
+ * @date: 2025/10/10 15:09
  * @desc:
  */
 class PagInfo : BaseInfo() {

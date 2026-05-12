@@ -15,7 +15,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2025/4/29 22:08
+ * @date: 2025/4/29 22:08
  * @desc:
  */
 class PdfConfig private constructor(

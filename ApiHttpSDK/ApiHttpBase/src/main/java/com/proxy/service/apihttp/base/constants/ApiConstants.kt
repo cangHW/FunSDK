@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.base.constants
 
 /**
  * @author: cangHX
- * @data: 2024/11/1 11:43
+ * @date: 2024/11/1 11:43
  * @desc:
  */
 object ApiConstants {
@@ -29,6 +29,8 @@ object ApiConstants {
      * */
     object Download {
 
+        const val MAX_TASK_NUM = 3
+
         /**
          * 默认总长度
          * */
@@ -44,5 +46,20 @@ object ApiConstants {
          * */
         const val MIN_PART_NUM = 3
     }
+
+    /**
+     * 连接、写入、读取最小超时时间
+     * */
+    const val DEFAULT_TIMEOUT_MIN: Long = 5 * 1000
+
+    /**
+     * 默认是否允许 http 重定向
+     * */
+    const val DEFAULT_FOLLOW_REDIRECTS = true
+
+    /**
+     * 默认是否允许 https 重定向
+     * */
+    const val DEFAULT_FOLLOW_PROTOCOL_REDIRECTS = true
 
 }

@@ -21,7 +21,7 @@ import java.io.File
  * 主线程卡顿监测器
  *
  * @author: cangHX
- * @data: 2025/4/12 17:31
+ * @date: 2025/4/12 17:31
  * @desc:
  */
 class MainThreadLagMonitor private constructor() {

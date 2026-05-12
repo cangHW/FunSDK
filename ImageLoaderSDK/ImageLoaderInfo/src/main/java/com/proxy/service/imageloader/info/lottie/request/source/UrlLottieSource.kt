@@ -8,7 +8,7 @@ import com.proxy.service.imageloader.info.utils.StringUtils
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 11:36
+ * @date: 2024/5/16 11:36
  * @desc:
  */
 class UrlLottieSource(

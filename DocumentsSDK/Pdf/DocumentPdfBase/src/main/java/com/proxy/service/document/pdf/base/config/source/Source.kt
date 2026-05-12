@@ -6,7 +6,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 11:17
+ * @date: 2025/5/2 11:17
  * @desc:
  */
 abstract class BaseSource(val password: String?)

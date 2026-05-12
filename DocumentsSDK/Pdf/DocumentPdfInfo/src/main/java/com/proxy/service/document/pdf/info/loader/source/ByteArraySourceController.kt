@@ -5,7 +5,7 @@ import com.proxy.service.document.pdf.info.core.PdfiumCore
 
 /**
  * @author: cangHX
- * @data: 2025/5/2 20:48
+ * @date: 2025/5/2 20:48
  * @desc:
  */
 class ByteArraySourceController(private val source: ByteArraySource) : BaseController() {

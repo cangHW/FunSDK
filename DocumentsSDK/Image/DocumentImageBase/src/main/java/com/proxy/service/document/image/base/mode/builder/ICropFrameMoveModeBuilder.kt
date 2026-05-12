@@ -4,7 +4,7 @@ import com.proxy.service.document.image.base.mode.CropMode
 
 /**
  * @author: cangHX
- * @data: 2025/6/26 09:49
+ * @date: 2025/6/26 09:49
  * @desc:
  */
 interface ICropFrameMoveModeBuilder {

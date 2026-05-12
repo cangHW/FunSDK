@@ -12,7 +12,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkSystempageBinding
 
 /**
  * @author: cangHX
- * @data: 2024/9/26 10:18
+ * @date: 2024/9/26 10:18
  * @desc:
  */
 class SystemPageActivity : BaseActivity<ActivityFrameworkSystempageBinding>() {

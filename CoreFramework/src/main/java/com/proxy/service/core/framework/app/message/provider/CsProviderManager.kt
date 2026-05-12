@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * ContentProvider 相关操作工具，只能接收到当前类发送的消息。
  *
  * @author: cangHX
- * @data: 2025/9/22 10:43
+ * @date: 2025/9/22 10:43
  * @desc:
  */
 object CsProviderManager {

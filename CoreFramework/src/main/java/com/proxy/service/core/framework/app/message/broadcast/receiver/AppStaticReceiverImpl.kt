@@ -5,7 +5,7 @@ import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
- * @data: 2024/9/23 16:24
+ * @date: 2024/9/23 16:24
  * @desc:
  */
 class AppStaticReceiverImpl : BaseReceiver() {

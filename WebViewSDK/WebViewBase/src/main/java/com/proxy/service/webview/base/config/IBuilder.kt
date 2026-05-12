@@ -7,7 +7,7 @@ import com.proxy.service.webview.base.web.setting.ISettingSet
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 19:46
+ * @date: 2024/8/1 19:46
  * @desc:
  */
 interface IBuilder: ISettingSet<IBuilder> {

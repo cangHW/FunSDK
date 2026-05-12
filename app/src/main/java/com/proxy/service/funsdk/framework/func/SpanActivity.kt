@@ -18,7 +18,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkSpanBinding
 
 /**
  * @author: cangHX
- * @data: 2025/7/14 16:37
+ * @date: 2025/7/14 16:37
  * @desc:
  */
 class SpanActivity : BaseActivity<ActivityFrameworkSpanBinding>() {

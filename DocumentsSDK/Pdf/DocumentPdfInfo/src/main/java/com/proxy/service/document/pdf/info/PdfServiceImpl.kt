@@ -11,7 +11,7 @@ import com.proxy.service.document.pdf.info.view.PdfViewLoaderImpl
 
 /**
  * @author: cangHX
- * @data: 2025/4/30 14:55
+ * @date: 2025/4/30 14:55
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/pdf")

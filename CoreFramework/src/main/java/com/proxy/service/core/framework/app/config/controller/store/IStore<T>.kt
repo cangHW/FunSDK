@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.config.controller.store
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 10:54
+ * @date: 2024/12/25 10:54
  * @desc:
  */
 interface IStore<T> {

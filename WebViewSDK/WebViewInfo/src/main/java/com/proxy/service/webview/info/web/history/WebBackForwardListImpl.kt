@@ -6,7 +6,7 @@ import com.proxy.service.webview.base.web.history.IWebHistoryItem
 
 /**
  * @author: cangHX
- * @data: 2026/1/16 14:34
+ * @date: 2026/1/16 14:34
  * @desc:
  */
 class WebBackForwardListImpl(

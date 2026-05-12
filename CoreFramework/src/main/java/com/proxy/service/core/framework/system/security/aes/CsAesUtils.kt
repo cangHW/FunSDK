@@ -17,7 +17,7 @@ import javax.crypto.spec.IvParameterSpec
  * 安全相关 —— aes 加解密
  *
  * @author: cangHX
- * @data: 2024/12/2 18:06
+ * @date: 2024/12/2 18:06
  * @desc:
  */
 object CsAesUtils {

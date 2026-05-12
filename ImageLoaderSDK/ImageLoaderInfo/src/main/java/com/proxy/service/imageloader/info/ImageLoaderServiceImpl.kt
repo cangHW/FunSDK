@@ -13,7 +13,7 @@ import com.proxy.service.imageloader.info.glide.type.DrawableType
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 09:52
+ * @date: 2024/5/16 09:52
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_service/image_loader")

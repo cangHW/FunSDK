@@ -10,7 +10,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/11/5 17:49
+ * @date: 2024/11/5 17:49
  * @desc:
  */
 abstract class BaseCallbackWorker(task: DownloadTask) : BaseStatusWorker(task) {
@@ -58,7 +58,8 @@ abstract class BaseCallbackWorker(task: DownloadTask) : BaseStatusWorker(task) {
             return
         }
 
-        val speed = (currentSize - oldSize) * 1000 / (System.currentTimeMillis() - oldTime)
+        val timeDiff = Math.max(1, System.currentTimeMillis() - oldTime)
+        val speed = (currentSize - oldSize) * 1000 / timeDiff
         val progress = if (task.getFileSize() > 0) {
             (Math.round(((currentSize * 100f) / task.getFileSize()) * 100) / 100f).let {
                 if (it > 100) {

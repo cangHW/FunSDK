@@ -7,7 +7,7 @@ import java.io.OutputStream
 
 /**
  * @author: cangHX
- * @data: 2025/1/3 15:47
+ * @date: 2025/1/3 15:47
  * @desc:
  */
 class ByteSource(private val bytes: ByteArray) : ISourceWrite {

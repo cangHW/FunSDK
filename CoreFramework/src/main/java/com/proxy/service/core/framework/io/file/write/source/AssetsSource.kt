@@ -7,7 +7,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2026/1/6 15:27
+ * @date: 2026/1/6 15:27
  * @desc:
  */
 class AssetsSource(private val assetPath: String) : InputStreamSource(null) {

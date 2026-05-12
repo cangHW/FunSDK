@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 
 /**
  * @author: cangHX
- * @data: 2025/7/9 15:32
+ * @date: 2025/7/9 15:32
  * @desc: RecyclerView item 间距管理
  */
 object CsRecyclerItemDecoration {

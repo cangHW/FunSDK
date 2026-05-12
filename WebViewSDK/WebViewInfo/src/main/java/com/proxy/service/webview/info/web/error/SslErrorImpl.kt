@@ -5,7 +5,7 @@ import com.proxy.service.webview.base.web.error.SslError
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 10:52
+ * @date: 2024/8/3 10:52
  * @desc:
  */
 class SslErrorImpl(

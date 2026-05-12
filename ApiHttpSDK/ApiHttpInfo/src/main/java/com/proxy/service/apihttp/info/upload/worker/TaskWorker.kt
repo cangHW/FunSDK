@@ -12,7 +12,7 @@ import java.io.IOException
 
 /**
  * @author: cangHX
- * @data: 2024/12/18 11:13
+ * @date: 2024/12/18 11:13
  * @desc:
  */
 class TaskWorker(task: UploadTask) : BaseWorker(task) {

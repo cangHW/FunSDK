@@ -9,7 +9,7 @@ import com.proxy.service.document.image.base.constants.ImageConstants
 
 /**
  * @author: cangHX
- * @data: 2025/6/3 10:24
+ * @date: 2025/6/3 10:24
  * @desc:
  */
 abstract class BaseDrawable(

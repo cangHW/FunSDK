@@ -19,7 +19,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkAppinstallBinding
 
 /**
  * @author: cangHX
- * @data: 2024/9/23 10:15
+ * @date: 2024/9/23 10:15
  * @desc:
  */
 class AppInstallActivity : BaseActivity<ActivityFrameworkAppinstallBinding>(), InstallReceiverListener {

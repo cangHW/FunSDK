@@ -8,7 +8,7 @@ import com.proxy.service.document.pdf.info.view.cache.PartCache
 
 /**
  * @author: cangHX
- * @data: 2025/7/21 18:47
+ * @date: 2025/7/21 18:47
  * @desc:
  */
 abstract class BaseShow {

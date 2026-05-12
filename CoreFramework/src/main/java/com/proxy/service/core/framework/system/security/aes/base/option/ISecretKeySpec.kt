@@ -4,7 +4,7 @@ import javax.crypto.SecretKey
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 19:34
+ * @date: 2024/12/2 19:34
  * @desc:
  */
 interface ISecretKeySpec<T> {

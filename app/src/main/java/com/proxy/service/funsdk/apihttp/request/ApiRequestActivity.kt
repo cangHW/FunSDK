@@ -20,7 +20,7 @@ import retrofit2.Response
 
 /**
  * @author: cangHX
- * @data: 2024/6/18 15:07
+ * @date: 2024/6/18 15:07
  * @desc:
  */
 class ApiRequestActivity : BaseActivity<ActivityApiRequestBinding>() {

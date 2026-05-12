@@ -5,7 +5,7 @@ import com.proxy.service.webview.base.web.permissions.GeolocationPermissionsCall
 
 /**
  * @author: cangHX
- * @data: 2024/8/5 11:44
+ * @date: 2024/8/5 11:44
  * @desc:
  */
 class GeolocationPermissionsCallbackImpl(

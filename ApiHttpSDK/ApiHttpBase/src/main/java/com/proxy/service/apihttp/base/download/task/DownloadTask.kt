@@ -10,7 +10,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2024/10/30 18:34
+ * @date: 2024/10/30 18:34
  * @desc:
  */
 class DownloadTask private constructor(private val builder: Builder) : IBuilderGet {
@@ -132,6 +132,8 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
                 CsLogger.tag(TAG).e("filePath cannot be empty or blank. filePath = $filePath")
             } else if (filePath.endsWith(File.separator)) {
                 CsLogger.tag(TAG).e("filePath is error. filePath = $filePath")
+            } else if (filePath.contains("..")) {
+                CsLogger.tag(TAG).e("filePath contains invalid path segment. filePath = $filePath")
             } else {
                 this.filePath = filePath
                 File(filePath).let {
@@ -145,6 +147,8 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         override fun setFileDir(fileDir: String): IBuilder {
             if (fileDir.trim().isEmpty()) {
                 CsLogger.tag(TAG).e("fileDir cannot be empty or blank. fileDir = $fileDir")
+            } else if (fileDir.contains("..")) {
+                CsLogger.tag(TAG).e("fileDir contains invalid path segment. fileDir = $fileDir")
             } else {
                 this.fileDir = fileDir
                 if (fileName.trim().isNotEmpty()) {
@@ -157,6 +161,8 @@ class DownloadTask private constructor(private val builder: Builder) : IBuilderG
         override fun setFileName(fileName: String): IBuilder {
             if (fileName.trim().isEmpty()) {
                 CsLogger.tag(TAG).e("fileName cannot be empty or blank. fileName = $fileName")
+            } else if (fileName.contains("..") || fileName.contains("/") || fileName.contains(File.separator)) {
+                CsLogger.tag(TAG).e("fileName contains invalid characters. fileName = $fileName")
             } else {
                 this.fileName = fileName
                 if (fileDir.trim().isNotEmpty()) {

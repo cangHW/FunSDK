@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/1/16 19:39
+ * @date: 2025/1/16 19:39
  * @desc:
  */
 class LogConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {

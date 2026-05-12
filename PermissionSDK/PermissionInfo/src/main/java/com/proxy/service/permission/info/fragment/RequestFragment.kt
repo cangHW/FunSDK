@@ -18,7 +18,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/11/18 18:10
+ * @date: 2024/11/18 18:10
  * @desc:
  */
 class RequestFragment : Fragment(), IPermissionCallback<Unit>,

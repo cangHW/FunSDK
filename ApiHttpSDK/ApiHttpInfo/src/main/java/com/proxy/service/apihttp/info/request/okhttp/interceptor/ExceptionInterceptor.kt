@@ -6,7 +6,7 @@ import java.io.IOException
 
 /**
  * @author: cangHX
- * @data: 2025/8/18 19:51
+ * @date: 2025/8/18 19:51
  * @desc:
  */
 class ExceptionInterceptor : Interceptor {

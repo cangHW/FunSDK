@@ -16,7 +16,7 @@ import java.net.UnknownHostException
 
 /**
  * @author: cangHX
- * @data: 2024/6/13 11:47
+ * @date: 2024/6/13 11:47
  * @desc:
  */
 open class TaskLoader<T : Any>(

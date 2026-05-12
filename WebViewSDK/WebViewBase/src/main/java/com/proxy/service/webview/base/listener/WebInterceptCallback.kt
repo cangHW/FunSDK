@@ -14,7 +14,7 @@ import com.proxy.service.webview.base.web.request.WebResourceResponse
 
 /**
  * @author: cangHX
- * @data: 2024/8/3 11:39
+ * @date: 2024/8/3 11:39
  * @desc:
  */
 interface WebInterceptCallback {

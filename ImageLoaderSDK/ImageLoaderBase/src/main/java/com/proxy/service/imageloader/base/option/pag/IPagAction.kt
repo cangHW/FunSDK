@@ -4,7 +4,7 @@ import androidx.annotation.FloatRange
 
 /**
  * @author: cangHX
- * @data: 2025/10/20 11:36
+ * @date: 2025/10/20 11:36
  * @desc:
  */
 interface IPagAction<T> {

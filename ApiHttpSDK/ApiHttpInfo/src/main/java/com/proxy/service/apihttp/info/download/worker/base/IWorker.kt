@@ -4,13 +4,13 @@ import com.proxy.service.apihttp.base.download.task.DownloadTask
 
 /**
  * @author: cangHX
- * @data: 2024/11/13 11:18
+ * @date: 2024/11/13 11:18
  * @desc:
  */
 interface IWorker {
 
     interface TaskWorkerFinishCallback {
-        fun onFinished(worker: BaseStatusWorker, task: DownloadTask)
+        fun onFinished(worker: IWorker, task: DownloadTask)
     }
 
     /**

@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.app.install.CsInstallUtils
 
 /**
  * @author: cangHX
- * @data: 2025/9/18 17:50
+ * @date: 2025/9/18 17:50
  * @desc:
  */
 enum class SendChannel {

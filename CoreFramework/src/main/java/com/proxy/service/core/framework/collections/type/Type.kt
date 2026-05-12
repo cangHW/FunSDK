@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.collections.type
 
 /**
  * @author: cangHX
- * @data: 2025/9/30 13:13
+ * @date: 2025/9/30 13:13
  * @desc:
  */
 enum class Type {

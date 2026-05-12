@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.system.screen.info
 
 /**
  * @author: cangHX
- * @data: 2024/10/21 14:12
+ * @date: 2024/10/21 14:12
  * @desc:
  */
 class ScreenInfo {

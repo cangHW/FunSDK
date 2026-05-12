@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/9/18 17:47
+ * @date: 2025/9/18 17:47
  * @desc:
  */
 object ChannelManager {

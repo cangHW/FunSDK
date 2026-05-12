@@ -6,7 +6,7 @@ import com.proxy.service.widget.info.notification.enums.NotificationVisibility
 
 /**
  * @author: cangHX
- * @data: 2025/12/16 15:03
+ * @date: 2025/12/16 15:03
  * @desc:
  */
 object NotificationConstants {

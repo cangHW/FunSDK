@@ -4,7 +4,7 @@ import javax.crypto.spec.IvParameterSpec
 
 /**
  * @author: cangHX
- * @data: 2024/12/2 18:59
+ * @date: 2024/12/2 18:59
  * @desc:
  */
 interface IIvParameterSpec<T> {

@@ -11,7 +11,7 @@ import com.proxy.service.imageloader.base.option.pag.txt.PagTextData
 
 /**
  * @author: cangHX
- * @data: 2025/10/10 15:02
+ * @date: 2025/10/10 15:02
  * @desc:
  */
 interface IPageOption : IPagLoader, IOption<IPageOption>, IPagAction<IPageOption> {

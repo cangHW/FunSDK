@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.app.config.locale.compat.LocaleCompat
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 10:13
+ * @date: 2024/12/25 10:13
  * @desc:
  */
 object LocaleCheck : BaseConfigurationCheck() {

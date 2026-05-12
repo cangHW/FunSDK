@@ -13,7 +13,7 @@ import com.proxy.service.camera.base.view.ICameraViewLoader
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 11:11
+ * @date: 2026/2/4 11:11
  * @desc:
  */
 interface CameraService : BaseService {

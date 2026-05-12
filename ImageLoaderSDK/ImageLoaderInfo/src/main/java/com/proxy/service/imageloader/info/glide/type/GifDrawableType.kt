@@ -7,7 +7,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 14:39
+ * @date: 2024/5/16 14:39
  * @desc:
  */
 class GifDrawableType: BaseSourceType<GifDrawable>() {

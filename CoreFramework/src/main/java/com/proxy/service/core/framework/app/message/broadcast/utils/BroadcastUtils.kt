@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.message.broadcast.utils
 
 /**
  * @author: cangHX
- * @data: 2026/4/7 14:01
+ * @date: 2026/4/7 14:01
  * @desc:
  */
 object BroadcastUtils {

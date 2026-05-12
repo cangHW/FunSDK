@@ -2,7 +2,7 @@ package com.proxy.service.permission.base.callback
 
 /**
  * @author: cangHX
- * @data: 2024/11/21 15:34
+ * @date: 2024/11/21 15:34
  * @desc:
  */
 interface DialogDismissCallback {

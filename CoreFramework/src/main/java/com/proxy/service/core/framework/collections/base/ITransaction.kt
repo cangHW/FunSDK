@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.collections.base
 
 /**
  * @author: cangHX
- * @data: 2025/9/18 10:24
+ * @date: 2025/9/18 10:24
  * @desc:
  */
 interface ITransaction {

@@ -18,7 +18,7 @@ import com.proxy.service.widget.info.toast.CsToast
 
 /**
  * @author: cangHX
- * @data: 2026/4/9 10:58
+ * @date: 2026/4/9 10:58
  * @desc:
  */
 class CsMediaCameraSettingActivity : CsBaseActivity<CsCameraInfoPageActivitySettingBinding>() {

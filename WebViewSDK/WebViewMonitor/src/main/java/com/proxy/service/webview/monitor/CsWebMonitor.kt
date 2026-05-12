@@ -4,7 +4,7 @@ import com.proxy.service.webview.monitor.config.MonitorConfig
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 13:37
+ * @date: 2026/1/23 13:37
  * @desc: web 容器监控框架入口
  */
 object CsWebMonitor {

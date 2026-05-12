@@ -4,7 +4,7 @@ import com.proxy.service.camera.base.mode.loader.VideoRecordState
 
 /**
  * @author: cangHX
- * @data: 2026/3/3 15:46
+ * @date: 2026/3/3 15:46
  * @desc:
  */
 interface VideoRecordCallback {

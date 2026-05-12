@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 
 /**
  * @author: cangHX
- * @data: 2026/4/27 17:20
+ * @date: 2026/4/27 17:20
  * @desc:
  */
 sealed class AudioEncoderMode private constructor(

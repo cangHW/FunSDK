@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2026/3/24 10:26
+ * @date: 2026/3/24 10:26
  * @desc:
  */
 class LifecycleObserverImpl(

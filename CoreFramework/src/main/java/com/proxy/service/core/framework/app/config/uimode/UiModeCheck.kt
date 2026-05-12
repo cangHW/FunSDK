@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.app.context.CsContextManager
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 20:53
+ * @date: 2024/12/25 20:53
  * @desc:
  */
 object UiModeCheck : BaseConfigurationCheck() {

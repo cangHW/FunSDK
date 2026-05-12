@@ -13,7 +13,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2024/11/15 16:56
+ * @date: 2024/11/15 16:56
  * @desc:
  */
 object NetworkManager {
@@ -21,9 +21,9 @@ object NetworkManager {
     private const val TAG = "${ApiConstants.LOG_DOWNLOAD_TAG_START}Network"
 
     private val lock = Any()
-    private val failedTaskMap = ArrayList<DownloadTask>()
+    private val failedTasks = ArrayList<DownloadTask>()
 
-    fun reStartTask(isAutoRestartOnNetworkReconnect: Boolean) {
+    fun restartTask(isAutoRestartOnNetworkReconnect: Boolean) {
         if (!isAutoRestartOnNetworkReconnect) {
             return
         }
@@ -37,23 +37,23 @@ object NetworkManager {
          */
         override fun onNetConnected() {
             CsLogger.tag(TAG).d("onNetConnected")
-            reLoadTask()
+            reloadTask()
         }
 
         /**
          * 网络断开连接
          */
         override fun onNetDisConnected() {
-            CsLogger.tag(TAG).d("onNetConnected")
+            CsLogger.tag(TAG).d("onNetDisConnected")
         }
     }
 
-    private fun reLoadTask() {
+    private fun reloadTask() {
         CsTask.ioThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                while (failedTaskMap.size > 0) {
+                while (failedTasks.size > 0) {
                     val task = synchronized(lock) {
-                        failedTaskMap.removeLastOrNull()
+                        failedTasks.removeLastOrNull()
                     }
                     task?.let {
                         TaskController.addTask(it)
@@ -91,8 +91,14 @@ object NetworkManager {
         }
 
         override fun onFailed(task: DownloadTask, exception: DownloadException) {
-            synchronized(lock) {
-                failedTaskMap.add(task)
+            when (exception.getErrorCode()) {
+                DownloadException.NETWORK_ERROR,
+                DownloadException.UNKNOWN_HOST,
+                DownloadException.SOCKET_TIME_OUT -> {
+                    synchronized(lock) {
+                        failedTasks.add(task)
+                    }
+                }
             }
         }
     }

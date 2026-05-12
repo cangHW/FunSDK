@@ -10,7 +10,7 @@ import com.proxy.service.widget.info.constants.WidgetConstants
  * 避免在 activity 不合适的生命周期添加 DialogFragment 导致 crash
  *
  * @author: cangHX
- * @data: 2025/7/8 11:13
+ * @date: 2025/7/8 11:13
  * @desc:
  */
 open class CsBaseDialogFragment : DialogFragment() {

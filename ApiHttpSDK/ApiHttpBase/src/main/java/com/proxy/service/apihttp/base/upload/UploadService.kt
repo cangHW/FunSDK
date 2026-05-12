@@ -8,7 +8,7 @@ import com.proxy.service.base.BaseService
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 10:26
+ * @date: 2024/5/21 10:26
  * @desc:
  */
 interface UploadService : BaseService {

@@ -2,7 +2,7 @@ package com.proxy.service.apihttp.base.common
 
 /**
  * @author: cangHX
- * @data: 2025/3/24 15:08
+ * @date: 2025/3/24 15:08
  * @desc:
  */
 class DownloadException private constructor(

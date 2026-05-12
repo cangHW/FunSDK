@@ -2,7 +2,7 @@ package com.proxy.service.webview.info.config
 
 /**
  * @author: cangHX
- * @data: 2024/8/1 18:37
+ * @date: 2024/8/1 18:37
  * @desc:
  */
 object JavaScriptCache {

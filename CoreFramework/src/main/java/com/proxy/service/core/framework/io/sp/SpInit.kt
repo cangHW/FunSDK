@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/7/20 14:32
+ * @date: 2024/7/20 14:32
  * @desc:
  */
 object SpInit {

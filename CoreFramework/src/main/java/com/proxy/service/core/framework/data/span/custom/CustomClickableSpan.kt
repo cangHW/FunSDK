@@ -8,7 +8,7 @@ import android.view.View
  * 可点击 span
  *
  * @author: cangHX
- * @data: 2025/7/14 16:13
+ * @date: 2025/7/14 16:13
  * @desc:
  */
 class CustomClickableSpan(

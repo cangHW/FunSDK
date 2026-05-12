@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.io.sp
 
 /**
  * @author: cangHX
- * @data: 2024/7/20 14:59
+ * @date: 2024/7/20 14:59
  * @desc:
  */
 interface ISpAction : ISpController {

@@ -5,7 +5,7 @@ import android.util.Size
 
 /**
  * @author: cangHX
- * @data: 2026/4/15 20:30
+ * @date: 2026/4/15 20:30
  * @desc:
  */
 open class SupportSize(

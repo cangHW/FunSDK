@@ -13,7 +13,7 @@ import com.proxy.service.widget.info.statepage.loading.LoadingController
 
 /**
  * @author: cangHX
- * @data: 2025/7/10 10:33
+ * @date: 2025/7/10 10:33
  * @desc:
  */
 class RotationLoading : LoadingController {

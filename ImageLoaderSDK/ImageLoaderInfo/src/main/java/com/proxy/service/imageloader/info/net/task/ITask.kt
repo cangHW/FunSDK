@@ -6,7 +6,7 @@ import java.io.InputStream
 
 /**
  * @author: cangHX
- * @data: 2025/10/14 16:23
+ * @date: 2025/10/14 16:23
  * @desc:
  */
 interface ITask : Closeable {

@@ -4,7 +4,7 @@ import android.content.res.Configuration
 
 /**
  * @author: cangHX
- * @data: 2025/9/15 15:44
+ * @date: 2025/9/15 15:44
  * @desc:
  */
 abstract class AbstractAppConfigStateChanged {

@@ -2,7 +2,7 @@ package com.proxy.service.webview.base.listener
 
 /**
  * @author: cangHX
- * @data: 2026/1/5 09:57
+ * @date: 2026/1/5 09:57
  * @desc:
  */
 interface WebDownloadListener {

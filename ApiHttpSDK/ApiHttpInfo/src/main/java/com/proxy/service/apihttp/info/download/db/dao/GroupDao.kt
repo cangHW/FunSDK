@@ -10,7 +10,7 @@ import com.proxy.service.apihttp.info.download.db.entity.GroupBean
 
 /**
  * @author: cangHX
- * @data: 2024/11/4 20:09
+ * @date: 2024/11/4 20:09
  * @desc:
  */
 @Dao

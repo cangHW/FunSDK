@@ -6,7 +6,7 @@ import com.proxy.service.widget.info.dialog.window.base.IDialog
  * 后置策略
  *
  * @author: cangHX
- * @data: 2025/11/27 14:45
+ * @date: 2025/11/27 14:45
  * @desc:
  */
 sealed class PostConditionStrategy {

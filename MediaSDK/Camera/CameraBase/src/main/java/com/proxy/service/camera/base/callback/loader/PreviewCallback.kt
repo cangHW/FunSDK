@@ -4,7 +4,7 @@ import android.media.Image
 
 /**
  * @author: cangHX
- * @data: 2026/3/26 15:15
+ * @date: 2026/3/26 15:15
  * @desc:
  */
 interface PreviewCallback {

@@ -4,7 +4,7 @@ import com.proxy.service.webview.monitor.callback.MonitorCallback
 
 /**
  * @author: cangHX
- * @data: 2026/1/23 12:55
+ * @date: 2026/1/23 12:55
  * @desc:
  */
 interface IMonitorBuilderGet {

@@ -7,7 +7,7 @@ import com.proxy.service.threadpool.info.idle.manager.IdleHandlerManager
 
 /**
  * @author: cangHX
- * @data: 2024/11/28 09:52
+ * @date: 2024/11/28 09:52
  * @desc:
  */
 object IdleServiceImpl : IdleService {

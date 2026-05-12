@@ -4,7 +4,7 @@ import com.proxy.service.camera.base.mode.loader.PreviewImageFormatMode
 
 /**
  * @author: cangHX
- * @data: 2026/4/20 11:37
+ * @date: 2026/4/20 11:37
  * @desc:
  */
 interface ICameraPreviewController : ICameraController {

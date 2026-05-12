@@ -5,7 +5,7 @@ import com.proxy.service.webview.base.enums.MixedContentMode
 
 /**
  * @author: cangHX
- * @data: 2026/1/16 11:06
+ * @date: 2026/1/16 11:06
  * @desc:
  */
 interface ISettingGet {

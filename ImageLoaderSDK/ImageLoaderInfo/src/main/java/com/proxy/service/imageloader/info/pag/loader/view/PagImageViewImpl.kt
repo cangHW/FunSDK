@@ -11,7 +11,7 @@ import org.libpag.PAGImageView
 
 /**
  * @author: cangHX
- * @data: 2025/11/11 16:01
+ * @date: 2025/11/11 16:01
  * @desc:
  */
 class PagImageViewImpl : PAGImageView, IView {

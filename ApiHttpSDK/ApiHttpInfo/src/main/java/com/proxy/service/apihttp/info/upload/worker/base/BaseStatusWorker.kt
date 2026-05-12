@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author: cangHX
- * @data: 2024/12/19 20:58
+ * @date: 2024/12/19 20:58
  * @desc:
  */
 abstract class BaseStatusWorker(private val task: UploadTask) : IWorker {

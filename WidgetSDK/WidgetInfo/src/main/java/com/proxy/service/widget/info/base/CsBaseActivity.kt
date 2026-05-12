@@ -14,7 +14,7 @@ import com.proxy.service.widget.info.statepage.config.LoadingPageType
 
 /**
  * @author: cangHX
- * @data: 2026/4/9 16:23
+ * @date: 2026/4/9 16:23
  * @desc:
  */
 abstract class CsBaseActivity<T : ViewBinding> : FragmentActivity() {

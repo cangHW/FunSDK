@@ -12,7 +12,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkAppinfoBinding
 
 /**
  * @author: cangHX
- * @data: 2024/12/11 10:15
+ * @date: 2024/12/11 10:15
  * @desc:
  */
 class AppInfoActivity : BaseActivity<ActivityFrameworkAppinfoBinding>() {

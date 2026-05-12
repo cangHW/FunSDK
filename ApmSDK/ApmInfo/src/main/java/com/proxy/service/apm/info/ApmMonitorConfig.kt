@@ -10,7 +10,7 @@ import com.proxy.service.core.application.base.CsBaseConfig
 
 /**
  * @author: cangHX
- * @data: 2025/4/12 16:31
+ * @date: 2025/4/12 16:31
  * @desc:
  */
 @CloudApiService(serviceTag = "cs_config/apm")

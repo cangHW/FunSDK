@@ -4,7 +4,7 @@ import com.proxy.service.apm.info.config.controller.MonitorConfig
 
 /**
  * @author: cangHX
- * @data: 2025/4/22 17:40
+ * @date: 2025/4/22 17:40
  * @desc:
  */
 interface IBuilder {

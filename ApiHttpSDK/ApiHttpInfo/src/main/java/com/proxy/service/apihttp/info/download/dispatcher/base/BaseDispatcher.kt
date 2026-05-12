@@ -4,12 +4,11 @@ import com.proxy.service.apihttp.base.constants.ApiConstants
 import com.proxy.service.apihttp.base.download.task.DownloadTask
 import com.proxy.service.apihttp.info.common.cache.MaxCache
 import com.proxy.service.apihttp.info.config.Config
-import com.proxy.service.apihttp.info.download.worker.base.BaseStatusWorker
 import com.proxy.service.apihttp.info.download.worker.base.IWorker
 
 /**
  * @author: cangHX
- * @data: 2024/11/5 20:24
+ * @date: 2024/11/5 20:24
  * @desc:
  */
 abstract class BaseDispatcher {
@@ -21,11 +20,11 @@ abstract class BaseDispatcher {
     }
 
     protected var callback: OnWorkerIdleCallback? = null
-    protected val workerRunningList = MaxCache<IWorker>(Config.maxDownloadTaskCount)
+    protected val runningWorkers = MaxCache<IWorker>(Config.maxDownloadTaskCount)
 
     protected val taskWorkerFinishCallback = object : IWorker.TaskWorkerFinishCallback {
-        override fun onFinished(worker: BaseStatusWorker, task: DownloadTask) {
-            workerRunningList.remove(worker)
+        override fun onFinished(worker: IWorker, task: DownloadTask) {
+            runningWorkers.remove(worker)
             callback?.onWorkerIdle(task)
         }
     }
@@ -41,14 +40,14 @@ abstract class BaseDispatcher {
      * 任务是否已经满了
      * */
     fun isTaskFull(): Boolean {
-        return workerRunningList.isFull()
+        return runningWorkers.isFull()
     }
 
     /**
      * 取消正在运行的任务
      * */
     fun cancelRunningTask(taskTag: String, isNeedCallback: Boolean) {
-        workerRunningList.getAllCache().forEach {
+        runningWorkers.getAllCache().forEach {
             it.cancelTask(taskTag, isNeedCallback)
         }
     }

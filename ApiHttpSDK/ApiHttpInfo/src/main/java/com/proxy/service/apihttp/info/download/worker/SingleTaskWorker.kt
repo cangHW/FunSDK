@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2024/10/31 11:32
+ * @date: 2024/10/31 11:32
  * @desc:
  */
 class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
@@ -67,7 +67,7 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                 }
                 CsLogger.tag(tag).i("创建临时文件. taskTag = ${task.getTaskTag()}")
                 if (!CsFileUtils.createFile(msg.filePath)) {
-                    CsLogger.tag(tag).i("创建文件失败. taskTag = ${task.getTaskTag()}")
+                    CsLogger.tag(tag).e("创建文件失败. taskTag = ${task.getTaskTag()}")
                     callbackEnd(
                         false,
                         DownloadException.create(
@@ -150,7 +150,7 @@ class SingleTaskWorker(task: DownloadTask) : BaseWorker(task) {
                 CsLogger.tag(tag).i("开始重命名文件. path = ${msg.filePath}")
                 if (!CsFileUtils.rename(msg.filePath, task.getFilePath())) {
                     CsLogger.tag(tag)
-                        .i("文件重命名失败. srcPath = ${msg.filePath}, destPath = ${task.getFilePath()}")
+                        .e("文件重命名失败. srcPath = ${msg.filePath}, destPath = ${task.getFilePath()}")
                     callbackEnd(
                         false,
                         DownloadException.create(

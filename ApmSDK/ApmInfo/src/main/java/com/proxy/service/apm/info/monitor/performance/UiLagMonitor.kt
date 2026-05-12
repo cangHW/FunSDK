@@ -27,7 +27,7 @@ import java.util.WeakHashMap
 
 /**
  * @author: cangHX
- * @data: 2025/4/21 20:48
+ * @date: 2025/4/21 20:48
  * @desc:
  */
 class UiLagMonitor {

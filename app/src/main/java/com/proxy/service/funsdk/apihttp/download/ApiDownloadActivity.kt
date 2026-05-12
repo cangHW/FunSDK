@@ -17,7 +17,7 @@ import com.proxy.service.funsdk.databinding.ActivityApiDownloadBinding
 
 /**
  * @author: cangHX
- * @data: 2024/11/5 13:30
+ * @date: 2024/11/5 13:30
  * @desc:
  */
 class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {

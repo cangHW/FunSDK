@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 
 /**
  * @author: cangHX
- * @data: 2025/6/4 09:39
+ * @date: 2025/6/4 09:39
  * @desc:
  */
 interface OnCropCallback {

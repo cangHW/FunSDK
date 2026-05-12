@@ -13,7 +13,7 @@ import retrofit2.Invocation
 
 /**
  * @author: cangHX
- * @data: 2024/5/23 16:54
+ * @date: 2024/5/23 16:54
  * @desc:
  */
 class BaseUrlInterceptor(private val baseUrl: String) : Interceptor {

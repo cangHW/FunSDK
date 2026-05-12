@@ -16,7 +16,7 @@ import kotlin.math.abs
  * 高斯模糊转换器
  *
  * @author: cangHX
- * @data: 2024/5/18 11:30
+ * @date: 2024/5/18 11:30
  * @desc:
  */
 class BlurTransformation(val radius: Int, val scaling: Int) :

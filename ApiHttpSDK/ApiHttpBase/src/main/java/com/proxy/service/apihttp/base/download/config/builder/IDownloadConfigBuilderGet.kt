@@ -5,7 +5,7 @@ import com.proxy.service.apihttp.base.download.config.DownloadGroup
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 20:43
+ * @date: 2024/5/21 20:43
  * @desc:
  */
 interface IDownloadConfigBuilderGet : IBaseConfigGet {
@@ -18,7 +18,7 @@ interface IDownloadConfigBuilderGet : IBaseConfigGet {
     /**
      * 获取最大同时下载任务数量
      * */
-    fun getMaxTask(): Int
+    fun getMaxTaskCount(): Int
 
     /**
      * 获取是否允许网络连接恢复时自动重新启动失败的下载任务

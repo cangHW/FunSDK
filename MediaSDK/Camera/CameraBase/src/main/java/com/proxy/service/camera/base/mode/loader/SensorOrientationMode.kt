@@ -2,7 +2,7 @@ package com.proxy.service.camera.base.mode.loader
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 17:17
+ * @date: 2026/2/5 17:17
  * @desc:
  */
 enum class SensorOrientationMode(val degree: Int) {

@@ -2,7 +2,7 @@ package com.proxy.service.webview.base.constants
 
 /**
  * @author: cangHX
- * @data: 2025/6/25 18:32
+ * @date: 2025/6/25 18:32
  * @desc:
  */
 object WebViewConstants {

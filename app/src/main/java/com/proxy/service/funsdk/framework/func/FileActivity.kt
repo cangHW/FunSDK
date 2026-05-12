@@ -21,7 +21,7 @@ import com.proxy.service.funsdk.databinding.ActivityFrameworkFileBinding
 
 /**
  * @author: cangHX
- * @data: 2024/9/25 14:28
+ * @date: 2024/9/25 14:28
  * @desc:
  */
 class FileActivity : BaseActivity<ActivityFrameworkFileBinding>() {

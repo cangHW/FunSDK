@@ -12,7 +12,7 @@ import com.proxy.service.document.image.base.mode.CropMode
 
 /**
  * @author: cangHX
- * @data: 2025/6/3 10:11
+ * @date: 2025/6/3 10:11
  * @desc:
  */
 class CropOptionImpl(option: IOption) : CropLoaderImpl(option), ICropOption {

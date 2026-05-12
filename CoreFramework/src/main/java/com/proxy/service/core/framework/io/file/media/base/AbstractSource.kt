@@ -17,7 +17,7 @@ import java.nio.file.Paths
 
 /**
  * @author: cangHX
- * @data: 2024/12/31 17:37
+ * @date: 2024/12/31 17:37
  * @desc:
  */
 abstract class AbstractSource<T> : AbstractMedia<T>(), ISource<T> {

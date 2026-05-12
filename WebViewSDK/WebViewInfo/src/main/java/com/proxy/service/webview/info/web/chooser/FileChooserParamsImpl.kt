@@ -6,7 +6,7 @@ import com.proxy.service.webview.base.web.chooser.FileChooserParams
 
 /**
  * @author: cangHX
- * @data: 2026/1/4 10:28
+ * @date: 2026/1/4 10:28
  * @desc:
  */
 class FileChooserParamsImpl(

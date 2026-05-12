@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.io.sp.SpMode
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 10:43
+ * @date: 2024/12/25 10:43
  * @desc:
  */
 abstract class BaseStore<T> : ISerializable<T>, IStore<T> {

@@ -6,7 +6,7 @@ import com.proxy.service.document.pdf.info.loader.info.PageTextInfo
 
 /**
  * @author: cangHX
- * @data: 2025/8/25 14:47
+ * @date: 2025/8/25 14:47
  * @desc:
  */
 class LruPageTextCache: LruCache<Int, PageTextInfo>(PdfConstants.DEFAULT_CACHE_TEXT_PAGE_MAX_COUNT) {

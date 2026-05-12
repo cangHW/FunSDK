@@ -6,7 +6,7 @@ import okhttp3.Interceptor
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 20:04
+ * @date: 2025/3/27 20:04
  * @desc:
  */
 interface ICommonBuilder<T> {

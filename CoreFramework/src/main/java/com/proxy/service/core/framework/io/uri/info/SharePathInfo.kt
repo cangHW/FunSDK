@@ -4,7 +4,7 @@ import java.io.File
 
 /**
  * @author: cangHX
- * @data: 2026/1/12 11:50
+ * @date: 2026/1/12 11:50
  * @desc:
  */
 class SharePathInfo private constructor(

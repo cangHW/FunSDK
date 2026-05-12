@@ -28,7 +28,7 @@ import com.proxy.service.webview.info.web.permissions.PermissionRequestImpl
 
 /**
  * @author: cangHX
- * @data: 2024/10/24 15:08
+ * @date: 2024/10/24 15:08
  * @desc:
  */
 class CommonWebViewClientImpl(

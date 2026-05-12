@@ -14,7 +14,7 @@ import java.util.Locale
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 16:18
+ * @date: 2024/12/25 16:18
  * @desc:
  */
 class AppConfigActivity : BaseActivity<ActivityFrameworkAppconfigBinding>() {

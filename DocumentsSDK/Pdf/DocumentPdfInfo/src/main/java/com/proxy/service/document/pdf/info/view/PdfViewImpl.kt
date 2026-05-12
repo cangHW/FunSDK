@@ -11,7 +11,7 @@ import com.proxy.service.document.pdf.info.view.view.PdfLayout
 
 /**
  * @author: cangHX
- * @data: 2025/5/14 16:05
+ * @date: 2025/5/14 16:05
  * @desc:
  */
 class PdfViewImpl(viewGroup: ViewGroup, type: ViewShowType, maxShowCount: Int) : IPdfView {

@@ -12,7 +12,7 @@ import com.proxy.service.camera.base.callback.view.ITouchDispatch
 
 /**
  * @author: cangHX
- * @data: 2026/2/11 10:10
+ * @date: 2026/2/11 10:10
  * @desc:
  */
 abstract class BaseTouchView : View, ITouchDispatch {

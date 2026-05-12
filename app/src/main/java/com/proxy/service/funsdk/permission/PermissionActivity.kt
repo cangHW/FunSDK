@@ -17,7 +17,7 @@ import com.proxy.service.permission.base.manager.DialogFactory
 
 /**
  * @author: cangHX
- * @data: 2024/11/18 16:40
+ * @date: 2024/11/18 16:40
  * @desc:
  */
 class PermissionActivity : BaseActivity<ActivityPermissionBinding>() {

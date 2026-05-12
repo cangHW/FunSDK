@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 /**
  * @author: cangHX
- * @data: 2024/6/14 10:39
+ * @date: 2024/6/14 10:39
  * @desc:
  */
 abstract class TaskScheduler<T : Any>(

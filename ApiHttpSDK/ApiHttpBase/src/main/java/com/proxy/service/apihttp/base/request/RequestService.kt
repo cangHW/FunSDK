@@ -6,7 +6,7 @@ import com.proxy.service.apihttp.base.request.annotation.CsBaseUrlKey
 
 /**
  * @author: cangHX
- * @data: 2024/5/21 10:26
+ * @date: 2024/5/21 10:26
  * @desc:
  */
 interface RequestService : BaseService {

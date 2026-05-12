@@ -9,19 +9,19 @@ import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 20:57
+ * @date: 2025/3/27 20:57
  * @desc:
  */
 abstract class BaseConfigGet(
     private val builder: IBaseConfigGet
 ) : IBaseConfigGet {
 
-    override fun getInterceptor(): MutableList<Interceptor> {
-        return builder.getInterceptor()
+    override fun getInterceptors(): MutableList<Interceptor> {
+        return builder.getInterceptors()
     }
 
-    override fun getNetworkInterceptor(): MutableList<Interceptor> {
-        return builder.getNetworkInterceptor()
+    override fun getNetworkInterceptors(): MutableList<Interceptor> {
+        return builder.getNetworkInterceptors()
     }
 
     override fun getEventListener(): EventListener? {

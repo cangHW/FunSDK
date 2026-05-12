@@ -6,7 +6,7 @@ import com.proxy.service.threadpool.base.thread.task.IPredicate
 
 /**
  * @author: cangHX
- * @data: 2024/6/7 16:41
+ * @date: 2024/6/7 16:41
  * @desc:
  */
 interface IAction<T> {

@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.config.base
 
 /**
  * @author: cangHX
- * @data: 2025/7/3 11:50
+ * @date: 2025/7/3 11:50
  * @desc:
  */
 object AppConfigConstants {

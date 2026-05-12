@@ -1,26 +1,22 @@
 package com.proxy.service.apihttp.info.request.okhttp
 
 import com.proxy.service.apihttp.base.request.config.RequestConfig
-import com.proxy.service.apihttp.info.common.okhttp.IOkhttpConfig
+import com.proxy.service.apihttp.info.common.okhttp.OkHttpCommonConfig
 import com.proxy.service.apihttp.info.request.okhttp.interceptor.BaseUrlInterceptor
 import com.proxy.service.apihttp.info.request.okhttp.interceptor.ExactTimeOutInterceptor
 import com.proxy.service.apihttp.info.request.okhttp.interceptor.HttpLoggingInterceptor
 import com.proxy.service.apihttp.info.request.okhttp.interceptor.NetworkInterceptor
 import com.proxy.service.apihttp.info.request.okhttp.interceptor.RetryWithDelayInterceptor
-import okhttp3.Dns
-import okhttp3.EventListener
 import okhttp3.Interceptor
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
- * @data: 2024/12/17 18:11
+ * @date: 2024/12/17 18:11
  * @desc:
  */
-class OkhttpConfigImpl(
+class RequestOkHttpConfig(
     private val config: RequestConfig
-): IOkhttpConfig {
+): OkHttpCommonConfig(config) {
 
     override fun getConnectTimeOut(): Long {
         return config.getConnectTimeOut()
@@ -42,47 +38,15 @@ class OkhttpConfigImpl(
         return config.getCacheDir()
     }
 
-    override fun getInterceptor(): MutableList<Interceptor> {
+    override fun getInterceptors(): MutableList<Interceptor> {
         val list = ArrayList<Interceptor>()
         list.add(BaseUrlInterceptor(config.getBaseUrl()))
-        list.addAll(config.getInterceptor())
+        list.addAll(config.getInterceptors())
         list.add(RetryWithDelayInterceptor())
         list.add(HttpLoggingInterceptor())
         list.add(NetworkInterceptor())
         list.add(ExactTimeOutInterceptor())
         return list
-    }
-
-    override fun getNetworkInterceptor(): MutableList<Interceptor> {
-        return config.getNetworkInterceptor()
-    }
-
-    override fun getEventListener(): EventListener? {
-        return config.getEventListener()
-    }
-
-    override fun getDns(): Dns? {
-        return config.getDns()
-    }
-
-    override fun getServerCerAssetsName(): String? {
-        return config.getServerCerAssetsName()
-    }
-
-    override fun getClientCerAssetsName(): String? {
-        return config.getClientCerAssetsName()
-    }
-
-    override fun getClientCerPassWord(): String? {
-        return config.getClientCerPassWord()
-    }
-
-    override fun getX509TrustManager(): X509TrustManager? {
-        return config.getX509TrustManager()
-    }
-
-    override fun getHostnameVerifier(): HostnameVerifier? {
-        return config.getHostnameVerifier()
     }
 
     override fun getMaxRequest(): Int {

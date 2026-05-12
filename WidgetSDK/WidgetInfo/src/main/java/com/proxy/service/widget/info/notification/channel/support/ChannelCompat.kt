@@ -8,7 +8,7 @@ import com.proxy.service.widget.info.notification.channel.config.ChannelConfig
 
 /**
  * @author: cangHX
- * @data: 2025/12/24 11:26
+ * @date: 2025/12/24 11:26
  * @desc:
  */
 object ChannelCompat {

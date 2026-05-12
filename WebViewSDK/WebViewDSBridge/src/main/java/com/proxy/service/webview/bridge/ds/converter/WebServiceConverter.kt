@@ -8,7 +8,7 @@ import com.proxy.service.webview.bridge.ds.bridge.GlobalBridgeManager
 
 /**
  * @author: cangHX
- * @data: 2024/8/10 15:26
+ * @date: 2024/8/10 15:26
  * @desc:
  */
 class WebServiceConverter(private val service: WebService) : WebService {

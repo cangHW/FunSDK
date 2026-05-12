@@ -4,7 +4,7 @@ import java.util.Calendar
 
 /**
  * @author: cangHX
- * @data: 2025/4/14 10:38
+ * @date: 2025/4/14 10:38
  * @desc:
  */
 enum class TimeType {

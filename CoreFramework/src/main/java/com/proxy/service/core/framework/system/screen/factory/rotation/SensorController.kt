@@ -6,7 +6,7 @@ import com.proxy.service.core.framework.system.screen.factory.base.AbstractContr
 
 /**
  * @author: cangHX
- * @data: 2026/3/31 18:45
+ * @date: 2026/3/31 18:45
  * @desc:
  */
 class SensorController private constructor(

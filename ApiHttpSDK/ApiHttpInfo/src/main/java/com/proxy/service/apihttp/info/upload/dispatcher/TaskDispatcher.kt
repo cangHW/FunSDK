@@ -7,7 +7,7 @@ import com.proxy.service.apihttp.info.upload.worker.TaskWorker
 
 /**
  * @author: cangHX
- * @data: 2024/12/18 11:07
+ * @date: 2024/12/18 11:07
  * @desc:
  */
 object TaskDispatcher : BaseDispatcher() {

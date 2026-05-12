@@ -6,7 +6,7 @@ import android.view.ViewGroup
 
 /**
  * @author: cangHX
- * @data: 2025/11/27 16:57
+ * @date: 2025/11/27 16:57
  * @desc:
  */
 interface ILifecycleDialog {

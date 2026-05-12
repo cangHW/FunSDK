@@ -14,7 +14,7 @@ import com.proxy.service.funsdk.media.camera.CameraViewActivity
 
 /**
  * @author: cangHX
- * @data: 2026/2/4 17:52
+ * @date: 2026/2/4 17:52
  * @desc:
  */
 class MediaActivity : BaseActivity<ActivityMediaBinding>() {

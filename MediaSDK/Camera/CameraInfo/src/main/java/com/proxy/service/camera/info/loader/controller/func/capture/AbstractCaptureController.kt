@@ -19,7 +19,7 @@ import java.nio.ByteBuffer
 
 /**
  * @author: cangHX
- * @data: 2026/3/25 09:51
+ * @date: 2026/3/25 09:51
  * @desc:
  */
 abstract class AbstractCaptureController(

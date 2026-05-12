@@ -12,7 +12,7 @@ import com.proxy.service.funsdk.document.pdf.preview.PdfPreViewActivity
 
 /**
  * @author: cangHX
- * @data: 2025/5/3 12:02
+ * @date: 2025/5/3 12:02
  * @desc:
  */
 class PdfActivity : AppCompatActivity() {

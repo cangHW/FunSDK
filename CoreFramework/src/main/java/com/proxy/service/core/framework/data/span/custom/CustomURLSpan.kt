@@ -5,7 +5,7 @@ import android.text.style.URLSpan
 
 /**
  * @author: cangHX
- * @data: 2025/7/14 17:21
+ * @date: 2025/7/14 17:21
  * @desc:
  */
 class CustomURLSpan(url:String): URLSpan(url) {

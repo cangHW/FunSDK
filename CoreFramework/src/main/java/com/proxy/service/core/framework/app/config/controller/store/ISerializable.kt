@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.config.controller.store
 
 /**
  * @author: cangHX
- * @data: 2024/12/25 11:38
+ * @date: 2024/12/25 11:38
  * @desc:
  */
 interface ISerializable<T> {

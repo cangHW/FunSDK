@@ -14,7 +14,7 @@ import com.proxy.service.core.framework.io.file.media.store.SupportV29Store
 
 /**
  * @author: cangHX
- * @data: 2025/1/2 10:11
+ * @date: 2025/1/2 10:11
  * @desc:
  */
 abstract class AbstractMedia<T> : IMediaStore<T>, IMediaStore.IInsertAction,

@@ -5,7 +5,7 @@ import com.bumptech.glide.RequestManager
 
 /**
  * @author: cangHX
- * @data: 2024/5/16 14:36
+ * @date: 2024/5/16 14:36
  * @desc:
  */
 abstract class BaseSourceType<R> {

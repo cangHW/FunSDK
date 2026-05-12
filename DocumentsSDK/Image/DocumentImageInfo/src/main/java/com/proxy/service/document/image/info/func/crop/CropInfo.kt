@@ -9,7 +9,7 @@ import com.proxy.service.document.image.info.utils.RectUtils
 
 /**
  * @author: cangHX
- * @data: 2025/6/3 20:18
+ * @date: 2025/6/3 20:18
  * @desc:
  */
 class CropInfo {

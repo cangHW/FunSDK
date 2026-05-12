@@ -16,7 +16,7 @@ import java.util.Collections
 
 /**
  * @author: cangHX
- * @data: 2024/11/1 10:12
+ * @date: 2024/11/1 10:12
  * @desc:
  */
 open class GroupInfo(

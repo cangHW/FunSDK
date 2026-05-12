@@ -10,7 +10,7 @@ import com.proxy.service.core.framework.system.screen.CsScreenUtils
 
 /**
  * @author: cangHX
- * @data: 2026/4/23 20:21
+ * @date: 2026/4/23 20:21
  * @desc:
  */
 abstract class AbstractUiChangedActivity : AbstractCameraActivity() {

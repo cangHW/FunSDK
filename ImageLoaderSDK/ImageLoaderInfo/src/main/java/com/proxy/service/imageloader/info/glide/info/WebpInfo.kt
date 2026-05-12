@@ -12,7 +12,7 @@ import com.proxy.service.imageloader.base.option.base.LoadErrorCallback
 
 /**
  * @author: cangHX
- * @data: 2025/7/6 10:17
+ * @date: 2025/7/6 10:17
  * @desc:
  */
 class WebpInfo : GlideInfo<Drawable>() {

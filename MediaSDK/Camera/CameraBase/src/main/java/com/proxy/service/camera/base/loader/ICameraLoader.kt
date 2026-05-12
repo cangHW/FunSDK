@@ -9,7 +9,7 @@ import com.proxy.service.camera.base.mode.loader.CameraFaceMode
 
 /**
  * @author: cangHX
- * @data: 2026/3/19 14:33
+ * @date: 2026/3/19 14:33
  * @desc:
  */
 interface ICameraLoader {

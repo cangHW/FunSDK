@@ -14,7 +14,7 @@ import com.proxy.service.document.image.base.mode.TouchConflictMode
 
 /**
  * @author: cangHX
- * @data: 2025/6/2 18:18
+ * @date: 2025/6/2 18:18
  * @desc:
  */
 class ConfigInfo {

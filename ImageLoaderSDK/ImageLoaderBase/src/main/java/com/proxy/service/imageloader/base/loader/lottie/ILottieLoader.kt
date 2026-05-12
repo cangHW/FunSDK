@@ -7,7 +7,7 @@ import android.widget.RelativeLayout
 
 /**
  * @author: cangHX
- * @data: 2024/6/4 17:40
+ * @date: 2024/6/4 17:40
  * @desc:
  */
 interface ILottieLoader {

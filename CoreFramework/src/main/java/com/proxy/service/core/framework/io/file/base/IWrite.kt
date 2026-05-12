@@ -6,7 +6,7 @@ import java.io.OutputStream
 
 /**
  * @author: cangHX
- * @data: 2024/9/25 10:37
+ * @date: 2024/9/25 10:37
  * @desc:
  */
 interface IWrite {

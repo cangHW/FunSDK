@@ -5,7 +5,7 @@ import com.proxy.service.core.framework.data.span.builder.base.IAppendBuilder
 
 /**
  * @author: cangHX
- * @data: 2025/7/11 17:11
+ * @date: 2025/7/11 17:11
  * @desc:
  */
 interface ISpaceBuilder : IAppendBuilder {

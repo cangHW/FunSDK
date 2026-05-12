@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 
 /**
  * @author: cangHX
- * @data: 2024/6/5 08:57
+ * @date: 2024/6/5 08:57
  * @desc:
  */
 object LinearLayoutFactory : IFactory<LinearLayout> {

@@ -2,7 +2,7 @@ package com.proxy.service.threadpool.info.handler.manager
 
 /**
  * @author: cangHX
- * @data: 2025/3/18 10:49
+ * @date: 2025/3/18 10:49
  * @desc:
  */
 class TaskInfo private constructor(

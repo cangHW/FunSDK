@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2025/9/28 09:31
+ * @date: 2025/9/28 09:31
  * @desc:
  */
 @CloudApiService(serviceTag = "Application1")

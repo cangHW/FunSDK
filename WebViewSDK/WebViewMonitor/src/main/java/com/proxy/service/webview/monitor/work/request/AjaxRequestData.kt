@@ -2,7 +2,7 @@ package com.proxy.service.webview.monitor.work.request
 
 /**
  * @author: cangHX
- * @data: 2026/1/26 11:32
+ * @date: 2026/1/26 11:32
  * @desc:
  */
 class AjaxRequestData {

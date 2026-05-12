@@ -4,7 +4,7 @@ import java.util.Collections
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 14:12
+ * @date: 2025/3/27 14:12
  * @desc:
  */
 class GroupCache<T>(private val comparator: Comparator<T>) {

@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.system.screen.enums.RotationEnum
 
 /**
  * @author: cangHX
- * @data: 2026/4/2 11:41
+ * @date: 2026/4/2 11:41
  * @desc:
  */
 interface SensorRotationCallback {

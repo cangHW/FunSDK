@@ -4,7 +4,7 @@ import org.libpag.PAGFile
 
 /**
  * @author: cangHX
- * @data: 2025/10/13 20:41
+ * @date: 2025/10/13 20:41
  * @desc:
  */
 abstract class BaseConfig {

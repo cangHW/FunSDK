@@ -2,7 +2,7 @@ package com.proxy.service.logfile.info.manager
 
 /**
  * @author: cangHX
- * @data: 2025/10/22 17:19
+ * @date: 2025/10/22 17:19
  * @desc:
  *
  * 算法类型	速度	            压缩率	        CPU使用	    内存使用	    移动端适配	推荐场景

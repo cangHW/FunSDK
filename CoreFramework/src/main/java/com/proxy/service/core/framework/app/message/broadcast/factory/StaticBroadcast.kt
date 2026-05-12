@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.app.message.broadcast.receiver.AppStatic
 
 /**
  * @author: cangHX
- * @data: 2026/1/19 11:05
+ * @date: 2026/1/19 11:05
  * @desc:
  */
 class StaticBroadcast(action: String) : AbstractStaticBroadcast(action) {

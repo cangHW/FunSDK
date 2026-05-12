@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference
 
 /**
  * @author: cangHX
- * @data: 2026/1/9 14:55
+ * @date: 2026/1/9 14:55
  * @desc:
  */
 class ExposureActionImpl(private val view: View?) : IExposureAction() {

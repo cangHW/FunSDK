@@ -4,7 +4,7 @@ import com.tencent.mmkv.MMKV
 
 /**
  * @author: cangHX
- * @data: 2024/7/20 14:38
+ * @date: 2024/7/20 14:38
  * @desc:
  */
 enum class SpMode(val mode: Int) {

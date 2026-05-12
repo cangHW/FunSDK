@@ -9,7 +9,7 @@ import java.util.WeakHashMap
 
 /**
  * @author: cangHX
- * @data: 2024/11/8 10:43
+ * @date: 2024/11/8 10:43
  * @desc:
  */
 object CallbackManager {
@@ -25,7 +25,7 @@ object CallbackManager {
      * task 任务对应的回调
      * */
     private val lock = Any()
-    private val taskDownloadCallbackTemp = WeakHashMap<DownloadCallback, ArrayList<String>>()
+    private val callbackTaskTagIndex = WeakHashMap<DownloadCallback, ArrayList<String>>()
     private val taskDownloadCallbackMap = HashMap<String, ArrayList<DownloadCallback>>()
 
     /**
@@ -89,10 +89,10 @@ object CallbackManager {
             }
 
             //2. 配置 DownloadCallback 索引
-            var tagList = taskDownloadCallbackTemp[callback]
+            var tagList = callbackTaskTagIndex[callback]
             if (tagList == null) {
                 tagList = ArrayList()
-                taskDownloadCallbackTemp[callback] = tagList
+                callbackTaskTagIndex[callback] = tagList
             }
             if (!tagList.contains(taskTag)) {
                 tagList.add(taskTag)
@@ -105,7 +105,7 @@ object CallbackManager {
      * */
     fun removeTaskDownloadCallback(callback: DownloadCallback) {
         synchronized(lock) {
-            val taskTagList = taskDownloadCallbackTemp[callback]
+            val taskTagList = callbackTaskTagIndex[callback]
             if (taskTagList?.isEmpty() == true) {
                 CsLogger.tag(TAG).i("该任务不存在回调对象")
                 return
@@ -137,7 +137,7 @@ object CallbackManager {
     fun removeTaskAllDownloadCallback(taskTag: String) {
         synchronized(lock) {
             taskDownloadCallbackMap.remove(taskTag)?.forEach {
-                taskDownloadCallbackTemp.remove(it)
+                callbackTaskTagIndex.remove(it)
             }
         }
     }

@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.collections.callback.OnDataChangedCallba
 
 /**
  * @author: cangHX
- * @data: 2025/9/17 15:37
+ * @date: 2025/9/17 15:37
  * @desc:
  */
 interface IDataChanged<V> {

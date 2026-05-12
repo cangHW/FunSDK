@@ -4,7 +4,7 @@ import android.content.Intent
 
 /**
  * @author: cangHX
- * @data: 2024/10/29 18:46
+ * @date: 2024/10/29 18:46
  * @desc:
  */
 enum class InstallStatusEnum(val value: String) {

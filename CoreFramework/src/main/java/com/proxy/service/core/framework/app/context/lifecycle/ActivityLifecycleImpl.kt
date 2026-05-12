@@ -16,7 +16,7 @@ import java.util.WeakHashMap
 
 /**
  * @author: cangHX
- * @data: 2024/7/2 11:23
+ * @date: 2024/7/2 11:23
  * @desc:
  */
 class ActivityLifecycleImpl : ActivityLifecycleCallbacks {

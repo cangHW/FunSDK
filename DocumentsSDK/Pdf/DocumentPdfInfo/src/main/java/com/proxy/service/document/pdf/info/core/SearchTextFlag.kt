@@ -2,7 +2,7 @@ package com.proxy.service.document.pdf.info.core
 
 /**
  * @author: cangHX
- * @data: 2025/8/28 16:57
+ * @date: 2025/8/28 16:57
  * @desc:
  */
 enum class SearchTextFlag(val flag: Int) {

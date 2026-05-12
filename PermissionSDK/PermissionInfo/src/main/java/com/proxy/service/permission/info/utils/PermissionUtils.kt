@@ -9,7 +9,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
  * @author: cangHX
- * @data: 2024/11/21 10:08
+ * @date: 2024/11/21 10:08
  * @desc:
  */
 object PermissionUtils {

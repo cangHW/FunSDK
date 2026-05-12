@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.system.screen.factory.base.AbstractContr
 
 /**
  * @author: cangHX
- * @data: 2026/4/2 10:43
+ * @date: 2026/4/2 10:43
  * @desc:
  */
 class AppConfigController private constructor(

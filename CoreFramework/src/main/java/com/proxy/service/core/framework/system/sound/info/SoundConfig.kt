@@ -8,7 +8,7 @@ import com.proxy.service.core.framework.system.sound.enums.UsageTypeEnum
 
 /**
  * @author: cangHX
- * @data: 2024/12/5 20:46
+ * @date: 2024/12/5 20:46
  * @desc:
  */
 class SoundConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {

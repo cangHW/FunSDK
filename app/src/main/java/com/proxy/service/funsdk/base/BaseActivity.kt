@@ -10,7 +10,7 @@ import com.proxy.service.widget.info.statepage.config.IStatePageController
 
 /**
  * @author: cangHX
- * @data: 2025/6/17 11:48
+ * @date: 2025/6/17 11:48
  * @desc:
  */
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {

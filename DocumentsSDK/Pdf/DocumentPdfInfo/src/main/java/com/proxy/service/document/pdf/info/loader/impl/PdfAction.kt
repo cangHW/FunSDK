@@ -9,7 +9,7 @@ import com.proxy.service.document.pdf.info.core.PdfiumCore
 
 /**
  * @author: cangHX
- * @data: 2025/4/30 14:58
+ * @date: 2025/4/30 14:58
  * @desc:
  */
 open class PdfAction : PdfText(), IPdfAction {

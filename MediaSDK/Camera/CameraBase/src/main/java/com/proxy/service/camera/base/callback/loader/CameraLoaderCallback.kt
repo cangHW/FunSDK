@@ -5,7 +5,7 @@ import com.proxy.service.camera.base.mode.loader.CameraErrorMode
 
 /**
  * @author: cangHX
- * @data: 2026/3/18 20:14
+ * @date: 2026/3/18 20:14
  * @desc:
  */
 interface CameraLoaderCallback {

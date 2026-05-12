@@ -4,7 +4,7 @@ package com.proxy.service.core.framework.system.security.aes.base.option
  * 填充模式
  *
  * @author: cangHX
- * @data: 2024/12/2 19:48
+ * @date: 2024/12/2 19:48
  * @desc:
  */
 interface IPadding<T> {

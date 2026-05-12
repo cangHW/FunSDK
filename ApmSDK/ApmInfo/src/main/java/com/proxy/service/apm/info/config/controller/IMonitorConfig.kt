@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
- * @data: 2025/4/22 18:13
+ * @date: 2025/4/22 18:13
  * @desc:
  */
 interface IMonitorConfig {

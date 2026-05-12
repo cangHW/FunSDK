@@ -10,7 +10,7 @@ import com.proxy.service.imageloader.base.type.IType
 
 /**
  * @author: cangHX
- * @data: 2024/5/15 20:23
+ * @date: 2024/5/15 20:23
  * @desc:
  */
 interface ImageLoaderService : BaseService {

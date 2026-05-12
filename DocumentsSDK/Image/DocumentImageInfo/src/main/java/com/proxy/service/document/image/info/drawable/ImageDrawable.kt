@@ -8,7 +8,7 @@ import android.graphics.PixelFormat
 
 /**
  * @author: cangHX
- * @data: 2025/5/30 15:05
+ * @date: 2025/5/30 15:05
  * @desc:
  */
 open class ImageDrawable(

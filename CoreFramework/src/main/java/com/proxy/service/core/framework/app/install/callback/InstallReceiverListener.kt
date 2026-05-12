@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
  * 接收消息回调
  *
  * @author: cangHX
- * @data: 2024/12/2 15:23
+ * @date: 2024/12/2 15:23
  * @desc:
  */
 interface InstallReceiverListener {

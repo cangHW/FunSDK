@@ -4,7 +4,7 @@ import com.proxy.service.core.constants.CoreConfig
 
 /**
  * @author: cangHX
- * @data: 2026/1/8 18:43
+ * @date: 2026/1/8 18:43
  * @desc:
  */
 object UiViewConstants {

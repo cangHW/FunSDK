@@ -3,6 +3,7 @@ package com.proxy.service.apihttp.base.common.config
 import com.proxy.service.apihttp.base.common.config.base.IBase
 import com.proxy.service.apihttp.base.common.config.base.IBaseConfig
 import com.proxy.service.apihttp.base.common.config.base.IBaseConfigGet
+import com.proxy.service.apihttp.base.constants.ApiConstants
 import okhttp3.Dns
 import okhttp3.EventListener
 import okhttp3.Interceptor
@@ -11,7 +12,7 @@ import javax.net.ssl.X509TrustManager
 
 /**
  * @author: cangHX
- * @data: 2025/3/27 20:57
+ * @date: 2025/3/27 20:57
  * @desc:
  */
 abstract class BaseConfig<T> : IBase<T>, IBaseConfig<T>, IBaseConfigGet {
@@ -41,11 +42,11 @@ abstract class BaseConfig<T> : IBase<T>, IBaseConfig<T>, IBaseConfigGet {
         return getInstance()
     }
 
-    override fun getInterceptor(): MutableList<Interceptor> {
+    override fun getInterceptors(): MutableList<Interceptor> {
         return interceptors
     }
 
-    override fun getNetworkInterceptor(): MutableList<Interceptor> {
+    override fun getNetworkInterceptors(): MutableList<Interceptor> {
         return networkInterceptors
     }
 
@@ -58,11 +59,23 @@ abstract class BaseConfig<T> : IBase<T>, IBaseConfig<T>, IBaseConfigGet {
     }
 
 
+    private var followRedirects: Boolean = ApiConstants.DEFAULT_FOLLOW_REDIRECTS
+    private var followProtocolRedirects: Boolean = ApiConstants.DEFAULT_FOLLOW_PROTOCOL_REDIRECTS
     private var serverCerAssetsName: String? = null
     private var clientCerAssetsName: String? = null
     private var clientCerPassWord: String? = null
     private var x509TrustManager: X509TrustManager? = null
     private var hostnameVerifier: HostnameVerifier? = null
+
+    override fun followRedirects(followRedirects: Boolean): T {
+        this.followRedirects = followRedirects
+        return getInstance()
+    }
+
+    override fun followSslRedirects(followProtocolRedirects: Boolean): T {
+        this.followProtocolRedirects = followProtocolRedirects
+        return getInstance()
+    }
 
     override fun setSslSocket(serverCerAssetsName: String): T {
         this.serverCerAssetsName = serverCerAssetsName
@@ -90,6 +103,14 @@ abstract class BaseConfig<T> : IBase<T>, IBaseConfig<T>, IBaseConfigGet {
     override fun setHostnameVerifier(hostnameVerifier: HostnameVerifier): T {
         this.hostnameVerifier = hostnameVerifier
         return getInstance()
+    }
+
+    override fun getFollowRedirects(): Boolean {
+        return followRedirects
+    }
+
+    override fun getFollowSslRedirects(): Boolean {
+        return followProtocolRedirects
     }
 
     override fun getServerCerAssetsName(): String? {
@@ -120,6 +141,8 @@ abstract class BaseConfig<T> : IBase<T>, IBaseConfig<T>, IBaseConfigGet {
             eventListener = any.eventListener
             dns = any.dns
 
+            followRedirects = any.followRedirects
+            followProtocolRedirects = any.followProtocolRedirects
             serverCerAssetsName = any.serverCerAssetsName
             clientCerAssetsName = any.clientCerAssetsName
             clientCerPassWord = any.clientCerPassWord

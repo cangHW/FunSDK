@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.app.config.uimode.UiModeCheck
 
 /**
  * @author: cangHX
- * @data: 2024/12/24 18:44
+ * @date: 2024/12/24 18:44
  * @desc:
  */
 abstract class BaseConfigurationCheck {

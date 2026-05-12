@@ -4,7 +4,7 @@ import com.proxy.service.imageloader.base.option.pag.scene.PagSceneMode
 
 /**
  * @author: cangHX
- * @data: 2025/6/25 18:25
+ * @date: 2025/6/25 18:25
  * @desc:
  */
 object ImageLoaderConstants {

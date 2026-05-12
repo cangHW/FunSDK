@@ -14,7 +14,7 @@ import com.proxy.service.core.service.media.CsMediaCamera
 
 /**
  * @author: cangHX
- * @data: 2026/2/5 17:45
+ * @date: 2026/2/5 17:45
  * @desc:
  */
 abstract class AbstractCameraView(

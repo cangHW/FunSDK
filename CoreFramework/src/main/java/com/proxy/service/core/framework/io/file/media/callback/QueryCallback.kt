@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.io.file.media.config.DataInfo
 
 /**
  * @author: cangHX
- * @data: 2025/1/2 18:03
+ * @date: 2025/1/2 18:03
  * @desc:
  */
 interface QueryCallback {

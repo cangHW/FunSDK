@@ -24,7 +24,7 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * @author: cangHX
- * @data: 2025/6/3 20:17
+ * @date: 2025/6/3 20:17
  * @desc:
  */
 open class BaseController(
