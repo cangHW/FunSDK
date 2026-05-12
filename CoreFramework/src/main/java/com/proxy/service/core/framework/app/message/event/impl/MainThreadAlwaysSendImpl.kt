@@ -6,6 +6,7 @@ import com.proxy.service.core.framework.app.message.event.impl.base.BaseAlwaysAc
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.lang.ref.WeakReference
 
 /**
  * @author: cangHX
@@ -13,19 +14,19 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @desc:
  */
 class MainThreadAlwaysSendImpl(
-    callback: MainThreadEventCallback
-) : BaseAlwaysActiveSend<MainThreadEventCallback>(callback) {
+    callbackRef: WeakReference<MainThreadEventCallback>
+) : BaseAlwaysActiveSend<MainThreadEventCallback>(callbackRef) {
 
     override fun onActive() {
         handler?.clearAllTaskWithTag(tag)
         handler?.start(tag){
-            controller?.forEachCache { value ->
+            controller.forEachCache { value ->
                 CsTask.mainThread()
                     ?.call(object : ICallable<String> {
                         override fun accept(): String {
                             try {
                                 if (controller.use(value)) {
-                                    callback?.onMainEvent(value)
+                                    callbackRef?.get()?.onMainEvent(value)
                                 }
                             } catch (throwable: Throwable) {
                                 CsLogger.tag(EventConfig.TAG).e(throwable)

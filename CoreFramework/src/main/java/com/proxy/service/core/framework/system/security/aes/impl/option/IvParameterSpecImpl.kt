@@ -17,6 +17,7 @@ class IvParameterSpecImpl(
     private val cipher: Cipher,
     private val secretKey: SecretKey
 ) : IIvParameterSpec<ILoader> {
+
     override fun setIvParameterSpec(spec: String): ILoader {
         val ivSpec = IvParameterSpec(spec.toByteArray(StandardCharsets.UTF_8))
         return SecurityLoaderImpl(cipher, secretKey, ivSpec)

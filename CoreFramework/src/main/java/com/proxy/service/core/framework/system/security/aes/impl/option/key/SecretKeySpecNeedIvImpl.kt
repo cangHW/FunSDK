@@ -18,6 +18,7 @@ class SecretKeySpecNeedIvImpl(
     private val algorithm: String,
     private val transformation: String
 ) : ISecretKeySpec<IIvParameterSpec<ILoader>> {
+
     override fun setSecretKeySpec(key: String): IIvParameterSpec<ILoader> {
         val cipher = Cipher.getInstance(transformation)
         val secretKey = SecretKeySpec(key.toByteArray(StandardCharsets.UTF_8), algorithm)

@@ -4,7 +4,7 @@ import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEve
 import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.framework.app.message.event.impl.base.BaseAlwaysActiveSend
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
+import java.lang.ref.WeakReference
 
 /**
  * @author: cangHX
@@ -12,16 +12,16 @@ import com.proxy.service.core.framework.system.security.md5.CsMd5Utils
  * @desc:
  */
 class WorkThreadAlwaysSendImpl(
-    callback: WorkThreadEventCallback
-) : BaseAlwaysActiveSend<WorkThreadEventCallback>(callback) {
+    callbackRef: WeakReference<WorkThreadEventCallback>
+) : BaseAlwaysActiveSend<WorkThreadEventCallback>(callbackRef) {
 
     override fun onActive() {
         handler?.clearAllTaskWithTag(tag)
         handler?.start(tag) {
-            controller?.forEachCache { value ->
+            controller.forEachCache { value ->
                 try {
                     if (controller.use(value)) {
-                        callback?.onWorkEvent(value)
+                        callbackRef?.get()?.onWorkEvent(value)
                     }
                 } catch (throwable: Throwable) {
                     CsLogger.tag(EventConfig.TAG).e(throwable)

@@ -76,7 +76,8 @@ interface IMap<K, V> : IDataChanged<Map.Entry<K, V>>, ITransaction {
     fun getAll(): HashMap<K, V>
 
     /**
-     * 获取数据, 如果数据不存在则等待, 直到获取到数据
+     * 获取数据, 如果数据不存在则等待, 直到获取到数据.
+     * 注意: 此方法会无限期阻塞当前线程, 请勿在主线程调用. 如果无法确保数据一定会被写入, 建议使用带超时参数的 [getOrWait] 版本.
      * */
     fun getOrWait(key: K): V?
 

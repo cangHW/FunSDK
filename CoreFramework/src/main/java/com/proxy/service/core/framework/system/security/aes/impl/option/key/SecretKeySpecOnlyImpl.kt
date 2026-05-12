@@ -17,6 +17,7 @@ class SecretKeySpecOnlyImpl(
     private val algorithm: String,
     private val transformation: String
 ) : ISecretKeySpec<ILoader> {
+
     override fun setSecretKeySpec(key: String): ILoader {
         val cipher = Cipher.getInstance(transformation)
         val secretKey = SecretKeySpec(key.toByteArray(StandardCharsets.UTF_8), algorithm)

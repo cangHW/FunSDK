@@ -12,23 +12,38 @@ import com.proxy.service.core.framework.system.security.aes.base.controller.ICon
 class SecurityDecryptInstantRun(
     private val controller: IController
 ) : IInstantRun {
-    override fun updateSourceString(str: String): ByteArray {
-        return CsStringUtils.parseHexStr2Byte(str)?.let {
-            controller.updateWithOutCache(it)
-        } ?: ByteArray(0)
+
+    override fun updateSourceString(str: String): ByteArray? {
+        val bytes = CsStringUtils.parseHexStr2Byte(str) ?: return null
+        val result = controller.updateWithOutCache(bytes)
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 
-    override fun updateSourceBase64String(base64: String): ByteArray {
-        return CsStringUtils.parseBase64Str2Byte(base64)?.let {
-            controller.updateWithOutCache(it)
-        } ?: ByteArray(0)
+    override fun updateSourceBase64String(base64: String): ByteArray? {
+        val bytes = CsStringUtils.parseBase64Str2Byte(base64) ?: return null
+        val result = controller.updateWithOutCache(bytes)
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 
-    override fun updateSourceByteArray(byteArray: ByteArray): ByteArray {
-        return controller.updateWithOutCache(byteArray)
+    override fun updateSourceByteArray(byteArray: ByteArray): ByteArray? {
+        val result = controller.updateWithOutCache(byteArray)
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 
-    override fun endInstantRun(): ByteArray {
-        return controller.finish()
+    override fun endInstantRun(): ByteArray? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 }

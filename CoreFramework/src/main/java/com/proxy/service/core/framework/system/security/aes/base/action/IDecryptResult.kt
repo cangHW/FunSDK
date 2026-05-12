@@ -8,13 +8,13 @@ package com.proxy.service.core.framework.system.security.aes.base.action
 interface IDecryptResult {
 
     /**
-     * 获取解密之后的数据
+     * 获取解密之后的数据, 失败返回 null
      * */
-    fun getString(): String
+    fun getString(): String?
 
     /**
-     * 获取解密之后的数据
+     * 获取解密之后的数据, 失败返回 null
      * */
-    fun getByteArray(): ByteArray
+    fun getByteArray(): ByteArray?
 
 }

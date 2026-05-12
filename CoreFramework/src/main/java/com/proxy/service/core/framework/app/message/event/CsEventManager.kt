@@ -14,6 +14,7 @@ import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
+import java.lang.ref.WeakReference
 
 /**
  * 应用内 event 消息相关工具
@@ -34,10 +35,11 @@ object CsEventManager {
      * @param lifecycleOwner    生命周期提供者, 作用：1、用于自动移除回调；2、在对应页面可见时再接收消息
      * */
     fun addWeakCallback(callback: MainThreadEventCallback, lifecycleOwner: LifecycleOwner? = null) {
+        val callbackRef = WeakReference(callback)
         if (lifecycleOwner == null) {
-            callbackMap.putSync(callback, MainThreadAlwaysSendImpl(callback))
+            callbackMap.putSync(callback, MainThreadAlwaysSendImpl(callbackRef))
         } else {
-            val send = MainThreadLifecycleSendImpl(callback, lifecycleOwner)
+            val send = MainThreadLifecycleSendImpl(callbackRef, lifecycleOwner)
             send.initLifecycle()
             callbackMap.putSync(callback, send)
         }
@@ -50,10 +52,11 @@ object CsEventManager {
      * @param lifecycleOwner    生命周期提供者, 作用：1、用于自动移除回调；2、在对应页面可见时再接收消息
      * */
     fun addWeakCallback(callback: WorkThreadEventCallback, lifecycleOwner: LifecycleOwner? = null) {
+        val callbackRef = WeakReference(callback)
         if (lifecycleOwner == null) {
-            callbackMap.putSync(callback, WorkThreadAlwaysSendImpl(callback))
+            callbackMap.putSync(callback, WorkThreadAlwaysSendImpl(callbackRef))
         } else {
-            val send = WorkThreadLifecycleSendImpl(callback, lifecycleOwner)
+            val send = WorkThreadLifecycleSendImpl(callbackRef, lifecycleOwner)
             send.initLifecycle()
             callbackMap.putSync(callback, send)
         }

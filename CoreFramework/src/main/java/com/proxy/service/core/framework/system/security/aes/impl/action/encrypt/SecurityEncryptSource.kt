@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets
 class SecurityEncryptSource(
     private val controller: IController
 ) : SecurityEncryptResult(controller), ISource<IEncryptResult> {
+
     override fun reset() {
         controller.reset()
     }

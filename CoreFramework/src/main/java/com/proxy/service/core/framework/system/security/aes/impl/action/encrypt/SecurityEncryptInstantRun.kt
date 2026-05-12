@@ -13,21 +13,37 @@ import java.nio.charset.StandardCharsets
 class SecurityEncryptInstantRun(
     private val controller: IController
 ): IInstantRun {
-    override fun updateSourceString(str: String): ByteArray {
-        return controller.updateWithOutCache(str.toByteArray(StandardCharsets.UTF_8))
+
+    override fun updateSourceString(str: String): ByteArray? {
+        val result = controller.updateWithOutCache(str.toByteArray(StandardCharsets.UTF_8))
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 
-    override fun updateSourceBase64String(base64: String): ByteArray {
-        return CsStringUtils.parseBase64Str2Byte(base64)?.let {
-            controller.updateWithOutCache(it)
-        } ?: ByteArray(0)
+    override fun updateSourceBase64String(base64: String): ByteArray? {
+        val bytes = CsStringUtils.parseBase64Str2Byte(base64) ?: return null
+        val result = controller.updateWithOutCache(bytes)
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 
-    override fun updateSourceByteArray(byteArray: ByteArray): ByteArray {
-        return controller.updateWithOutCache(byteArray)
+    override fun updateSourceByteArray(byteArray: ByteArray): ByteArray? {
+        val result = controller.updateWithOutCache(byteArray)
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 
-    override fun endInstantRun(): ByteArray {
-        return controller.finish()
+    override fun endInstantRun(): ByteArray? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 }

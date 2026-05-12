@@ -13,7 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger
  * @desc:
  */
 abstract class BaseSend<T : IEvent>(
-    protected var callback: T?
+    private val supportTypes: Set<Class<*>>,
+    shouldReceiveOnlyLatestMessage: Boolean
 ) : ISend {
 
     companion object {
@@ -23,13 +24,10 @@ abstract class BaseSend<T : IEvent>(
 
     private val temp = WeakHashMap<Class<*>, Any>()
 
-    private val supportTypes: Set<Class<*>> = callback?.getSupportTypes() ?: HashSet()
-    protected val controller: IController? = callback?.let {
-        if (it.shouldReceiveOnlyLatestMessage()) {
-            SingleDataController()
-        } else {
-            ListDataController()
-        }
+    protected val controller: IController = if (shouldReceiveOnlyLatestMessage) {
+        SingleDataController()
+    } else {
+        ListDataController()
     }
 
     protected val tag = createTag()
@@ -51,7 +49,7 @@ abstract class BaseSend<T : IEvent>(
     }
 
     private fun checkSend(any: Any) {
-        controller?.addCache(any)
+        controller.addCache(any)
         checkState()
     }
 

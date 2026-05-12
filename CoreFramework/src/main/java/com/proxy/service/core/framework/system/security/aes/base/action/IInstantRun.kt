@@ -12,27 +12,27 @@ interface IInstantRun {
     /**
      * 添加元数据
      *
-     * @return 当前添加的数据进行加解密后的值
+     * @return 当前添加的数据进行加解密后的值, 失败返回 null
      * */
-    fun updateSourceString(str: String): ByteArray
+    fun updateSourceString(str: String): ByteArray?
 
     /**
      * 添加元数据
      *
-     * @return 当前添加的数据进行加解密后的值
+     * @return 当前添加的数据进行加解密后的值, 失败返回 null
      * */
-    fun updateSourceBase64String(base64: String): ByteArray
+    fun updateSourceBase64String(base64: String): ByteArray?
 
     /**
      * 添加元数据
      *
-     * @return 当前添加的数据进行加解密后的值
+     * @return 当前添加的数据进行加解密后的值, 失败返回 null
      * */
-    fun updateSourceByteArray(byteArray: ByteArray): ByteArray
+    fun updateSourceByteArray(byteArray: ByteArray): ByteArray?
 
 
     /**
-     * 结束即时处理
+     * 结束即时处理, 失败返回 null
      * */
-    fun endInstantRun(): ByteArray
+    fun endInstantRun(): ByteArray?
 }

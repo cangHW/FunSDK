@@ -29,11 +29,16 @@ class InitializerCache<T> {
             private const val DEFAULT_TIME = -1L
         }
 
+        @Volatile
         private var waitTime: Long = DEFAULT_TIME
+        @Volatile
         private var runTime: Long = DEFAULT_TIME
+        @Volatile
         private var completeTime: Long = DEFAULT_TIME
 
+        @Volatile
         private var _status: Int = STATUS_WAITING
+        @Volatile
         private var _task: T? = null
 
         fun setStatus(status: Int) {
@@ -231,9 +236,14 @@ class InitializerCache<T> {
     private fun getTaskInfo(tClass: Class<*>): TaskInfo<T> {
         var value = taskMap.get(tClass)
         if (value == null) {
-            value = TaskInfo(tClass)
-            taskMap.putSync(tClass, value)
+            taskMap.runInTransaction {
+                value = taskMap.get(tClass)
+                if (value == null) {
+                    value = TaskInfo(tClass)
+                    taskMap.putSync(tClass, value!!)
+                }
+            }
         }
-        return value
+        return value!!
     }
 }

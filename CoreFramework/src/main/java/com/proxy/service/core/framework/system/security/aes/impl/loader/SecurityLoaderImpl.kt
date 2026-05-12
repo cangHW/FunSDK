@@ -21,6 +21,7 @@ class SecurityLoaderImpl(
     private val secretKey: SecretKey,
     private val ivSpec: IvParameterSpec? = null
 ) : ILoader {
+
     override fun createEncryptLoader(): ISource<IEncryptResult> {
         val controller = CipherController(
             cipher,

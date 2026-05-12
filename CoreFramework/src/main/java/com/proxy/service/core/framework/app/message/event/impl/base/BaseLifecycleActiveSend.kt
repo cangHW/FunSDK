@@ -7,6 +7,7 @@ import com.proxy.service.core.framework.app.message.event.base.BaseSend
 import com.proxy.service.core.framework.app.message.event.base.IEvent
 import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.service.task.CsTask
+import java.lang.ref.WeakReference
 
 /**
  * @author: cangHX
@@ -14,9 +15,12 @@ import com.proxy.service.core.service.task.CsTask
  * @desc:
  */
 abstract class BaseLifecycleActiveSend<T : IEvent>(
-    callback: T?,
+    protected var callbackRef: WeakReference<T>?,
     private var lifecycleOwner: LifecycleOwner?
-) : BaseSend<T>(callback), LifecycleEventObserver {
+) : BaseSend<T>(
+    callbackRef?.get()?.getSupportTypes() ?: HashSet(),
+    callbackRef?.get()?.shouldReceiveOnlyLatestMessage() ?: true
+), LifecycleEventObserver {
 
     protected val handler = CsTask.launchTaskGroup(EventConfig.THREAD_EVENT_LIFECYCLE_ACTIVE)
 
@@ -35,7 +39,7 @@ abstract class BaseLifecycleActiveSend<T : IEvent>(
         if (currentState == Lifecycle.State.DESTROYED) {
             lifecycleOwner?.lifecycle?.removeObserver(this)
             lifecycleOwner = null
-            callback = null
+            callbackRef = null
             return
         }
         var prevState: Lifecycle.State? = null

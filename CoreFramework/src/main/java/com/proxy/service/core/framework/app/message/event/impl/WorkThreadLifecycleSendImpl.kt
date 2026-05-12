@@ -5,6 +5,7 @@ import com.proxy.service.core.framework.app.message.event.callback.WorkThreadEve
 import com.proxy.service.core.framework.app.message.event.config.EventConfig
 import com.proxy.service.core.framework.app.message.event.impl.base.BaseLifecycleActiveSend
 import com.proxy.service.core.framework.data.log.CsLogger
+import java.lang.ref.WeakReference
 
 /**
  * @author: cangHX
@@ -12,17 +13,17 @@ import com.proxy.service.core.framework.data.log.CsLogger
  * @desc:
  */
 class WorkThreadLifecycleSendImpl(
-    callback: WorkThreadEventCallback,
+    callbackRef: WeakReference<WorkThreadEventCallback>,
     lifecycleOwner: LifecycleOwner
-) : BaseLifecycleActiveSend<WorkThreadEventCallback>(callback, lifecycleOwner) {
+) : BaseLifecycleActiveSend<WorkThreadEventCallback>(callbackRef, lifecycleOwner) {
 
     override fun onActive() {
         handler?.clearAllTaskWithTag(tag)
         handler?.start(tag){
-            controller?.forEachCache { value ->
+            controller.forEachCache { value ->
                 try {
                     if (controller.use(value)) {
-                        callback?.onWorkEvent(value)
+                        callbackRef?.get()?.onWorkEvent(value)
                     }
                 } catch (throwable: Throwable) {
                     CsLogger.tag(EventConfig.TAG).e(throwable)

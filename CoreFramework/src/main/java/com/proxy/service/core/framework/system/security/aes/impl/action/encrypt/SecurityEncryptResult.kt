@@ -12,15 +12,28 @@ import com.proxy.service.core.framework.system.security.aes.base.controller.ICon
 open class SecurityEncryptResult(
     private val controller: IController
 ) : IEncryptResult {
-    override fun getString(): String {
-        return CsStringUtils.parseByte2HexStr(controller.finish()) ?: ""
+
+    override fun getString(): String? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return CsStringUtils.parseByte2HexStr(result)
     }
 
-    override fun getBase64String(): String {
-        return CsStringUtils.parseByte2Base64Str(controller.finish()) ?: ""
+    override fun getBase64String(): String? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return CsStringUtils.parseByte2Base64Str(result)
     }
 
-    override fun getByteArray(): ByteArray {
-        return controller.finish()
+    override fun getByteArray(): ByteArray? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 }

@@ -12,11 +12,20 @@ import java.nio.charset.StandardCharsets
 open class SecurityDecryptResult(
     private val controller: IController
 ) : IDecryptResult {
-    override fun getString(): String {
-        return String(controller.finish(), StandardCharsets.UTF_8)
+
+    override fun getString(): String? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return String(result, StandardCharsets.UTF_8)
     }
 
-    override fun getByteArray(): ByteArray {
-        return controller.finish()
+    override fun getByteArray(): ByteArray? {
+        val result = controller.finish()
+        if (controller.isError()) {
+            return null
+        }
+        return result
     }
 }

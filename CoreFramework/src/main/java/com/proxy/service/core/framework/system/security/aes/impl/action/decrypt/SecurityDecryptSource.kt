@@ -14,6 +14,7 @@ import com.proxy.service.core.framework.system.security.aes.base.controller.ICon
 class SecurityDecryptSource(
     private val controller: IController
 ) : SecurityDecryptResult(controller), ISource<IDecryptResult> {
+
     override fun reset() {
         controller.reset()
     }

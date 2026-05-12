@@ -7,6 +7,7 @@ import com.proxy.service.core.framework.app.message.event.impl.base.BaseLifecycl
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.lang.ref.WeakReference
 
 /**
  * @author: cangHX
@@ -14,19 +15,19 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  * @desc:
  */
 class MainThreadLifecycleSendImpl(
-    callback: MainThreadEventCallback,
+    callbackRef: WeakReference<MainThreadEventCallback>,
     lifecycleOwner: LifecycleOwner
-) : BaseLifecycleActiveSend<MainThreadEventCallback>(callback, lifecycleOwner) {
+) : BaseLifecycleActiveSend<MainThreadEventCallback>(callbackRef, lifecycleOwner) {
 
     override fun onActive() {
         handler?.clearAllTaskWithTag(tag)
         handler?.start(tag) {
-            controller?.forEachCache { value ->
+            controller.forEachCache { value ->
                 CsTask.mainThread()?.call(object : ICallable<String> {
                     override fun accept(): String {
                         try {
                             if (controller.use(value)) {
-                                callback?.onMainEvent(value)
+                                callbackRef?.get()?.onMainEvent(value)
                             }
                         } catch (throwable: Throwable) {
                             CsLogger.tag(EventConfig.TAG).e(throwable)

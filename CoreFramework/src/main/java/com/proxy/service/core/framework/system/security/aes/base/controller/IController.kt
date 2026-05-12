@@ -27,4 +27,9 @@ interface IController {
      * */
     fun finish(): ByteArray
 
+    /**
+     * 是否发生错误
+     * */
+    fun isError(): Boolean
+
 }

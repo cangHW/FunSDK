@@ -8,18 +8,18 @@ package com.proxy.service.core.framework.system.security.aes.base.action
 interface IEncryptResult {
 
     /**
-     * 获取加密之后的数据
+     * 获取加密之后的数据, 失败返回 null
      * */
-    fun getString(): String
+    fun getString(): String?
 
     /**
-     * 获取加密之后的数据
+     * 获取加密之后的数据, 失败返回 null
      * */
-    fun getBase64String(): String
+    fun getBase64String(): String?
 
     /**
-     * 获取加密之后的数据
+     * 获取加密之后的数据, 失败返回 null
      * */
-    fun getByteArray(): ByteArray
+    fun getByteArray(): ByteArray?
 
 }

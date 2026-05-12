@@ -197,9 +197,8 @@ object CsFileUtils {
      * */
     fun delete(file: File?): Boolean {
         if (isDir(file)) {
-            return deleteDir(file)
+            return deleteDir(file, 0)
         }
-
         return deleteFile(file)
     }
 
@@ -221,8 +220,14 @@ object CsFileUtils {
         return false
     }
 
-    private fun deleteDir(file: File?): Boolean {
+    private const val MAX_DELETE_DEPTH = 64
+
+    private fun deleteDir(file: File?, depth: Int): Boolean {
         if (file == null) {
+            return false
+        }
+        if (depth > MAX_DELETE_DEPTH) {
+            CsLogger.tag(TAG).e("delete dir exceeds max depth. path = ${file.absolutePath}")
             return false
         }
         if (!exists(file)) {
@@ -232,8 +237,14 @@ object CsFileUtils {
             val files = file.listFiles() ?: return deleteFile(file)
             var isDeleteSuccess = true
             for (child in files) {
+                if (isSymlink(child)) {
+                    if (!deleteFile(child)) {
+                        isDeleteSuccess = false
+                    }
+                    continue
+                }
                 if (isDir(child)) {
-                    if (!deleteDir(child)) {
+                    if (!deleteDir(child, depth + 1)) {
                         isDeleteSuccess = false
                     }
                     continue
@@ -247,6 +258,14 @@ object CsFileUtils {
             CsLogger.tag(TAG).e(throwable)
         }
         return false
+    }
+
+    private fun isSymlink(file: File): Boolean {
+        return try {
+            file.canonicalPath != file.absolutePath
+        } catch (_: Throwable) {
+            false
+        }
     }
 
     /**

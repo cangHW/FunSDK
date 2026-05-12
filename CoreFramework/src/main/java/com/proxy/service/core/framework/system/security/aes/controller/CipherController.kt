@@ -20,6 +20,7 @@ class CipherController(
 ) : IController {
 
     private val byteArrayList = ArrayList<ByteArray>()
+    private var hasError = false
 
     init {
         reset()
@@ -27,6 +28,7 @@ class CipherController(
 
     override fun reset() {
         byteArrayList.clear()
+        hasError = false
         try {
             if (ivSpec == null) {
                 cipher.init(opMode, secretKey)
@@ -34,11 +36,15 @@ class CipherController(
                 cipher.init(opMode, secretKey, ivSpec)
             }
         } catch (throwable: Throwable) {
+            hasError = true
             CsLogger.tag(Config.TAG).e(throwable)
         }
     }
 
     override fun update(byteArray: ByteArray): ByteArray {
+        if (hasError) {
+            return ByteArray(0)
+        }
         try {
             val array = cipher.update(byteArray)
             if (array != null) {
@@ -46,21 +52,29 @@ class CipherController(
                 return array
             }
         } catch (throwable: Throwable) {
+            hasError = true
             CsLogger.tag(Config.TAG).e(throwable)
         }
         return ByteArray(0)
     }
 
     override fun updateWithOutCache(byteArray: ByteArray): ByteArray {
+        if (hasError) {
+            return ByteArray(0)
+        }
         try {
             return cipher.update(byteArray)
         } catch (throwable: Throwable) {
+            hasError = true
             CsLogger.tag(Config.TAG).e(throwable)
         }
         return ByteArray(0)
     }
 
     override fun finish(): ByteArray {
+        if (hasError) {
+            return ByteArray(0)
+        }
         try {
             val array = cipher.doFinal()
             if (array != null) {
@@ -68,10 +82,13 @@ class CipherController(
             }
             return mergeByteArrays(byteArrayList)
         } catch (throwable: Throwable) {
+            hasError = true
             CsLogger.tag(Config.TAG).e(throwable)
         }
         return ByteArray(0)
     }
+
+    override fun isError(): Boolean = hasError
 
     private fun mergeByteArrays(byteArrayList: List<ByteArray>): ByteArray {
         val totalSize = byteArrayList.map { it.size }.sum()
