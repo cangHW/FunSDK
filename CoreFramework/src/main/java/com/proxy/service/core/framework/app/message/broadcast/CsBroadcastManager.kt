@@ -3,6 +3,8 @@ package com.proxy.service.core.framework.app.message.broadcast
 import com.proxy.service.core.framework.app.message.broadcast.callback.BroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
+import com.proxy.service.core.framework.app.message.broadcast.controller.WhitelistController
+import com.proxy.service.core.framework.app.message.broadcast.controller.WhitelistFactory
 import com.proxy.service.core.framework.app.message.broadcast.factory.DynamicBroadcast
 import com.proxy.service.core.framework.app.message.broadcast.factory.StaticBroadcast
 import com.proxy.service.core.framework.app.message.broadcast.factory.base.IDynamicBroadcast
@@ -17,6 +19,13 @@ import com.proxy.service.core.framework.app.message.broadcast.utils.BroadcastUti
  * @desc:
  */
 object CsBroadcastManager {
+
+    /**
+     * 添加白名单配置
+     * */
+    fun addWhitelistConfig(factory: WhitelistFactory) {
+        WhitelistController.addWhitelistFactory(factory)
+    }
 
     /**
      * 添加带返回值的消息回调，弱引用, 同一个 action 可以绑定多个监听

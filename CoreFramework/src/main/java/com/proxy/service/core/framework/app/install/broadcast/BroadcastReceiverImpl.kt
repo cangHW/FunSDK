@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import com.proxy.service.core.constants.CoreConfig
+import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
@@ -34,7 +35,7 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
          * 添加弱引用回调
          * */
         fun addWeakReceiverListener(listener: InstallReceiverListener) {
-            weakReceiverSet.runInTransaction{
+            weakReceiverSet.runInTransaction {
                 weakReceiverSet.putSync(listener)
                 if (weakReceiverSet.size() > 0) {
                     if (isStart.compareAndSet(false, true)) {
@@ -48,7 +49,7 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
          * 移除弱引用回调
          * */
         fun removeReceiverListener(listener: InstallReceiverListener) {
-            weakReceiverSet.runInTransaction{
+            weakReceiverSet.runInTransaction {
                 weakReceiverSet.removeSync(listener)
                 if (weakReceiverSet.size() <= 0) {
                     receiver.stop()
@@ -63,6 +64,8 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
 
         val intentFilter = IntentFilter()
         intentFilter.addAction(InstallStatusEnum.PACKAGE_ADDED.value)
+        intentFilter.addAction(InstallStatusEnum.PACKAGE_REPLACED.value)
+        intentFilter.addAction(Intent.ACTION_MY_PACKAGE_REPLACED)
         intentFilter.addAction(InstallStatusEnum.PACKAGE_REMOVED.value)
         intentFilter.addDataScheme("package")
         val context = CsContextManager.getApplication()
@@ -78,16 +81,28 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (weakReceiverSet.size()<=0){
+        if (weakReceiverSet.size() <= 0) {
             stop()
         }
 
         if (context == null) {
             return
         }
-        val statusEnum = InstallStatusEnum.of(intent?.action) ?: return
-        CsLogger.tag(TAG).d("onReceive action = ${statusEnum.value}, intent = $intent")
-        val packageName = intent?.data?.schemeSpecificPart ?: ""
+
+        val action: String?
+        val packageName: String
+
+        if (intent?.action == Intent.ACTION_MY_PACKAGE_REPLACED) {
+            action = InstallStatusEnum.PACKAGE_REPLACED.value
+            packageName = CsAppUtils.getPackageName()
+        } else {
+            action = intent?.action
+            packageName = intent?.data?.schemeSpecificPart ?: ""
+        }
+
+        val statusEnum = InstallStatusEnum.of(action) ?: return
+        CsLogger.tag(TAG)
+            .d("onReceive action=${statusEnum.value}, intent=$intent, packageName=$packageName")
 
         weakReceiverSet.forEachSync {
             try {

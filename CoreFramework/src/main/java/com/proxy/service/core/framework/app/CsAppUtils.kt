@@ -10,6 +10,7 @@ import android.os.Process
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.security.sha.CsSha256Utils
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.InputStreamReader
@@ -184,6 +185,33 @@ object CsAppUtils {
             val packageManager = context.packageManager
             val applicationInfo = packageManager.getApplicationInfo(packageName, 0)
             return applicationInfo.loadIcon(packageManager)
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+        }
+        return null
+    }
+
+    /**
+     * 获取应用签名
+     *
+     * @param packageName : 包名，为空默认为当前应用
+     * */
+    fun getSignatureHash(packageName: String? = null): String? {
+        val context = CsContextManager.getApplication()
+        val pkg = packageName ?: getPackageName()
+        try {
+            val signingInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val info = context.packageManager.getPackageInfo(
+                    pkg,
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                )
+                info.signingInfo?.apkContentsSigners?.firstOrNull()
+            } else {
+                @Suppress("DEPRECATION")
+                val info = context.packageManager.getPackageInfo(pkg, PackageManager.GET_SIGNATURES)
+                info.signatures?.firstOrNull()
+            }
+            return CsSha256Utils.get(signingInfo?.toByteArray())
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         }

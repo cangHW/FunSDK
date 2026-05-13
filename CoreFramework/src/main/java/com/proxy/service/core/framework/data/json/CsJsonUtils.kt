@@ -27,6 +27,9 @@ object CsJsonUtils {
 
     private const val TAG = "${CoreConfig.TAG}Json"
 
+    private val gsonLock = Any()
+
+    @Volatile
     private var gson: Gson = Gson()
 
     /**
@@ -47,9 +50,11 @@ object CsJsonUtils {
             return
         }
 
-        gson = gson.newBuilder()
-            .registerTypeAdapter(type, adapter)
-            .create()
+        synchronized(gsonLock) {
+            gson = gson.newBuilder()
+                .registerTypeAdapter(type, adapter)
+                .create()
+        }
     }
 
     /**
@@ -58,9 +63,11 @@ object CsJsonUtils {
      * @param factory   适配器工厂
      * */
     fun registerTypeAdapterFactory(factory: TypeAdapterFactory) {
-        gson = gson.newBuilder()
-            .registerTypeAdapterFactory(factory)
-            .create()
+        synchronized(gsonLock) {
+            gson = gson.newBuilder()
+                .registerTypeAdapterFactory(factory)
+                .create()
+        }
     }
 
     /**
@@ -81,9 +88,11 @@ object CsJsonUtils {
             return
         }
 
-        gson = gson.newBuilder()
-            .registerTypeHierarchyAdapter(baseType, typeAdapter)
-            .create()
+        synchronized(gsonLock) {
+            gson = gson.newBuilder()
+                .registerTypeHierarchyAdapter(baseType, typeAdapter)
+                .create()
+        }
     }
 
     /**

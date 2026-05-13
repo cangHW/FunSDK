@@ -3,6 +3,7 @@ package com.proxy.service.core.framework.io.sp
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
 import com.tencent.mmkv.MMKV
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -17,7 +18,7 @@ object SpInit {
     private val isInit = AtomicBoolean(false)
 
     private var rootPath: String = ""
-    private val spMapper = HashMap<String, ISpController>()
+    private val spMapper = ConcurrentHashMap<String, ISpController>()
 
     private fun init() {
         if (isInit.compareAndSet(false, true)) {

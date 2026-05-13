@@ -3,11 +3,13 @@ package com.proxy.service.core.framework.app.message.broadcast.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.constants.BroadcastConstants
 import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
+import com.proxy.service.core.framework.app.message.broadcast.controller.WhitelistController
 import com.proxy.service.core.framework.app.message.broadcast.utils.BroadcastUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -28,6 +30,23 @@ abstract class BaseReceiver : BroadcastReceiver() {
      * */
     protected abstract fun getAction(): String
 
+    private fun isAllowedSender(context: Context, pkg: String): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            val realPkg = sentFromPackage
+            if (realPkg != pkg) {
+                CsLogger.tag(getLogTag())
+                    .w("The pkg are inconsistent. fromPkg=$pkg, realPkg=$realPkg")
+                return false
+            }
+        }
+
+        // 同包名（同 App 多进程）直接放行
+        if (pkg == context.packageName) {
+            CsLogger.tag(getLogTag()).d("The same application.")
+            return true
+        }
+        return WhitelistController.isAllowedSender(getLogTag(), context, pkg)
+    }
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null) {
@@ -46,6 +65,10 @@ abstract class BaseReceiver : BroadcastReceiver() {
         val data = intent.data
 
         val fromPkg = intent.getStringExtra(BroadcastConstants.PACKAGE_NAME)
+        if (fromPkg.isNullOrBlank() || !isAllowedSender(context, fromPkg)) {
+            CsLogger.tag(getLogTag()).e("The pkg is illegal. action=$action, fromPkg=$fromPkg")
+            return
+        }
         intent.removeExtra(BroadcastConstants.PACKAGE_NAME)
 
         val processName = intent.getStringExtra(BroadcastConstants.PROCESS_NAME)

@@ -15,6 +15,11 @@ enum class InstallStatusEnum(val value: String) {
     PACKAGE_ADDED(Intent.ACTION_PACKAGE_ADDED),
 
     /**
+     * 更新应用
+     * */
+    PACKAGE_REPLACED(Intent.ACTION_PACKAGE_REPLACED),
+
+    /**
      * 删除应用
      */
     PACKAGE_REMOVED(Intent.ACTION_PACKAGE_REMOVED);
@@ -23,6 +28,8 @@ enum class InstallStatusEnum(val value: String) {
         fun of(action: String?): InstallStatusEnum? {
             if (action == PACKAGE_ADDED.value) {
                 return PACKAGE_ADDED
+            } else if (action == PACKAGE_REPLACED.value) {
+                return PACKAGE_REPLACED
             } else if (action == PACKAGE_REMOVED.value) {
                 return PACKAGE_REMOVED
             }

@@ -19,6 +19,8 @@ class StartupManager {
 
     companion object {
         const val TAG = "${CoreConfig.TAG}Init"
+        private const val BACKGROUND_TIMEOUT_MS = 60_000L
+        private const val BACKGROUND_POLL_INTERVAL_MS = 3_000L
 
         private val _instance by lazy { StartupManager() }
 
@@ -66,6 +68,7 @@ class StartupManager {
             shouldSkipLoopCall = {
                 initializer.isTimeout()
             },
+            pollIntervalMs = 0,
             chain = chain,
             appContext = appContext,
             isDebug = isDebug
@@ -92,12 +95,26 @@ class StartupManager {
         if (isTimeout) {
             CsTask.ioThread()?.call(object : ICallable<String> {
                 override fun accept(): String {
+                    val startTime = System.currentTimeMillis()
+                    val backgroundChain = ArrayList<Class<*>>()
                     runAndWait(
-                        shouldSkipLoopCall = null,
-                        chain = chain,
+                        shouldSkipLoopCall = {
+                            System.currentTimeMillis() - startTime > BACKGROUND_TIMEOUT_MS
+                        },
+                        pollIntervalMs = BACKGROUND_POLL_INTERVAL_MS,
+                        chain = backgroundChain,
                         appContext = appContext,
                         isDebug = isDebug
                     )
+                    if (initializer.isAllTaskComplete()) {
+                        CsLogger.tag(TAG).d("Background initialization completed. cost: ${System.currentTimeMillis() - startTime}ms")
+                    } else {
+                        val incomplete = StringBuilder()
+                        initializer.forEachWaitingTask {
+                            incomplete.append(it.javaClass.simpleName).append(", ")
+                        }
+                        CsLogger.tag(TAG).e("Background initialization timeout after ${BACKGROUND_TIMEOUT_MS}ms. incomplete tasks: [$incomplete]")
+                    }
                     return ""
                 }
             })?.start()
@@ -106,12 +123,17 @@ class StartupManager {
 
     private fun runAndWait(
         shouldSkipLoopCall: Callable<Boolean>?,
+        pollIntervalMs: Long,
         chain: ArrayList<Class<*>>,
         appContext: Application,
         isDebug: Boolean,
     ) {
         while (!initializer.isAllTaskComplete()) {
-            initializer.awaitAnyTaskComplete()
+            if (pollIntervalMs > 0) {
+                initializer.awaitAnyTaskComplete(pollIntervalMs, TimeUnit.MILLISECONDS)
+            } else {
+                initializer.awaitAnyTaskComplete()
+            }
             if (shouldSkipLoopCall?.call() == true) {
                 break
             }

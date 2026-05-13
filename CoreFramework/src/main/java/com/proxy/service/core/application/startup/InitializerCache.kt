@@ -212,6 +212,13 @@ class InitializerCache<T> {
     }
 
     /**
+     * 等待任意任务完成, 带超时
+     * */
+    fun awaitAnyTaskComplete(time: Long, unit: TimeUnit): Boolean {
+        return block.poll(time, unit) != null
+    }
+
+    /**
      * 遍历等待中的任务
      * */
     fun forEachWaitingTask(observer: (T) -> Unit) {
