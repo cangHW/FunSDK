@@ -1,4 +1,6 @@
-package com.proxy.service.core.framework.io.sp
+package com.proxy.service.core.framework.io.sp.controller
+
+import com.proxy.service.core.framework.io.sp.base.SpMode
 
 /**
  * @author: cangHX

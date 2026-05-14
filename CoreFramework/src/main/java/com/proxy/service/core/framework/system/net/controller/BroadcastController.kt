@@ -20,19 +20,19 @@ import java.util.WeakHashMap
  * @desc:
  */
 class BroadcastController(
-    private val weakNetMapper: WeakHashMap<NetConnectChangedListener, Any>,
-    private val callback: () -> Unit
-) : IController {
+    weakNetMapper: WeakHashMap<NetConnectChangedListener, Any>,
+    callback: () -> Unit
+) : AbstractController(weakNetMapper, callback) {
 
     private val netIntentFilter = IntentFilter()
 
     init {
         netIntentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
-        CsLogger.tag(IController.TAG).i("run BroadcastController")
+        CsLogger.tag(TAG).i("run BroadcastController")
     }
 
     override fun start() {
-        CsLogger.tag(IController.TAG).i("start")
+        CsLogger.tag(TAG).i("start")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             CsContextManager.getApplication()
                 .registerReceiver(mReceiver, netIntentFilter, Context.RECEIVER_EXPORTED)
@@ -42,7 +42,7 @@ class BroadcastController(
     }
 
     override fun stop() {
-        CsLogger.tag(IController.TAG).i("stop")
+        CsLogger.tag(TAG).i("stop")
         CsContextManager.getApplication().unregisterReceiver(mReceiver)
     }
 
@@ -55,71 +55,36 @@ class BroadcastController(
 
     private val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            CsLogger.tag(IController.TAG).i("onReceive")
+            CsLogger.tag(TAG).i("onReceive")
             val check = CsContextManager.getApplication()
                 .checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
             if (check != PackageManager.PERMISSION_GRANTED) {
-                synchronized(weakNetMapper) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_UNKNOWN)
-                        }
-                    }
-                    callback()
-                }
+                callNetChanged(NetType.TRANSPORT_UNKNOWN)
                 return
             }
 
             if (CsNetManager.isAvailable()) {
-                synchronized(weakNetMapper) {
-                    if (isHasNet != netHas) {
-                        isHasNet = netHas
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetConnected()
-                            }
-                        }
-                    }
-                    weakNetMapper.keys.forEach {
-                        if (CsNetManager.isWifi()) {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_WIFI)
-                            }
-                        } else if (CsNetManager.isMobile2G()) {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_2G)
-                            }
-                        } else if (CsNetManager.isMobile3G()) {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_3G)
-                            }
-                        } else if (CsNetManager.isMobile4G()) {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_4G)
-                            }
-                        } else if (CsNetManager.isMobile5G()) {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_5G)
-                            }
-                        } else {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_UNKNOWN)
-                            }
-                        }
-                    }
-                    callback()
+                if (isHasNet != netHas) {
+                    isHasNet = netHas
+                    callNetConnected()
+                }
+                if (CsNetManager.isWifi()) {
+                    callNetChanged(NetType.TRANSPORT_WIFI)
+                } else if (CsNetManager.isMobile2G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_2G)
+                } else if (CsNetManager.isMobile3G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_3G)
+                } else if (CsNetManager.isMobile4G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_4G)
+                } else if (CsNetManager.isMobile5G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_5G)
+                } else {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_UNKNOWN)
                 }
             } else {
                 if (isHasNet != netNo) {
                     isHasNet = netNo
-                    synchronized(weakNetMapper) {
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetDisConnected()
-                            }
-                        }
-                        callback()
-                    }
+                    callNetDisConnected()
                 }
             }
         }

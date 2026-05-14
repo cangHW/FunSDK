@@ -11,4 +11,5 @@ object CoreConfig {
 
     var isDebug = false
 
+    var isFrameworkInitFinish = false
 }

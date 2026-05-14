@@ -35,7 +35,7 @@ class SharePathInfo private constructor(
         if (isShareFile) {
             return filePath == target
         }
-        return filePath.startsWith(target)
+        return filePath == target || filePath.startsWith(target + File.separator)
     }
 
     /**

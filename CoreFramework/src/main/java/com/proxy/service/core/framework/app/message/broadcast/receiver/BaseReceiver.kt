@@ -9,7 +9,7 @@ import android.text.TextUtils
 import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.constants.BroadcastConstants
 import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
-import com.proxy.service.core.framework.app.message.broadcast.controller.WhitelistController
+import com.proxy.service.core.framework.app.message.broadcast.whitelist.BroadcastWhitelistController
 import com.proxy.service.core.framework.app.message.broadcast.utils.BroadcastUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -40,12 +40,7 @@ abstract class BaseReceiver : BroadcastReceiver() {
             }
         }
 
-        // 同包名（同 App 多进程）直接放行
-        if (pkg == context.packageName) {
-            CsLogger.tag(getLogTag()).d("The same application.")
-            return true
-        }
-        return WhitelistController.isAllowedSender(getLogTag(), context, pkg)
+        return BroadcastWhitelistController.getInstance().isAllowedSender(getLogTag(), context, pkg)
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {

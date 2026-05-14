@@ -14,6 +14,7 @@ import net.lingala.zip4j.model.enums.AesKeyStrength
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
 import net.lingala.zip4j.model.enums.EncryptionMethod
+import net.lingala.zip4j.progress.ProgressMonitor
 import java.io.File
 
 /**
@@ -27,6 +28,8 @@ import java.io.File
 object CsZipUtils {
 
     private const val TAG = "${CoreConfig.TAG}Zip"
+    private const val RESULT_SUCCESS = -1
+    private const val RESULT_FAILED = -2
 
     private val callbackThreadLocal = ThreadLocal<ZipCallback>()
     private val passwordThreadLocal = ThreadLocal<String>()
@@ -56,8 +59,9 @@ object CsZipUtils {
         val callback = getCallback()
         val password = getPassword()
 
+        var zipFile: ZipFile? = null
         try {
-            val zipFile = ZipFile(src)
+            zipFile = ZipFile(src)
             if (!zipFile.isValidZipFile) {
                 callback?.onFailed()
                 return false
@@ -74,6 +78,11 @@ object CsZipUtils {
             return true
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
+        } finally {
+            try {
+                zipFile?.close()
+            } catch (_: Throwable) {
+            }
         }
         callback?.onFailed()
         return false
@@ -103,39 +112,51 @@ object CsZipUtils {
                 zipFile.setPassword(password.toCharArray())
             }
 
-            if (progressCallback != null) {
-                val progressMonitor = zipFile.progressMonitor
-                CsTask.computationThread()?.call(object : IMultiRunnable<Int> {
-                    override fun accept(emitter: MultiRunnableEmitter<Int>) {
-                        var progress = progressMonitor.percentDone
-                        while (progress < 100) {
-                            emitter.onNext(progress)
-
-                            try {
-                                Thread.sleep(50)
-                            } catch (throwable: Throwable) {
-                                CsLogger.tag(TAG).e(throwable)
-                            }
-
-                            progress = if (progressMonitor.result != null) {
-                                100
-                            } else {
-                                progressMonitor.percentDone
-                            }
-                        }
-                        emitter.onNext(progress)
-                        emitter.onComplete()
-                    }
-                })?.mainThread()?.doOnNext(object : IConsumer<Int> {
-                    override fun accept(value: Int) {
-                        progressCallback.onProgress(value)
-                    }
-                })?.start()
-            }
-
             zipFile.isRunInThread = true
+            val progressMonitor = zipFile.progressMonitor
             zipFile.extractAll(dest)
-            callback?.onSuccess()
+
+            CsTask.ioThread()?.call(object : IMultiRunnable<Int> {
+                override fun accept(emitter: MultiRunnableEmitter<Int>) {
+                    while (progressMonitor.state == ProgressMonitor.State.BUSY) {
+                        emitter.onNext(progressMonitor.percentDone)
+                        try {
+                            Thread.sleep(50)
+                        } catch (throwable: Throwable) {
+                            CsLogger.tag(TAG).e(throwable)
+                        }
+                    }
+
+                    if (progressMonitor.result == ProgressMonitor.Result.SUCCESS) {
+                        emitter.onNext(RESULT_SUCCESS)
+                    } else {
+                        CsLogger.tag(TAG)
+                            .e("unzipAsync failed. result=${progressMonitor.result}, exception=${progressMonitor.exception}")
+                        emitter.onNext(RESULT_FAILED)
+                    }
+                    emitter.onComplete()
+
+                    try {
+                        zipFile.close()
+                    } catch (_: Throwable) {
+                    }
+                }
+            })?.mainThread()?.doOnNext(object : IConsumer<Int> {
+                override fun accept(value: Int) {
+                    when (value) {
+                        RESULT_SUCCESS -> {
+                            progressCallback?.onProgress(100)
+                            callback?.onSuccess()
+                        }
+                        RESULT_FAILED -> {
+                            callback?.onFailed()
+                        }
+                        else -> {
+                            progressCallback?.onProgress(value)
+                        }
+                    }
+                }
+            })?.start()
         } catch (throwable: Throwable) {
             callback?.onFailed()
             CsLogger.tag(TAG).e(throwable)
@@ -160,8 +181,9 @@ object CsZipUtils {
         parameters.compressionMethod = CompressionMethod.DEFLATE
         parameters.compressionLevel = CompressionLevel.NORMAL
 
+        var zipFile: ZipFile? = null
         try {
-            val zipFile = if (!password.isNullOrBlank() && password.isNotEmpty()) {
+            zipFile = if (!password.isNullOrBlank() && password.isNotEmpty()) {
                 parameters.isEncryptFiles = true
                 parameters.encryptionMethod = EncryptionMethod.AES
                 parameters.aesKeyStrength = AesKeyStrength.KEY_STRENGTH_128
@@ -177,8 +199,101 @@ object CsZipUtils {
                     zipFile.addFolder(File(path), parameters)
                 }
             }
-            zipFile.close()
             callback?.onSuccess()
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).e(throwable)
+            callback?.onFailed()
+        } finally {
+            try {
+                zipFile?.close()
+            } catch (_: Throwable) {
+            }
+        }
+    }
+
+    /**
+     * 异步压缩
+     * @param fileList 待压缩文件路径集合
+     * @param dest 压缩文件路径
+     * @param progressCallback 进度回调
+     * */
+    fun zipAsync(fileList: List<String>, dest: String, progressCallback: ZipProgressCallback? = null) {
+        val callback = getCallback()
+        val password = getPassword()
+
+        val destFile = File(dest)
+        destFile.parentFile?.let {
+            CsFileUtils.createDir(it)
+        }
+
+        val parameters = ZipParameters()
+        parameters.compressionMethod = CompressionMethod.DEFLATE
+        parameters.compressionLevel = CompressionLevel.NORMAL
+
+        try {
+            val zipFile = if (!password.isNullOrBlank() && password.isNotEmpty()) {
+                parameters.isEncryptFiles = true
+                parameters.encryptionMethod = EncryptionMethod.AES
+                parameters.aesKeyStrength = AesKeyStrength.KEY_STRENGTH_128
+                ZipFile(dest, password.toCharArray())
+            } else {
+                ZipFile(dest)
+            }
+
+            zipFile.isRunInThread = true
+            val progressMonitor = zipFile.progressMonitor
+
+            fileList.forEach { path ->
+                if (CsFileUtils.isFile(path)) {
+                    zipFile.addFile(path, parameters)
+                } else if (CsFileUtils.isDir(path)) {
+                    zipFile.addFolder(File(path), parameters)
+                }
+            }
+
+            CsTask.ioThread()?.call(object : IMultiRunnable<Int> {
+                override fun accept(emitter: MultiRunnableEmitter<Int>) {
+                    while (progressMonitor.state == ProgressMonitor.State.BUSY) {
+                        emitter.onNext(progressMonitor.percentDone)
+                        try {
+                            Thread.sleep(50)
+                        } catch (throwable: Throwable) {
+                            CsLogger.tag(TAG).e(throwable)
+                        }
+                    }
+
+                    if (progressMonitor.result == ProgressMonitor.Result.SUCCESS) {
+                        emitter.onNext(RESULT_SUCCESS)
+                    } else {
+                        CsLogger.tag(TAG)
+                            .e("zipAsync failed. result=${progressMonitor.result}, exception=${progressMonitor.exception}")
+                        emitter.onNext(RESULT_FAILED)
+                    }
+                    emitter.onComplete()
+
+                    try {
+                        zipFile.close()
+                    } catch (_: Throwable) {
+                    }
+                }
+            })?.mainThread()?.doOnNext(object : IConsumer<Int> {
+                override fun accept(value: Int) {
+                    when {
+                        value == RESULT_SUCCESS -> {
+                            progressCallback?.onProgress(100)
+                            callback?.onSuccess()
+                        }
+
+                        value == RESULT_FAILED -> {
+                            callback?.onFailed()
+                        }
+
+                        else -> {
+                            progressCallback?.onProgress(value)
+                        }
+                    }
+                }
+            })?.start()
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
             callback?.onFailed()

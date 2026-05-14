@@ -12,6 +12,7 @@ import com.proxy.service.core.framework.system.sound.info.SoundConfig
 import com.proxy.service.core.framework.system.sound.info.SoundInfo
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * 音频工具类
@@ -22,10 +23,10 @@ import com.proxy.service.threadpool.base.thread.task.ICallable
  */
 object CsSoundUtils {
 
-    private val soundConfigMap = HashMap<String, SoundConfig>()
-    private val soundPoolMap = HashMap<String, SoundPool>()
+    private val soundConfigMap = ConcurrentHashMap<String, SoundConfig>()
+    private val soundPoolMap = ConcurrentHashMap<String, SoundPool>()
 
-    private val soundInfoMap = HashMap<String, SoundInfo>()
+    private val soundInfoMap = ConcurrentHashMap<String, SoundInfo>()
 
     /**
      * 初始化, 可以多次调用。
@@ -325,7 +326,7 @@ object CsSoundUtils {
 
     private class LoadCompleteListener(
         private val poolName: String,
-        private val soundMap: HashMap<String, SoundInfo>
+        private val soundMap: ConcurrentHashMap<String, SoundInfo>
     ) : SoundPool.OnLoadCompleteListener {
         override fun onLoadComplete(soundPool: SoundPool?, sampleId: Int, status: Int) {
             synchronized(soundMap) {

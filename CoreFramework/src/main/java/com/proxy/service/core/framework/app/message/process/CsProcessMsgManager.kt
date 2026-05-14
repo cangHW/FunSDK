@@ -1,6 +1,7 @@
 package com.proxy.service.core.framework.app.message.process
 
 import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
+import com.proxy.service.core.framework.app.message.broadcast.whitelist.BroadcastWhitelistController
 import com.proxy.service.core.framework.app.message.process.bean.MessageType
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessage
 import com.proxy.service.core.framework.app.message.process.bean.ShareMessageFactory
@@ -13,10 +14,12 @@ import com.proxy.service.core.framework.app.message.process.channel.provider.Pro
 import com.proxy.service.core.framework.app.message.process.constants.ShareDataConstants
 import com.proxy.service.core.framework.app.message.process.request.RequestDispatch
 import com.proxy.service.core.framework.app.message.process.response.ResponseDispatch
+import com.proxy.service.core.framework.app.message.process.whitelist.WhitelistFactory
 import com.proxy.service.core.framework.app.message.process.woker.AbstractAsyncWorker
 import com.proxy.service.core.framework.app.message.process.woker.AbstractSyncWorker
 import com.proxy.service.core.framework.app.message.process.woker.AbstractWorker
 import com.proxy.service.core.framework.app.message.provider.ContentProviderImpl
+import com.proxy.service.core.framework.app.message.provider.whitelist.ProviderWhitelistController
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -29,7 +32,10 @@ import java.util.concurrent.TimeUnit
  * @date: 2025/9/17 18:53
  * @desc:
  */
-class CsProcessMsgManager private constructor(private val toPkg: String, private val method: String) {
+class CsProcessMsgManager private constructor(
+    private val toPkg: String,
+    private val method: String
+) {
 
     companion object {
         private const val DEFAULT_VERSION: String = "V1"
@@ -44,6 +50,14 @@ class CsProcessMsgManager private constructor(private val toPkg: String, private
                 ShareDataConstants.SHARE_DATA_BROADCAST_ACTION_NAME,
                 BroadcastFactory.getInstance()
             )
+        }
+
+        /**
+         * 添加白名单配置
+         * */
+        fun addWhitelistConfig(factory: WhitelistFactory) {
+            BroadcastWhitelistController.getInstance().addWhitelistFactory(factory)
+            ProviderWhitelistController.getInstance().addWhitelistFactory(factory)
         }
 
         /**

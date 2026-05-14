@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.app.message.broadcast.controller
+package com.proxy.service.core.framework.app.message.process.whitelist
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -6,38 +6,13 @@ import com.proxy.service.core.framework.app.CsAppUtils
 import com.proxy.service.core.framework.app.install.CsInstallUtils
 import com.proxy.service.core.framework.app.install.callback.InstallReceiverListener
 import com.proxy.service.core.framework.app.install.status.InstallStatusEnum
-import com.proxy.service.core.framework.collections.CsExcellentList
-import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author: cangHX
- * @date: 2026/5/13 14:43
+ * @date: 2026/5/13 20:17
  * @desc:
  */
-object WhitelistController {
-
-    private val factoryList = CsExcellentList<WhitelistFactory>()
-
-
-    fun addWhitelistFactory(factory: WhitelistFactory) {
-        factoryList.putSync(factory)
-    }
-
-    fun isAllowedSender(tag: String, context: Context, pkg: String): Boolean {
-        if (factoryList.size() == 0) {
-            CsLogger.tag(tag).w("The whitelist policy has not yet been configured.")
-            return true
-        }
-        for (factory in factoryList.getAll()) {
-            if (factory.isAllowedSender(context, pkg)) {
-                return true
-            }
-        }
-        return false
-    }
-}
-
 sealed class WhitelistFactory {
 
     abstract fun isAllowedSender(context: Context, pkg: String): Boolean

@@ -2,14 +2,14 @@ package com.proxy.service.core.framework.app.message.broadcast
 
 import com.proxy.service.core.framework.app.message.broadcast.callback.BroadcastMsgListener
 import com.proxy.service.core.framework.app.message.broadcast.callback.OrderedBroadcastMsgListener
+import com.proxy.service.core.framework.app.message.broadcast.whitelist.BroadcastWhitelistController
 import com.proxy.service.core.framework.app.message.broadcast.controller.CallbackController
-import com.proxy.service.core.framework.app.message.broadcast.controller.WhitelistController
-import com.proxy.service.core.framework.app.message.broadcast.controller.WhitelistFactory
 import com.proxy.service.core.framework.app.message.broadcast.factory.DynamicBroadcast
 import com.proxy.service.core.framework.app.message.broadcast.factory.StaticBroadcast
 import com.proxy.service.core.framework.app.message.broadcast.factory.base.IDynamicBroadcast
 import com.proxy.service.core.framework.app.message.broadcast.factory.base.IStaticBroadcast
 import com.proxy.service.core.framework.app.message.broadcast.utils.BroadcastUtils
+import com.proxy.service.core.framework.app.message.process.whitelist.WhitelistFactory
 
 /**
  * 广播相关操作工具，只能接收到当前类发送的广播。
@@ -24,7 +24,7 @@ object CsBroadcastManager {
      * 添加白名单配置
      * */
     fun addWhitelistConfig(factory: WhitelistFactory) {
-        WhitelistController.addWhitelistFactory(factory)
+        BroadcastWhitelistController.getInstance().addWhitelistFactory(factory)
     }
 
     /**

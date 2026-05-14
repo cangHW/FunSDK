@@ -2,6 +2,8 @@ package com.proxy.service.core.framework.app.message.provider
 
 import android.os.Bundle
 import com.proxy.service.core.framework.app.install.CsInstallUtils
+import com.proxy.service.core.framework.app.message.process.whitelist.WhitelistFactory
+import com.proxy.service.core.framework.app.message.provider.whitelist.ProviderWhitelistController
 import com.proxy.service.core.framework.data.log.CsLogger
 
 /**
@@ -14,6 +16,13 @@ import com.proxy.service.core.framework.data.log.CsLogger
 object CsProviderManager {
 
     private const val METHOD_PREFIX = "app_"
+
+    /**
+     * 添加白名单配置
+     * */
+    fun addWhitelistConfig(factory: WhitelistFactory) {
+        ProviderWhitelistController.getInstance().addWhitelistFactory(factory)
+    }
 
     /**
      * 添加消息回调, 同一个 method 只能绑定一个监听

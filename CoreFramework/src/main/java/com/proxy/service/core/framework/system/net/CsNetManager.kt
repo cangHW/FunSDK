@@ -7,11 +7,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.telephony.TelephonyManager
 import com.proxy.service.core.framework.app.context.CsContextManager
-import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
 import com.proxy.service.core.framework.system.net.controller.BroadcastController
 import com.proxy.service.core.framework.system.net.controller.NetworkController
-import com.proxy.service.core.framework.system.net.controller.IController
+import com.proxy.service.core.framework.system.net.controller.AbstractController
 import java.util.WeakHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -178,7 +177,7 @@ object CsNetManager {
     private val any = Any()
     private val isReceiverRun = AtomicBoolean(false)
     private val weakNetMapper = WeakHashMap<NetConnectChangedListener, Any>()
-    private var controller: IController? = null
+    private var controller: AbstractController? = null
 
     /**
      * 注册网络状态变化监听, 弱引用
@@ -215,10 +214,12 @@ object CsNetManager {
     }
 
     private fun checkWeakNetMapperState() {
-        if (weakNetMapper.size == 0) {
-            controller?.stop()
-            controller = null
-            isReceiverRun.set(false)
+        synchronized(weakNetMapper) {
+            if (weakNetMapper.size == 0) {
+                controller?.stop()
+                controller = null
+                isReceiverRun.set(false)
+            }
         }
     }
 }

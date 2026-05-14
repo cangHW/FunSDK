@@ -18,17 +18,17 @@ import java.util.WeakHashMap
  */
 class NetworkController(
     private val connectivityManager: ConnectivityManager?,
-    private val weakNetMapper: WeakHashMap<NetConnectChangedListener, Any>,
-    private val callback: () -> Unit
-) : IController {
+    weakNetMapper: WeakHashMap<NetConnectChangedListener, Any>,
+    callback: () -> Unit
+) : AbstractController(weakNetMapper, callback) {
 
     init {
-        CsLogger.tag(IController.TAG).i("run NetworkController")
+        CsLogger.tag(TAG).i("run NetworkController")
     }
 
     @RequiresPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
     override fun start() {
-        CsLogger.tag(IController.TAG).i("start")
+        CsLogger.tag(TAG).i("start")
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
@@ -36,7 +36,7 @@ class NetworkController(
     }
 
     override fun stop() {
-        CsLogger.tag(IController.TAG).i("stop")
+        CsLogger.tag(TAG).i("stop")
         connectivityManager?.unregisterNetworkCallback(networkCallback)
     }
 
@@ -45,28 +45,14 @@ class NetworkController(
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
-            synchronized(weakNetMapper) {
-                weakNetMapper.keys.forEach {
-                    IController.runUiThread {
-                        it.onNetConnected()
-                    }
-                }
-                callback()
-            }
+            callNetConnected()
         }
 
         override fun onLost(network: Network) {
             super.onLost(network)
-            CsLogger.tag(IController.TAG).i("onLost network= $network")
+            CsLogger.tag(TAG).i("onLost network= $network")
             networkId = ""
-            synchronized(weakNetMapper) {
-                weakNetMapper.keys.forEach {
-                    IController.runUiThread {
-                        it.onNetDisConnected()
-                    }
-                }
-                callback()
-            }
+            callNetDisConnected()
         }
 
         override fun onCapabilitiesChanged(
@@ -79,96 +65,39 @@ class NetworkController(
                 return
             }
             networkId = nId
-            CsLogger.tag(IController.TAG).i("onCapabilitiesChanged network= $network, networkCapabilities = $networkCapabilities")
-            synchronized(weakNetMapper) {
-                if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_WIFI)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    if (CsNetManager.isMobile2G()) {
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_2G)
-                            }
-                        }
-                    } else if (CsNetManager.isMobile3G()) {
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_3G)
-                            }
-                        }
-                    } else if (CsNetManager.isMobile4G()) {
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_4G)
-                            }
-                        }
-                    } else if (CsNetManager.isMobile5G()) {
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_5G)
-                            }
-                        }
-                    } else {
-                        weakNetMapper.keys.forEach {
-                            IController.runUiThread {
-                                it.onNetChanged(NetType.TRANSPORT_CELLULAR_UNKNOWN)
-                            }
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_BLUETOOTH)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_ETHERNET)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_VPN)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_WIFI_AWARE)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_LOWPAN)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_LOWPAN)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_USB)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_USB)
-                        }
-                    }
-                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_THREAD)) {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_THREAD)
-                        }
-                    }
+            CsLogger.tag(TAG)
+                .i("onCapabilitiesChanged network= $network, networkCapabilities = $networkCapabilities")
+
+            if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                callNetChanged(NetType.TRANSPORT_WIFI)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                if (CsNetManager.isMobile2G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_2G)
+                } else if (CsNetManager.isMobile3G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_3G)
+                } else if (CsNetManager.isMobile4G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_4G)
+                } else if (CsNetManager.isMobile5G()) {
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_5G)
                 } else {
-                    weakNetMapper.keys.forEach {
-                        IController.runUiThread {
-                            it.onNetChanged(NetType.TRANSPORT_UNKNOWN)
-                        }
-                    }
+                    callNetChanged(NetType.TRANSPORT_CELLULAR_UNKNOWN)
                 }
-                callback()
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)) {
+                callNetChanged(NetType.TRANSPORT_BLUETOOTH)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                callNetChanged(NetType.TRANSPORT_ETHERNET)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                callNetChanged(NetType.TRANSPORT_VPN)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI_AWARE)) {
+                callNetChanged(NetType.TRANSPORT_WIFI_AWARE)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_LOWPAN)) {
+                callNetChanged(NetType.TRANSPORT_LOWPAN)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_USB)) {
+                callNetChanged(NetType.TRANSPORT_USB)
+            } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_THREAD)) {
+                callNetChanged(NetType.TRANSPORT_THREAD)
+            } else {
+                callNetChanged(NetType.TRANSPORT_UNKNOWN)
             }
         }
 

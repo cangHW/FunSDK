@@ -1,124 +1,133 @@
-package com.proxy.service.core.framework.io.sp
+package com.proxy.service.core.framework.io.sp.impl
 
 import android.os.Parcelable
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.tencent.mmkv.MMKV
+import com.proxy.service.core.framework.io.sp.base.SpInit
+import com.proxy.service.core.framework.io.sp.base.SpMode
+import com.proxy.service.core.framework.io.sp.controller.ISpAction
+import com.proxy.service.core.framework.io.sp.controller.ISpController
 
 /**
  * @author: cangHX
- * @date: 2025/10/15 20:29
+ * @date: 2026/5/14 10:56
  * @desc:
  */
-class SpControllerImpl(private val mmkv: MMKV) : ISpController {
+abstract class SpActionImpl : ISpAction {
+
+    protected open fun getSp(): ISpController {
+        return SpInit.getSp(null, SpMode.SINGLE_PROCESS_MODE, null)
+    }
 
     override fun sync() {
-        mmkv.sync()
+        getSp().sync()
     }
 
     override fun async() {
-        mmkv.async()
+        getSp().async()
     }
 
     override fun clearMemoryCache() {
-        mmkv.clearMemoryCache()
+        getSp().clearMemoryCache()
     }
 
     override fun clearAllCache() {
-        mmkv.clearAll()
-        SpInit.remove(this)
+        getSp().clearAllCache()
     }
 
     override fun close() {
-        mmkv.close()
-        SpInit.remove(this)
+        getSp().close()
     }
 
     override fun removeValueForKey(key: String) {
-        mmkv.removeValueForKey(key)
+        getSp().removeValueForKey(key)
     }
 
     override fun removeValuesForKeys(keys: Array<String>) {
-        mmkv.removeValuesForKeys(keys)
+        getSp().removeValuesForKeys(keys)
     }
 
     override fun trim() {
-        mmkv.trim()
+        getSp().trim()
     }
 
     override fun allKeys(): Array<String> {
-        try {
-            val keys = mmkv.allKeys()
-            if (keys != null) {
-                return keys.filterNotNull().toTypedArray()
-            }
-        } catch (throwable: Throwable) {
-            CsLogger.tag(SpInit.TAG).d(throwable)
+        return getSp().allKeys()
+    }
+
+    override fun getRootDir(): String {
+        val dir = SpInit.getRootPath()
+        if (dir.isEmpty()) {
+            CsLogger.tag(SpInit.TAG).e("ScCore is not init.")
         }
-        return arrayOf()
+        return dir
+    }
+
+    override fun getController(): ISpController {
+        return getSp()
     }
 
     override fun put(key: String, value: Int): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Long): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Float): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Double): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Boolean): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: String?): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: ByteArray?): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Parcelable?): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun put(key: String, value: Set<String>?): Boolean {
-        return mmkv.encode(key, value)
+        return getSp().put(key, value)
     }
 
     override fun getInt(key: String, defaultValue: Int): Int {
-        return mmkv.decodeInt(key, defaultValue)
+        return getSp().getInt(key, defaultValue)
     }
 
     override fun getLong(key: String, defaultValue: Long): Long {
-        return mmkv.decodeLong(key, defaultValue)
+        return getSp().getLong(key, defaultValue)
     }
 
     override fun getFloat(key: String, defaultValue: Float): Float {
-        return mmkv.decodeFloat(key, defaultValue)
+        return getSp().getFloat(key, defaultValue)
     }
 
     override fun getDouble(key: String, defaultValue: Double): Double {
-        return mmkv.decodeDouble(key, defaultValue)
+        return getSp().getDouble(key, defaultValue)
     }
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        return mmkv.decodeBool(key, defaultValue)
+        return getSp().getBoolean(key, defaultValue)
     }
 
     override fun getString(key: String, defaultValue: String?): String? {
-        return mmkv.decodeString(key, defaultValue)
+        return getSp().getString(key, defaultValue)
     }
 
     override fun getByteArray(key: String, defaultValue: ByteArray?): ByteArray? {
-        return mmkv.decodeBytes(key, defaultValue)
+        return getSp().getByteArray(key, defaultValue)
     }
 
     override fun <T : Parcelable> getParcelable(
@@ -126,10 +135,11 @@ class SpControllerImpl(private val mmkv: MMKV) : ISpController {
         tClass: Class<T>,
         defaultValue: T?
     ): T? {
-        return mmkv.decodeParcelable(key, tClass, defaultValue)
+        return getSp().getParcelable(key, tClass, defaultValue)
     }
 
     override fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>? {
-        return mmkv.decodeStringSet(key, defaultValue)
+        return getSp().getStringSet(key, defaultValue)
     }
+
 }

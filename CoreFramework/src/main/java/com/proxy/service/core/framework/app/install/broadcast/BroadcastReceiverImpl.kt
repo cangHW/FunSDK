@@ -13,7 +13,7 @@ import com.proxy.service.core.framework.app.install.callback.InstallReceiverList
 import com.proxy.service.core.framework.collections.CsExcellentSet
 import com.proxy.service.core.framework.collections.type.Type
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.system.net.controller.IController
+import com.proxy.service.core.framework.system.net.controller.AbstractController
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -60,7 +60,7 @@ class BroadcastReceiverImpl : BroadcastReceiver() {
     }
 
     fun start() {
-        CsLogger.tag(IController.TAG).i("start")
+        CsLogger.tag(AbstractController.TAG).i("start")
 
         val intentFilter = IntentFilter()
         intentFilter.addAction(InstallStatusEnum.PACKAGE_ADDED.value)

@@ -7,6 +7,8 @@ import android.net.Uri
 import android.os.Bundle
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.app.message.broadcast.whitelist.BroadcastWhitelistController
+import com.proxy.service.core.framework.app.message.provider.whitelist.ProviderWhitelistController
 import com.proxy.service.core.framework.collections.CsExcellentMap
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.util.concurrent.TimeUnit
@@ -77,12 +79,40 @@ class ContentProviderImpl : ContentProvider() {
     }
 
     override fun call(method: String, arg: String?, extras: Bundle?): Bundle? {
-        val listener =
-            receiverMap.getOrWait(method, TIME_OUT_WAITING_FOR_INIT, TimeUnit.MILLISECONDS)
-
-        val fromPkg = callingPackage ?: ""
+        val fromPkg = callingPackage
+        val ctx = context
         CsLogger.tag(TAG)
             .d("receive: fromPkg = $fromPkg, method = $method, arg = $arg, extras = $extras")
+
+        if (fromPkg.isNullOrBlank()) {
+            return null
+        }
+
+        if (ctx != null) {
+            if (!ProviderWhitelistController.getInstance().isAllowedSender(TAG, ctx, fromPkg)) {
+                CsLogger.tag(TAG).e("The pkg is illegal. fromPkg=$fromPkg")
+                return null
+            }
+        }
+
+        val listener = if (CoreConfig.isFrameworkInitFinish) {
+            receiverMap.get(method)
+        } else {
+            receiverMap.getOrWait(method, TIME_OUT_WAITING_FOR_INIT, TimeUnit.MILLISECONDS)
+        }
+
+        if (listener != null) {
+            val isAllowedSender = ProviderWhitelistController.getInstance()
+                .isAllowedSender(
+                    TAG,
+                    CsContextManager.getApplication(),
+                    fromPkg
+                )
+            if (!isAllowedSender) {
+                CsLogger.tag(TAG).e("The pkg is illegal. fromPkg=$fromPkg")
+                return null
+            }
+        }
 
         return listener?.onReceive(context, fromPkg, arg, extras)
     }

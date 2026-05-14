@@ -28,6 +28,12 @@ class CsExcellentList<V> : IList<V> {
         }
     }
 
+    override fun removeDataChangedCallback(callback: OnDataChangedCallback<V>) {
+        synchronized(dataChangedCallbacks) {
+            dataChangedCallbacks.remove(callback)
+        }
+    }
+
     override fun size(): Int {
         read.lock()
         try {
@@ -115,12 +121,6 @@ class CsExcellentList<V> : IList<V> {
             return list.contains(v)
         } finally {
             read.unlock()
-        }
-    }
-
-    override fun removeDataChangedCallback(callback: OnDataChangedCallback<V>) {
-        synchronized(dataChangedCallbacks) {
-            dataChangedCallbacks.remove(callback)
         }
     }
 
@@ -253,17 +253,17 @@ class CsExcellentList<V> : IList<V> {
 
     private fun sendDataAdd(value: V) {
         synchronized(dataChangedCallbacks) {
-            dataChangedCallbacks.forEach {
-                it.onDataAdd(value)
-            }
+            ArrayList(dataChangedCallbacks)
+        }.forEach {
+            it.onDataAdd(value)
         }
     }
 
     private fun sendDataRemoved(value: V) {
         synchronized(dataChangedCallbacks) {
-            dataChangedCallbacks.forEach {
-                it.onDataRemoved(value)
-            }
+            ArrayList(dataChangedCallbacks)
+        }.forEach {
+            it.onDataRemoved(value)
         }
     }
 }

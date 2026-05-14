@@ -105,6 +105,7 @@ object CsCore {
             shouldThrow
         )
 
+        CoreConfig.isFrameworkInitFinish = true
         if (isDebug) {
             CsLogger.tag(StartupManager.TAG)
                 .d("CsCore init finish. total usage time ${System.currentTimeMillis() - startInitTime}ms")

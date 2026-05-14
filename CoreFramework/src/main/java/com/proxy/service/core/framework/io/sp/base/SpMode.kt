@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.io.sp
+package com.proxy.service.core.framework.io.sp.base
 
 import com.tencent.mmkv.MMKV
 
