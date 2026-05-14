@@ -48,13 +48,10 @@ abstract class CsBaseRecyclerViewAdapter<VH : CsBaseRecyclerViewHolder<DATA>, DA
     /**
      * 获取数据
      * */
-    open fun getData(isCopy: Boolean = false): ArrayList<DATA> {
-        if (isCopy) {
-            val list = ArrayList<DATA>()
-            list.addAll(dataList)
-            return list
-        }
-        return dataList
+    open fun getData(): ArrayList<DATA> {
+        val list = ArrayList<DATA>()
+        list.addAll(dataList)
+        return list
     }
 
 

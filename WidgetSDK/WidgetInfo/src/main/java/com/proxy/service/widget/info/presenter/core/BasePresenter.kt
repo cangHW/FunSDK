@@ -68,10 +68,17 @@ abstract class BasePresenter : ILifecycle {
     /**
      * 创建 view
      * */
-    abstract fun onCreateView(context: Context, inflater: LayoutInflater, container: ViewGroup): View?
+    abstract fun onCreateView(
+        context: Context,
+        inflater: LayoutInflater,
+        container: ViewGroup
+    ): View?
 
 
     override fun onDestroy() {
+        this.context = null
+        this.rootParentViewGroup = null
+        this.rootView = null
         this.activity = null
         this.fragment = null
         this.lifecycleOwner = null

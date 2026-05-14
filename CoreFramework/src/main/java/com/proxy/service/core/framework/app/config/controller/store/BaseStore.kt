@@ -2,7 +2,7 @@ package com.proxy.service.core.framework.app.config.controller.store
 
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.io.sp.CsSpManager
-import com.proxy.service.core.framework.io.sp.base.SpMode
+import com.proxy.service.core.framework.io.sp.SpMode
 
 /**
  * @author: cangHX

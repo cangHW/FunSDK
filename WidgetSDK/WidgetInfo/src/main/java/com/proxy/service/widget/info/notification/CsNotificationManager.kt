@@ -48,6 +48,7 @@ object CsNotificationManager {
     ) {
         if (!CsPermission.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
             CsLogger.tag(NotificationConstants.TAG).e("No notification permission.")
+            return
         }
 
         val channel = ChannelManager.getInstance().get(config.getChannelId())
@@ -84,6 +85,7 @@ object CsNotificationManager {
     ) {
         if (!CsPermission.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
             CsLogger.tag(NotificationConstants.TAG).e("No notification permission.")
+            return
         }
 
         val channel = ChannelManager.getInstance().get(config.getChannelId())

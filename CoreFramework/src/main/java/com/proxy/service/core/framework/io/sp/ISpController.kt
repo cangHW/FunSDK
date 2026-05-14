@@ -1,4 +1,4 @@
-package com.proxy.service.core.framework.io.sp.controller
+package com.proxy.service.core.framework.io.sp
 
 import android.os.Parcelable
 

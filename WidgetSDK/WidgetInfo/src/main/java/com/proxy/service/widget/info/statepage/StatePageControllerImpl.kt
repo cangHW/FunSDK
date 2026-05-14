@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.core.utils.ThreadUtils
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.widget.info.R
 import com.proxy.service.widget.info.statepage.config.EmptyPageType
@@ -61,53 +62,38 @@ class StatePageControllerImpl(
     }
 
     override fun showSuccess() {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                contentView?.visibility = View.VISIBLE
-                hideLoading()
-                hideEmpty()
-                hideError()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            contentView?.visibility = View.VISIBLE
+            hideLoading()
+            hideEmpty()
+            hideError()
+        }
     }
 
     override fun hideContent() {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                contentView?.visibility = View.INVISIBLE
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            contentView?.visibility = View.INVISIBLE
+        }
     }
 
     override fun showLoadingOnly(any: Any?) {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadingController?.show(any)
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            loadingController?.show(any)
+        }
     }
 
     override fun showLoading(any: Any?) {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadingController?.show(any)
-                hideEmpty()
-                hideError()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            loadingController?.show(any)
+            hideEmpty()
+            hideError()
+        }
     }
 
     override fun hideLoading() {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                loadingController?.hide()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            loadingController?.hide()
+        }
     }
 
     override fun showError(
@@ -116,43 +102,31 @@ class StatePageControllerImpl(
         any: Any?,
         buttonClick: ((any: Any?) -> Unit)?
     ) {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                errorController?.show(message, buttonTxt, any, buttonClick)
-                hideLoading()
-                hideEmpty()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            errorController?.show(message, buttonTxt, any, buttonClick)
+            hideLoading()
+            hideEmpty()
+        }
     }
 
     override fun hideError() {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                errorController?.hide()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            errorController?.hide()
+        }
     }
 
     override fun showEmpty(message: String?, any: Any?, buttonClick: ((any: Any?) -> Unit)?) {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                emptyController?.show(message, any, buttonClick)
-                hideLoading()
-                hideError()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            emptyController?.show(message, any, buttonClick)
+            hideLoading()
+            hideError()
+        }
     }
 
     override fun hideEmpty() {
-        CsTask.mainThread()?.call(object : ICallable<String> {
-            override fun accept(): String {
-                emptyController?.hide()
-                return ""
-            }
-        })?.start()
+        ThreadUtils.runUiThread {
+            emptyController?.hide()
+        }
     }
 
 }

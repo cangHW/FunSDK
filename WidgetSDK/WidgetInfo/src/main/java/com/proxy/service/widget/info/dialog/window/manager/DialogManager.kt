@@ -66,8 +66,8 @@ object DialogManager {
                     it.checkStrategyWhenShown(currentDialogs, dialog)
                 }
                 currentDialogs.lastOrNull()?.stop()
-                dialog.start()
                 currentDialogs.add(dialog)
+                dialog.start()
                 return@start
             }
 
@@ -106,7 +106,7 @@ object DialogManager {
     }
 
     private fun tryShowNextDialog() {
-        for (dialog in pendingDialogs) {
+        for (dialog in getPendingDialogs()) {
             if (!dialog.isDialogShouldShow()) {
                 continue
             }
@@ -132,9 +132,9 @@ object DialogManager {
 
             pendingDialogs.remove(dialog)
             lastShowDialog?.stop()
-            currentDialogs.add(dialog)
-        }
 
-        currentDialogs.lastOrNull()?.start()
+            currentDialogs.add(dialog)
+            dialog.start()
+        }
     }
 }

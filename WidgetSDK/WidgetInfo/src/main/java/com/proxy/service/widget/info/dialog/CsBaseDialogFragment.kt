@@ -67,6 +67,10 @@ open class CsBaseDialogFragment : DialogFragment() {
         }
 
         try {
+            if (isAdded) {
+                dismissAllowingStateLoss()
+            }
+
             val dismissedField = DialogFragment::class.java.getDeclaredField("mDismissed")
             dismissedField.isAccessible = true
             dismissedField.set(this, false)

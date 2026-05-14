@@ -5,6 +5,7 @@ import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.system.net.NetType
 import com.proxy.service.core.framework.system.net.callback.NetConnectChangedListener
 import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.core.utils.ThreadUtils
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import java.util.WeakHashMap
 
@@ -35,7 +36,7 @@ abstract class AbstractController constructor(
 
     protected fun callNetConnected() {
         getListenersSafe().forEach {
-            runUiThread {
+            ThreadUtils.runUiThread {
                 it.onNetConnected()
             }
         }
@@ -44,7 +45,7 @@ abstract class AbstractController constructor(
 
     protected fun callNetDisConnected() {
         getListenersSafe().forEach {
-            runUiThread {
+            ThreadUtils.runUiThread {
                 it.onNetDisConnected()
             }
         }
@@ -53,23 +54,10 @@ abstract class AbstractController constructor(
 
     protected fun callNetChanged(type: NetType) {
         getListenersSafe().forEach {
-            runUiThread {
+            ThreadUtils.runUiThread {
                 it.onNetChanged(type)
             }
         }
         callback()
-    }
-
-    private fun runUiThread(runnable: Runnable) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            runnable.run()
-        } else {
-            CsTask.mainThread()?.call(object : ICallable<String> {
-                override fun accept(): String {
-                    runnable.run()
-                    return ""
-                }
-            })?.start()
-        }
     }
 }

@@ -2,8 +2,8 @@ package com.proxy.service.core.framework.io.sp.impl
 
 import android.os.Parcelable
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.sp.controller.ISpController
-import com.proxy.service.core.framework.io.sp.base.SpInit
+import com.proxy.service.core.framework.io.sp.ISpController
+import com.proxy.service.core.framework.io.sp.SpInit
 import com.tencent.mmkv.MMKV
 
 /**

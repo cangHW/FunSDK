@@ -1,8 +1,6 @@
 package com.proxy.service.core.framework.io.sp
 
 import com.proxy.service.core.framework.io.sp.impl.SpActionImpl
-import com.proxy.service.core.framework.io.sp.base.SpMode
-import com.proxy.service.core.framework.io.sp.controller.ISpAction
 import com.proxy.service.core.framework.io.sp.impl.SpConfigActionImpl
 
 /**
