@@ -21,6 +21,11 @@ interface WebLifecycleCallback {
     fun onDetachedFromWindow() {}
 
     /**
+     * 销毁
+     * */
+    fun onDestroy() {}
+
+    /**
      * 手指按下事件
      * */
     fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

@@ -108,4 +108,15 @@ class WebViewImpl : WebView {
         return super.onTouchEvent(event)
     }
 
+    override fun destroy() {
+        super.destroy()
+        CsLogger.tag(tag).d("destroy")
+        CsTask.mainThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                webLifecycleCallback?.onDestroy()
+                return ""
+            }
+        })?.start()
+    }
+
 }
