@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+//    id("kotlin-kapt")
 }
 
 android {
@@ -14,11 +14,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        kapt {
-            arguments {
-                arg("CLOUD_MODULE_NAME", project.name)
-            }
-        }
+//        kapt {
+//            arguments {
+//                arg("CLOUD_MODULE_NAME", project.name)
+//            }
+//        }
     }
 
     buildTypes {
@@ -43,8 +43,8 @@ dependencies {
     implementation(libs.android.kotlin)
     implementation(libs.android.view.recycler)
 
-    implementation(libs.cloud.api)
-    kapt(libs.cloud.compiler)
+//    implementation(libs.cloud.api)
+//    kapt(libs.cloud.compiler)
 
     implementation(libs.core.framework)
     implementation(libs.service.threadpool)
