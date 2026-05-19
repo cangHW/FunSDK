@@ -2,6 +2,7 @@ package com.proxy.service.webview.base.listener
 
 import android.view.KeyEvent
 import android.view.MotionEvent
+import com.proxy.service.webview.base.web.IWeb
 
 /**
  * @author: cangHX
@@ -13,43 +14,43 @@ interface WebLifecycleCallback {
     /**
      * 进入屏幕
      * */
-    fun onAttachedToWindow() {}
+    fun onAttachedToWindow(iWeb: IWeb?) {}
 
     /**
      * 离开屏幕
      * */
-    fun onDetachedFromWindow() {}
+    fun onDetachedFromWindow(iWeb: IWeb?) {}
 
     /**
      * 销毁
      * */
-    fun onDestroy() {}
+    fun onDestroy(iWeb: IWeb?) {}
 
     /**
      * 手指按下事件
      * */
-    fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    fun onKeyDown(iWeb: IWeb?, keyCode: Int, event: KeyEvent?): Boolean {
         return false
     }
 
     /**
      * 手指长按事件
      * */
-    fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+    fun onKeyLongPress(iWeb: IWeb?, keyCode: Int, event: KeyEvent?): Boolean {
         return false
     }
 
     /**
      * 手指抬起事件
      * */
-    fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+    fun onKeyUp(iWeb: IWeb?, keyCode: Int, event: KeyEvent?): Boolean {
         return false
     }
 
     /**
      * 触摸事件
      * */
-    fun onTouchEvent(event: MotionEvent?): Boolean {
+    fun onTouchEvent(iWeb: IWeb?, event: MotionEvent?): Boolean {
         return false
     }
 }

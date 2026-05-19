@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-#  ":CoreFramework"
+  ":CoreFramework"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolInfo"
@@ -17,8 +17,8 @@ upArray=(
 #  ":ApiHttpSDK:ApiHttpBase"
 
   # web 容器库
-  ":WebViewSDK:WebViewInfo"
-  ":WebViewSDK:WebViewBase"
+#  ":WebViewSDK:WebViewInfo"
+#  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
 #  ":WebViewSDK:WebViewMonitor"
 

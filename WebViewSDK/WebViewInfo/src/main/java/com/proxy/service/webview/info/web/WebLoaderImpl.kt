@@ -88,18 +88,19 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
     }
 
     override fun createTo(viewGroup: ViewGroup?): IWeb {
-        if (viewGroup != null) {
-            return WebImpl(createWebView(viewGroup), lifecycleOwner)
-        }
-        return create()
+        val view = createWebView()
+        val web = WebImpl(view, lifecycleOwner)
+        view.setIWeb(web)
+        start(view, viewGroup)
+        return web
     }
 
     override fun create(): IWeb {
-        return WebImpl(createWebView(null), lifecycleOwner)
+        return createTo(null)
     }
 
     @SuppressLint("JavascriptInterface")
-    private fun createWebView(viewGroup: ViewGroup?): WebViewImpl {
+    private fun createWebView(): WebViewImpl {
         val webView = WebFactory.create()
             .setWebLoadCallback(webLoadCallback)
             .setWebInterceptCallback(webInterceptCallback)
@@ -116,6 +117,10 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
             }
         }
 
+        return webView
+    }
+
+    private fun start(webView: WebViewImpl, viewGroup: ViewGroup?) {
         viewGroup?.let {
             IFactory.of(it, webView)
         }
@@ -123,7 +128,5 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
         if (url.isNotEmpty() && url.isNotBlank()) {
             webView.loadUrl(url)
         }
-
-        return webView
     }
 }

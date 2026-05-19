@@ -10,6 +10,7 @@ import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
 import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebLifecycleCallback
+import com.proxy.service.webview.base.web.IWeb
 
 /**
  * @author: cangHX
@@ -29,9 +30,14 @@ class WebViewImpl : WebView {
     private val tag = "${WebViewConstants.LOG_TAG_START}View"
 
     private var webLifecycleCallback: WebLifecycleCallback? = null
+    private var iWeb: IWeb? = null
 
     fun setWebLifecycleCallback(webLifecycleCallback: WebLifecycleCallback?) {
         this.webLifecycleCallback = webLifecycleCallback
+    }
+
+    fun setIWeb(iWeb: IWeb) {
+        this.iWeb = iWeb
     }
 
     override fun loadUrl(url: String) {
@@ -44,7 +50,7 @@ class WebViewImpl : WebView {
         CsLogger.tag(tag).d("onAttachedToWindow")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                webLifecycleCallback?.onAttachedToWindow()
+                webLifecycleCallback?.onAttachedToWindow(iWeb)
                 return ""
             }
         })?.start()
@@ -55,7 +61,7 @@ class WebViewImpl : WebView {
         CsLogger.tag(tag).d("onDetachedFromWindow")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                webLifecycleCallback?.onDetachedFromWindow()
+                webLifecycleCallback?.onDetachedFromWindow(iWeb)
                 return ""
             }
         })?.start()
@@ -64,7 +70,7 @@ class WebViewImpl : WebView {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         CsLogger.tag(tag).d("onKeyDown")
         try {
-            if (webLifecycleCallback?.onKeyDown(keyCode, event) == true) {
+            if (webLifecycleCallback?.onKeyDown(iWeb, keyCode, event) == true) {
                 return true
             }
         } catch (throwable: Throwable) {
@@ -76,7 +82,7 @@ class WebViewImpl : WebView {
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         CsLogger.tag(tag).d("onKeyLongPress")
         try {
-            if (webLifecycleCallback?.onKeyLongPress(keyCode, event) == true) {
+            if (webLifecycleCallback?.onKeyLongPress(iWeb, keyCode, event) == true) {
                 return true
             }
         } catch (throwable: Throwable) {
@@ -88,7 +94,7 @@ class WebViewImpl : WebView {
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         CsLogger.tag(tag).d("onKeyUp")
         try {
-            if (webLifecycleCallback?.onKeyUp(keyCode, event) == true) {
+            if (webLifecycleCallback?.onKeyUp(iWeb, keyCode, event) == true) {
                 return true
             }
         } catch (throwable: Throwable) {
@@ -99,7 +105,7 @@ class WebViewImpl : WebView {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         try {
-            if (webLifecycleCallback?.onTouchEvent(event) == true) {
+            if (webLifecycleCallback?.onTouchEvent(iWeb, event) == true) {
                 return true
             }
         } catch (throwable: Throwable) {
@@ -113,7 +119,7 @@ class WebViewImpl : WebView {
         CsLogger.tag(tag).d("destroy")
         CsTask.mainThread()?.call(object : ICallable<String> {
             override fun accept(): String {
-                webLifecycleCallback?.onDestroy()
+                webLifecycleCallback?.onDestroy(iWeb)
                 return ""
             }
         })?.start()
