@@ -44,7 +44,7 @@ interface IWebLoader {
     fun setWebInterceptCallback(callback: WebInterceptCallback): IWebLoader
 
     /**
-     * 设置 web 容器的生命周期回调，用于监听进入屏幕、离开屏幕等
+     * 设置 web 容器的事件回调，用于监听进入屏幕、离开屏幕、触摸事件等
      * */
     fun setWebEventCallback(callback: WebEventCallback): IWebLoader
 
