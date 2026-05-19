@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebInterceptCallback
-import com.proxy.service.webview.base.listener.WebLifecycleCallback
+import com.proxy.service.webview.base.listener.WebEventCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.info.view.WebViewImpl
 
@@ -29,7 +29,7 @@ class WebFactory {
 
     private var webLoadCallback: WebLoadCallback? = null
     private var webInterceptCallback: WebInterceptCallback? = null
-    private var webLifecycleCallback: WebLifecycleCallback? = null
+    private var webEventCallback: WebEventCallback? = null
 
     fun setWebLoadCallback(webLoadCallback: WebLoadCallback?): WebFactory {
         this.webLoadCallback = webLoadCallback
@@ -41,14 +41,14 @@ class WebFactory {
         return this
     }
 
-    fun setWebLifecycleCallback(webLifecycleCallback: WebLifecycleCallback?): WebFactory {
-        this.webLifecycleCallback = webLifecycleCallback
+    fun setWebEventCallback(webEventCallback: WebEventCallback?): WebFactory {
+        this.webEventCallback = webEventCallback
         return this
     }
 
     fun createWeb(config: WebConfig): WebViewImpl {
         val webView = WebViewImpl(CsContextManager.getApplication())
-        webView.setWebLifecycleCallback(webLifecycleCallback)
+        webView.setWebEventCallback(webEventCallback)
         initWeb(config, webView)
         return webView
     }

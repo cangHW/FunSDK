@@ -9,7 +9,7 @@ import com.proxy.service.webview.base.web.IWeb
  * @date: 2024/10/24 15:27
  * @desc:
  */
-interface WebLifecycleCallback {
+interface WebEventCallback {
 
     /**
      * 进入屏幕

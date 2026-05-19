@@ -3,7 +3,7 @@ package com.proxy.service.webview.base.web
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import com.proxy.service.webview.base.listener.WebInterceptCallback
-import com.proxy.service.webview.base.listener.WebLifecycleCallback
+import com.proxy.service.webview.base.listener.WebEventCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
 
 /**
@@ -46,7 +46,7 @@ interface IWebLoader {
     /**
      * 设置 web 容器的生命周期回调，用于监听进入屏幕、离开屏幕等
      * */
-    fun setWebLifecycleCallback(callback: WebLifecycleCallback): IWebLoader
+    fun setWebEventCallback(callback: WebEventCallback): IWebLoader
 
     /**
      * 创建 web 容器到 ViewGroup

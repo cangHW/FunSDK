@@ -7,7 +7,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.base.config.WebConfig
 import com.proxy.service.webview.base.constants.WebViewConstants
 import com.proxy.service.webview.base.listener.WebInterceptCallback
-import com.proxy.service.webview.base.listener.WebLifecycleCallback
+import com.proxy.service.webview.base.listener.WebEventCallback
 import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.base.web.IWebLoader
@@ -32,7 +32,7 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
 
     private var webLoadCallback: WebLoadCallback? = null
     private var webInterceptCallback: WebInterceptCallback? = null
-    private var webLifecycleCallback: WebLifecycleCallback? = null
+    private var webEventCallback: WebEventCallback? = null
 
     private val cache = HashSet<String>()
     private val javascriptInterfaceMap = HashMap<String, HashMap<Class<*>, Any>?>()
@@ -82,8 +82,8 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
         return this
     }
 
-    override fun setWebLifecycleCallback(callback: WebLifecycleCallback): IWebLoader {
-        this.webLifecycleCallback = callback
+    override fun setWebEventCallback(callback: WebEventCallback): IWebLoader {
+        this.webEventCallback = callback
         return this
     }
 
@@ -104,7 +104,7 @@ class WebLoaderImpl(private val config: WebConfig) : IWebLoader {
         val webView = WebFactory.create()
             .setWebLoadCallback(webLoadCallback)
             .setWebInterceptCallback(webInterceptCallback)
-            .setWebLifecycleCallback(webLifecycleCallback)
+            .setWebEventCallback(webEventCallback)
             .createWeb(config)
 
         WebUtils.merge(JavaScriptManager.getNameMethods(), javascriptInterfaceMap).forEach {
