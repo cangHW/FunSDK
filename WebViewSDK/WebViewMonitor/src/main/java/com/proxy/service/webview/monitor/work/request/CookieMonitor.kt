@@ -19,7 +19,7 @@ object CookieMonitor : BaseMonitor() {
     private const val TAG = "${WebMonitorConstants.TAG}Cookie"
 
     override fun shouldRun(): Boolean {
-        return config.isLogCookieEnable()
+        return getConfig().isLogCookieEnable()
     }
 
     override fun getJs(): String {
@@ -56,7 +56,7 @@ object CookieMonitor : BaseMonitor() {
 
         CsLogger.tag(TAG).d("Cookies from JS: $builder")
 
-        config.getLogCookieCallback()?.onMonitorCall(url, log)
+        getConfig().getLogCookieCallback()?.onMonitorCall(url, log)
     }
 
 }

@@ -4,6 +4,7 @@ import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
+import com.proxy.service.webview.monitor.work.performance.bean.PerformanceData
 import java.lang.StringBuilder
 import java.text.DecimalFormat
 
@@ -17,7 +18,7 @@ object PerformanceMonitor : BaseMonitor() {
     private const val TAG = "${WebMonitorConstants.TAG}Perform"
 
     override fun shouldRun(): Boolean {
-        return config.isLogLoadPageTimeEnable()
+        return getConfig().isLogLoadPageTimeEnable()
     }
 
     override fun getJs(): String {
@@ -96,7 +97,7 @@ object PerformanceMonitor : BaseMonitor() {
         }
         CsLogger.tag(TAG).d("Performance Data: $value")
 
-        config.getLogLoadPageTimeCallback()?.onMonitorCall(url, log)
+        getConfig().getLogLoadPageTimeCallback()?.onMonitorCall(url, log)
     }
 
 }

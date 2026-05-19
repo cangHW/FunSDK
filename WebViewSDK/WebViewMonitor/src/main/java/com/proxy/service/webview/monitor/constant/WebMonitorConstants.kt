@@ -14,7 +14,7 @@ object WebMonitorConstants {
     const val WEB_MONITOR_LOG_BRIDGE_NAME_SPACE = "CsWebMonitor"
 
     const val ENABLE_LOG_COOKIE = false
-    const val ENABLE_LOG_AJAX_REQUEST = false
+    const val ENABLE_LOG_REQUEST = false
     const val ENABLE_LOG_LOAD_PAGE_TIME = true
     const val ENABLE_LOG_LOAD_PAGE_RESOURCE_TIME = false
 

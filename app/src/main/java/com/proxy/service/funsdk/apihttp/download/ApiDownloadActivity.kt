@@ -54,7 +54,7 @@ class ApiDownloadActivity : BaseActivity<ActivityApiDownloadBinding>() {
             R.id.download_init -> {
                 CsApiDownload.init(
                     DownloadConfig.builder()
-                        .setMaxTask(2)
+                        .setMaxTaskCount(2)
                         .addGroup(
                             DownloadGroup.builder("test").build()
                         )

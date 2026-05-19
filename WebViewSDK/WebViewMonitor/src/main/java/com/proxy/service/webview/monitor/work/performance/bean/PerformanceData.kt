@@ -1,4 +1,4 @@
-package com.proxy.service.webview.monitor.work.performance
+package com.proxy.service.webview.monitor.work.performance.bean
 
 /**
  * @author: cangHX

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.web.CsWeb
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
@@ -18,6 +19,7 @@ import com.proxy.service.webview.base.enums.MixedContentMode
 import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.CsWebMonitor
+import com.proxy.service.webview.monitor.callback.MonitorCallback
 import com.proxy.service.webview.monitor.config.MonitorConfig
 import com.proxy.service.widget.info.dialog.window.CsBaseDialog
 import com.proxy.service.widget.info.dialog.window.info.DialogConfig
@@ -30,7 +32,7 @@ import com.proxy.service.widget.info.toast.CsToast
  */
 class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
-//    private val url = "file:///android_asset/web/test_bridge.html"
+    //    private val url = "file:///android_asset/web/test_bridge.html"
 //    private val url = "file:///android_asset/web/test_edittext.html"
     private val url = "https://www.baidu.com"
 
@@ -67,8 +69,16 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         CsWebMonitor.setConfig(
             MonitorConfig.builder()
                 .enableLogCookie(true)
-                .enableLogAjaxRequest(true)
-                .enableLogLoadPageResourceTime(true)
+                .enableLogRequest(true, object : MonitorCallback {
+                    override fun onMonitorCall(url: String, log: String) {
+                        CsLogger.tag("WebViewActivity").i("enableLogRequest = $log")
+                    }
+                })
+                .enableLogLoadPageResourceTime(true, object : MonitorCallback {
+                    override fun onMonitorCall(url: String, log: String) {
+                        CsLogger.tag("WebViewActivity").i("enableLogLoadPageResourceTime = $log")
+                    }
+                })
                 .build()
         )
     }
@@ -86,12 +96,18 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         return webConfigBuilder.build()
     }
 
+    private var iWeb: IWeb? = null
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.load_baidu -> {
                 binding?.content?.addData("加载", "加载页面")
+                if (iWeb != null) {
+                    iWeb?.loadUrl(url)
+                    return
+                }
                 binding?.group?.removeAllViews()
-                CsWeb.createWebLoader(getWebConfig())
+                iWeb = CsWeb.createWebLoader(getWebConfig())
                     ?.setLifecycleOwner(this)
                     ?.loadUrl(url)
                     ?.addJavascriptInterface("xxx", WebBridge())
@@ -187,8 +203,8 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
         override fun getDialogConfig(): DialogConfig {
             val config = DialogConfig()
-            config.width = ViewGroup. LayoutParams. MATCH_PARENT
-            config.height = ViewGroup. LayoutParams. MATCH_PARENT
+            config.width = ViewGroup.LayoutParams.MATCH_PARENT
+            config.height = ViewGroup.LayoutParams.MATCH_PARENT
             config.focusable = true
             return config
         }

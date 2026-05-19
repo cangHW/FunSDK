@@ -1,4 +1,4 @@
-package com.proxy.service.webview.monitor.work.performance
+package com.proxy.service.webview.monitor.work.performance.bean
 
 import java.text.DecimalFormat
 
@@ -8,6 +8,11 @@ import java.text.DecimalFormat
  * @desc:
  */
 class PerformanceResourceData {
+
+    /**
+     * 页面资源加载摘要。
+     * */
+    var summary: PerformanceResourceSummary? = null
 
     /**
      * 图片资源
@@ -50,7 +55,44 @@ class PerformanceResourceData {
     var other: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
 }
 
+class PerformanceResourceSummary {
+    /**
+     * 资源总数。
+     * */
+    var totalCount: Int = 0
+
+    /**
+     * 缓存命中资源数量。
+     * */
+    var cacheCount: Int = 0
+
+    /**
+     * 全部资源传输大小总和。
+     * */
+    var transferSize: Long = 0L
+
+    /**
+     * 最慢资源耗时。
+     * */
+    var maxDuration: Float = 0f
+
+    /**
+     * 慢资源 Top5。
+     * */
+    var slowResources: ArrayList<PerformanceResourceDataInfo>? = ArrayList()
+}
+
 class PerformanceResourceDataInfo {
+
+    /**
+     * 资源类型。
+     * */
+    var type: String? = ""
+
+    /**
+     * 资源 URL。
+     * */
+    var name: String? = ""
 
     /**
      * 资源加载的起始时间，相对于页面导航开始时间。
@@ -58,9 +100,39 @@ class PerformanceResourceDataInfo {
     var startTime: Float = 0f
 
     /**
-     * 资源加载的持续时间，从开始加载到加载完成的时间。
+     * 资源总耗时，等同 responseEnd - startTime。
      * */
-    var duration: Float = 0f
+    var total: Float = 0f
+
+    /**
+     * 请求进入 requestStart 前的浏览器调度、排队、缓存检查、连接复用等待等前置耗时。
+     * */
+    var queueing: Float = 0f
+
+    /**
+     * DNS 查询耗时，计算公式为 domainLookupEnd - domainLookupStart。
+     * */
+    var dns: Float = 0f
+
+    /**
+     * TCP 连接耗时，计算公式为 connectEnd - connectStart。
+     * */
+    var tcp: Float = 0f
+
+    /**
+     * TLS 握手耗时。
+     * */
+    var tls: Float = 0f
+
+    /**
+     * 首字节耗时，等同 responseStart - requestStart。
+     * */
+    var ttfb: Float = 0f
+
+    /**
+     * 响应体下载耗时，等同 responseEnd - responseStart。
+     * */
+    var download: Float = 0f
 
     /**
      * 资源的传输大小，包括 HTTP 响应头和响应体的大小。
@@ -68,39 +140,14 @@ class PerformanceResourceDataInfo {
     var transferSize: Long = 0L
 
     /**
-     * DNS 查询耗时，计算公式为 domainLookupEnd - domainLookupStart。
+     * 压缩后的响应体大小。
      * */
-    var domainLookupStart: Float = 0f
+    var encodedBodySize: Long = 0L
 
     /**
-     * DNS 查询耗时，计算公式为 domainLookupEnd - domainLookupStart。
+     * 解压后的响应体大小。
      * */
-    var domainLookupEnd: Float = 0f
-
-    /**
-     * TCP 连接耗时，计算公式为 connectEnd - connectStart。
-     * */
-    var connectStart: Float = 0f
-
-    /**
-     * TCP 连接耗时，计算公式为 connectEnd - connectStart。
-     * */
-    var connectEnd: Float = 0f
-
-    /**
-     * 浏览器开始发送请求的时间点。
-     * */
-    var requestStart: Float = 0f
-
-    /**
-     * 服务器响应耗时，计算公式为 responseEnd - responseStart。
-     * */
-    var responseStart: Float = 0f
-
-    /**
-     * 服务器响应耗时，计算公式为 responseEnd - responseStart。
-     * */
-    var responseEnd: Float = 0f
+    var decodedBodySize: Long = 0L
 
     /**
      * 资源是否从缓存中加载。
@@ -112,40 +159,42 @@ class PerformanceResourceDataInfo {
      * */
     var nextHopProtocol: String? = ""
 
-    /**
-     * 资源的 URL，表示资源的唯一标识符。
-     * */
-    var name: String? = ""
-
     override fun toString(): String {
         val format = DecimalFormat("#.##")
         val builder = StringBuilder()
 
-        builder.append("开始加载延迟: ")
-            .append(format.format(startTime))
-            .append("ms")
-            .append(", ")
-        builder.append("加载耗时: ")
-            .append(format.format(duration))
+        builder.append("[")
+            .append(type)
+            .append("] ")
+        builder.append("总耗时: ")
+            .append(format.format(total))
             .append("ms")
             .append(", ")
         builder.append("网络传输大小: ").append(transferSize).append("字节").append(", ")
         builder.append("是否从缓存加载: ").append(fromCache).append(", ")
         builder.append("加载协议: ").append(nextHopProtocol).append(", ")
+        builder.append("排队/准备: ")
+            .append(format.format(queueing))
+            .append("ms")
+            .append(", ")
         builder.append("DNS 解析耗时: ")
-            .append(format.format(domainLookupEnd - domainLookupStart))
+            .append(format.format(dns))
             .append("ms")
             .append(", ")
         builder.append("TCP 链接耗时: ")
-            .append(format.format(connectEnd - connectStart))
+            .append(format.format(tcp))
             .append("ms")
             .append(", ")
-        builder.append("服务器响应耗时: ")
-            .append(format.format(responseStart - requestStart))
+        builder.append("TLS 握手耗时: ")
+            .append(format.format(tls))
+            .append("ms")
+            .append(", ")
+        builder.append("TTFB: ")
+            .append(format.format(ttfb))
             .append("ms")
             .append(", ")
         builder.append("数据传输耗时: ")
-            .append(format.format(responseEnd - responseStart))
+            .append(format.format(download))
             .append("ms")
             .append(", ")
         builder.append("资源: ").append(name)

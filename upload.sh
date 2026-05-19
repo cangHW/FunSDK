@@ -20,7 +20,7 @@ upArray=(
 #  ":WebViewSDK:WebViewInfo"
 #  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
-#  ":WebViewSDK:WebViewMonitor"
+  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
 #  ":Permission:PermissionInfo"

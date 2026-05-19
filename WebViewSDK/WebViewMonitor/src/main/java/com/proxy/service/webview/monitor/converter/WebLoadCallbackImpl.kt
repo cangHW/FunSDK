@@ -3,7 +3,7 @@ package com.proxy.service.webview.monitor.converter
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
 import com.proxy.service.webview.monitor.work.performance.PerformanceResourceMonitor
-import com.proxy.service.webview.monitor.work.request.AjaxRequestMonitor
+import com.proxy.service.webview.monitor.work.request.RequestMonitor
 import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
@@ -23,7 +23,7 @@ class WebLoadCallbackImpl : AbstractWebLoadCallback() {
         super.onPageStarted(url)
 
         CookieMonitor.runMonitor(web)
-        AjaxRequestMonitor.runMonitor(web)
+        RequestMonitor.runMonitor(web)
     }
 
     override fun onPageAllResourceFinished(url: String) {

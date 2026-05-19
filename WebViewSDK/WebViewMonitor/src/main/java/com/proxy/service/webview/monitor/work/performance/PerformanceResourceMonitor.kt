@@ -4,6 +4,7 @@ import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
+import com.proxy.service.webview.monitor.work.performance.bean.PerformanceResourceData
 import java.lang.StringBuilder
 
 /**
@@ -15,63 +16,158 @@ object PerformanceResourceMonitor : BaseMonitor() {
 
     private const val TAG = "${WebMonitorConstants.TAG}PerformRes"
 
-    private const val LINE_1 = "    "
-    private const val LINE_2 = "        "
-
     override fun shouldRun(): Boolean {
-        return config.isLogLoadPageResourceTimeEnable()
+        return getConfig().isLogLoadPageResourceTimeEnable()
     }
 
     override fun getJs(): String {
-        return "javascript:(function() {" +
-                "   var entries = performance.getEntries();" +
-                "   var groupedData = {" +
-                "       img: []," +
-                "       script: []," +
-                "       css: []," +
-                "       font: []," +
-                "       video: []," +
-                "       audio: []," +
-                "       iframe: []," +
-                "       other: []" +
-                "   };" +
-                "   for (var i = 0; i < entries.length; i++) {" +
-                "       var entry = entries[i];" +
-                "       var type = entry.initiatorType;" +
-                "       var name = entry.name;" +
+        return """
+            javascript:(function() {
+                if (!window.performance || typeof window.performance.getEntriesByType !== "function") {
+                    return;
+                }
 
-                checkResIsImg() +
-                checkResIsScript() +
-                checkResIsCss() +
-                checkResIsFont() +
-                checkResIsVideo() +
-                checkResIsAudio() +
-                checkResIsIframe() +
+                ${createCommonUtilsJs()}
+                ${createResourceTypeJs()}
+                ${createResourceInfoJs()}
+                ${createResourceCollectJs()}
+            })()
+        """.trimIndent()
+    }
 
-                "       var performanceData = {" +
-                "           startTime: entry.startTime," +
-                "           duration: entry.duration," +
-                "           transferSize: entry.transferSize," +
-                "           domainLookupStart: entry.domainLookupStart," +
-                "           domainLookupEnd: entry.domainLookupEnd," +
-                "           connectStart: entry.connectStart," +
-                "           connectEnd: entry.connectEnd," +
-                "           requestStart: entry.requestStart," +
-                "           responseStart: entry.responseStart," +
-                "           responseEnd: entry.responseEnd," +
-                "           name: entry.name," +
-                "           nextHopProtocol: entry.nextHopProtocol," +
-                "           fromCache: entry.transferSize === 0 && entry.encodedBodySize > 0" +
-                "       };" +
+    private fun createCommonUtilsJs(): String {
+        return """
+                function duration(end, start) {
+                    end = end || 0;
+                    start = start || 0;
+                    var value = end - start;
+                    return value > 0 ? value : 0;
+                }
 
-                "       if (groupedData[type]) {" +
-                "           groupedData[type].push(performanceData);" +
-                "       } else {" +
-                "           groupedData.other.push(performanceData);" +
-                "       }" +
-                "   }" +
-                createLog("logMonitorPerformPageRes", "JSON.stringify(groupedData)") +
-                "})()"
+                function normalizeName(name) {
+                    try {
+                        return String(name || "").split("#")[0].split("?")[0].toLowerCase();
+                    } catch (e) {
+                        return "";
+                    }
+                }
+
+                function hasSuffix(name, suffixes) {
+                    for (var i = 0; i < suffixes.length; i++) {
+                        if (name.endsWith(suffixes[i])) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+        """.trimIndent()
+    }
+
+    private fun createResourceTypeJs(): String {
+        return """
+                function getResourceType(entry) {
+                    var initiatorType = entry.initiatorType || "";
+                    var name = normalizeName(entry.name);
+                    if (initiatorType === "img" || initiatorType === "image" || hasSuffix(name, [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp"])) {
+                        return "img";
+                    }
+                    if (initiatorType === "script" || hasSuffix(name, [".js"])) {
+                        return "script";
+                    }
+                    if (initiatorType === "css" || initiatorType === "link" || hasSuffix(name, [".css"])) {
+                        return "css";
+                    }
+                    if (initiatorType === "font" || hasSuffix(name, [".woff", ".woff2", ".ttf", ".otf", ".eot"])) {
+                        return "font";
+                    }
+                    if (initiatorType === "video" || hasSuffix(name, [".mp4", ".webm", ".ogg", ".mov", ".mkv"])) {
+                        return "video";
+                    }
+                    if (initiatorType === "audio" || hasSuffix(name, [".mp3", ".wav", ".aac", ".m4a"])) {
+                        return "audio";
+                    }
+                    if (initiatorType === "iframe" || hasSuffix(name, [".html", ".htm"])) {
+                        return "iframe";
+                    }
+                    return "other";
+                }
+        """.trimIndent()
+    }
+
+    private fun createResourceInfoJs(): String {
+        return """
+                function createResourceInfo(entry, type) {
+                    return {
+                        type: type,
+                        name: entry.name || "",
+                        startTime: entry.startTime || 0,
+                        total: duration(entry.responseEnd, entry.startTime),
+                        queueing: duration(entry.requestStart, entry.startTime),
+                        dns: duration(entry.domainLookupEnd, entry.domainLookupStart),
+                        tcp: duration(entry.connectEnd, entry.connectStart),
+                        tls: entry.secureConnectionStart > 0 ? duration(entry.connectEnd, entry.secureConnectionStart) : 0,
+                        ttfb: duration(entry.responseStart, entry.requestStart),
+                        download: duration(entry.responseEnd, entry.responseStart),
+                        transferSize: entry.transferSize || 0,
+                        encodedBodySize: entry.encodedBodySize || 0,
+                        decodedBodySize: entry.decodedBodySize || 0,
+                        fromCache: (entry.transferSize || 0) === 0 && (entry.encodedBodySize || 0) > 0,
+                        nextHopProtocol: entry.nextHopProtocol || ""
+                    };
+                }
+        """.trimIndent()
+    }
+
+    private fun createResourceCollectJs(): String {
+        return """
+                var entries = performance.getEntriesByType("resource") || [];
+                var groupedData = {
+                    summary: {
+                        totalCount: 0,
+                        cacheCount: 0,
+                        transferSize: 0,
+                        maxDuration: 0,
+                        slowResources: []
+                    },
+                    img: [],
+                    script: [],
+                    css: [],
+                    font: [],
+                    video: [],
+                    audio: [],
+                    iframe: [],
+                    other: []
+                };
+                var allResources = [];
+
+                for (var i = 0; i < entries.length; i++) {
+                    var entry = entries[i];
+                    if (entry.initiatorType === "xmlhttprequest" || entry.initiatorType === "fetch") {
+                        continue;
+                    }
+
+                    var type = getResourceType(entry);
+                    var resourceInfo = createResourceInfo(entry, type);
+                    groupedData[type].push(resourceInfo);
+                    allResources.push(resourceInfo);
+
+                    groupedData.summary.totalCount += 1;
+                    groupedData.summary.transferSize += resourceInfo.transferSize;
+                    if (resourceInfo.fromCache) {
+                        groupedData.summary.cacheCount += 1;
+                    }
+                    if (resourceInfo.total > groupedData.summary.maxDuration) {
+                        groupedData.summary.maxDuration = resourceInfo.total;
+                    }
+                }
+
+                allResources.sort(function(a, b) {
+                    return b.total - a.total;
+                });
+                groupedData.summary.slowResources = allResources.slice(0, 5);
+
+                ${createLog("logMonitorPerformPageRes", "JSON.stringify(groupedData)")}
+        """.trimIndent()
     }
 
     override fun dispatchLog(url: String, log: String) {
@@ -80,149 +176,80 @@ object PerformanceResourceMonitor : BaseMonitor() {
             CsLogger.tag(TAG).d("Performance Data: $log")
         } else {
             val builder = StringBuilder()
-            builder.append("当前页面 ").append(url).append("\n")
-
-            builder.append(LINE_1).append("图片资源: ").append("\n")
-            data.img?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
+            val summary = data.summary
+            builder.append("资源监控 当前页面=")
+                .append(url)
+                .append("\n")
+            builder.append("  总览: 资源=")
+                .append(summary?.totalCount ?: 0)
+                .append(", 缓存=")
+                .append(summary?.cacheCount ?: 0)
+                .append(", 传输=")
+                .append(formatBytes(summary?.transferSize))
+                .append(", 最慢=")
+                .append(formatMs(summary?.maxDuration))
+                .append("\n")
+            builder.append("  分组: 图片=")
+                .append(data.img?.size ?: 0)
+                .append(", 脚本=")
+                .append(data.script?.size ?: 0)
+                .append(", 样式=")
+                .append(data.css?.size ?: 0)
+                .append(", 字体=")
+                .append(data.font?.size ?: 0)
+                .append(", 视频=")
+                .append(data.video?.size ?: 0)
+                .append(", 音频=")
+                .append(data.audio?.size ?: 0)
+                .append(", HTML=")
+                .append(data.iframe?.size ?: 0)
+                .append(", 其他=")
+                .append(data.other?.size ?: 0)
+                .append("\n")
+            appendSlowResources(builder, summary?.slowResources)
             CsLogger.tag(TAG).d("Performance Data: $builder")
-
-            builder.clear()
-            builder.append(LINE_1).append("脚本资源: ").append("\n")
-            data.script?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
-
-            builder.clear()
-            builder.append(LINE_1).append("样式资源: ").append("\n")
-            data.css?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
-
-            builder.clear()
-            builder.append(LINE_1).append("字体资源: ").append("\n")
-            data.font?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
-
-            builder.clear()
-            builder.append(LINE_1).append("视频资源: ").append("\n")
-            data.video?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
-
-            builder.clear()
-            builder.append(LINE_1).append("音频资源: ").append("\n")
-            data.audio?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
-
-            builder.clear()
-            builder.append(LINE_1).append("HTML 资源: ").append("\n")
-            data.iframe?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
-
-            builder.clear()
-            builder.append(LINE_1).append("其他资源: ").append("\n")
-            data.other?.forEach {
-                builder.append(LINE_2).append(it).append("\n")
-            }
-            CsLogger.tag(TAG).d(builder.toString())
         }
 
-        config.getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)
+        getConfig().getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)
     }
 
-
-    private fun checkResIsImg(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".jpg\")")
-            .append("||").append("name.endsWith(\".jpeg\")")
-            .append("||").append("name.endsWith(\".png\")")
-            .append("||").append("name.endsWith(\".gif\")")
-            .append("||").append("name.endsWith(\".webp\")")
-            .append("||").append("name.endsWith(\".svg\")")
-            .append("){type = \"img\"}")
-
-        return builder.toString()
+    private fun appendSlowResources(
+        builder: StringBuilder,
+        slowResources: ArrayList<com.proxy.service.webview.monitor.work.performance.bean.PerformanceResourceDataInfo>?
+    ) {
+        if (slowResources.isNullOrEmpty()) {
+            return
+        }
+        builder.append("  慢资源Top5:").append("\n")
+        slowResources.forEachIndexed { index, item ->
+            builder.append("    ")
+                .append(index + 1)
+                .append(". [")
+                .append(item.type)
+                .append("] ")
+                .append(formatMs(item.total))
+                .append(", ")
+                .append(formatBytes(item.transferSize))
+                .append(", 缓存=")
+                .append(item.fromCache)
+                .append(", 协议=")
+                .append(item.nextHopProtocol)
+                .append(", ")
+                .append(item.name)
+                .append("\n")
+        }
     }
 
-    private fun checkResIsScript(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".js\")")
-            .append("){type = \"script\"}")
-
-        return builder.toString()
+    private fun formatMs(value: Float?): String {
+        val cost = value ?: 0f
+        return "${java.text.DecimalFormat("#.##").format(cost)}ms"
     }
 
-    private fun checkResIsCss(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".css\")")
-            .append("){type = \"css\"}")
-
-        return builder.toString()
-    }
-
-    private fun checkResIsFont(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".woff\")")
-            .append("||").append("name.endsWith(\".woff2\")")
-            .append("||").append("name.endsWith(\".ttf\")")
-            .append("||").append("name.endsWith(\".otf\")")
-            .append("||").append("name.endsWith(\".eot\")")
-            .append("){type = \"font\"}")
-
-        return builder.toString()
-    }
-
-    private fun checkResIsVideo(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".mp4\")")
-            .append("||").append("name.endsWith(\".webm\")")
-            .append("||").append("name.endsWith(\".ogg\")")
-            .append("){type = \"video\"}")
-
-        return builder.toString()
-    }
-
-    private fun checkResIsAudio(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".mp3\")")
-            .append("||").append("name.endsWith(\".wav\")")
-            .append("||").append("name.endsWith(\".aac\")")
-            .append("){type = \"audio\"}")
-
-        return builder.toString()
-    }
-
-    private fun checkResIsIframe(): String {
-        val builder = StringBuilder()
-
-        builder.append("if (")
-            .append("name.endsWith(\".html\")")
-            .append("||").append("name.endsWith(\".htm\")")
-            .append("){type = \"iframe\"}")
-
-        return builder.toString()
+    private fun formatBytes(value: Long?): String {
+        val size = value ?: 0L
+        if (size < 1024L) {
+            return "${size}B"
+        }
+        return "${java.text.DecimalFormat("#.##").format(size / 1024f)}KB"
     }
 }

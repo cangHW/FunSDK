@@ -4,9 +4,6 @@ import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.CsWebMonitor
 import com.proxy.service.webview.monitor.config.MonitorConfig
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
-import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
-import com.proxy.service.webview.monitor.work.request.AjaxRequestMonitor
-import com.proxy.service.webview.monitor.work.request.CookieMonitor
 
 /**
  * @author: cangHX
@@ -15,7 +12,9 @@ import com.proxy.service.webview.monitor.work.request.CookieMonitor
  */
 abstract class BaseMonitor {
 
-    protected val config: MonitorConfig = CsWebMonitor.getMonitorConfig()
+    protected fun getConfig():MonitorConfig{
+        return CsWebMonitor.getMonitorConfig()
+    }
 
     /**
      * 执行监控

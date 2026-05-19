@@ -21,11 +21,11 @@ interface IMonitorBuilder {
     ): IMonitorBuilder
 
     /**
-     * 是否打印 Ajax 请求, 默认 [WebMonitorConstants.ENABLE_LOG_AJAX_REQUEST]
+     * 是否打印请求, 默认 [WebMonitorConstants.ENABLE_LOG_REQUEST]
      *
      * @param callback 回调 web 页面的请求信息
      * */
-    fun enableLogAjaxRequest(
+    fun enableLogRequest(
         enable: Boolean,
         callback: MonitorCallback? = null
     ): IMonitorBuilder

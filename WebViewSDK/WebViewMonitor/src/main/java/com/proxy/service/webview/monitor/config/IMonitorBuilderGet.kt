@@ -20,14 +20,14 @@ interface IMonitorBuilderGet {
     fun getLogCookieCallback(): MonitorCallback?
 
     /**
-     * 是否打印 Ajax 请求
+     * 是否打印请求
      * */
-    fun isLogAjaxRequestEnable(): Boolean
+    fun isLogRequestEnable(): Boolean
 
     /**
-     * Ajax 请求回调
+     * 请求回调
      * */
-    fun getLogAjaxRequestCallback(): MonitorCallback?
+    fun getLogRequestCallback(): MonitorCallback?
 
     /**
      * 是否打印页面加载耗时统计
