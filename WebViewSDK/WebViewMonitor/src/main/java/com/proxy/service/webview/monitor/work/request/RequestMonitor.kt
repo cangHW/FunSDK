@@ -11,7 +11,7 @@ import java.text.DecimalFormat
 /**
  * @author: cangHX
  * @date: 2026/1/23 14:07
- * @desc:
+ * @desc: 页面请求性能监控
  */
 object RequestMonitor : BaseMonitor() {
 
@@ -578,7 +578,7 @@ object RequestMonitor : BaseMonitor() {
             val networkTotal = data.networkTiming?.takeIf { it.available }?.total
             val statusText = getStatusText(data)
 
-            builder.append("请求监控 [")
+            builder.append("网络请求性能 [")
                 .append(data.requestType)
                 .append("] ")
                 .append(data.method)
@@ -599,11 +599,11 @@ object RequestMonitor : BaseMonitor() {
             appendMetaInfo(builder, data)
             appendContentInfo(builder, data)
             appendErrorInfo(builder, data)
+
             value = builder.toString()
         }
 
-        CsLogger.tag(TAG).d("Request: $value")
-
+        CsLogger.tag(TAG).d(value)
         getConfig().getLogRequestCallback()?.onMonitorCall(url, log)
     }
 

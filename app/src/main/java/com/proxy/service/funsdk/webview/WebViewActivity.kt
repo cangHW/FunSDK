@@ -69,6 +69,11 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         CsWebMonitor.setConfig(
             MonitorConfig.builder()
                 .enableLogCookie(true)
+                .enableLogLoadPageTime(true, object : MonitorCallback {
+                    override fun onMonitorCall(url: String, log: String) {
+                        CsLogger.tag("WebViewActivity").i("enableLogLoadPageTime = $log")
+                    }
+                })
                 .enableLogRequest(true, object : MonitorCallback {
                     override fun onMonitorCall(url: String, log: String) {
                         CsLogger.tag("WebViewActivity").i("enableLogRequest = $log")

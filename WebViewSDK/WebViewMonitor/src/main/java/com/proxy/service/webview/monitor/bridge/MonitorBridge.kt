@@ -1,7 +1,7 @@
 package com.proxy.service.webview.monitor.bridge
 
 import android.webkit.JavascriptInterface
-import com.proxy.service.webview.monitor.work.performance.PerformanceMonitor
+import com.proxy.service.webview.monitor.work.performance.PerformancePageMonitor
 import com.proxy.service.webview.monitor.work.performance.PerformanceResourceMonitor
 import com.proxy.service.webview.monitor.work.request.RequestMonitor
 import com.proxy.service.webview.monitor.work.request.CookieMonitor
@@ -25,7 +25,7 @@ class MonitorBridge {
 
     @JavascriptInterface
     fun logMonitorPerformPage(url: String, log: String) {
-        PerformanceMonitor.dispatchLog(url, log)
+        PerformancePageMonitor.dispatchLog(url, log)
     }
 
     @JavascriptInterface

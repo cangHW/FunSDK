@@ -29,7 +29,7 @@ object CookieMonitor : BaseMonitor() {
 
     override fun dispatchLog(url: String, log: String) {
         val builder = StringBuilder()
-        builder.append("当前页面 ").append(url).append("\n")
+        builder.append("当前页面: ").append(url).append("\n")
 
         try {
             val cookiePairs: List<String> = log.split("; ")
@@ -47,7 +47,7 @@ object CookieMonitor : BaseMonitor() {
                     URLDecoder.decode(value)
                 }
 
-                builder.append("    $key").append(": ").append(decodedValue).append("\n")
+                builder.append("  $key").append(": ").append(decodedValue).append("\n")
             }
         } catch (_: Throwable) {
             builder.clear()

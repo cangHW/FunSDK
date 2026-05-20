@@ -5,12 +5,11 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
 import com.proxy.service.webview.monitor.work.performance.bean.PerformanceResourceData
-import java.lang.StringBuilder
 
 /**
  * @author: cangHX
  * @date: 2026/1/30 17:04
- * @desc:
+ * @desc: 页面资源性能监控
  */
 object PerformanceResourceMonitor : BaseMonitor() {
 
@@ -172,12 +171,13 @@ object PerformanceResourceMonitor : BaseMonitor() {
 
     override fun dispatchLog(url: String, log: String) {
         val data = CsJsonUtils.fromJson(log, PerformanceResourceData::class.java)
+        val value: String
         if (data == null) {
-            CsLogger.tag(TAG).d("Performance Data: $log")
+            value = log
         } else {
             val builder = StringBuilder()
             val summary = data.summary
-            builder.append("资源监控 当前页面=")
+            builder.append("资源加载性能 当前页面: ")
                 .append(url)
                 .append("\n")
             builder.append("  总览: 资源=")
@@ -207,9 +207,11 @@ object PerformanceResourceMonitor : BaseMonitor() {
                 .append(data.other?.size ?: 0)
                 .append("\n")
             appendSlowResources(builder, summary?.slowResources)
-            CsLogger.tag(TAG).d("Performance Data: $builder")
+
+            value = builder.toString()
         }
 
+        CsLogger.tag(TAG).d(value)
         getConfig().getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)
     }
 
