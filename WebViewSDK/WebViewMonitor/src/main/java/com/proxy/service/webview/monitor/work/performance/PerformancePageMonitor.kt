@@ -17,7 +17,7 @@ import java.text.DecimalFormat
  */
 object PerformancePageMonitor : BaseMonitor() {
 
-    private const val TAG = "${WebMonitorConstants.TAG}Perform"
+    private const val TAG = "${WebMonitorConstants.TAG}PerPage"
 
     override fun shouldRun(): Boolean {
         return getConfig().isLogLoadPageTimeEnable()

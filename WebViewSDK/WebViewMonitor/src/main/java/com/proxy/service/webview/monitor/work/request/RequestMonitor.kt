@@ -5,6 +5,8 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
 import com.proxy.service.webview.monitor.work.request.bean.RequestData
+import com.proxy.service.webview.monitor.work.request.bean.RequestNetworkTiming
+import com.proxy.service.webview.monitor.work.request.bean.RequestSizeInfo
 import java.lang.StringBuilder
 import java.text.DecimalFormat
 
@@ -112,6 +114,16 @@ object RequestMonitor : BaseMonitor() {
                     }
                 }
 
+                function isHttpRequest(url) {
+                    try {
+                        var absoluteUrl = toAbsoluteUrl(url);
+                        var u = new URL(absoluteUrl);
+                        return u.protocol === "http:" || u.protocol === "https:";
+                    } catch (e) {
+                        return false;
+                    }
+                }
+
                 // 根据请求 URL 和 hook 起始时间匹配 ResourceTiming，同 URL 多次请求时优先取当前请求之后的最后一条。
                 function findResourceTiming(url, afterTime) {
                     try {
@@ -144,12 +156,52 @@ object RequestMonitor : BaseMonitor() {
                     return value > 0 ? value : 0;
                 }
 
+                function getPageOrigin() {
+                    try {
+                        return new URL(window.location.href).origin;
+                    } catch (e) {
+                        return "";
+                    }
+                }
+
+                function isCrossOriginRequest(url) {
+                    try {
+                        var pageOrigin = getPageOrigin();
+                        if (!pageOrigin) {
+                            return false;
+                        }
+                        return new URL(toAbsoluteUrl(url)).origin !== pageOrigin;
+                    } catch (e) {
+                        return false;
+                    }
+                }
+
+                // 判断 ResourceTiming 细项是否因跨域未配置 Timing-Allow-Origin 而不可信。
+                function detectTimingDetailLevel(entry, requestUrl) {
+                    if (!entry) {
+                        return "unavailable";
+                    }
+                    var crossOrigin = isCrossOriginRequest(requestUrl);
+                    var transferSize = entry.transferSize || 0;
+                    var encodedBodySize = entry.encodedBodySize || 0;
+                    var decodedBodySize = entry.decodedBodySize || 0;
+                    var opaqueSize = transferSize === 0 && encodedBodySize === 0 && decodedBodySize === 0;
+                    var brokenBreakdown = (entry.responseStart || 0) === 0 && (entry.responseEnd || 0) > 0;
+                    var zeroedPhases = (entry.requestStart || 0) === 0
+                        && (entry.domainLookupStart || 0) === 0
+                        && (entry.connectStart || 0) === 0;
+                    if (crossOrigin && (opaqueSize || brokenBreakdown || zeroedPhases)) {
+                        return "restricted";
+                    }
+                    return "full";
+                }
+
                 // 构造浏览器网络层耗时。该数据来自 PerformanceResourceTiming，可能因跨域、缓存、连接复用等缺失或为 0。
                 function buildPerformanceInfo(url, afterTime) {
                     var entry = findResourceTiming(url, afterTime);
                     if (!entry) {
                         return {
-                            networkTiming: { available: false },
+                            networkTiming: { detailLevel: "unavailable" },
                             size: {
                                 transferSize: 0,
                                 encodedBodySize: 0,
@@ -163,9 +215,18 @@ object RequestMonitor : BaseMonitor() {
                         };
                     }
 
+                    var detailLevel = detectTimingDetailLevel(entry, url);
+                    var fromCache = (entry.transferSize || 0) === 0 && (entry.encodedBodySize || 0) > 0;
+                    if (detailLevel === "restricted"
+                        && (entry.transferSize || 0) === 0
+                        && (entry.encodedBodySize || 0) === 0
+                        && (entry.decodedBodySize || 0) === 0) {
+                        fromCache = false;
+                    }
+
                     return {
                         networkTiming: {
-                            available: true,
+                            detailLevel: detailLevel,
                             startTime: entry.startTime || 0,
                             queueing: duration(entry.requestStart, entry.startTime),
                             redirect: duration(entry.redirectEnd, entry.redirectStart),
@@ -180,7 +241,7 @@ object RequestMonitor : BaseMonitor() {
                             transferSize: entry.transferSize || 0,
                             encodedBodySize: entry.encodedBodySize || 0,
                             decodedBodySize: entry.decodedBodySize || 0,
-                            fromCache: (entry.transferSize || 0) === 0 && (entry.encodedBodySize || 0) > 0
+                            fromCache: fromCache
                         },
                         protocol: {
                             nextHopProtocol: entry.nextHopProtocol || "",
@@ -286,11 +347,15 @@ object RequestMonitor : BaseMonitor() {
                     }
 
                     XMLHttpRequest.prototype.open = function(method, url) {
+                        var absoluteUrl = toAbsoluteUrl(url);
+                        if (!isHttpRequest(absoluteUrl)) {
+                            return state.originalXHROpen.apply(this, arguments);
+                        }
                         this.__csMonitor = {
                             requestId: createRequestId(),
                             requestType: "xhr",
                             method: method,
-                            requestUrl: toAbsoluteUrl(url),
+                            requestUrl: absoluteUrl,
                             threadType: getThreadType(),
                             openTime: now(),
                             sendTime: null,
@@ -438,6 +503,9 @@ object RequestMonitor : BaseMonitor() {
 
                     window.fetch = function(input, init) {
                         var requestInfo = resolveFetchInput(input, init);
+                        if (!isHttpRequest(requestInfo.url)) {
+                            return state.originalFetch.apply(this, arguments);
+                        }
                         var requestId = createRequestId();
                         var startTime = now();
                         return state.originalFetch.apply(this, arguments).then(function(response) {
@@ -575,10 +643,13 @@ object RequestMonitor : BaseMonitor() {
         } else {
             val builder = StringBuilder()
             val hookTotal = getHookTotalDuration(data)
-            val networkTotal = data.networkTiming?.takeIf { it.available }?.total
             val statusText = getStatusText(data)
 
-            builder.append("网络请求性能 [")
+            builder.append("网络请求性能 当前页面: ")
+                .append(data.pageUrl.orEmpty().ifBlank { url })
+                .append("\n")
+
+            builder.append("  请求: [")
                 .append(data.requestType)
                 .append("] ")
                 .append(data.method)
@@ -586,12 +657,15 @@ object RequestMonitor : BaseMonitor() {
                 .append(statusText)
                 .append(" 线程=")
                 .append(data.content?.threadType ?: "")
-                .append(" 调用层=")
+                .append(" ")
+                .append(formatRequestUrlForLog(data.requestUrl))
+                .append("\n")
+
+            builder.append("  总览: ")
+                .append("调用层=")
                 .append(formatMs(hookTotal))
                 .append(" 网络层=")
-                .append(formatMs(networkTotal))
-                .append(" ")
-                .append(data.requestUrl)
+                .append(formatNetworkLayerOverview(data.networkTiming))
                 .append("\n")
 
             appendHookTiming(builder, data)
@@ -642,25 +716,35 @@ object RequestMonitor : BaseMonitor() {
 
     private fun appendNetworkTiming(builder: StringBuilder, data: RequestData) {
         val networkTiming = data.networkTiming ?: return
-        if (!networkTiming.available) {
-            return
+        when (resolveDetailLevel(networkTiming)) {
+            RequestNetworkTiming.DETAIL_UNAVAILABLE -> {
+                return
+            }
+            RequestNetworkTiming.DETAIL_RESTRICTED -> {
+                builder.append("  网络层: 总=")
+                    .append(formatMs(networkTiming.total))
+                    .append(" (细项因跨域且未配置Timing-Allow-Origin导致无法正常获取)")
+                    .append("\n")
+            }
+            RequestNetworkTiming.DETAIL_FULL -> {
+                builder.append("  网络层: 总=")
+                    .append(formatMs(networkTiming.total))
+                    .append(", 排队/准备=")
+                    .append(formatMs(networkTiming.queueing))
+                // TTFB：responseStart - requestStart，代表从请求发送到首字节返回。
+                builder.append(", TTFB=")
+                    .append(formatMs(networkTiming.ttfb))
+                    .append(", 下载=")
+                    .append(formatMs(networkTiming.responseDownload))
+                    .append(", DNS=")
+                    .append(formatMs(networkTiming.dns))
+                    .append(", TCP=")
+                    .append(formatMs(networkTiming.tcp))
+                    .append(", TLS=")
+                    .append(formatMs(networkTiming.tls))
+                    .append("\n")
+            }
         }
-        builder.append("  网络层: 总=")
-            .append(formatMs(networkTiming.total))
-            .append(", 排队/准备=")
-            .append(formatMs(networkTiming.queueing))
-        // TTFB：responseStart - requestStart，代表从请求发送到首字节返回。
-        builder.append(", TTFB=")
-            .append(formatMs(networkTiming.ttfb))
-            .append(", 下载=")
-            .append(formatMs(networkTiming.responseDownload))
-            .append(", DNS=")
-            .append(formatMs(networkTiming.dns))
-            .append(", TCP=")
-            .append(formatMs(networkTiming.tcp))
-            .append(", TLS=")
-            .append(formatMs(networkTiming.tls))
-            .append("\n")
     }
 
     private fun appendMetaInfo(builder: StringBuilder, data: RequestData) {
@@ -669,13 +753,54 @@ object RequestMonitor : BaseMonitor() {
         if (size == null && protocol == null) {
             return
         }
+        val cacheText = if (resolveDetailLevel(data.networkTiming) == RequestNetworkTiming.DETAIL_RESTRICTED
+            && isOpaqueRestrictedSize(size)
+        ) {
+            "未知(跨域不可见)"
+        } else {
+            (size?.fromCache ?: false).toString()
+        }
         builder.append("  信息: 传输=")
             .append(formatBytes(size?.transferSize))
             .append(", 缓存=")
-            .append(size?.fromCache ?: false)
+            .append(cacheText)
             .append(", 协议=")
             .append(protocol?.nextHopProtocol.orEmpty())
             .append("\n")
+    }
+
+    private fun resolveDetailLevel(networkTiming: RequestNetworkTiming?): String {
+        if (networkTiming == null) {
+            return RequestNetworkTiming.DETAIL_UNAVAILABLE
+        }
+        when (networkTiming.detailLevel) {
+            RequestNetworkTiming.DETAIL_FULL,
+            RequestNetworkTiming.DETAIL_RESTRICTED,
+            RequestNetworkTiming.DETAIL_UNAVAILABLE -> return networkTiming.detailLevel
+        }
+        return if (networkTiming.total > 0f) {
+            RequestNetworkTiming.DETAIL_FULL
+        } else {
+            RequestNetworkTiming.DETAIL_UNAVAILABLE
+        }
+    }
+
+    private fun formatNetworkLayerOverview(networkTiming: RequestNetworkTiming?): String {
+        return when (resolveDetailLevel(networkTiming)) {
+            RequestNetworkTiming.DETAIL_UNAVAILABLE -> "N/A"
+            RequestNetworkTiming.DETAIL_RESTRICTED -> {
+                "${formatMs(networkTiming?.total)}(跨域受限,仅总耗时可信)"
+            }
+            RequestNetworkTiming.DETAIL_FULL -> formatMs(networkTiming?.total)
+            else -> "N/A"
+        }
+    }
+
+    private fun isOpaqueRestrictedSize(size: RequestSizeInfo?): Boolean {
+        if (size == null) {
+            return false
+        }
+        return size.transferSize == 0f && size.encodedBodySize == 0f && size.decodedBodySize == 0f
     }
 
     private fun appendContentInfo(builder: StringBuilder, data: RequestData) {
@@ -740,6 +865,22 @@ object RequestMonitor : BaseMonitor() {
         } else {
             null
         }
+    }
+
+    private fun formatRequestUrlForLog(url: String?): String {
+        val raw = url.orEmpty()
+        if (raw.startsWith("data:", ignoreCase = true)) {
+            val mime = raw.substringAfter("data:").substringBefore(";").ifBlank { "unknown" }
+            val approxKb = (raw.length / 1024).coerceAtLeast(1)
+            return "data:$mime,[约${approxKb}KB]"
+        }
+        if (raw.startsWith("blob:", ignoreCase = true)) {
+            return "blob:[本地对象]"
+        }
+        if (raw.length <= WebMonitorConstants.MAX_URL_LOG_LENGTH) {
+            return raw
+        }
+        return raw.substring(0, WebMonitorConstants.MAX_URL_LOG_LENGTH) + "...[截断]"
     }
 
     private fun formatMs(value: Float?): String {

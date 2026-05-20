@@ -142,10 +142,17 @@ class RequestFetchHookTiming {
 }
 
 class RequestNetworkTiming {
+
+    companion object {
+        const val DETAIL_FULL = "full"
+        const val DETAIL_RESTRICTED = "restricted"
+        const val DETAIL_UNAVAILABLE = "unavailable"
+    }
+
     /**
-     * 是否匹配到可用 PerformanceResourceTiming。
+     * 网络层细项可信度：full=细项可信，restricted=仅 total 可信，unavailable=无 ResourceTiming。
      * */
-    var available: Boolean = false
+    var detailLevel: String = DETAIL_UNAVAILABLE
 
     /**
      * ResourceTiming startTime，相对 navigationStart。

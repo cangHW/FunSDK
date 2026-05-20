@@ -13,7 +13,7 @@ import com.proxy.service.webview.monitor.work.performance.bean.PerformanceResour
  */
 object PerformanceResourceMonitor : BaseMonitor() {
 
-    private const val TAG = "${WebMonitorConstants.TAG}PerformRes"
+    private const val TAG = "${WebMonitorConstants.TAG}PerRes"
 
     override fun shouldRun(): Boolean {
         return getConfig().isLogLoadPageResourceTimeEnable()
@@ -59,6 +59,27 @@ object PerformanceResourceMonitor : BaseMonitor() {
                     }
                     return false;
                 }
+
+                var MAX_RESOURCE_URL_LOG_LENGTH = ${WebMonitorConstants.MAX_URL_LOG_LENGTH};
+
+                function formatResourceUrlForLog(url) {
+                    var raw = String(url || "");
+                    if (raw.indexOf("data:") === 0) {
+                        var mime = "unknown";
+                        try {
+                            mime = raw.substring(5).split(";")[0] || "unknown";
+                        } catch (e) {}
+                        var approxKb = Math.max(1, Math.floor(raw.length / 1024));
+                        return "data:" + mime + ",[约" + approxKb + "KB]";
+                    }
+                    if (raw.indexOf("blob:") === 0) {
+                        return "blob:[本地对象]";
+                    }
+                    if (raw.length <= MAX_RESOURCE_URL_LOG_LENGTH) {
+                        return raw;
+                    }
+                    return raw.substring(0, MAX_RESOURCE_URL_LOG_LENGTH) + "...[截断]";
+                }
         """.trimIndent()
     }
 
@@ -98,7 +119,7 @@ object PerformanceResourceMonitor : BaseMonitor() {
                 function createResourceInfo(entry, type) {
                     return {
                         type: type,
-                        name: entry.name || "",
+                        name: formatResourceUrlForLog(entry.name),
                         startTime: entry.startTime || 0,
                         total: duration(entry.responseEnd, entry.startTime),
                         queueing: duration(entry.requestStart, entry.startTime),
@@ -237,9 +258,25 @@ object PerformanceResourceMonitor : BaseMonitor() {
                 .append(", 协议=")
                 .append(item.nextHopProtocol)
                 .append(", ")
-                .append(item.name)
+                .append(formatResourceUrlForLog(item.name))
                 .append("\n")
         }
+    }
+
+    private fun formatResourceUrlForLog(url: String?): String {
+        val raw = url.orEmpty()
+        if (raw.startsWith("data:", ignoreCase = true)) {
+            val mime = raw.substringAfter("data:").substringBefore(";").ifBlank { "unknown" }
+            val approxKb = (raw.length / 1024).coerceAtLeast(1)
+            return "data:$mime,[约${approxKb}KB]"
+        }
+        if (raw.startsWith("blob:", ignoreCase = true)) {
+            return "blob:[本地对象]"
+        }
+        if (raw.length <= WebMonitorConstants.MAX_URL_LOG_LENGTH) {
+            return raw
+        }
+        return raw.substring(0, WebMonitorConstants.MAX_URL_LOG_LENGTH) + "...[截断]"
     }
 
     private fun formatMs(value: Float?): String {

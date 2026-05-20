@@ -1,7 +1,5 @@
 package com.proxy.service.webview.monitor.work.performance.bean
 
-import java.text.DecimalFormat
-
 /**
  * @author: cangHX
  * @date: 2026/1/30 17:51
@@ -158,48 +156,5 @@ class PerformanceResourceDataInfo {
      * 资源加载时使用的网络协议（如 http/1.1、h2、h3）。
      * */
     var nextHopProtocol: String? = ""
-
-    override fun toString(): String {
-        val format = DecimalFormat("#.##")
-        val builder = StringBuilder()
-
-        builder.append("[")
-            .append(type)
-            .append("] ")
-        builder.append("总耗时: ")
-            .append(format.format(total))
-            .append("ms")
-            .append(", ")
-        builder.append("网络传输大小: ").append(transferSize).append("字节").append(", ")
-        builder.append("是否从缓存加载: ").append(fromCache).append(", ")
-        builder.append("加载协议: ").append(nextHopProtocol).append(", ")
-        builder.append("排队/准备: ")
-            .append(format.format(queueing))
-            .append("ms")
-            .append(", ")
-        builder.append("DNS 解析耗时: ")
-            .append(format.format(dns))
-            .append("ms")
-            .append(", ")
-        builder.append("TCP 链接耗时: ")
-            .append(format.format(tcp))
-            .append("ms")
-            .append(", ")
-        builder.append("TLS 握手耗时: ")
-            .append(format.format(tls))
-            .append("ms")
-            .append(", ")
-        builder.append("TTFB: ")
-            .append(format.format(ttfb))
-            .append("ms")
-            .append(", ")
-        builder.append("数据传输耗时: ")
-            .append(format.format(download))
-            .append("ms")
-            .append(", ")
-        builder.append("资源: ").append(name)
-
-        return builder.toString()
-    }
 
 }
