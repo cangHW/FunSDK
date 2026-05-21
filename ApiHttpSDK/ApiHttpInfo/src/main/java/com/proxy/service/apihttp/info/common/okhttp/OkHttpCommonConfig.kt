@@ -1,6 +1,7 @@
 package com.proxy.service.apihttp.info.common.okhttp
 
 import com.proxy.service.apihttp.base.common.config.base.IBaseConfigGet
+import com.proxy.service.apihttp.info.request.okhttp.interceptor.PerformanceInterceptor
 import okhttp3.Dns
 import okhttp3.EventListener
 import okhttp3.Interceptor
@@ -25,7 +26,7 @@ abstract class OkHttpCommonConfig(
     }
 
     override fun getEventListener(): EventListener? {
-        return config.getEventListener()
+        return PerformanceInterceptor(config.getEventListener())
     }
 
     override fun getDns(): Dns? {

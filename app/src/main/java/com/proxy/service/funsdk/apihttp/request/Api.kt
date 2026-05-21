@@ -11,7 +11,7 @@ import retrofit2.http.GET
  */
 interface Api {
 
-    @CsRetryWithDelay
+    @CsRetryWithDelay(retryCount = 1)
     @GET("mock/3509/ebook/v1/bookrack/list_del")
     fun request():Call<ApiResponse>
 
