@@ -30,7 +30,7 @@ upArray=(
 #  ":LogFileSDK:LogFileInfo"
 
     # 性能监控库
-#  ":ApmSDK:ApmInfo"
+  ":ApmSDK:ApmInfo"
 
   # 文档库
 #  ":DocumentsSDK:Image:DocumentImageInfo"

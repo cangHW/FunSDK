@@ -1,12 +1,10 @@
 package com.proxy.service.funsdk
 
 import android.app.Application
+import com.proxy.service.apm.info.CsApmMonitor
+import com.proxy.service.apm.info.config.ApmConfig
+import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.core.CsCore
-import com.proxy.service.logfile.info.CsLogFile
-import com.proxy.service.logfile.info.config.LogConfig
-import com.proxy.service.logfile.info.manager.CompressionMode
-import com.proxy.service.logfile.info.manager.EncryptionMode
-import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
@@ -23,7 +21,22 @@ class App : Application() {
 //            .setEncryptionMode(EncryptionMode.CHACHA20, "111222")
 //            .createDailyType(0, 0)
 //        CsLogFile.setConfig(config)
+
+        initApm()
         CsCore.init(this, BuildConfig.DEBUG)
+//        CsCore.init(this, false)
+    }
+
+    private fun initApm(){
+        val mtl = MainThreadLagConfig.builder()
+            .setEnable(true)
+            .build()
+
+        val apmConfig = ApmConfig.builder()
+            .setMainThreadLagMonitorConfig(mtl)
+            .build()
+
+        CsApmMonitor.setConfig(apmConfig)
     }
 
 }

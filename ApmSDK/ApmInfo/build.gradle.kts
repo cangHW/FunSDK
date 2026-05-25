@@ -55,6 +55,7 @@ dependencies {
 
     api(libs.core.framework)
     implementation(libs.service.threadpool)
+    implementation(libs.service.widget)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

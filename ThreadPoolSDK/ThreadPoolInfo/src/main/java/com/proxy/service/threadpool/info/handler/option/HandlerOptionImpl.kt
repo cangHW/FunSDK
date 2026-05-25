@@ -40,22 +40,22 @@ class HandlerOptionImpl(
     }
 
     override fun clearAllTask() {
-        CsLogger.tag(TAG).i("Thread ${handlerController.getThreadName()} starts to clear all tasks.")
+        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to clear all tasks.")
         handlerController.cancelAllTask()
     }
 
     override fun clearAllTaskWithTag(tag: String) {
-        CsLogger.tag(TAG).i("Thread ${handlerController.getThreadName()} starts to clear all tasks with tag. tag = $tag")
+        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to clear all tasks with tag. tag = $tag")
         handlerController.cancelTaskByTag(tag)
     }
 
     override fun disposeGroup() {
-        CsLogger.tag(TAG).i("Thread ${handlerController.getThreadName()} starts to disposeGroup.")
+        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to disposeGroup.")
         handlerController.close()
     }
 
     override fun disposeGroupSafely() {
-        CsLogger.tag(TAG).i("Thread ${handlerController.getThreadName()} starts to disposeGroupSafely.")
+        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to disposeGroupSafely.")
         handlerController.closeSafely()
     }
 }

@@ -22,7 +22,7 @@ class ThreadPoolConfig : CsBaseConfig() {
 
     @SuppressLint("Range")
     override fun priority(): Int {
-        return -900
+        return -990
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {

@@ -99,4 +99,9 @@ interface ISettingGet {
      * 媒体内容（如音频和视频）是否需要用户手势才能播放
      * */
     fun isMediaPlaybackRequiresUserGesture(): Boolean
+
+    /**
+     * 是否开启离屏渲染
+     * */
+    fun isOffscreenPreRaster(): Boolean
 }

@@ -1,6 +1,12 @@
 package com.proxy.service.apm.info.config
 
-import com.proxy.service.apm.info.config.controller.MonitorConfig
+import com.proxy.service.apm.info.config.controller.common.CommonConfig
+import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
+import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
+import com.proxy.service.apm.info.monitor.crash.bean.ExceptionReport
+import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
+import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.UiLagReport
+import com.proxy.service.apm.info.report.IReporter
 
 /**
  * @author: cangHX
@@ -11,10 +17,30 @@ interface IBuilderGet {
 
     fun getRootDir(): String
 
-    fun getJavaCrashMonitorConfig(): MonitorConfig
+    /**
+     * Crash监控配置。
+     */
+    fun getJavaCrashMonitorConfig(): CommonConfig
 
-    fun getMainThreadLagMonitorConfig(): MonitorConfig
+    /**
+     * JavaCrash报告业务回调。
+     */
+    fun getJavaCrashReporter(): IReporter<ExceptionReport>?
 
-    fun getUiLagMonitorConfig(): MonitorConfig
+    /**
+     * 主线程慢分发监控配置。
+     */
+    fun getMainThreadLagMonitorConfig(): MainThreadLagConfig
 
+    /**
+     * 主线程慢分发报告业务回调。
+     */
+    fun getMainThreadLagReporter(): IReporter<MainThreadLagReport>?
+
+    fun getUiLagMonitorConfig(): UiLagConfig
+
+    /**
+     * UI渲染卡顿报告业务回调。
+     */
+    fun getUiLagReporter(): IReporter<UiLagReport>?
 }

@@ -47,6 +47,13 @@ object CsDeviceUtils {
     }
 
     /**
+     * 获取Android系统版本号
+     * */
+    fun getDeviceSdk(): String {
+        return Build.VERSION.SDK_INT.toString()
+    }
+
+    /**
      * 获取设备类型
      * */
     fun getDeviceType(): DeviceType {

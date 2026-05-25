@@ -1,6 +1,6 @@
 package com.proxy.service.apm.info.cache
 
-import com.proxy.service.apm.info.config.controller.MonitorConfig
+import com.proxy.service.apm.info.config.controller.base.IBaseConfigGet
 import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
@@ -32,16 +32,16 @@ class CacheManager {
 
     private val map = HashMap<String, IManager>()
 
-    fun startWatch(path: String, monitorConfig: MonitorConfig) {
+    fun startWatch(path: String, config: IBaseConfigGet) {
         if (map.containsKey(path)) {
             return
         }
         val manager = CsFileMonitorUtils.createMonitor(
             path,
             FileMonitorCallbackImpl(
-                monitorConfig.getMaxFileCount(),
-                monitorConfig.getAllFilesMaxSize(),
-                monitorConfig.getMaxCacheTime()
+                config.getMaxFileCount(),
+                config.getAllFilesMaxSize(),
+                config.getMaxCacheTime()
             )
         )
         manager.startWatching()

@@ -10,7 +10,7 @@ import com.proxy.service.webview.base.web.setting.ISetting
  * @date: 2026/1/16 14:01
  * @desc:
  */
-class SettingImpl constructor(
+class SettingImpl(
     private val settings: WebSettings
 ) : ISetting {
 
@@ -90,6 +90,10 @@ class SettingImpl constructor(
         settings.mediaPlaybackRequiresUserGesture = require
     }
 
+    override fun setOffscreenPreRaster(enabled: Boolean) {
+        settings.offscreenPreRaster = enabled
+    }
+
     override fun isSupportMultipleWindows(): Boolean {
         return settings.supportMultipleWindows()
     }
@@ -160,5 +164,9 @@ class SettingImpl constructor(
 
     override fun isMediaPlaybackRequiresUserGesture(): Boolean {
         return settings.mediaPlaybackRequiresUserGesture
+    }
+
+    override fun isOffscreenPreRaster(): Boolean {
+        return settings.offscreenPreRaster
     }
 }

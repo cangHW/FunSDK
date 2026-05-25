@@ -125,4 +125,10 @@ interface ISettingSet<T> {
      * 默认为 true
      * */
     fun setMediaPlaybackRequiresUserGesture(require: Boolean): T
+
+    /**
+     * 是否启用离屏渲染, 开启后允许 WebView 在离屏（offscreen）状态下提前进行内容的渲染, 但是会占用更多资源.
+     * 默认 false
+     * */
+    fun setOffscreenPreRaster(enabled: Boolean): T
 }

@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.3.3",
+                    version           : "1.3.4",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -42,14 +42,14 @@ ext {
             // 线程库
             ThreadPoolBase : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.2.9",
+                    version           : "0.2.10",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool-Info",
-                    version           : "0.2.9",
+                    version           : "0.2.10",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -74,14 +74,14 @@ ext {
             // web 库
             WebViewBase    : [
                     artifact          : "Service-Webview",
-                    version           : "0.2.19",
+                    version           : "0.2.20",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             WebViewInfo    : [
                     artifact          : "Service-Webview-Info",
-                    version           : "0.2.19",
+                    version           : "0.2.20",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

@@ -21,7 +21,7 @@ class CoreFrameworkConfig : CsBaseConfig() {
 
     @SuppressLint("Range")
     override fun priority(): Int {
-        return -990
+        return -995
     }
 
     override fun onCreate(application: Application, isDebug: Boolean) {

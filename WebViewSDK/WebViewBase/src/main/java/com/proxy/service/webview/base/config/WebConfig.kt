@@ -10,107 +10,9 @@ import com.proxy.service.webview.base.listener.WebDownloadListener
  * @date: 2024/7/31 18:28
  * @desc:
  */
-class WebConfig private constructor(private val builder: IBuilderGet) : IBuilderGet {
-
-    override fun isSupportMultipleWindows(): Boolean {
-        return builder.isSupportMultipleWindows()
-    }
-
-    override fun getTextZoom(): Int {
-        return builder.getTextZoom()
-    }
-
-    override fun isSupportZoom(): Boolean {
-        return builder.isSupportZoom()
-    }
-
-    override fun isBuiltInZoomControls(): Boolean {
-        return builder.isBuiltInZoomControls()
-    }
-
-    override fun isDisplayZoomControls(): Boolean {
-        return builder.isDisplayZoomControls()
-    }
-
-    override fun isDomStorageEnabled(): Boolean {
-        return builder.isDomStorageEnabled()
-    }
-
-    override fun isAcceptThirdPartyCookies(): Boolean {
-        return builder.isAcceptThirdPartyCookies()
-    }
-
-    override fun getMixedContentMode(): MixedContentMode {
-        return builder.getMixedContentMode()
-    }
-
-    override fun isJavaScriptEnabled(): Boolean {
-        return builder.isJavaScriptEnabled()
-    }
-
-    override fun isMediaPlaybackRequiresUserGesture(): Boolean {
-        return builder.isMediaPlaybackRequiresUserGesture()
-    }
-
-    override fun getCacheMode(): CacheMode {
-        return builder.getCacheMode()
-    }
-
-    override fun isUseWideViewPort(): Boolean {
-        return builder.isUseWideViewPort()
-    }
-
-    override fun isLoadWithOverviewMode(): Boolean {
-        return builder.isLoadWithOverviewMode()
-    }
-
-    override fun getUserAgent(): String {
-        return builder.getUserAgent()
-    }
-
-    override fun isUserAgentAppend(): Boolean {
-        return builder.isUserAgentAppend()
-    }
-
-    override fun isSavePassword(): Boolean {
-        return builder.isSavePassword()
-    }
-
-    override fun isAllowFileAccess(): Boolean {
-        return builder.isAllowFileAccess()
-    }
-
-    override fun isAllowContentAccess(): Boolean {
-        return builder.isAllowContentAccess()
-    }
-
-    override fun isAllowFileAccessFromFileURLs(): Boolean {
-        return builder.isAllowFileAccessFromFileURLs()
-    }
-
-    override fun isAllowUniversalAccessFromFileURLs(): Boolean {
-        return builder.isAllowUniversalAccessFromFileURLs()
-    }
-
-    override fun getWebViewAssetLoader(): WebViewAssetLoader? {
-        return builder.getWebViewAssetLoader()
-    }
-
-    override fun isVerticalScrollBarEnabled(): Boolean {
-        return builder.isVerticalScrollBarEnabled()
-    }
-
-    override fun isHorizontalScrollBarEnabled(): Boolean {
-        return builder.isHorizontalScrollBarEnabled()
-    }
-
-    override fun isHorizontalFadingEdgeEnabled(): Boolean {
-        return builder.isHorizontalFadingEdgeEnabled()
-    }
-
-    override fun getWebDownloadListener(): WebDownloadListener? {
-        return builder.getWebDownloadListener()
-    }
+class WebConfig private constructor(
+    private val builder: IBuilderGet
+) : IBuilderGet by builder{
 
     companion object {
         fun builder(): IBuilder {
@@ -130,6 +32,7 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var mixedContentMode: MixedContentMode = MixedContentMode.MIXED_CONTENT_NEVER_ALLOW
         private var javaScriptEnabled: Boolean = true
         private var mediaPlaybackRequiresUserGesture: Boolean = true
+        private var offscreenPreRaster: Boolean = false
         private var cacheMode: CacheMode = CacheMode.LOAD_DEFAULT
         private var isUseWideViewPort: Boolean = false
         private var isLoadWithOverviewMode: Boolean = true
@@ -145,7 +48,7 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var horizontalScrollBarEnabled: Boolean = true
         private var horizontalFadingEdgeEnabled: Boolean = false
 
-        private var webDownloadListener:  WebDownloadListener? = null
+        private var webDownloadListener: WebDownloadListener? = null
 
         override fun setSupportMultipleWindows(support: Boolean): IBuilder {
             this.isSupportMultipleWindows = support
@@ -194,6 +97,11 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setMediaPlaybackRequiresUserGesture(require: Boolean): IBuilder {
             this.mediaPlaybackRequiresUserGesture = require
+            return this
+        }
+
+        override fun setOffscreenPreRaster(enabled: Boolean): IBuilder {
+            this.offscreenPreRaster = enabled
             return this
         }
 
@@ -310,6 +218,10 @@ class WebConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun isMediaPlaybackRequiresUserGesture(): Boolean {
             return mediaPlaybackRequiresUserGesture
+        }
+
+        override fun isOffscreenPreRaster(): Boolean {
+            return offscreenPreRaster
         }
 
         override fun getCacheMode(): CacheMode {

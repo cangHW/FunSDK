@@ -61,7 +61,8 @@ android {
                 "src/main/res-api",
                 "src/main/res-document",
                 "src/main/res-web",
-                "src/main/res-media"
+                "src/main/res-media",
+                "src/main/res-apm"
             )
         }
     }
@@ -89,6 +90,7 @@ dependencies {
 
 //    implementation(project(":LogFileSDK:LogFileXlogInfo"))
     implementation(libs.service.logfile)
+    implementation(project(":ApmSDK:ApmInfo"))
 //    implementation(libs.service.apm)
 
     implementation(libs.service.document.image)
@@ -102,6 +104,7 @@ dependencies {
 
 //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
 
+    implementation("com.tencent.bugly:crashreport:4.1.9.3")
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

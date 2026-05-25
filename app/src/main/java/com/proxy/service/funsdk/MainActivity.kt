@@ -9,6 +9,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.system.screen.CsBarUtils
 import com.proxy.service.funsdk.apihttp.ApiActivity
+import com.proxy.service.funsdk.apm.ApmActivity
 import com.proxy.service.funsdk.document.DocumentActivity
 import com.proxy.service.funsdk.framework.FrameWorkActivity
 import com.proxy.service.funsdk.imageloader.ImageLoaderActivity
@@ -76,6 +77,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.media -> {
                 LaunchUtils.launch(this, MediaActivity::class.java)
+            }
+
+            R.id.apm -> {
+                LaunchUtils.launch(this, ApmActivity::class.java)
             }
         }
     }
