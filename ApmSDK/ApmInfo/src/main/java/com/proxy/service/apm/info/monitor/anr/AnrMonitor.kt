@@ -1,7 +1,6 @@
 package com.proxy.service.apm.info.monitor.anr
 
 import android.app.Application
-import android.os.Looper
 import com.proxy.service.apm.info.config.ApmConfig
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.constants.Constants
@@ -46,7 +45,7 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
         val dir = getLogFileDir(application)
         val tempDir = getTempDir(application)
 
-        checkPendingAnr(dir, tempDir)
+        checkPendingAnr(tempDir)
 
         sampler = CompositeSampler(
             MainThreadStackSampler.create(Long.MAX_VALUE),
@@ -54,7 +53,7 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
             DeviceSampler.create(),
             CpuSampler.create(Long.MAX_VALUE),
             MemSampler.create(),
-            AllThreadStackSampler.create()
+            AllThreadStackSampler.create(),
         )
 
         reporter = CompositeReporter(
@@ -106,9 +105,11 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
         }
     }
 
-    private fun checkPendingAnr(dir: String, tempDir: String) {
+    private fun checkPendingAnr(tempDir: String) {
         val marker = File(tempDir, MARKER_FILE_NAME)
-        if (!marker.exists() || marker.length() == 0L) return
+        if (!marker.exists() || marker.length() == 0L) {
+            return
+        }
 
         // 有 marker 说明上次发生了 ANR 但未被实时处理（进程被杀）
         // 此处仅清理 marker，因为实时检测已经处理了大部分情况

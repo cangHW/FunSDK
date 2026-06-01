@@ -3,7 +3,11 @@ package com.proxy.service.apm.info
 import android.os.Handler
 import android.os.Looper
 import com.proxy.service.apm.info.config.ApmConfig
+import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.apm.info.monitor.crash.native_crash.jni.NativeCrashBridge
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
 
 /**
  * Apm 稳定性监控框架全局入口。
@@ -13,6 +17,9 @@ import com.proxy.service.apm.info.monitor.crash.native_crash.jni.NativeCrashBrid
  */
 object CsApmMonitor {
 
+    private const val TAG = "${Constants.TAG}Test"
+
+    private val lock = Any()
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private var config: ApmConfig = ApmConfig.builder().build()
@@ -60,14 +67,27 @@ object CsApmMonitor {
         NativeCrashBridge.nativeTestCrash(type)
     }
 
+
     /**
      * 测试 ANR：直接在主线程 sleep 10s，触发系统 ANR 判定。
      * 需要在此期间点击屏幕产生 InputDispatch 超时。
      * */
     fun testAnr() {
-        mainHandler.post {
-            Thread.sleep(10_000)
-        }
+        CsTask.ioThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                synchronized(lock) {
+                    mainHandler.post {
+                        synchronized(lock) {
+                            CsLogger.tag(TAG).i("main thread run.")
+                        }
+                    }
+
+                    Thread.sleep(10 * 1000)
+                }
+                return ""
+            }
+        })?.start()
+
     }
 
 }

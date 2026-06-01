@@ -14,6 +14,7 @@
 
 static char g_marker_path[512];
 static volatile int g_anr_detected = 0;
+static int g_signal_catcher_tid = -1;
 
 static void anr_signal_handler(int signum, siginfo_t *si, void *uc);
 
@@ -32,6 +33,7 @@ int cs_apm_anr_init(const char *marker_dir) {
     }
 
     g_anr_detected = 0;
+    g_signal_catcher_tid = find_signal_catcher_tid();
 
     int ret = cs_apm_signal_trace_register(anr_signal_handler);
     return ret;
@@ -76,12 +78,11 @@ static void anr_signal_handler(int signum, siginfo_t *si, void *uc) {
         close(fd);
     }
 
-    // 恢复原有 handler 并转发给 SignalCatcher 线程
+    // 恢复原有 handler 并转发给 SignalCatcher 线程（使用 init 时缓存的 tid）
     cs_apm_signal_trace_unregister();
 
-    int sc_tid = find_signal_catcher_tid();
-    if (sc_tid > 0) {
-        syscall(__NR_tgkill, getpid(), sc_tid, SIGQUIT);
+    if (g_signal_catcher_tid > 0) {
+        syscall(__NR_tgkill, getpid(), g_signal_catcher_tid, SIGQUIT);
     }
 }
 
