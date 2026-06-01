@@ -3,6 +3,7 @@ package com.proxy.service.apm.info.config
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
+import com.proxy.service.apm.info.monitor.anr.report.AnrReport
 import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
@@ -43,6 +44,14 @@ interface IBuilder {
     fun setNativeCrashMonitorConfig(
         config: CommonConfig,
         reporter: IReporter<NativeCrashReport>? = null
+    ): IBuilder
+
+    /**
+     * 设置 ANR 监控配置
+     * */
+    fun setAnrMonitorConfig(
+        config: CommonConfig,
+        reporter: IReporter<AnrReport>? = null
     ): IBuilder
 
     /**

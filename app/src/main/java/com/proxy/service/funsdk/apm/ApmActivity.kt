@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.apm.info.CsApmMonitor
-import com.proxy.service.apm.info.monitor.crash.native_crash.logcat.CrashLogcatReader
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityApmJankTestBinding
@@ -50,6 +49,11 @@ class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
 
             R.id.native_crash_trigger -> {
                 CsApmMonitor.testNativeCrash()
+            }
+
+            R.id.anr_trigger -> {
+                binding?.jankHint?.text = "主线程将 sleep 10s，请快速点击屏幕触发 ANR..."
+                CsApmMonitor.testAnr()
             }
         }
     }

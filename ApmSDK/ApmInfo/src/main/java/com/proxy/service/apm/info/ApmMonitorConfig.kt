@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apm.info.config.ApmConfig
+import com.proxy.service.apm.info.monitor.anr.AnrMonitor
 import com.proxy.service.apm.info.monitor.crash.java_crash.JavaCrashMonitor
 import com.proxy.service.apm.info.monitor.crash.native_crash.NativeCrashMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.MainThreadLagMonitor
@@ -35,6 +36,7 @@ class ApmMonitorConfig : CsBaseConfig() {
 
         initCrashMonitor(application, config)
         initPerformanceMonitor(application, config)
+        initAnrMonitor(application, config)
     }
 
     private fun initCrashMonitor(application: Application, config: ApmConfig) {
@@ -51,5 +53,10 @@ class ApmMonitorConfig : CsBaseConfig() {
 
         val uilConfig = config.getUiLagMonitorConfig()
         UiLagMonitor.getInstance().init(application, config, uilConfig)
+    }
+
+    private fun initAnrMonitor(application: Application, config: ApmConfig) {
+        val anrConfig = config.getAnrMonitorConfig()
+        AnrMonitor.getInstance().init(application, config, anrConfig)
     }
 }

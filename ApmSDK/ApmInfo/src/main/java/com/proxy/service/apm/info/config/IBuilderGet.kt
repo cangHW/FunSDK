@@ -3,6 +3,7 @@ package com.proxy.service.apm.info.config
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
+import com.proxy.service.apm.info.monitor.anr.report.AnrReport
 import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
@@ -48,6 +49,19 @@ interface IBuilderGet {
      */
     fun getMainThreadLagReporter(): IReporter<MainThreadLagReport>?
 
+    /**
+     * ANR 监控配置。
+     */
+    fun getAnrMonitorConfig(): CommonConfig
+
+    /**
+     * ANR 报告业务回调。
+     */
+    fun getAnrReporter(): IReporter<AnrReport>?
+
+    /**
+     * UI渲染卡顿监控配置。
+     */
     fun getUiLagMonitorConfig(): UiLagConfig
 
     /**

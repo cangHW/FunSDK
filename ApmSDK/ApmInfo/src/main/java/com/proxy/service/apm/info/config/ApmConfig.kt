@@ -3,6 +3,7 @@ package com.proxy.service.apm.info.config
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
+import com.proxy.service.apm.info.monitor.anr.report.AnrReport
 import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
@@ -38,6 +39,9 @@ class ApmConfig private constructor(
         private var mainThreadLagMonitorConfig = MainThreadLagConfig.builder().build()
         private var mainThreadLagReporter: IReporter<MainThreadLagReport>? = null
 
+        private var anrMonitorConfig = CommonConfig.builder().build()
+        private var anrReporter: IReporter<AnrReport>? = null
+
         private var uiLagMonitorConfig = UiLagConfig.builder().build()
         private var uiLagReporter: IReporter<UiLagReport>? = null
 
@@ -70,6 +74,15 @@ class ApmConfig private constructor(
         ): IBuilder {
             this.mainThreadLagMonitorConfig = config
             this.mainThreadLagReporter = reporter
+            return this
+        }
+
+        override fun setAnrMonitorConfig(
+            config: CommonConfig,
+            reporter: IReporter<AnrReport>?
+        ): IBuilder {
+            this.anrMonitorConfig = config
+            this.anrReporter = reporter
             return this
         }
 
@@ -112,6 +125,14 @@ class ApmConfig private constructor(
 
         override fun getMainThreadLagReporter(): IReporter<MainThreadLagReport>? {
             return mainThreadLagReporter
+        }
+
+        override fun getAnrMonitorConfig(): CommonConfig {
+            return anrMonitorConfig
+        }
+
+        override fun getAnrReporter(): IReporter<AnrReport>? {
+            return anrReporter
         }
 
         override fun getUiLagMonitorConfig(): UiLagConfig {

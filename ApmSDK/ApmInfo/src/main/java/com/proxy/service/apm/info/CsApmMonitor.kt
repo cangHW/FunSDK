@@ -60,4 +60,14 @@ object CsApmMonitor {
         NativeCrashBridge.nativeTestCrash(type)
     }
 
+    /**
+     * 测试 ANR：直接在主线程 sleep 10s，触发系统 ANR 判定。
+     * 需要在此期间点击屏幕产生 InputDispatch 超时。
+     * */
+    fun testAnr() {
+        mainHandler.post {
+            Thread.sleep(10_000)
+        }
+    }
+
 }

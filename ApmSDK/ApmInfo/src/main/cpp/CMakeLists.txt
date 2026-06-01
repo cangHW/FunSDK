@@ -8,6 +8,7 @@ file(GLOB_RECURSE SOURCE_FILES
         "src/*.cpp"
         "common/*.cpp"
         "native_crash/*.cpp"
+        "anr/*.cpp"
 )
 
 message(STATUS "Source files: ${SOURCE_FILES}")

@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <csignal>
 #include "../native_crash/crash_handler.h"
+#include "../anr/anr_handler.h"
 
 #define CS_APM_EXPORT __attribute__((visibility("default")))
 
@@ -29,24 +30,45 @@ Java_com_proxy_service_apm_info_monitor_crash_native_1crash_jni_NativeCrashBridg
         JNIEnv * /* env */, jobject /* thiz */, jint type) {
     switch (type) {
         case 1:
-            // SIGSEGV: 空指针解引用
             *((volatile int *) 0) = 0;
             break;
         case 2:
-            // SIGABRT: 主动 abort
             abort();
             break;
         case 3: {
-            // SIGSEGV: 非法地址写入
             volatile int *ptr = (volatile int *) 0xDEADBEEF;
             *ptr = 42;
             break;
         }
         default:
-            // 默认：空指针
             *((volatile int *) 0) = 0;
             break;
     }
+}
+
+// ==================== ANR ====================
+
+CS_APM_EXPORT JNIEXPORT jint JNICALL
+Java_com_proxy_service_apm_info_monitor_anr_jni_AnrBridge_nativeInit(
+        JNIEnv *env, jobject /* thiz */, jstring marker_dir) {
+    const char *dir = env->GetStringUTFChars(marker_dir, NULL);
+    if (dir == NULL) return -1;
+
+    int ret = cs_apm_anr_init(dir);
+    env->ReleaseStringUTFChars(marker_dir, dir);
+    return ret;
+}
+
+CS_APM_EXPORT JNIEXPORT jint JNICALL
+Java_com_proxy_service_apm_info_monitor_anr_jni_AnrBridge_nativeDeinit(
+        JNIEnv * /* env */, jobject /* thiz */) {
+    return cs_apm_anr_deinit();
+}
+
+CS_APM_EXPORT JNIEXPORT jint JNICALL
+Java_com_proxy_service_apm_info_monitor_anr_jni_AnrBridge_nativeCheckAndReset(
+        JNIEnv * /* env */, jobject /* thiz */) {
+    return cs_apm_anr_check_and_reset();
 }
 
 }
