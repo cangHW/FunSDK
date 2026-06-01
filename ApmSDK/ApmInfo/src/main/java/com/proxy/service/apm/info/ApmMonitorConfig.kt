@@ -3,7 +3,9 @@ package com.proxy.service.apm.info
 import android.annotation.SuppressLint
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
-import com.proxy.service.apm.info.monitor.crash.CrashMonitor
+import com.proxy.service.apm.info.config.ApmConfig
+import com.proxy.service.apm.info.monitor.crash.java_crash.JavaCrashMonitor
+import com.proxy.service.apm.info.monitor.crash.native_crash.NativeCrashMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.MainThreadLagMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.ui.UiLagMonitor
 import com.proxy.service.core.application.base.CsBaseConfig
@@ -31,13 +33,23 @@ class ApmMonitorConfig : CsBaseConfig() {
     override fun onCreate(application: Application, isDebug: Boolean) {
         val config = CsApmMonitor.getConfig()
 
+        initCrashMonitor(application, config)
+        initPerformanceMonitor(application, config)
+    }
+
+    private fun initCrashMonitor(application: Application, config: ApmConfig) {
+        val cConfig = config.getJavaCrashMonitorConfig()
+        JavaCrashMonitor.getInstance().init(application, config, cConfig)
+
+        val ncConfig = config.getNativeCrashMonitorConfig()
+        NativeCrashMonitor.getInstance().init(application, config, ncConfig)
+    }
+
+    private fun initPerformanceMonitor(application: Application, config: ApmConfig) {
         val mtlConfig = config.getMainThreadLagMonitorConfig()
         MainThreadLagMonitor.getInstance().init(application, config, mtlConfig)
 
         val uilConfig = config.getUiLagMonitorConfig()
         UiLagMonitor.getInstance().init(application, config, uilConfig)
-
-        val cConfig = config.getJavaCrashMonitorConfig()
-        CrashMonitor.getInstance().init(application, config, cConfig)
     }
 }

@@ -3,7 +3,8 @@ package com.proxy.service.apm.info.config
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
-import com.proxy.service.apm.info.monitor.crash.bean.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.UiLagReport
 import com.proxy.service.apm.info.report.IReporter
@@ -31,6 +32,9 @@ class ApmConfig private constructor(
         private var crashMonitorConfig = CommonConfig.builder().build()
         private var javaCrashReporter: IReporter<ExceptionReport>? = null
 
+        private var nativeCrashMonitorConfig = CommonConfig.builder().build()
+        private var nativeCrashReporter: IReporter<NativeCrashReport>? = null
+
         private var mainThreadLagMonitorConfig = MainThreadLagConfig.builder().build()
         private var mainThreadLagReporter: IReporter<MainThreadLagReport>? = null
 
@@ -48,6 +52,15 @@ class ApmConfig private constructor(
         ): IBuilder {
             this.crashMonitorConfig = config
             this.javaCrashReporter = reporter
+            return this
+        }
+
+        override fun setNativeCrashMonitorConfig(
+            config: CommonConfig,
+            reporter: IReporter<NativeCrashReport>?
+        ): IBuilder {
+            this.nativeCrashMonitorConfig = config
+            this.nativeCrashReporter = reporter
             return this
         }
 
@@ -83,6 +96,14 @@ class ApmConfig private constructor(
 
         override fun getJavaCrashReporter(): IReporter<ExceptionReport>? {
             return javaCrashReporter
+        }
+
+        override fun getNativeCrashMonitorConfig(): CommonConfig {
+            return nativeCrashMonitorConfig
+        }
+
+        override fun getNativeCrashReporter(): IReporter<NativeCrashReport>? {
+            return nativeCrashReporter
         }
 
         override fun getMainThreadLagMonitorConfig(): MainThreadLagConfig {

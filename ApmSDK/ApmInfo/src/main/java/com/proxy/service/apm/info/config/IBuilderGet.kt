@@ -3,7 +3,8 @@ package com.proxy.service.apm.info.config
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
-import com.proxy.service.apm.info.monitor.crash.bean.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.UiLagReport
 import com.proxy.service.apm.info.report.IReporter
@@ -26,6 +27,16 @@ interface IBuilderGet {
      * JavaCrash报告业务回调。
      */
     fun getJavaCrashReporter(): IReporter<ExceptionReport>?
+
+    /**
+     * NativeCrash监控配置。
+     */
+    fun getNativeCrashMonitorConfig(): CommonConfig
+
+    /**
+     * NativeCrash报告业务回调。
+     */
+    fun getNativeCrashReporter(): IReporter<NativeCrashReport>?
 
     /**
      * 主线程慢分发监控配置。

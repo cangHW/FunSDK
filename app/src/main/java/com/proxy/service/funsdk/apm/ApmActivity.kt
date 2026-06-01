@@ -6,7 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import com.proxy.service.apm.info.CsApmMonitor
+import com.proxy.service.apm.info.monitor.crash.native_crash.logcat.CrashLogcatReader
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityApmJankTestBinding
@@ -35,20 +36,20 @@ class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
         when (view.id) {
             R.id.main_thread_lag_trigger -> {
                 binding?.jankHint?.text = "正在主线程 sleep 1500ms..."
+
+                CsApmMonitor.testMainThreadLag()
+
                 mainHandler.post {
-                    try {
-                        Thread.sleep(1500)
-                    } catch (_: InterruptedException) {
-                    }
                     binding?.jankHint?.text = "完成，请查看 apm/performance/main_thread_lag/ 目录"
                 }
             }
 
             R.id.java_crash_trigger -> {
-//                mainHandler.post {
-//                    throw NullPointerException("test")
-//                }
-                throw NullPointerException("test")
+                CsApmMonitor.testJavaCrash()
+            }
+
+            R.id.native_crash_trigger -> {
+                CsApmMonitor.testNativeCrash()
             }
         }
     }

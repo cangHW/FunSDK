@@ -1,4 +1,4 @@
-package com.proxy.service.apm.info.monitor.crash.bean
+package com.proxy.service.apm.info.monitor.crash.java_crash.report
 
 import com.proxy.service.apm.info.sampler.ICompositeSamplerData
 

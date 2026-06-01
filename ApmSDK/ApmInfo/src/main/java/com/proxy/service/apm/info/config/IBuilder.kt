@@ -3,7 +3,8 @@ package com.proxy.service.apm.info.config
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
-import com.proxy.service.apm.info.monitor.crash.bean.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.UiLagReport
 import com.proxy.service.apm.info.report.IReporter
@@ -34,6 +35,14 @@ interface IBuilder {
     fun setMainThreadLagMonitorConfig(
         config: MainThreadLagConfig,
         reporter: IReporter<MainThreadLagReport>? = null
+    ): IBuilder
+
+    /**
+     * 设置 native crash 监控配置
+     * */
+    fun setNativeCrashMonitorConfig(
+        config: CommonConfig,
+        reporter: IReporter<NativeCrashReport>? = null
     ): IBuilder
 
     /**

@@ -1,4 +1,4 @@
-package com.proxy.service.apm.info.monitor.crash.java.hook
+package com.proxy.service.apm.info.monitor.crash.java_crash.hook
 
 import android.os.Process
 import com.proxy.service.apm.info.constants.Constants

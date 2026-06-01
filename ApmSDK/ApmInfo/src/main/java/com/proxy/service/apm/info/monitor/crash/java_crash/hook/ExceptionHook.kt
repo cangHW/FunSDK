@@ -1,7 +1,7 @@
-package com.proxy.service.apm.info.monitor.crash.java.hook
+package com.proxy.service.apm.info.monitor.crash.java_crash.hook
 
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.crash.bean.ExceptionReport
+import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.report.IReporter
 import com.proxy.service.apm.info.sampler.ICompositeSampler
 import com.proxy.service.core.framework.data.log.CsLogger
