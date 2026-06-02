@@ -98,15 +98,15 @@ class UiLagNotifyReporter(
             count = 0
             lastActivitySimpleName = name
         }
+        count++
         val now = System.currentTimeMillis()
         if (now - lastToastWallMs < Constants.MONITOR_UI_LAG_NOTIFY_THROTTLE_MS) {
-            count++
             return
         }
         lastToastWallMs = now
 
         val builder = StringBuilder()
-        if (count > 0) {
+        if (count > 1) {
             builder.append("(${count}次)")
         }
         builder.append(" UI严重卡顿 ·")
