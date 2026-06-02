@@ -1,6 +1,6 @@
 package com.proxy.service.apm.info.monitor.performance.lag.ui.frame
 
-import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.FrameMetricsSnapshot
+import com.proxy.service.apm.info.monitor.performance.lag.ui.report.FrameMetricsSnapshot
 
 /**
  * 单帧渲染时间预算，用于计算 overrun 与 [JankSeverity]。

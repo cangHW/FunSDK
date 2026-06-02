@@ -17,10 +17,7 @@ import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityApmJankTestBinding
 
 /**
- * 主线程慢分发手工验证页。
- *
- * 点击按钮后在主线程 Handler 中 sleep 1.5s，用于触发 ApmInfo jank 监控并检查
- * `getExternalFilesDir("apm")/performance/main_thread_lag/` 下的 `jank_*.txt`。
+ * apm 检测。
  */
 class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
 
@@ -29,8 +26,6 @@ class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
             context.startActivity(Intent(context, ApmActivity::class.java))
         }
     }
-
-    private val mainHandler = Handler(Looper.getMainLooper())
 
     override fun getViewBinding(inflater: LayoutInflater): ActivityApmJankTestBinding {
         return ActivityApmJankTestBinding.inflate(inflater)
@@ -41,25 +36,30 @@ class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
             R.id.total_log_file -> {
                 CsApmMonitor.setExceptionHandler(object : ExceptionHandler {
                     override fun onException(filePaths: List<FileInfo>) {
-                        CsLogger.tag("ExceptionHandler")
-                            .e("filePaths=${CsJsonUtils.toJson(filePaths)}")
+                        val json = CsJsonUtils.toJson(filePaths)
+                        CsLogger.tag("ExceptionHandler").e("filePaths=$json")
+                        binding?.content?.addData("全部异常信息文件", json)
                     }
                 })
             }
 
             R.id.main_thread_lag_trigger -> {
+                binding?.content?.addData("检测", "测试主线程卡顿")
                 CsApmMonitorTest.testMainThreadLag()
             }
 
             R.id.java_crash_trigger -> {
+                binding?.content?.addData("检测", "测试 java crash")
                 CsApmMonitorTest.testJavaCrash()
             }
 
             R.id.native_crash_trigger -> {
+                binding?.content?.addData("检测", "测试 native crash")
                 CsApmMonitorTest.testNativeCrash()
             }
 
             R.id.anr_trigger -> {
+                binding?.content?.addData("检测", "测试 anr")
                 CsApmMonitorTest.testAnr()
             }
         }

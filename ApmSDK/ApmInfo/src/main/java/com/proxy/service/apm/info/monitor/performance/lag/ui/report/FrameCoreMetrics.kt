@@ -1,4 +1,4 @@
-package com.proxy.service.apm.info.monitor.performance.lag.ui.bean
+package com.proxy.service.apm.info.monitor.performance.lag.ui.report
 
 import android.os.Build
 import android.view.FrameMetrics

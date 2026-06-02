@@ -90,21 +90,15 @@ dependencies {
 
 //    implementation(project(":LogFileSDK:LogFileXlogInfo"))
     implementation(libs.service.logfile)
-    implementation(project(":ApmSDK:ApmInfo"))
-//    implementation(libs.service.apm)
+    implementation(libs.service.apm)
 
     implementation(libs.service.document.image)
     implementation(libs.service.document.pdf)
-//    implementation(project(":WidgetSDK:WidgetInfo"))
     implementation(libs.service.widget)
 
     implementation(libs.service.media.camera)
-//    implementation(project(":MediaSDK:Camera:CameraInfo"))
-//    implementation(project(":MediaSDK:Camera:CameraBase"))
 
 //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
-
-    implementation("com.tencent.bugly:crashreport:4.1.9.3")
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

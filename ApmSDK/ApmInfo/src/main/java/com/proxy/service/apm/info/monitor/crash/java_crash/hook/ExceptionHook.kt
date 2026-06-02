@@ -51,12 +51,11 @@ class ExceptionHook(
         try {
             val time = System.currentTimeMillis()
             val report = ExceptionReport(
-                time,
                 thread,
                 throwable,
                 sampler.sampleNow(),
             )
-            reporter.publish(report.time, report)
+            reporter.publish(time, report)
         } catch (t: Throwable) {
             CsLogger.tag(TAG).e(t)
         }

@@ -3,7 +3,7 @@ package com.proxy.service.apm.info.monitor.performance.lag.mainthread.engine
 import android.os.Debug
 import android.os.SystemClock
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
+import com.proxy.service.apm.info.monitor.performance.lag.mainthread.report.MainThreadLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.DispatchListener
 import com.proxy.service.apm.info.report.IReporter
 import com.proxy.service.apm.info.sampler.ICompositeSampler

@@ -1,4 +1,4 @@
-package com.proxy.service.apm.info.monitor.performance.lag.ui.bean
+package com.proxy.service.apm.info.monitor.performance.lag.ui.report
 
 import com.proxy.service.apm.info.monitor.performance.lag.ui.frame.BudgetSource
 import com.proxy.service.apm.info.monitor.performance.lag.ui.frame.JankSeverity

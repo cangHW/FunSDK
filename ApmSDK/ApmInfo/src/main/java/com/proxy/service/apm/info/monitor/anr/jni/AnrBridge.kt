@@ -6,7 +6,7 @@ object AnrBridge {
         System.loadLibrary("csApm")
     }
 
-    external fun nativeInit(markerDir: String): Int
+    external fun nativeInit(): Int
 
     external fun nativeDeinit(): Int
 

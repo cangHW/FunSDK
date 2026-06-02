@@ -44,4 +44,7 @@ object Constants {
     const val MONITOR_CRASH_ALL_THREAD_STACK_MAX_DEPTH_PER_THREAD = 64
     const val MONITOR_CRASH_ALL_THREAD_STACK_MAX_TOTAL_CHARS = 512 * 1024L
 
+    // ANR 上报冷却：同一 ANR 风暴内多次 SIGQUIT 只上报一次
+    const val MONITOR_ANR_REPORT_COOLDOWN_MS = 30_000L
+
 }

@@ -30,10 +30,11 @@ class NativeCrashMonitor private constructor() : AbstractMonitor<CommonConfig>()
     }
 
     override fun start(application: Application, apmConfig: ApmConfig, config: CommonConfig) {
-        val dir = getTempLogFileDir(application)
-        checkPendingCrash(apmConfig, dir)
+        val dir = getLogFileDir(application)
+        val tempDir = getTempLogFileDir(application)
+        checkPendingCrash(apmConfig, tempDir, dir)
 
-        val ret = NativeCrashBridge.nativeInit(dir)
+        val ret = NativeCrashBridge.nativeInit(tempDir)
         if (ret != 0) {
             CsLogger.tag(TAG).e("Native crash init failed, code=$ret")
         }
@@ -52,8 +53,8 @@ class NativeCrashMonitor private constructor() : AbstractMonitor<CommonConfig>()
         return FileUtils.getDefaultDir(application, "${Constants.TEMP_DIR_NAME}/crash/")
     }
 
-    private fun checkPendingCrash(apmConfig: ApmConfig, dir: String) {
-        val marker = File(dir, MARKER_FILE_NAME)
+    private fun checkPendingCrash(apmConfig: ApmConfig, tempDir: String, dir: String) {
+        val marker = File(tempDir, MARKER_FILE_NAME)
         if (!marker.exists() || marker.length() == 0L) {
             return
         }
@@ -75,7 +76,6 @@ class NativeCrashMonitor private constructor() : AbstractMonitor<CommonConfig>()
             }
 
             val report = NativeCrashReport(
-                timestampSec = timestampSec,
                 signum = signum,
                 pid = pid,
                 crashLog = crashLog
@@ -90,7 +90,8 @@ class NativeCrashMonitor private constructor() : AbstractMonitor<CommonConfig>()
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).e(throwable)
         } finally {
-            CsFileUtils.delete(marker.absolutePath)
+            CsFileUtils.delete(tempDir)
+            CsFileUtils.createDir(tempDir)
         }
     }
 }

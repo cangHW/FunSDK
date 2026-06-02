@@ -1,7 +1,7 @@
 package com.proxy.service.apm.info.monitor.performance.lag.mainthread.reporter
 
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
+import com.proxy.service.apm.info.monitor.performance.lag.mainthread.report.MainThreadLagReport
 import com.proxy.service.apm.info.report.IReporter
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger

@@ -2,7 +2,7 @@ package com.proxy.service.apm.info.monitor.performance.lag.ui.reporter
 
 import com.proxy.service.apm.info.config.controller.performance.uilag.IUiLagConfigGet
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.UiLagReport
+import com.proxy.service.apm.info.monitor.performance.lag.ui.report.UiLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.ui.frame.JankSeverity
 import com.proxy.service.apm.info.report.IReporter
 import com.proxy.service.core.constants.CoreConfig

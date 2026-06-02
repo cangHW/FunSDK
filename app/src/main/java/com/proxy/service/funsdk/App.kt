@@ -1,14 +1,7 @@
 package com.proxy.service.funsdk
 
 import android.app.Application
-import com.proxy.service.apm.info.CsApmMonitor
-import com.proxy.service.apm.info.cache.ExceptionHandler
-import com.proxy.service.apm.info.config.ApmConfig
-import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.core.CsCore
-import com.proxy.service.core.framework.data.json.CsJsonUtils
-import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.monitor.info.FileInfo
 
 /**
  * @author: cangHX

@@ -1,8 +1,8 @@
 package com.proxy.service.apm.info.monitor.performance.lag.ui.frame
 
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.FrameCoreMetrics
-import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.FrameMetricsSnapshot
+import com.proxy.service.apm.info.monitor.performance.lag.ui.report.FrameCoreMetrics
+import com.proxy.service.apm.info.monitor.performance.lag.ui.report.FrameMetricsSnapshot
 import java.util.concurrent.TimeUnit
 
 /**

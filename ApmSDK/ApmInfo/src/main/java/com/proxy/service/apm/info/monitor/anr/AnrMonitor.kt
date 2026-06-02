@@ -21,14 +21,14 @@ import com.proxy.service.apm.info.sampler.impl.stack.AllThreadStackSampler
 import com.proxy.service.apm.info.sampler.impl.stack.MainThreadStackSampler
 import com.proxy.service.apm.info.utils.FileUtils
 import com.proxy.service.core.framework.data.log.CsLogger
-import com.proxy.service.core.framework.io.file.CsFileUtils
-import java.io.File
+import com.proxy.service.core.service.task.CsTask
+import com.proxy.service.threadpool.base.thread.task.ICallable
+import java.util.concurrent.atomic.AtomicBoolean
 
 class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
 
     companion object {
         private const val TAG: String = "${Constants.TAG}Anr"
-        private const val MARKER_FILE_NAME = "anr_marker.tmp"
         private const val CHECK_INTERVAL_MS = 500L
 
         private val mInstance by lazy { AnrMonitor() }
@@ -42,11 +42,13 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
     private var sampler: CompositeSampler? = null
     private var reporter: CompositeReporter<AnrReport>? = null
 
+    @Volatile
+    private var lastReportWallMs = 0L
+
+    private val handling = AtomicBoolean(false)
+
     override fun start(application: Application, apmConfig: ApmConfig, config: CommonConfig) {
         val dir = getLogFileDir(application)
-        val tempDir = getTempDir(application)
-
-        checkPendingAnr(tempDir)
 
         sampler = CompositeSampler(
             MainThreadStackSampler.create(Long.MAX_VALUE),
@@ -63,14 +65,14 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
             CallbackReporter(apmConfig.getAnrReporter())
         )
 
-        val ret = AnrBridge.nativeInit(tempDir)
+        val ret = AnrBridge.nativeInit()
         if (ret != 0) {
             CsLogger.tag(TAG).e("ANR init failed, code=$ret")
             return
         }
 
-        watchdog = AnrWatchdog(CHECK_INTERVAL_MS) {
-            handleAnrDetected()
+        watchdog = AnrWatchdog(CHECK_INTERVAL_MS) { signalCount ->
+            handleAnrDetected(signalCount)
         }
         watchdog?.isDaemon = true
         watchdog?.start()
@@ -87,34 +89,46 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
         return FileUtils.getDefaultDir(application, "anr/")
     }
 
-    private fun getTempDir(application: Application): String {
-        return FileUtils.getDefaultDir(application, "${Constants.TEMP_DIR_NAME}/anr/")
-    }
-
-    private fun handleAnrDetected() {
-        try {
-            val time = System.currentTimeMillis()
-            val samplerData = sampler?.sampleNow() ?: emptyList()
-
-            val report = AnrReport(
-                time = time,
-                samplerData = samplerData
-            )
-
-            reporter?.publish(time, report)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
-        }
-    }
-
-    private fun checkPendingAnr(tempDir: String) {
-        val marker = File(tempDir, MARKER_FILE_NAME)
-        if (!marker.exists() || marker.length() == 0L) {
+    private fun handleAnrDetected(signalCount: Int) {
+        if (signalCount <= 0) {
             return
         }
 
-        // 有 marker 说明上次发生了 ANR 但未被实时处理（进程被杀）
-        // 此处仅清理 marker，因为实时检测已经处理了大部分情况
-        CsFileUtils.delete(marker.absolutePath)
+        val now = System.currentTimeMillis()
+        if (now - lastReportWallMs < Constants.MONITOR_ANR_REPORT_COOLDOWN_MS) {
+            CsLogger.tag(TAG).d("ANR suppressed (cooldown), signalCount=$signalCount")
+            return
+        }
+
+        if (!handling.compareAndSet(false, true)) {
+            CsLogger.tag(TAG).d("ANR suppressed (handling), signalCount=$signalCount")
+            return
+        }
+
+        lastReportWallMs = now
+        publishAsync(signalCount)
+    }
+
+    private fun publishAsync(signalCount: Int) {
+        CsTask.ioThread()?.call(object : ICallable<String> {
+            override fun accept(): String {
+                try {
+                    val time = System.currentTimeMillis()
+                    val samplerData = sampler?.sampleNow() ?: emptyList()
+                    val report = AnrReport(samplerData = samplerData)
+                    reporter?.publish(time, report)
+                    if (signalCount > 1) {
+                        CsLogger.tag(TAG).w(
+                            "ANR report published, coalesced ${signalCount - 1} extra SIGQUIT(s)"
+                        )
+                    }
+                } catch (throwable: Throwable) {
+                    CsLogger.tag(TAG).e(throwable)
+                } finally {
+                    handling.set(false)
+                }
+                return ""
+            }
+        })?.start()
     }
 }

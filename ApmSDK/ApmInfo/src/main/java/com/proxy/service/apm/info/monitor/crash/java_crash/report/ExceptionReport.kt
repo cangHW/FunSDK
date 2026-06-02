@@ -9,10 +9,6 @@ import com.proxy.service.apm.info.sampler.ICompositeSamplerData
  */
 class ExceptionReport(
     /**
-     * 异常时间戳（System.currentTimeMillis）。
-     */
-    val time: Long,
-    /**
      * 异常线程
      * */
     val thread: Thread,

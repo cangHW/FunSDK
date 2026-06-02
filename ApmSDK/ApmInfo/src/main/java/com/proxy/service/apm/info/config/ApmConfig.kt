@@ -6,8 +6,8 @@ import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfi
 import com.proxy.service.apm.info.monitor.anr.report.AnrReport
 import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
-import com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean.MainThreadLagReport
-import com.proxy.service.apm.info.monitor.performance.lag.ui.bean.UiLagReport
+import com.proxy.service.apm.info.monitor.performance.lag.mainthread.report.MainThreadLagReport
+import com.proxy.service.apm.info.monitor.performance.lag.ui.report.UiLagReport
 import com.proxy.service.apm.info.report.IReporter
 
 /**

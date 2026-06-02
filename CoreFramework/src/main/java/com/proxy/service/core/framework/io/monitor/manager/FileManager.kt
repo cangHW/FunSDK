@@ -1,5 +1,7 @@
 package com.proxy.service.core.framework.io.monitor.manager
 
+import com.proxy.service.core.constants.CoreConfig
+import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.framework.io.file.CsFileUtils
 import com.proxy.service.core.framework.io.monitor.callback.FileMonitorCallback
 import com.proxy.service.core.framework.io.monitor.constants.Constants
@@ -28,34 +30,33 @@ class FileManager private constructor(
     }
 
     companion object {
+        private const val TAG: String = "${CoreConfig.TAG}FileManager"
+
         fun create(rootPath: String, callback: FileMonitorCallback): FileManager {
-            return FileManager(rootPath, callback)
+            val manager = FileManager(rootPath, callback)
+            if (CsFileUtils.isFile(rootPath) || CsFileUtils.isDir(rootPath)) {
+                manager.whenFileAdded(File(rootPath), false, null)
+            } else {
+                CsLogger.tag(TAG).e("The file or folder does not exist.")
+            }
+            return manager
         }
     }
 
+    private val groupName = "${Constants.TASK_NAME_START}${System.currentTimeMillis()}"
+
     private val isStart = AtomicBoolean(false)
-    private var handler =
-        CsTask.launchTaskGroup("${Constants.TASK_NAME_START}${System.currentTimeMillis()}")
+    private var handler = CsTask.launchTaskGroup(groupName)
+
+    private val observerMapping = ConcurrentHashMap<String, FileObserverImpl>()
     private val totalFileInfos = ConcurrentHashMap<String, FileInfo>()
+
+
     private val actionCallback = object : ActionCallback {
         override fun onFileAdded(path: String) {
             handler?.start {
-                val file = File(path)
                 val list = ArrayList<String>()
-
-                if (CsFileUtils.isFile(file)) {
-                    totalFileInfos.put(path, createFileInfo(file))
-                    list.add(path)
-                } else if (CsFileUtils.isDir(file)) {
-                    file.listFiles(object : FilenameFilter {
-                        override fun accept(dir: File?, name: String?): Boolean {
-                            return CsFileUtils.isFile(File(dir, name ?: ""))
-                        }
-                    })?.forEach {
-                        list.add(it.absolutePath)
-                        totalFileInfos.put(it.absolutePath, createFileInfo(it))
-                    }
-                }
+                whenFileAdded(File(path), true, list)
 
                 if (isStart.get() && list.size > 0) {
                     callback.onFileAdded(ArrayList(totalFileInfos.values), list)
@@ -65,10 +66,8 @@ class FileManager private constructor(
 
         override fun onFileChanged(path: String) {
             handler?.start {
-                val file = File(path)
-
-                if (CsFileUtils.isFile(file)) {
-                    totalFileInfos.put(path, createFileInfo(file))
+                if (CsFileUtils.isFile(path)) {
+                    totalFileInfos.put(path, createFileInfo(File(path)))
                 }
 
                 if (isStart.get()) {
@@ -80,38 +79,33 @@ class FileManager private constructor(
         override fun onFileRemove(path: String) {
             handler?.start {
                 val list = ArrayList<String>()
-
-                HashMap(totalFileInfos).keys.forEach {
-                    if (it.startsWith(path)) {
-                        totalFileInfos.remove(it)
-                        list.add(it)
-                    }
-                }
+                whenFileRemoved(File(path), list)
 
                 if (isStart.get() && list.size > 0) {
                     callback.onFileRemoved(ArrayList(totalFileInfos.values), list)
                 }
-            }
 
-            if (rootPath.startsWith(path)){
-                stopWatching()
+                if (isDirContainsFile(path, rootPath)) {
+                    stopWatching()
+                }
             }
         }
     }
-    private val observer = FileObserverImpl(rootPath, totalFileInfos, actionCallback)
 
     override fun startWatching() {
         if (isStart.compareAndSet(false, true)) {
-            totalFileInfos.clear()
-            observer.init()
             callback.onStart(ArrayList(totalFileInfos.values))
-            observer.startWatching()
+            observerMapping.forEach {
+                it.value.startWatching()
+            }
         }
     }
 
     override fun stopWatching() {
         if (isStart.compareAndSet(true, false)) {
-            observer.stopWatching()
+            observerMapping.forEach {
+                it.value.stopWatching()
+            }
             callback.onClose(ArrayList(totalFileInfos.values))
         }
     }
@@ -123,5 +117,54 @@ class FileManager private constructor(
         info.fileLength = file.length()
         info.lastModified = file.lastModified()
         return info
+    }
+
+    private fun whenFileAdded(file: File, autoStart: Boolean, changedFiles: ArrayList<String>?) {
+        if (CsFileUtils.isFile(file)) {
+            totalFileInfos.put(file.absolutePath, createFileInfo(file))
+            changedFiles?.add(file.absolutePath)
+            return
+        }
+
+        if (CsFileUtils.isDir(file)) {
+            val observer = FileObserverImpl(file.absolutePath, actionCallback)
+            observerMapping.put(file.absolutePath, observer)
+            if (autoStart) {
+                observer.startWatching()
+            }
+
+            file.listFiles()?.forEach {
+                whenFileAdded(it, autoStart, changedFiles)
+            }
+        }
+    }
+
+    private fun whenFileRemoved(file: File, changedFiles: ArrayList<String>) {
+        HashMap(totalFileInfos).keys.forEach {
+            if (isDirContainsFile(file.absolutePath, it)) {
+                totalFileInfos.remove(it)
+                changedFiles.add(it)
+            }
+        }
+
+        HashMap(observerMapping).keys.forEach {
+            if (isDirContainsFile(file.absolutePath, it)) {
+                observerMapping.remove(it)?.stopWatching()
+            }
+        }
+    }
+
+    private fun isDirContainsFile(dir: String, file: String): Boolean {
+        val dirStr = if (dir.endsWith(File.separator)) {
+            dir
+        } else {
+            "$dir${File.separator}"
+        }
+        val fileStr = if (file.endsWith(File.separator)) {
+            file
+        } else {
+            "$file${File.separator}"
+        }
+        return fileStr == dirStr || fileStr.startsWith(dirStr)
     }
 }

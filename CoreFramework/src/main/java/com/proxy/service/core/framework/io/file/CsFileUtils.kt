@@ -175,6 +175,9 @@ object CsFileUtils {
         if (file == null) {
             return 0
         }
+        if (!exists(file)) {
+            return 0
+        }
         try {
             return file.length()
         } catch (throwable: Throwable) {

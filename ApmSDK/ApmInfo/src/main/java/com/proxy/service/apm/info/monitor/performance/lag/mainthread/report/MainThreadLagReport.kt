@@ -1,4 +1,4 @@
-package com.proxy.service.apm.info.monitor.performance.lag.mainthread.bean
+package com.proxy.service.apm.info.monitor.performance.lag.mainthread.report
 
 import com.proxy.service.apm.info.sampler.ICompositeSamplerData
 

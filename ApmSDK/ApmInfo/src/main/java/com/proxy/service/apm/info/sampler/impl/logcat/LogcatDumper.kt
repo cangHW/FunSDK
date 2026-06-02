@@ -1,10 +1,12 @@
 package com.proxy.service.apm.info.sampler.impl.logcat
 
 import com.proxy.service.apm.info.constants.Constants
+import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.ArrayDeque
+import java.util.ArrayList
 
 /**
  * 同步、有界拉取 logcat 缓冲区（`logcat -d -t N`），供 Java Crash 等崩溃路径使用。
@@ -21,12 +23,35 @@ object LogcatDumper {
     )
 
     fun dumpSync(
+        types: List<Int>,
         maxLines: Int,
         timeoutMs: Long,
         maxBytes: Long,
     ): DumpResult {
+        val cmds = ArrayList<String>()
+        cmds.add("logcat")
+        types.forEach {
+            if (it == LogcatSampler.TYPE_LOG_MAIN){
+                cmds.add("-b")
+                cmds.add("main")
+            }else if (it == LogcatSampler.TYPE_LOG_SYSTEM){
+                cmds.add("-b")
+                cmds.add("system")
+            }else if (it == LogcatSampler.TYPE_LOG_CRASH){
+                cmds.add("-b")
+                cmds.add("crash")
+            }
+        }
+        cmds.add("-d")
+        cmds.add("-v")
+        cmds.add("threadtime")
+        cmds.add("-t")
+        cmds.add(maxLines.toString())
+
+        CsLogger.tag(TAG).e("cmds=${CsJsonUtils.toJson(cmds)}")
+
         val primary = execDump(
-            cmd = arrayOf("logcat", "-d", "-v", "threadtime", "-t", maxLines.toString()),
+            cmd = cmds.toTypedArray(),
             maxLines = maxLines,
             timeoutMs = timeoutMs,
             maxBytes = maxBytes

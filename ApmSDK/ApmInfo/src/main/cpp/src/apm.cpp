@@ -50,13 +50,8 @@ Java_com_proxy_service_apm_info_monitor_crash_native_1crash_jni_NativeCrashBridg
 
 CS_APM_EXPORT JNIEXPORT jint JNICALL
 Java_com_proxy_service_apm_info_monitor_anr_jni_AnrBridge_nativeInit(
-        JNIEnv *env, jobject /* thiz */, jstring marker_dir) {
-    const char *dir = env->GetStringUTFChars(marker_dir, NULL);
-    if (dir == NULL) return -1;
-
-    int ret = cs_apm_anr_init(dir);
-    env->ReleaseStringUTFChars(marker_dir, dir);
-    return ret;
+        JNIEnv * /* env */, jobject /* thiz */) {
+    return cs_apm_anr_init();
 }
 
 CS_APM_EXPORT JNIEXPORT jint JNICALL
