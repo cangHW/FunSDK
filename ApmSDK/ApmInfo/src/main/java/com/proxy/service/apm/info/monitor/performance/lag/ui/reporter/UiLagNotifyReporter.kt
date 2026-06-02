@@ -95,6 +95,7 @@ class UiLagNotifyReporter(
         val name = CsContextManager.getTopActivity()?.javaClass?.simpleName
         if (lastActivitySimpleName != name) {
             lastToastWallMs = 0L
+            count = 0
             lastActivitySimpleName = name
         }
         val now = System.currentTimeMillis()

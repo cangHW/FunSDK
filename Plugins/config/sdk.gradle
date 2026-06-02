@@ -184,7 +184,7 @@ ext {
             // 异常监控库
             ApmInfo    : [
                     artifact          : "Service-Apm",
-                    version           : "0.2.3.2",
+                    version           : "0.2.3.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
