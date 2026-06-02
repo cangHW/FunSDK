@@ -49,7 +49,7 @@ class NativeCrashMonitor private constructor() : AbstractMonitor<CommonConfig>()
     }
 
     private fun getTempLogFileDir(application: Application):String{
-        return FileUtils.getDefaultDir(application, "temp/crash/")
+        return FileUtils.getDefaultDir(application, "${Constants.TEMP_DIR_NAME}/crash/")
     }
 
     private fun checkPendingCrash(apmConfig: ApmConfig, dir: String) {

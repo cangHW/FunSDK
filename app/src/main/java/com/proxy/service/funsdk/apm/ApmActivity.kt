@@ -7,6 +7,11 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import com.proxy.service.apm.info.CsApmMonitor
+import com.proxy.service.apm.info.CsApmMonitorTest
+import com.proxy.service.apm.info.cache.ExceptionHandler
+import com.proxy.service.core.framework.data.json.CsJsonUtils
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.monitor.info.FileInfo
 import com.proxy.service.funsdk.R
 import com.proxy.service.funsdk.base.BaseActivity
 import com.proxy.service.funsdk.databinding.ActivityApmJankTestBinding
@@ -33,27 +38,29 @@ class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
 
     override fun onClick(view: View) {
         when (view.id) {
+            R.id.total_log_file -> {
+                CsApmMonitor.setExceptionHandler(object : ExceptionHandler {
+                    override fun onException(filePaths: List<FileInfo>) {
+                        CsLogger.tag("ExceptionHandler")
+                            .e("filePaths=${CsJsonUtils.toJson(filePaths)}")
+                    }
+                })
+            }
+
             R.id.main_thread_lag_trigger -> {
-                binding?.jankHint?.text = "正在主线程 sleep 1500ms..."
-
-                CsApmMonitor.testMainThreadLag()
-
-                mainHandler.post {
-                    binding?.jankHint?.text = "完成，请查看 apm/performance/main_thread_lag/ 目录"
-                }
+                CsApmMonitorTest.testMainThreadLag()
             }
 
             R.id.java_crash_trigger -> {
-                CsApmMonitor.testJavaCrash()
+                CsApmMonitorTest.testJavaCrash()
             }
 
             R.id.native_crash_trigger -> {
-                CsApmMonitor.testNativeCrash()
+                CsApmMonitorTest.testNativeCrash()
             }
 
             R.id.anr_trigger -> {
-                binding?.jankHint?.text = "主线程将 sleep 10s，请快速点击屏幕触发 ANR..."
-                CsApmMonitor.testAnr()
+                CsApmMonitorTest.testAnr()
             }
         }
     }

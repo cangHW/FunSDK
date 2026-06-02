@@ -41,8 +41,7 @@ class ObserverHook(
             val field = looperClass.getField("sObserver")
             field.isAccessible = true
             lastObserverObj = field.get(looperClass)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).w(throwable)
+        } catch (_: Throwable) {
         }
 
         try {
@@ -55,8 +54,7 @@ class ObserverHook(
             setObserverMethod = looperClass.getMethod("setObserver", observerClass)
             setObserverMethod?.invoke(looper, observerProxy)
             return true
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
+        } catch (_: Throwable) {
         }
         return false
     }
@@ -68,8 +66,7 @@ class ObserverHook(
 
         try {
             setObserverMethod?.invoke(looper, lastObserverObj)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).w("uninstall ObserverHook failed: ${throwable.message}")
+        } catch (_: Throwable) {
         } finally {
             observerProxy = null
         }

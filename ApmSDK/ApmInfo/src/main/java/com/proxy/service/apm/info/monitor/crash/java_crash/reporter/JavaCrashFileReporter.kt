@@ -27,11 +27,11 @@ class JavaCrashFileReporter(
     override fun publish(time: Long, report: ExceptionReport) {
         try {
             val timeString = CsTimeManager.createFactory(time).get("yyyyMMdd_HHmmss_SSS")
-            val file = File(dir, "$timeString.txt")
+            val file = File(dir, "java_crash_$timeString.txt")
             CsFileWriteUtils.setSourceString(format(report)).writeSync(file)
             CsLogger.tag(TAG).d("Java Crash，日志记录成功: ${file.absolutePath}")
         } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
     }
 

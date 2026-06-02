@@ -19,7 +19,7 @@ class AnrFileReporter(
     override fun publish(time: Long, report: AnrReport) {
         try {
             val timeString = CsTimeManager.createFactory(time).get("yyyyMMdd_HHmmss_SSS")
-            val file = File(dir, "$timeString.txt")
+            val file = File(dir, "anr_$timeString.txt")
             CsFileWriteUtils.setSourceString(format(report)).writeSync(file)
             CsLogger.tag(TAG).d("ANR report saved: ${file.absolutePath}")
         } catch (throwable: Throwable) {

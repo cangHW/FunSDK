@@ -15,6 +15,7 @@ import com.proxy.service.apm.info.sampler.composite.CompositeSampler
 import com.proxy.service.apm.info.sampler.impl.app.AppSampler
 import com.proxy.service.apm.info.sampler.impl.cpu.CpuSampler
 import com.proxy.service.apm.info.sampler.impl.device.DeviceSampler
+import com.proxy.service.apm.info.sampler.impl.logcat.LogcatSampler
 import com.proxy.service.apm.info.sampler.impl.mem.MemSampler
 import com.proxy.service.apm.info.sampler.impl.stack.AllThreadStackSampler
 import com.proxy.service.apm.info.sampler.impl.stack.MainThreadStackSampler
@@ -54,6 +55,7 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
             CpuSampler.create(Long.MAX_VALUE),
             MemSampler.create(),
             AllThreadStackSampler.create(),
+            LogcatSampler.create()
         )
 
         reporter = CompositeReporter(
@@ -86,7 +88,7 @@ class AnrMonitor private constructor() : AbstractMonitor<CommonConfig>() {
     }
 
     private fun getTempDir(application: Application): String {
-        return FileUtils.getDefaultDir(application, "temp/anr/")
+        return FileUtils.getDefaultDir(application, "${Constants.TEMP_DIR_NAME}/anr/")
     }
 
     private fun handleAnrDetected() {

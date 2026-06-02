@@ -12,6 +12,8 @@ object Constants {
     const val DIVIDER = "*** *** *** *** *** *** *** *** *** *** *** *** *** ***"
     const val DIVIDER_HALF = "*** *** *** *** *** *** ***"
 
+    const val TEMP_DIR_NAME = "temp"
+
     const val MONITOR_SAMPLER_SLIDING_WINDOW_SIZE = 50
 
     // 通用检测配置

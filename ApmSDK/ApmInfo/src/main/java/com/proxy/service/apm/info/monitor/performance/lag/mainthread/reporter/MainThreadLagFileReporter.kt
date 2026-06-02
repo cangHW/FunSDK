@@ -28,14 +28,14 @@ class MainThreadLagFileReporter(
     override fun publish(time: Long, report: MainThreadLagReport) {
         try {
             val timeString = CsTimeManager.createFactory(time).get("yyyyMMdd_HHmmss_SSS")
-            val file = File(dir, "$timeString.txt")
+            val file = File(dir, "main_thread_lag_$timeString.txt")
             CsFileWriteUtils.setSourceString(format(report)).writeAsync(file)
 
             if (CoreConfig.isDebug) {
                 CsToast.show("检测到主线程卡顿")
             }
         } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).w(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
     }
 

@@ -31,8 +31,7 @@ class PrinterHook(
             val field = looperClass.getDeclaredField("mLogging")
             field.isAccessible = true
             lastPrinterObj = field.get(looper) as? Printer?
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).w(throwable)
+        } catch (_: Throwable) {
         }
 
         val printer = PrinterImpl(lastPrinterObj, listener)

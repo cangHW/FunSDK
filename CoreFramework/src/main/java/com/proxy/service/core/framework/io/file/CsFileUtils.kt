@@ -1,5 +1,6 @@
 package com.proxy.service.core.framework.io.file
 
+import android.text.TextUtils
 import com.proxy.service.core.constants.CoreConfig
 import com.proxy.service.core.framework.data.log.CsLogger
 import java.io.Closeable
@@ -305,6 +306,96 @@ object CsFileUtils {
             return false
         }
         return rename(File(srcFilePath), destFile)
+    }
+
+    /**
+     * 获取文件夹下全部文件(包括子文件内文件)
+     * */
+    fun listFiles(dirPath: String?): ArrayList<File>? {
+        if (dirPath.isNullOrBlank()) {
+            return null
+        }
+        return listFiles(File(dirPath))
+    }
+
+    /**
+     * 获取文件夹下全部文件(包括子文件内文件)
+     * */
+    fun listFiles(dirFile: File?): ArrayList<File>? {
+        if (dirFile == null) {
+            return null
+        }
+
+        if (!dirFile.exists()) {
+            return null
+        }
+
+        val files = ArrayList<File>()
+
+        if (isFile(dirFile)) {
+            files.add(dirFile)
+            return files
+        }
+
+        try {
+            dirFile.listFiles()?.forEach {
+                if (isFile(it)) {
+                    files.add(it)
+                } else if (isDir(it)) {
+                    listFiles(it)?.let { list ->
+                        files.addAll(list)
+                    }
+                }
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+        return files
+    }
+
+    /**
+     * 获取文件夹下全部文件(包括子文件内文件)
+     * */
+    fun list(dirPath: String?): ArrayList<String>? {
+        if (dirPath.isNullOrBlank()) {
+            return null
+        }
+        return list(File(dirPath))
+    }
+
+    /**
+     * 获取文件夹下全部文件(包括子文件内文件)
+     * */
+    fun list(dirFile: File?): ArrayList<String>? {
+        if (dirFile == null) {
+            return null
+        }
+
+        if (!dirFile.exists()) {
+            return null
+        }
+
+        val files = ArrayList<String>()
+
+        if (isFile(dirFile)) {
+            files.add(dirFile.absolutePath)
+            return files
+        }
+
+        try {
+            dirFile.list()?.forEach {
+                if (isFile(it)) {
+                    files.add(it)
+                } else if (isDir(it)) {
+                    list(it)?.let { list ->
+                        files.addAll(list)
+                    }
+                }
+            }
+        } catch (throwable: Throwable) {
+            CsLogger.tag(TAG).d(throwable)
+        }
+        return files
     }
 
     /**

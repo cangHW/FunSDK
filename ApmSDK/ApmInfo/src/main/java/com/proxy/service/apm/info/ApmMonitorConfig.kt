@@ -4,12 +4,20 @@ import android.annotation.SuppressLint
 import android.app.Application
 import com.proxy.service.annotations.CloudApiService
 import com.proxy.service.apm.info.config.ApmConfig
+import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.apm.info.monitor.anr.AnrMonitor
 import com.proxy.service.apm.info.monitor.crash.java_crash.JavaCrashMonitor
 import com.proxy.service.apm.info.monitor.crash.native_crash.NativeCrashMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.MainThreadLagMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.ui.UiLagMonitor
+import com.proxy.service.apm.info.utils.FileUtils
 import com.proxy.service.core.application.base.CsBaseConfig
+import com.proxy.service.core.constants.CoreConfig
+import com.proxy.service.core.framework.app.context.CsContextManager
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.file.CsFileUtils
+import com.proxy.service.core.framework.io.monitor.info.FileInfo
+import java.io.File
 
 /**
  * APM 模块 Cloud 自动配置入口。
@@ -22,6 +30,47 @@ import com.proxy.service.core.application.base.CsBaseConfig
 @CloudApiService(serviceTag = "cs_config/apm")
 class ApmMonitorConfig : CsBaseConfig() {
 
+    companion object {
+        private const val TAG = "${Constants.TAG}ApmMonitorConfig"
+
+         fun checkMonitorFileCache(application: Application?) {
+            try {
+                val handler = CsApmMonitor.getExceptionHandler() ?: return
+
+                var ctx = application
+                if (application == null && CoreConfig.isFrameworkInitFinish) {
+                    ctx = CsContextManager.getApplication()
+                }
+
+                if (ctx == null) {
+                    return
+                }
+
+                val rootFile = FileUtils.getDefaultDir(ctx, "")
+                val tempDir = FileUtils.getDefaultDir(ctx, Constants.TEMP_DIR_NAME)
+                val fileList = ArrayList<FileInfo>()
+
+                CsFileUtils.listFiles(rootFile)?.forEach {
+                    if (it.absolutePath.startsWith(tempDir)) {
+                        return@forEach
+                    }
+                    if (CsFileUtils.isFile(it)) {
+                        val info = FileInfo()
+                        info.filePath = it.absolutePath
+                        info.fileName = it.name
+                        info.fileLength = it.length()
+                        info.lastModified = it.lastModified()
+                        fileList.add(info)
+                    }
+                }
+
+                handler.onException(fileList)
+            } catch (throwable: Throwable) {
+                CsLogger.tag(TAG).e(throwable)
+            }
+        }
+    }
+
     override fun moduleType(): ModuleType {
         return ModuleType.SDK
     }
@@ -33,6 +82,8 @@ class ApmMonitorConfig : CsBaseConfig() {
 
     override fun onCreate(application: Application, isDebug: Boolean) {
         val config = CsApmMonitor.getConfig()
+
+        checkMonitorFileCache(application)
 
         initCrashMonitor(application, config)
         initPerformanceMonitor(application, config)
@@ -59,4 +110,6 @@ class ApmMonitorConfig : CsBaseConfig() {
         val anrConfig = config.getAnrMonitorConfig()
         AnrMonitor.getInstance().init(application, config, anrConfig)
     }
+
+
 }

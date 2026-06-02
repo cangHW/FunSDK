@@ -6,6 +6,19 @@
     android:padding="16dp">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_log_file"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="#33ff0000"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="全部异常文件"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/main_thread_lag_trigger"
         android:layout_width="match_parent"
         android:layout_height="50dp"

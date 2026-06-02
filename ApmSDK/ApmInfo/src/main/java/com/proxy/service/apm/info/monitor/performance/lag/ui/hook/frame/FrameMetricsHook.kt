@@ -36,16 +36,14 @@ class FrameMetricsHook(
     override fun install() {
         try {
             activity.window.addOnFrameMetricsAvailableListener(windowListener, handler)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).w(throwable)
+        } catch (_: Throwable) {
         }
     }
 
     override fun uninstall() {
         try {
             activity.window.removeOnFrameMetricsAvailableListener(windowListener)
-        } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).w(throwable)
+        } catch (_: Throwable) {
         }
     }
 }

@@ -2,9 +2,13 @@ package com.proxy.service.funsdk
 
 import android.app.Application
 import com.proxy.service.apm.info.CsApmMonitor
+import com.proxy.service.apm.info.cache.ExceptionHandler
 import com.proxy.service.apm.info.config.ApmConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
 import com.proxy.service.core.CsCore
+import com.proxy.service.core.framework.data.json.CsJsonUtils
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.io.monitor.info.FileInfo
 
 /**
  * @author: cangHX
@@ -22,21 +26,8 @@ class App : Application() {
 //            .createDailyType(0, 0)
 //        CsLogFile.setConfig(config)
 
-        initApm()
         CsCore.init(this, BuildConfig.DEBUG)
 //        CsCore.init(this, false)
-    }
-
-    private fun initApm(){
-        val mtl = MainThreadLagConfig.builder()
-            .setEnable(true)
-            .build()
-
-        val apmConfig = ApmConfig.builder()
-            .setMainThreadLagMonitorConfig(mtl)
-            .build()
-
-        CsApmMonitor.setConfig(apmConfig)
     }
 
 }

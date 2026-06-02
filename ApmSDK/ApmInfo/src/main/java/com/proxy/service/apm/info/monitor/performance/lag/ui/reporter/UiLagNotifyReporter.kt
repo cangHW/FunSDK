@@ -29,9 +29,17 @@ class UiLagNotifyReporter(
 
     override fun publish(time: Long, report: UiLagReport) {
         when (report.severity) {
-            JankSeverity.NONE, JankSeverity.MILD -> return
-            JankSeverity.MODERATE -> logModerate(report)
-            JankSeverity.SEVERE -> logSevere(report)
+            JankSeverity.NONE, JankSeverity.MILD -> {
+                return
+            }
+
+            JankSeverity.MODERATE -> {
+                logModerate(report)
+            }
+
+            JankSeverity.SEVERE -> {
+                logSevere(report)
+            }
         }
         if (report.severity == JankSeverity.SEVERE) {
             maybeShowToast(report)

@@ -19,11 +19,11 @@ class NativeCrashFileReporter(
     override fun publish(time: Long, report: NativeCrashReport) {
         try {
             val timeString = CsTimeManager.createFactory(time).get("yyyyMMdd_HHmmss_SSS")
-            val file = File(dir, "$timeString.txt")
+            val file = File(dir, "native_crash_$timeString.txt")
             CsFileWriteUtils.setSourceString(report.crashLog).writeSync(file)
             CsLogger.tag(TAG).d("Native Crash report saved: ${file.absolutePath}")
         } catch (throwable: Throwable) {
-            CsLogger.tag(TAG).e(throwable)
+            CsLogger.tag(TAG).d(throwable)
         }
     }
 }
