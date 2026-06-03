@@ -57,9 +57,11 @@ class PrinterHook(
                 '>' -> {
                     listener.onDispatchStart(hint = x)
                 }
+
                 '<' -> {
                     listener.onDispatchEnd(hint = x)
                 }
+
                 else -> {
                     CsLogger.tag(TAG).w("Unknown looper log: $x")
                 }

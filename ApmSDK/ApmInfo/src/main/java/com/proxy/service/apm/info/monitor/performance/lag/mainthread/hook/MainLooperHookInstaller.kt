@@ -51,10 +51,11 @@ class MainLooperHookInstaller(
     }
 
     private fun createHook(): AbstractHook {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ObserverHook(listener)
-        } else {
-            PrinterHook(listener)
-        }
+        return PrinterHook(listener)
+//        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            ObserverHook(listener)
+//        } else {
+//            PrinterHook(listener)
+//        }
     }
 }
