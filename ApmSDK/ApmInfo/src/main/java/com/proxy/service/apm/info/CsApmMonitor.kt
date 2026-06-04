@@ -1,5 +1,6 @@
 package com.proxy.service.apm.info
 
+import com.proxy.service.apm.info.cache.CheckManager
 import com.proxy.service.apm.info.cache.ExceptionHandler
 import com.proxy.service.apm.info.config.ApmConfig
 
@@ -32,7 +33,7 @@ object CsApmMonitor {
     fun setExceptionHandler(handler: ExceptionHandler) {
         this.exceptionHandler = handler
 
-        ApmMonitorConfig.checkMonitorFileCache(null)
+        CheckManager.checkMonitorFileCache(null)
     }
 
     fun getExceptionHandler(): ExceptionHandler? {
