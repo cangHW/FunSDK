@@ -9,6 +9,7 @@ import com.proxy.service.core.framework.data.time.CsTimeManager
 import com.proxy.service.core.framework.data.time.enums.TimeFormat
 import com.proxy.service.core.framework.io.file.write.CsFileWriteUtils
 import com.proxy.service.widget.info.toast.CsToast
+import com.proxy.service.widget.info.toast.enums.ToastDuration
 import java.io.File
 
 /**
@@ -32,7 +33,8 @@ class MainThreadLagFileReporter(
             CsFileWriteUtils.setSourceString(format(report)).writeAsync(file)
 
             if (CoreConfig.isDebug) {
-                CsToast.show("检测到主线程卡顿")
+                CsLogger.tag(TAG).w("检测到主线程卡顿: ${file.absolutePath}")
+                CsToast.show("主线程卡顿", ToastDuration.LENGTH_LONG)
             }
         } catch (throwable: Throwable) {
             CsLogger.tag(TAG).d(throwable)

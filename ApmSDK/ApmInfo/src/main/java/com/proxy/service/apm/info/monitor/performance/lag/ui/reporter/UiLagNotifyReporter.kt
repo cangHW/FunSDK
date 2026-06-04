@@ -109,7 +109,7 @@ class UiLagNotifyReporter(
         if (count > 1) {
             builder.append("(${count}次)")
         }
-        builder.append(" UI严重卡顿 ·")
+        builder.append(" UI渲染严重卡顿 ·")
         builder.append(" 整帧${event.totalDurationMs}ms")
         builder.append(" (瓶颈 ${event.primaryBottleneck})")
 
