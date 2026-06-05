@@ -2,12 +2,14 @@ package com.proxy.service.apm.info.config
 
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
+import com.proxy.service.apm.info.config.controller.performance.leak.MemoryLeakConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
 import com.proxy.service.apm.info.monitor.anr.report.AnrReport
 import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.report.MainThreadLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.ui.report.UiLagReport
+import com.proxy.service.apm.info.monitor.performance.leak.report.MemoryLeakReport
 import com.proxy.service.apm.info.report.IReporter
 
 /**
@@ -60,6 +62,14 @@ interface IBuilder {
     fun setUiLagMonitorConfig(
         config: UiLagConfig,
         reporter: IReporter<UiLagReport>? = null
+    ): IBuilder
+
+    /**
+     * 设置 Java 内存泄漏监控配置。
+     */
+    fun setMemoryLeakMonitorConfig(
+        config: MemoryLeakConfig,
+        reporter: IReporter<MemoryLeakReport>? = null
     ): IBuilder
 
     /**

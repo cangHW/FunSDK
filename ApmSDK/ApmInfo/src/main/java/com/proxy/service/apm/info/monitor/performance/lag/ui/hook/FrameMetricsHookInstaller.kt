@@ -60,7 +60,7 @@ class FrameMetricsHookInstaller(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             CsContextManager.addActivityLifecycleCallback(null, true, lifecycleImpl)
         } else {
-            choreographerHook = ChoreographerFrameHook(listener).also { it.install() }
+            choreographerHook = ChoreographerFrameHook(listener).also { it.start() }
         }
     }
 
@@ -75,7 +75,7 @@ class FrameMetricsHookInstaller(
             }
             releaseMetricsHandler()
         } else {
-            choreographerHook?.uninstall()
+            choreographerHook?.stop()
             choreographerHook = null
         }
     }
@@ -88,7 +88,7 @@ class FrameMetricsHookInstaller(
             return
         }
         val hook = FrameMetricsHook(activity, ensureMetricsHandler(), listener)
-        hook.install()
+        hook.start()
         hooks[activity] = hook
     }
 
@@ -96,7 +96,7 @@ class FrameMetricsHookInstaller(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             return
         }
-        hooks.remove(activity)?.uninstall()
+        hooks.remove(activity)?.stop()
     }
 
     private fun ensureMetricsHandler(): Handler {

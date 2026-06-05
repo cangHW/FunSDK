@@ -2,12 +2,14 @@ package com.proxy.service.apm.info.config
 
 import com.proxy.service.apm.info.config.controller.common.CommonConfig
 import com.proxy.service.apm.info.config.controller.performance.mainthread.MainThreadLagConfig
+import com.proxy.service.apm.info.config.controller.performance.leak.MemoryLeakConfig
 import com.proxy.service.apm.info.config.controller.performance.uilag.UiLagConfig
 import com.proxy.service.apm.info.monitor.anr.report.AnrReport
 import com.proxy.service.apm.info.monitor.crash.java_crash.report.ExceptionReport
 import com.proxy.service.apm.info.monitor.crash.native_crash.report.NativeCrashReport
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.report.MainThreadLagReport
 import com.proxy.service.apm.info.monitor.performance.lag.ui.report.UiLagReport
+import com.proxy.service.apm.info.monitor.performance.leak.report.MemoryLeakReport
 import com.proxy.service.apm.info.report.IReporter
 
 /**
@@ -44,6 +46,9 @@ class ApmConfig private constructor(
 
         private var uiLagMonitorConfig = UiLagConfig.builder().build()
         private var uiLagReporter: IReporter<UiLagReport>? = null
+
+        private var memoryLeakMonitorConfig = MemoryLeakConfig.builder().build()
+        private var memoryLeakReporter: IReporter<MemoryLeakReport>? = null
 
         override fun setRootDir(rootDir: String): IBuilder {
             this.rootDir = rootDir
@@ -95,6 +100,15 @@ class ApmConfig private constructor(
             return this
         }
 
+        override fun setMemoryLeakMonitorConfig(
+            config: MemoryLeakConfig,
+            reporter: IReporter<MemoryLeakReport>?
+        ): IBuilder {
+            this.memoryLeakMonitorConfig = config
+            this.memoryLeakReporter = reporter
+            return this
+        }
+
         override fun build(): ApmConfig {
             return ApmConfig(this)
         }
@@ -141,6 +155,14 @@ class ApmConfig private constructor(
 
         override fun getUiLagReporter(): IReporter<UiLagReport>? {
             return uiLagReporter
+        }
+
+        override fun getMemoryLeakMonitorConfig(): MemoryLeakConfig {
+            return memoryLeakMonitorConfig
+        }
+
+        override fun getMemoryLeakReporter(): IReporter<MemoryLeakReport>? {
+            return memoryLeakReporter
         }
     }
 

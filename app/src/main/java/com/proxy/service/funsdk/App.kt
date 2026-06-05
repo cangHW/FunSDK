@@ -21,6 +21,7 @@ class App : Application() {
 
         CsCore.init(this, BuildConfig.DEBUG)
 //        CsCore.init(this, false)
+//        CsCore.init(this, true)
     }
 
 }

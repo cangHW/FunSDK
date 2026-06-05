@@ -5,9 +5,8 @@ import android.os.Build
 import android.os.Looper
 import android.os.Message
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.AbstractHook
+import com.proxy.service.apm.info.monitor.base.AbstractHook
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.DispatchListener
-import com.proxy.service.core.framework.data.log.CsLogger
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
@@ -19,7 +18,7 @@ import java.lang.reflect.Proxy
  */
 class ObserverHook(
     private val listener: DispatchListener
-) : AbstractHook() {
+) : AbstractHook<Looper>() {
 
     companion object {
         private const val TAG = "${Constants.TAG}ObserverHook"
@@ -30,7 +29,7 @@ class ObserverHook(
     private var setObserverMethod: Method? = null
 
     @SuppressLint("PrivateApi")
-    override fun install(looper: Looper): Boolean {
+    override fun start(t: Looper?): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             return false
         }
@@ -52,20 +51,20 @@ class ObserverHook(
                 ObserverInvocationHandler(lastObserverObj, listener)
             )
             setObserverMethod = looperClass.getMethod("setObserver", observerClass)
-            setObserverMethod?.invoke(looper, observerProxy)
+            setObserverMethod?.invoke(t, observerProxy)
             return true
         } catch (_: Throwable) {
         }
         return false
     }
 
-    override fun uninstall(looper: Looper) {
+    override fun stop(t: Looper?) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             return
         }
 
         try {
-            setObserverMethod?.invoke(looper, lastObserverObj)
+            setObserverMethod?.invoke(t, lastObserverObj)
         } catch (_: Throwable) {
         } finally {
             observerProxy = null

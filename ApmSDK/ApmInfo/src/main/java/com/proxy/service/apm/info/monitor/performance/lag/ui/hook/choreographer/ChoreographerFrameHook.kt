@@ -1,7 +1,7 @@
 package com.proxy.service.apm.info.monitor.performance.lag.ui.hook.choreographer
 
 import android.view.Choreographer
-import com.proxy.service.apm.info.monitor.performance.lag.ui.hook.AbstractHook
+import com.proxy.service.apm.info.monitor.base.AbstractHook
 import com.proxy.service.apm.info.monitor.performance.lag.ui.hook.FrameAvailableListener
 import com.proxy.service.core.framework.app.context.CsContextManager
 import java.util.concurrent.atomic.AtomicBoolean
@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class ChoreographerFrameHook(
     private val listener: FrameAvailableListener,
-) : AbstractHook() {
+) : AbstractHook<Any>() {
 
     private val installed = AtomicBoolean(false)
     private var lastFrameTimeNanos: Long = 0L
@@ -37,14 +37,15 @@ class ChoreographerFrameHook(
         }
     }
 
-    override fun install() {
+    override fun start(t: Any?): Boolean {
         if (installed.compareAndSet(false, true)) {
             lastFrameTimeNanos = 0L
             Choreographer.getInstance().postFrameCallback(frameCallback)
         }
+        return true
     }
 
-    override fun uninstall() {
+    override fun stop(t: Any?) {
         if (installed.compareAndSet(true, false)) {
             Choreographer.getInstance().removeFrameCallback(frameCallback)
             lastFrameTimeNanos = 0L

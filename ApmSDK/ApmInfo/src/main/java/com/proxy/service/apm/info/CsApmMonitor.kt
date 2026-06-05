@@ -3,6 +3,7 @@ package com.proxy.service.apm.info
 import com.proxy.service.apm.info.cache.CheckManager
 import com.proxy.service.apm.info.cache.ExceptionHandler
 import com.proxy.service.apm.info.config.ApmConfig
+import com.proxy.service.apm.info.monitor.performance.leak.MemoryLeakMonitor
 
 /**
  * Apm 稳定性监控框架全局入口。
@@ -40,6 +41,13 @@ object CsApmMonitor {
         val handler = exceptionHandler
         exceptionHandler = null
         return handler
+    }
+
+    /**
+     * 手动监控可能泄漏的自定义对象（需 MemoryLeakMonitor 已 enable 并启动）。
+     */
+    fun watchObject(obj: Any, description: String) {
+        MemoryLeakMonitor.getInstance().watchObject(obj, description)
     }
 
 }

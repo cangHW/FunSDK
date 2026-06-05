@@ -62,6 +62,20 @@ class ApmActivity : BaseActivity<ActivityApmJankTestBinding>() {
                 binding?.content?.addData("检测", "测试 anr")
                 CsApmMonitorTest.testAnr()
             }
+
+            R.id.memory_leak_trigger -> {
+                binding?.content?.addData("检测", "测试内存泄漏")
+                CsApmMonitorTest.testLeakActivity()
+//                CsApmMonitorTest.testLeakActivity()
+//                CsApmMonitorTest.testLeakActivity()
+                CsApmMonitorTest.testLeakActivity()
+                CsApmMonitorTest.testLeakActivity()
+                CsApmMonitorTest.testLeakCustomObject()
+//                CsApmMonitorTest.testLeakCustomObject()
+//                CsApmMonitorTest.testLeakCustomObject()
+//                CsApmMonitorTest.testLeakCustomObject()
+
+            }
         }
     }
 }

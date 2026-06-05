@@ -56,6 +56,7 @@ dependencies {
     api(libs.core.framework)
     implementation(libs.service.threadpool)
     implementation(libs.service.widget)
+    implementation(libs.leak.shark)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

@@ -10,6 +10,7 @@ import com.proxy.service.apm.info.monitor.crash.java_crash.JavaCrashMonitor
 import com.proxy.service.apm.info.monitor.crash.native_crash.NativeCrashMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.MainThreadLagMonitor
 import com.proxy.service.apm.info.monitor.performance.lag.ui.UiLagMonitor
+import com.proxy.service.apm.info.monitor.performance.leak.MemoryLeakMonitor
 import com.proxy.service.core.application.base.CsBaseApplication
 import com.proxy.service.core.constants.CoreConfig
 
@@ -37,8 +38,9 @@ class ApmMonitorApplication : CsBaseApplication() {
         CheckManager.checkMonitorFileCache(application)
 
         initCrashMonitor(application, config)
-        initPerformanceMonitor(application, config)
         initAnrMonitor(application, config)
+
+        initPerformanceMonitor(application, config)
     }
 
     private fun initCrashMonitor(application: Application, config: ApmConfig) {
@@ -55,6 +57,9 @@ class ApmMonitorApplication : CsBaseApplication() {
 
         val uilConfig = config.getUiLagMonitorConfig()
         UiLagMonitor.getInstance().init(application, config, uilConfig)
+
+        val mlConfig = config.getMemoryLeakMonitorConfig()
+        MemoryLeakMonitor.getInstance().init(application, config, mlConfig)
     }
 
     private fun initAnrMonitor(application: Application, config: ApmConfig) {

@@ -1,10 +1,12 @@
 package com.proxy.service.apm.info
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import com.proxy.service.apm.info.config.ApmConfig
 import com.proxy.service.apm.info.constants.Constants
 import com.proxy.service.apm.info.monitor.crash.native_crash.jni.NativeCrashBridge
+import com.proxy.service.apm.info.test.TestLeakActivity
+import com.proxy.service.core.framework.app.context.CsContextManager
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.core.service.task.CsTask
 import com.proxy.service.threadpool.base.thread.task.ICallable
@@ -21,6 +23,10 @@ object CsApmMonitorTest {
 
     private val lock = Any()
     private val mainHandler = Handler(Looper.getMainLooper())
+
+    object LeakTestHolder {
+        val leakedObjects = mutableListOf<Any>()
+    }
 
 
     /**
@@ -54,7 +60,6 @@ object CsApmMonitorTest {
         NativeCrashBridge.nativeTestCrash(type)
     }
 
-
     /**
      * 测试 ANR：直接在主线程 sleep 10s，触发系统 ANR 判定。
      * 需要在此期间点击屏幕产生 InputDispatch 超时。
@@ -77,4 +82,22 @@ object CsApmMonitorTest {
 
     }
 
+    /**
+     * 测试自定义对象泄漏
+     * */
+    fun testLeakCustomObject() {
+        val leaked = ByteArray(1024 * 1024)
+        LeakTestHolder.leakedObjects.add(leaked)
+        CsApmMonitor.watchObject(leaked, "test custom object leak")
+    }
+
+    /**
+     * 测试 Activity 对象泄漏
+     * */
+    fun testLeakActivity() {
+        val context = CsContextManager.getApplication()
+        val intent = Intent(context, TestLeakActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+    }
 }

@@ -1,0 +1,3 @@
+-keep class com.proxy.service.apm.info.monitor.performance.leak.watcher.reference.KeyedWeakReference { *; }
+-keep class com.proxy.service.apm.info.monitor.performance.leak.watcher.reference.KeyedWeakReference$Companion { *; }
+-keep class shark.** { *; }

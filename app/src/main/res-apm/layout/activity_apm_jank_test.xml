@@ -35,6 +35,11 @@
             style="@style/button_style"
             android:text="触发 ANR (需点击屏幕)" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/memory_leak_trigger"
+            style="@style/button_style"
+            android:text="触发内存泄漏" />
+
     </com.google.android.flexbox.FlexboxLayout>
 
     <com.proxy.service.testview.DemoTestView

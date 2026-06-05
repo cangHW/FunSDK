@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Looper
 import android.util.Printer
 import com.proxy.service.apm.info.constants.Constants
-import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.AbstractHook
+import com.proxy.service.apm.info.monitor.base.AbstractHook
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.DispatchListener
 import com.proxy.service.core.framework.data.log.CsLogger
 
@@ -15,7 +15,7 @@ import com.proxy.service.core.framework.data.log.CsLogger
  */
 class PrinterHook(
     private val listener: DispatchListener
-) : AbstractHook() {
+) : AbstractHook<Looper>() {
 
     companion object {
         private const val TAG = "${Constants.TAG}PrinterHook"
@@ -24,23 +24,23 @@ class PrinterHook(
     private var lastPrinterObj: Printer? = null
 
     @SuppressLint("PrivateApi")
-    override fun install(looper: Looper): Boolean {
+    override fun start(t: Looper?): Boolean {
         val looperClass = Looper::class.java
 
         try {
             val field = looperClass.getDeclaredField("mLogging")
             field.isAccessible = true
-            lastPrinterObj = field.get(looper) as? Printer?
+            lastPrinterObj = field.get(t) as? Printer?
         } catch (_: Throwable) {
         }
 
         val printer = PrinterImpl(lastPrinterObj, listener)
-        looper.setMessageLogging(printer)
+        t?.setMessageLogging(printer)
         return true
     }
 
-    override fun uninstall(looper: Looper) {
-        looper.setMessageLogging(lastPrinterObj)
+    override fun stop(t: Looper?) {
+        t?.setMessageLogging(lastPrinterObj)
         lastPrinterObj = null
     }
 

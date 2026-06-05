@@ -1,8 +1,9 @@
 package com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook
 
-import android.os.Build
 import android.os.Looper
 import com.proxy.service.apm.info.constants.Constants
+import com.proxy.service.apm.info.monitor.base.AbstractHook
+import com.proxy.service.apm.info.monitor.base.AbstractInstaller
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.observer.ObserverHook
 import com.proxy.service.apm.info.monitor.performance.lag.mainthread.hook.printer.PrinterHook
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class MainLooperHookInstaller(
     private val listener: DispatchListener
-) {
+): AbstractInstaller() {
 
     companion object {
         private const val TAG = "${Constants.TAG}MainLooperHookInstaller"
@@ -24,33 +25,33 @@ class MainLooperHookInstaller(
 
     private val looper = Looper.getMainLooper()
     private val installed = AtomicBoolean(false)
-    private var activeHook: AbstractHook? = null
+    private var activeHook: AbstractHook<Looper>? = null
 
-    fun install() {
+    override fun install() {
         if (installed.compareAndSet(false, true)) {
             var flag = false
             try {
                 activeHook = createHook()
-                flag = activeHook?.install(looper) ?: false
+                flag = activeHook?.start(looper) ?: false
             } catch (throwable: Throwable) {
                 CsLogger.tag(TAG).w("Observer hook failed, fallback to PrinterHook")
             }
 
             if (!flag) {
                 activeHook = PrinterHook(listener)
-                activeHook?.install(looper)
+                activeHook?.start(looper)
             }
         }
     }
 
-    fun uninstall() {
+    override fun uninstall() {
         if (installed.compareAndSet(true, false)) {
-            activeHook?.uninstall(looper)
+            activeHook?.stop(looper)
             activeHook = null
         }
     }
 
-    private fun createHook(): AbstractHook {
+    private fun createHook(): AbstractHook<Looper> {
         return PrinterHook(listener)
 //        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //            ObserverHook(listener)

@@ -2,6 +2,7 @@ package com.proxy.service.core.framework.app
 
 import android.app.Application
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
@@ -250,4 +251,11 @@ object CsAppUtils {
         return packageName == processName
     }
 
+    /**
+     * 当前是否为debug包
+     * */
+    fun isDebuggable(): Boolean {
+        val flags = CsContextManager.getApplication().applicationInfo.flags
+        return (flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+    }
 }
