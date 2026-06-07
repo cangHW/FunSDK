@@ -9,6 +9,7 @@ import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.base.web.IWebLoader
 import com.proxy.service.webview.monitor.bridge.MonitorBridge
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
+import com.proxy.service.webview.monitor.work.base.MonitorFactory
 
 /**
  * @author: cangHX
@@ -17,13 +18,14 @@ import com.proxy.service.webview.monitor.constant.WebMonitorConstants
  */
 class WebLoaderConverter(private val loader: IWebLoader) : IWebLoader {
 
-    private val webLoadCallbackImpl = WebLoadCallbackImpl()
+    private val factory = MonitorFactory()
+    private val webLoadCallbackImpl = WebLoadCallbackImpl(factory)
 
     init {
         loader.setWebLoadCallback(webLoadCallbackImpl)
         loader.addJavascriptInterface(
             WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE,
-            MonitorBridge()
+            MonitorBridge(factory)
         )
     }
 

@@ -41,7 +41,8 @@ dependencies {
 
     implementation(project(":WebViewSDK:WebViewBase"))
     implementation(libs.core.framework)
-//    implementation(libs.service.threadpool)
+    implementation(libs.service.widget)
+    implementation(libs.service.threadpool)
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/script/maven_center.gradle").absolutePath)

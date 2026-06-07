@@ -1,6 +1,8 @@
 package com.proxy.service.webview.monitor.config
 
 import com.proxy.service.webview.monitor.callback.MonitorCallback
+import com.proxy.service.webview.monitor.callback.RequestMonitorCallback
+import com.proxy.service.webview.monitor.config.controller.request.RequestConfig
 
 /**
  * @author: cangHX
@@ -20,14 +22,14 @@ interface IMonitorBuilderGet {
     fun getLogCookieCallback(): MonitorCallback?
 
     /**
-     * 是否打印请求
+     * 获取打印请求配置
      * */
-    fun isLogRequestEnable(): Boolean
+    fun getLogRequestConfig(): RequestConfig
 
     /**
      * 请求回调
      * */
-    fun getLogRequestCallback(): MonitorCallback?
+    fun getLogRequestCallback(): RequestMonitorCallback?
 
     /**
      * 是否打印页面加载耗时统计

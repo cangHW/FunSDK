@@ -1,4 +1,4 @@
-package com.proxy.service.webview.monitor.work.request
+package com.proxy.service.webview.monitor.work.cookie
 
 import android.os.Build
 import com.proxy.service.core.framework.data.log.CsLogger
@@ -14,12 +14,14 @@ import java.nio.charset.StandardCharsets
  * @date: 2026/1/23 13:35
  * @desc:
  */
-object CookieMonitor : BaseMonitor() {
+class CookieMonitor : BaseMonitor() {
 
-    private const val TAG = "${WebMonitorConstants.TAG}Cookie"
+    companion object{
+        private const val TAG = "${WebMonitorConstants.TAG}Cookie"
+    }
 
     override fun shouldRun(): Boolean {
-        return getConfig().isLogCookieEnable()
+        return config.isLogCookieEnable()
     }
 
     override fun getJs(): String {
@@ -56,7 +58,7 @@ object CookieMonitor : BaseMonitor() {
 
         CsLogger.tag(TAG).d("Cookies from JS: $builder")
 
-        getConfig().getLogCookieCallback()?.onMonitorCall(url, log)
+        config.getLogCookieCallback()?.onMonitorCall(url, log)
     }
 
 }

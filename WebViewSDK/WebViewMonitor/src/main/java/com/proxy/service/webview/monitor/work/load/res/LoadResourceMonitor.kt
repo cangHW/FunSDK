@@ -1,22 +1,25 @@
-package com.proxy.service.webview.monitor.work.performance
+package com.proxy.service.webview.monitor.work.load.res
 
 import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
-import com.proxy.service.webview.monitor.work.performance.bean.PerformanceResourceData
+import com.proxy.service.webview.monitor.work.load.res.bean.PerformanceResourceData
+import com.proxy.service.webview.monitor.work.load.res.bean.PerformanceResourceDataInfo
 
 /**
  * @author: cangHX
  * @date: 2026/1/30 17:04
  * @desc: 页面资源性能监控
  */
-object PerformanceResourceMonitor : BaseMonitor() {
+class LoadResourceMonitor : BaseMonitor() {
 
-    private const val TAG = "${WebMonitorConstants.TAG}PerRes"
+    companion object{
+        private const val TAG = "${WebMonitorConstants.TAG}LoadRes"
+    }
 
     override fun shouldRun(): Boolean {
-        return getConfig().isLogLoadPageResourceTimeEnable()
+        return config.isLogLoadPageResourceTimeEnable()
     }
 
     override fun getJs(): String {
@@ -186,7 +189,7 @@ object PerformanceResourceMonitor : BaseMonitor() {
                 });
                 groupedData.summary.slowResources = allResources.slice(0, 5);
 
-                ${createLog("logMonitorPerformPageRes", "JSON.stringify(groupedData)")}
+                ${createLog("logMonitorLoadResource", "JSON.stringify(groupedData)")}
         """.trimIndent()
     }
 
@@ -233,12 +236,12 @@ object PerformanceResourceMonitor : BaseMonitor() {
         }
 
         CsLogger.tag(TAG).d(value)
-        getConfig().getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)
+        config.getLogLoadPageResourceTimeCallback()?.onMonitorCall(url, log)
     }
 
     private fun appendSlowResources(
         builder: StringBuilder,
-        slowResources: ArrayList<com.proxy.service.webview.monitor.work.performance.bean.PerformanceResourceDataInfo>?
+        slowResources: ArrayList<PerformanceResourceDataInfo>?
     ) {
         if (slowResources.isNullOrEmpty()) {
             return

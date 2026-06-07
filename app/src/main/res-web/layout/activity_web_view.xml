@@ -11,17 +11,17 @@
         app:flexWrap="wrap">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/load_baidu"
+            android:id="@+id/load_page"
             style="@style/button_style"
             android:text="普通加载" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/create_baidu"
+            android:id="@+id/create_page"
             style="@style/button_style"
             android:text="后台加载" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/show_baidu"
+            android:id="@+id/show_page"
             style="@style/button_style"
             android:text="容器上屏" />
 

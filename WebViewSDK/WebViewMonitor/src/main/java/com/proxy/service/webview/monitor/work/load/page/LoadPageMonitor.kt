@@ -1,12 +1,12 @@
-package com.proxy.service.webview.monitor.work.performance
+package com.proxy.service.webview.monitor.work.load.page
 
 import com.proxy.service.core.framework.data.json.CsJsonUtils
 import com.proxy.service.core.framework.data.log.CsLogger
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 import com.proxy.service.webview.monitor.work.base.BaseMonitor
-import com.proxy.service.webview.monitor.work.performance.bean.PerformancePageData
-import com.proxy.service.webview.monitor.work.performance.bean.PerformancePageDomAndLoadTiming
-import com.proxy.service.webview.monitor.work.performance.bean.PerformancePageNavigationTiming
+import com.proxy.service.webview.monitor.work.load.page.bean.PerformancePageData
+import com.proxy.service.webview.monitor.work.load.page.bean.PerformancePageDomAndLoadTiming
+import com.proxy.service.webview.monitor.work.load.page.bean.PerformancePageNavigationTiming
 import java.lang.StringBuilder
 import java.text.DecimalFormat
 
@@ -15,12 +15,14 @@ import java.text.DecimalFormat
  * @date: 2026/1/25 19:50
  * @desc: 页面导航性能监控
  */
-object PerformancePageMonitor : BaseMonitor() {
+class LoadPageMonitor : BaseMonitor() {
 
-    private const val TAG = "${WebMonitorConstants.TAG}PerPage"
+    companion object{
+        private const val TAG = "${WebMonitorConstants.TAG}LoadPage"
+    }
 
     override fun shouldRun(): Boolean {
-        return getConfig().isLogLoadPageTimeEnable()
+        return config.isLogLoadPageTimeEnable()
     }
 
     override fun getJs(): String {
@@ -56,7 +58,7 @@ object PerformancePageMonitor : BaseMonitor() {
                         navigationTiming: { available: false },
                         domAndLoadTiming: null
                     };
-                    ${createLog("logMonitorPerformPage", "JSON.stringify(unavailableLog)")}
+                    ${createLog("logMonitorLoadPage", "JSON.stringify(unavailableLog)")}
                     return;
                 }
 
@@ -88,7 +90,7 @@ object PerformancePageMonitor : BaseMonitor() {
                     navigationTiming: navigationTiming,
                     domAndLoadTiming: domAndLoadTiming
                 };
-                ${createLog("logMonitorPerformPage", "JSON.stringify(log)")}
+                ${createLog("logMonitorLoadPage", "JSON.stringify(log)")}
         """.trimIndent()
     }
 
@@ -117,7 +119,7 @@ object PerformancePageMonitor : BaseMonitor() {
         }
 
         CsLogger.tag(TAG).d(value)
-        getConfig().getLogLoadPageTimeCallback()?.onMonitorCall(url, log)
+        config.getLogLoadPageTimeCallback()?.onMonitorCall(url, log)
     }
 
     private fun appendNavigationTiming(

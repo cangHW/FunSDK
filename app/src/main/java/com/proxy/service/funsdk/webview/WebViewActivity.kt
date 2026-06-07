@@ -20,7 +20,9 @@ import com.proxy.service.webview.base.listener.WebLoadCallback
 import com.proxy.service.webview.base.web.IWeb
 import com.proxy.service.webview.monitor.CsWebMonitor
 import com.proxy.service.webview.monitor.callback.MonitorCallback
+import com.proxy.service.webview.monitor.callback.RequestMonitorCallback
 import com.proxy.service.webview.monitor.config.MonitorConfig
+import com.proxy.service.webview.monitor.config.controller.request.RequestConfig
 import com.proxy.service.widget.info.dialog.window.CsBaseDialog
 import com.proxy.service.widget.info.dialog.window.info.DialogConfig
 import com.proxy.service.widget.info.toast.CsToast
@@ -32,10 +34,9 @@ import com.proxy.service.widget.info.toast.CsToast
  */
 class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
-    //    private val url = "file:///android_asset/web/test_bridge.html"
-//    private val url = "file:///android_asset/web/test_edittext.html"
+    private val url = "file:///android_asset/web/test_webview_monitor.html"
 //    private val url = "https://www.baidu.com"
-    private val url = "https://dzj-test.xueersi.com/tutor-im/#/xlj-chat?tutor-id=89584&stu-id=2465622&sub-stu-id=2465622_01&stu-cou-id=10223445&course-id=386870&isH5Land=1&ignoreBarDefaultConfig=1"
+//    private val url = "https://dzj-test.xueersi.com/tutor-im/#/xlj-chat?tutor-id=89584&stu-id=2465622&sub-stu-id=2465622_01&stu-cou-id=10223445&course-id=386870&isH5Land=1&ignoreBarDefaultConfig=1"
 
 
     private var webView: IWeb? = null
@@ -66,7 +67,6 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         super.initView()
         CsWeb.setGlobalCookie("url", "sssss")
 
-
         CsWebMonitor.setConfig(
             MonitorConfig.builder()
                 .enableLogCookie(true)
@@ -75,7 +75,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                         CsLogger.tag("WebViewActivity").i("enableLogLoadPageTime = $log")
                     }
                 })
-                .enableLogRequest(true, object : MonitorCallback {
+                .enableLogRequest(RequestConfig.builder().build(), object : RequestMonitorCallback {
                     override fun onMonitorCall(url: String, log: String) {
                         CsLogger.tag("WebViewActivity").i("enableLogRequest = $log")
                     }
@@ -106,7 +106,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.load_baidu -> {
+            R.id.load_page -> {
                 binding?.content?.addData("加载", "加载页面")
                 if (iWeb != null) {
                     iWeb?.loadUrl(url)
@@ -122,7 +122,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                     ?.createTo(binding?.group)
             }
 
-            R.id.create_baidu -> {
+            R.id.create_page -> {
                 webView = CsWeb.createWebLoader(getWebConfig())
                     ?.setLifecycleOwner(this)
                     ?.loadUrl(url)
@@ -130,7 +130,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
                     ?.create()
             }
 
-            R.id.show_baidu -> {
+            R.id.show_page -> {
                 if (webView == null) {
                     CsToast.show("未创建后台加载，无法上屏")
                     return

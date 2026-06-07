@@ -11,7 +11,7 @@ import com.proxy.service.webview.base.web.IWebLoader
  */
 class WebServiceConverter(
     private val service: WebService
-): WebService by service{
+) : WebService by service {
 
     override fun createWebLoader(config: WebConfig): IWebLoader {
         return WebLoaderConverter(service.createWebLoader(config))

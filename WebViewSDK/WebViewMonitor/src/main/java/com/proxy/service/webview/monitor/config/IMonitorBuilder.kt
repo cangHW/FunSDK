@@ -1,6 +1,8 @@
 package com.proxy.service.webview.monitor.config
 
 import com.proxy.service.webview.monitor.callback.MonitorCallback
+import com.proxy.service.webview.monitor.callback.RequestMonitorCallback
+import com.proxy.service.webview.monitor.config.controller.request.RequestConfig
 import com.proxy.service.webview.monitor.constant.WebMonitorConstants
 
 /**
@@ -21,13 +23,13 @@ interface IMonitorBuilder {
     ): IMonitorBuilder
 
     /**
-     * 是否打印请求, 默认 [WebMonitorConstants.ENABLE_LOG_REQUEST]
+     * 是否打印请求
      *
      * @param callback 回调 web 页面的请求信息
      * */
     fun enableLogRequest(
-        enable: Boolean,
-        callback: MonitorCallback? = null
+        config: RequestConfig,
+        callback: RequestMonitorCallback? = null
     ): IMonitorBuilder
 
     /**

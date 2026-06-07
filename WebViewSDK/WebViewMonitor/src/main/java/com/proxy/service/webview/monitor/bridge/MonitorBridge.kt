@@ -1,36 +1,42 @@
 package com.proxy.service.webview.monitor.bridge
 
 import android.webkit.JavascriptInterface
-import com.proxy.service.webview.monitor.work.performance.PerformancePageMonitor
-import com.proxy.service.webview.monitor.work.performance.PerformanceResourceMonitor
-import com.proxy.service.webview.monitor.work.request.RequestMonitor
-import com.proxy.service.webview.monitor.work.request.CookieMonitor
+import com.proxy.service.webview.monitor.work.base.MonitorFactory
 
 /**
  * @author: cangHX
  * @date: 2026/1/23 14:03
  * @desc:
  */
-class MonitorBridge {
+class MonitorBridge(
+    private val factory: MonitorFactory
+) {
 
     @JavascriptInterface
     fun logMonitorCookie(url: String, log: String) {
-        CookieMonitor.dispatchLog(url, log)
+        factory.getCookieMonitor().dispatchLog(url, log)
+    }
+
+
+    @JavascriptInterface
+    fun logMonitorRequestStart(url: String, log: String) {
+        factory.getRequestMonitor().dispatchRequestStart(url, log)
     }
 
     @JavascriptInterface
     fun logMonitorRequest(url: String, log: String) {
-        RequestMonitor.dispatchLog(url, log)
+        factory.getRequestMonitor().dispatchLog(url, log)
+    }
+
+
+    @JavascriptInterface
+    fun logMonitorLoadPage(url: String, log: String) {
+        factory.getLoadPageMonitor().dispatchLog(url, log)
     }
 
     @JavascriptInterface
-    fun logMonitorPerformPage(url: String, log: String) {
-        PerformancePageMonitor.dispatchLog(url, log)
-    }
-
-    @JavascriptInterface
-    fun logMonitorPerformPageRes(url: String, log: String) {
-        PerformanceResourceMonitor.dispatchLog(url, log)
+    fun logMonitorLoadResource(url: String, log: String) {
+        factory.getLoadResourceMonitor().dispatchLog(url, log)
     }
 
 }

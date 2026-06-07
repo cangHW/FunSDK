@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView Monitor 测试</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 16px;
+            background: #f5f5f5;
+        }
+        h1 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #333;
+        }
+        .section {
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            text-align: left;
+        }
+        button:active {
+            background: #e8e8e8;
+        }
+        button:last-child {
+            margin-bottom: 0;
+        }
+        .desc {
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+        }
+        #log {
+            background: #1e1e1e;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 11px;
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+<h1>WebView Monitor 测试</h1>
+
+<!-- 网络请求 - 基础 -->
+<div class="section">
+    <div class="section-title">网络请求 - 基础</div>
+    <button onclick="testXhrGet()">XHR GET 请求</button>
+    <button onclick="testXhrPost()">XHR POST 请求</button>
+    <button onclick="testFetchGet()">Fetch GET 请求</button>
+    <button onclick="testFetchPost()">Fetch POST 请求</button>
+</div>
+
+<!-- 网络请求 - 异常检测 -->
+<div class="section">
+    <div class="section-title">网络请求 - 异常检测</div>
+    <button onclick="testRepetitionSameUrl()">
+        重复请求 - 相同URL
+        <div class="desc">1s内对同一URL发起3次请求，触发重复检测</div>
+    </button>
+    <button onclick="testRepetitionSameApi()">
+        重复请求 - 同接口不同ID
+        <div class="desc">1s内对 /api/user/{id} 发起3次不同ID请求，验证归一化检测</div>
+    </button>
+    <button onclick="testStorm()">
+        请求风暴
+        <div class="desc">3s内发起10次请求，超过阈值8触发风暴检测</div>
+    </button>
+    <button onclick="testNormal()">
+        正常请求（不触发告警）
+        <div class="desc">间隔较长的2次请求，不应触发任何告警</div>
+    </button>
+</div>
+
+<!-- 网络请求 - 异常场景 -->
+<div class="section">
+    <div class="section-title">网络请求 - 异常场景</div>
+    <button onclick="testXhr404()">XHR 404 错误</button>
+    <button onclick="testXhr500()">XHR 500 错误</button>
+    <button onclick="testXhrTimeout()">XHR 超时</button>
+    <button onclick="testFetchReject()">Fetch 网络失败</button>
+</div>
+
+<!-- 页面加载性能 -->
+<div class="section">
+    <div class="section-title">页面加载性能</div>
+    <button onclick="testPageNavigation()">查看页面导航性能</button>
+    <button onclick="testResourceTiming()">查看资源加载性能</button>
+</div>
+
+<!-- Bridge -->
+<div class="section">
+    <div class="section-title">Bridge 调用</div>
+    <button onclick="testBridgeClose()">调用 Bridge Close</button>
+</div>
+
+<!-- 日志输出 -->
+<div class="section">
+    <div class="section-title">日志</div>
+    <div id="log">等待操作...</div>
+    <button onclick="clearLog()" style="margin-top: 8px;">清除日志</button>
+</div>
+
+<script>
+    function log(msg) {
+        var el = document.getElementById('log');
+        var time = new Date().toLocaleTimeString();
+        el.textContent += '\n[' + time + '] ' + msg;
+        el.scrollTop = el.scrollHeight;
+    }
+
+    function clearLog() {
+        document.getElementById('log').textContent = '';
+    }
+
+    // ====== 基础请求 ======
+
+    function testXhrGet() {
+        log('发起 XHR GET...');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://httpbin.org/get');
+        xhr.onload = function() { log('XHR GET 完成: ' + xhr.status); };
+        xhr.onerror = function() { log('XHR GET 失败'); };
+        xhr.send();
+    }
+
+    function testXhrPost() {
+        log('发起 XHR POST...');
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://httpbin.org/post');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() { log('XHR POST 完成: ' + xhr.status); };
+        xhr.onerror = function() { log('XHR POST 失败'); };
+        xhr.send(JSON.stringify({name: 'test', value: 123}));
+    }
+
+    function testFetchGet() {
+        log('发起 Fetch GET...');
+        fetch('https://httpbin.org/get')
+            .then(function(r) { log('Fetch GET 完成: ' + r.status); })
+            .catch(function(e) { log('Fetch GET 失败: ' + e); });
+    }
+
+    function testFetchPost() {
+        log('发起 Fetch POST...');
+        fetch('https://httpbin.org/post', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: 'test', value: 456})
+        })
+            .then(function(r) { log('Fetch POST 完成: ' + r.status); })
+            .catch(function(e) { log('Fetch POST 失败: ' + e); });
+    }
+
+    // ====== 异常检测 - 重复请求 ======
+
+    function testRepetitionSameUrl() {
+        log('测试重复请求(相同URL): 发起3次...');
+        for (var i = 0; i < 3; i++) {
+            fetch('https://httpbin.org/get?type=same')
+                .then(function(r) { log('重复请求响应: ' + r.status); })
+                .catch(function(e) { log('重复请求失败: ' + e); });
+        }
+    }
+
+    function testRepetitionSameApi() {
+        log('测试重复请求(同接口不同ID): /api/user/1, /api/user/2, /api/user/3');
+        var ids = [1, 2, 3];
+        ids.forEach(function(id) {
+            fetch('https://httpbin.org/anything/api/user/' + id)
+                .then(function(r) { log('user/' + id + ' 响应: ' + r.status); })
+                .catch(function(e) { log('user/' + id + ' 失败: ' + e); });
+        });
+    }
+
+    function testStorm() {
+        log('测试请求风暴: 3s内发起10次请求...');
+        for (var i = 0; i < 10; i++) {
+            (function(index) {
+                setTimeout(function() {
+                    fetch('https://httpbin.org/anything/storm/' + index)
+                        .then(function(r) { log('风暴请求 #' + index + ': ' + r.status); })
+                        .catch(function(e) { log('风暴请求 #' + index + ' 失败: ' + e); });
+                }, index * 200);
+            })(i);
+        }
+    }
+
+    function testNormal() {
+        log('测试正常请求: 间隔2s发起2次...');
+        fetch('https://httpbin.org/get?seq=1')
+            .then(function(r) { log('正常请求 #1: ' + r.status); })
+            .catch(function(e) { log('正常请求 #1 失败: ' + e); });
+        setTimeout(function() {
+            fetch('https://httpbin.org/get?seq=2')
+                .then(function(r) { log('正常请求 #2: ' + r.status); })
+                .catch(function(e) { log('正常请求 #2 失败: ' + e); });
+        }, 2000);
+    }
+
+    // ====== 异常场景 ======
+
+    function testXhr404() {
+        log('发起 XHR 404...');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://httpbin.org/status/404');
+        xhr.onload = function() { log('XHR 404 完成: ' + xhr.status); };
+        xhr.onerror = function() { log('XHR 404 网络错误'); };
+        xhr.send();
+    }
+
+    function testXhr500() {
+        log('发起 XHR 500...');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://httpbin.org/status/500');
+        xhr.onload = function() { log('XHR 500 完成: ' + xhr.status); };
+        xhr.onerror = function() { log('XHR 500 网络错误'); };
+        xhr.send();
+    }
+
+    function testXhrTimeout() {
+        log('发起 XHR 超时(timeout=2s, 请求delay=5s)...');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://httpbin.org/delay/5');
+        xhr.timeout = 2000;
+        xhr.onload = function() { log('XHR 超时测试意外完成: ' + xhr.status); };
+        xhr.ontimeout = function() { log('XHR 超时触发'); };
+        xhr.onerror = function() { log('XHR 超时测试网络错误'); };
+        xhr.send();
+    }
+
+    function testFetchReject() {
+        log('发起 Fetch 到不存在的域名...');
+        fetch('https://this-domain-does-not-exist-12345.invalid/api')
+            .then(function(r) { log('Fetch reject 意外成功: ' + r.status); })
+            .catch(function(e) { log('Fetch reject 触发: ' + e); });
+    }
+
+    // ====== 页面加载性能 ======
+
+    function testPageNavigation() {
+        log('--- 页面导航性能 ---');
+        if (!window.performance || !performance.getEntriesByType) {
+            log('Performance API 不可用');
+            return;
+        }
+        var nav = performance.getEntriesByType('navigation')[0];
+        if (!nav) {
+            log('Navigation Timing 不可用');
+            return;
+        }
+        log('总加载: ' + Math.round(nav.loadEventEnd - nav.startTime) + 'ms');
+        log('TTFB: ' + Math.round(nav.responseStart - nav.requestStart) + 'ms');
+        log('DOM解析: ' + Math.round(nav.domInteractive - nav.responseEnd) + 'ms');
+        log('DOMContentLoaded: ' + Math.round(nav.domContentLoadedEventEnd - nav.startTime) + 'ms');
+    }
+
+    function testResourceTiming() {
+        log('--- 资源加载性能 ---');
+        if (!window.performance || !performance.getEntriesByType) {
+            log('Performance API 不可用');
+            return;
+        }
+        var resources = performance.getEntriesByType('resource');
+        log('资源总数: ' + resources.length);
+        resources.forEach(function(entry) {
+            var duration = Math.round(entry.responseEnd - entry.startTime);
+            log('  [' + entry.initiatorType + '] ' + duration + 'ms ' + entry.name.substring(0, 60));
+        });
+    }
+
+    // ====== Bridge ======
+
+    function testBridgeClose() {
+        log('调用 Bridge close...');
+        if (window.xxx) {
+            window.xxx.close();
+        } else {
+            log('Bridge xxx 不可用');
+        }
+    }
+</script>
+</body>
+</html>

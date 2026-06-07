@@ -1,17 +1,16 @@
 package com.proxy.service.webview.monitor.converter
 
 import com.proxy.service.webview.base.web.IWeb
-import com.proxy.service.webview.monitor.work.performance.PerformancePageMonitor
-import com.proxy.service.webview.monitor.work.performance.PerformanceResourceMonitor
-import com.proxy.service.webview.monitor.work.request.RequestMonitor
-import com.proxy.service.webview.monitor.work.request.CookieMonitor
+import com.proxy.service.webview.monitor.work.base.MonitorFactory
 
 /**
  * @author: cangHX
  * @date: 2026/1/23 13:40
  * @desc:
  */
-class WebLoadCallbackImpl : AbstractWebLoadCallback() {
+class WebLoadCallbackImpl(
+    private val factory: MonitorFactory
+) : AbstractWebLoadCallback() {
 
     private var web: IWeb? = null
 
@@ -21,15 +20,16 @@ class WebLoadCallbackImpl : AbstractWebLoadCallback() {
 
     override fun onPageStarted(url: String) {
         super.onPageStarted(url)
+        factory.getRequestMonitor().onPageStarted()
 
-        CookieMonitor.runMonitor(web)
-        RequestMonitor.runMonitor(web)
+        factory.getCookieMonitor().runMonitor(web)
+        factory.getRequestMonitor().runMonitor(web)
     }
 
     override fun onPageAllResourceFinished(url: String) {
         super.onPageAllResourceFinished(url)
 
-        PerformancePageMonitor.runMonitor(web)
-        PerformanceResourceMonitor.runMonitor(web)
+        factory.getLoadPageMonitor().runMonitor(web)
+        factory.getLoadResourceMonitor().runMonitor(web)
     }
 }

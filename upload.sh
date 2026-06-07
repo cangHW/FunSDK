@@ -20,7 +20,7 @@ upArray=(
 #  ":WebViewSDK:WebViewInfo"
 #  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
-#  ":WebViewSDK:WebViewMonitor"
+  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
 #  ":Permission:PermissionInfo"
@@ -30,7 +30,7 @@ upArray=(
 #  ":LogFileSDK:LogFileInfo"
 
     # 性能监控库
-  ":ApmSDK:ApmInfo"
+#  ":ApmSDK:ApmInfo"
 
   # 文档库
 #  ":DocumentsSDK:Image:DocumentImageInfo"

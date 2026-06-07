@@ -12,9 +12,21 @@ import com.proxy.service.webview.monitor.constant.WebMonitorConstants
  */
 abstract class BaseMonitor {
 
-    protected fun getConfig():MonitorConfig{
-        return CsWebMonitor.getMonitorConfig()
+    companion object {
+        fun createLog(method: String, content: String): String {
+            val space = WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE
+            val builder = StringBuilder()
+            builder.append("try {\n")
+            builder.append(" if (window.${space} && typeof window.${space}.${method} === \"function\") {\n")
+            builder.append("  window.${space}.${method}(window.location.href, $content);\n")
+            builder.append(" }\n")
+            builder.append("} catch (e) {\n")
+            builder.append("}")
+            return builder.toString()
+        }
     }
+
+    protected val config = CsWebMonitor.getMonitorConfig()
 
     /**
      * 执行监控
@@ -41,10 +53,5 @@ abstract class BaseMonitor {
      * 处理日志
      * */
     abstract fun dispatchLog(url: String, log: String)
-
-
-    protected fun createLog(method: String, content: String): String {
-        return "window.${WebMonitorConstants.WEB_MONITOR_LOG_BRIDGE_NAME_SPACE}.${method}(window.location.href, $content);"
-    }
 
 }
