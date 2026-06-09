@@ -13,27 +13,12 @@ class Strategy {
     /**
      * 周期性自动刷磁盘的间隔时间
      * */
-    var _flushEveryTime: Long = 0
+    var _flushEveryTime: Long = Constants.FLUSH_EVERY_TIME
 
     /**
      * 同步模式
      * */
-    var _isSyncMode: Boolean = false
-
-    /**
-     * 压缩模式
-     * */
-    var _compressionMode: Int = 0
-
-    /**
-     * 加密模式
-     * */
-    var _encryptionMode: Int = 0
-
-    /**
-     * 加密密钥
-     * */
-    var _encryptionKey: String = ""
+    var _isSyncMode: Boolean = Constants.IS_SYNC_MODE
 
     /**
      * 保存路径
@@ -43,31 +28,36 @@ class Strategy {
     /**
      * 日志文件前后缀
      * */
-    var _namePrefix: String = ""
-    var _namePostfix: String = ""
+    var _namePrefix: String = Constants.NAME_PREFIX
+    var _namePostfix: String = Constants.NAME_POSTFIX
 
     /**
      * 缓存时长与清理任务执行间隔时长
      * */
-    var _cacheTime: Long = 0
-    var _cleanTaskIntervalTime: Long = 0
+    var _cacheTime: Long = Constants.CACHE_TIME
+    var _cleanTaskIntervalTime: Long = Constants.CLEAN_TASK_INTERVAL_TIME
 
     /**
      * 日志记录类型
      * */
-    var _type: Int = Constants.TYPE_NORMAL
+    var _type: Int = Constants.TYPE_DAILY
 
     /**
      * 单个文件最大长度与最大文件数量 [Constants.TYPE_ROTATING]
      * */
-    var _singleFileMaxSize: Long = 0
-    var _maxFileCount: Int = 0
+    var _singleFileMaxSize: Long = Constants.SINGLE_FILE_MAX_SIZE
+    var _maxFileCount: Int = Constants.MAX_FILE_COUNT
 
     /**
      * 文件创建时间节点 [Constants.TYPE_DAILY]
      * */
-    var _hour: Int = 0
-    var _minute: Int = 0
+    var _hour: Int = Constants.HOUR
+    var _minute: Int = Constants.MINUTE
+
+    /**
+     * 加密密钥（hex 字符串，64字符 = 32字节）
+     * */
+    var _encryptionKey: String = ""
 
     fun getPackageName(): String {
         return _pkg
@@ -79,18 +69,6 @@ class Strategy {
 
     fun isSyncMode(): Boolean {
         return _isSyncMode
-    }
-
-    fun getCompressionMode(): Int {
-        return _compressionMode
-    }
-
-    fun getEncryptionMode(): Int {
-        return _encryptionMode
-    }
-
-    fun getEncryptionKey(): String {
-        return _encryptionKey
     }
 
     fun getDir(): String {
@@ -131,5 +109,9 @@ class Strategy {
 
     fun getMinute(): Int {
         return _minute
+    }
+
+    fun getEncryptionKey(): String {
+        return _encryptionKey
     }
 }

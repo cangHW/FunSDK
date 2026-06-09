@@ -28,14 +28,13 @@ class LogFileCore private constructor() {
     private val isInitSuccess = AtomicBoolean(false)
 
     fun init(application: Application, logConfig: LogConfig) {
+        if (isInitSuccess.get()) return
+
         val config = Strategy()
         config._pkg = application.packageName
         config._flushEveryTime = logConfig.getFlushEveryTime()
         config._isSyncMode = logConfig.getSyncMode()
 
-        config._compressionMode = logConfig.getCompressionMode().mode
-        config._encryptionMode = logConfig.getEncryptionMode().mode
-        config._encryptionKey = logConfig.getEncryptionKey()
         config._dir = if (TextUtils.isEmpty(logConfig.getLogDir())) {
             getDefaultDir(application)
         } else {
@@ -52,6 +51,7 @@ class LogFileCore private constructor() {
         config._maxFileCount = logConfig.getMaxFileCount()
         config._hour = logConfig.getDailyHour()
         config._minute = logConfig.getDailyMinute()
+        config._encryptionKey = logConfig.getEncryptionKey()
         if (initTask(config)) {
             isInitSuccess.set(true)
             CsLogger.tag(Constants.TAG).d("init success")

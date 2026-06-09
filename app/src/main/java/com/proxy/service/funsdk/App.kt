@@ -2,6 +2,9 @@ package com.proxy.service.funsdk
 
 import android.app.Application
 import com.proxy.service.core.CsCore
+import com.proxy.service.logfile.info.CsLogFile
+import com.proxy.service.logfile.info.config.LogConfig
+import java.util.concurrent.TimeUnit
 
 /**
  * @author: cangHX
@@ -12,12 +15,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        val config = LogConfig.builder()
+        val config = LogConfig.builder()
 //            .setFlushEveryTime(5, TimeUnit.SECONDS)
-//            .setCompressionMode(CompressionMode.LZ4)
-//            .setEncryptionMode(EncryptionMode.CHACHA20, "111222")
-//            .createDailyType(0, 0)
-//        CsLogFile.setConfig(config)
+//            .setEncryptionKey("111111")
+            .createDailyType(0, 0)
+        CsLogFile.setConfig(config)
 
         CsCore.init(this, BuildConfig.DEBUG)
 //        CsCore.init(this, false)

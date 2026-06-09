@@ -1,9 +1,9 @@
 package com.proxy.service.logfile.info.config
 
 import android.text.TextUtils
+import com.proxy.service.core.framework.data.log.CsLogger
+import com.proxy.service.core.framework.system.security.sha.CsSha256Utils
 import com.proxy.service.logfile.info.constants.Constants
-import com.proxy.service.logfile.info.manager.CompressionMode
-import com.proxy.service.logfile.info.manager.EncryptionMode
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -20,18 +20,6 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
     override fun getSyncMode(): Boolean {
         return builder.getSyncMode()
-    }
-
-    override fun getCompressionMode(): CompressionMode {
-        return builder.getCompressionMode()
-    }
-
-    override fun getEncryptionMode(): EncryptionMode {
-        return builder.getEncryptionMode()
-    }
-
-    override fun getEncryptionKey(): String {
-        return builder.getEncryptionKey()
     }
 
     override fun getLogDir(): String {
@@ -74,6 +62,10 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         return builder.getDailyMinute()
     }
 
+    override fun getEncryptionKey(): String {
+        return builder.getEncryptionKey()
+    }
+
     companion object {
         fun builder(): IBuilder {
             return Builder()
@@ -84,9 +76,6 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var flushTime = Constants.FLUSH_EVERY_TIME
 
         private var isSyncMode: Boolean = Constants.IS_SYNC_MODE
-        private var compressionMode: CompressionMode = Constants.COMPRESSION_MODE
-        private var encryptionMode: EncryptionMode = Constants.ENCRYPTION_MODE
-        private var encryptionKey: String = ""
 
         private var dir: String = ""
 
@@ -96,13 +85,15 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
         private var cacheTime: Long = Constants.CACHE_TIME
         private var cleanTaskIntervalTime: Long = Constants.CLEAN_TASK_INTERVAL_TIME
 
-        private var type: Int = Constants.TYPE_NORMAL
+        private var type: Int = Constants.TYPE_DAILY
 
         private var singleFileMaxSize: Long = Constants.SINGLE_FILE_MAX_SIZE
         private var maxFileCount: Int = Constants.MAX_FILE_COUNT
 
         private var hour: Int = Constants.HOUR
         private var minute: Int = Constants.MINUTE
+
+        private var encryptionKey: String = ""
 
         override fun setFlushEveryTime(time: Long, unit: TimeUnit): IBuilder {
             this.flushTime = if (time < 0) {
@@ -115,17 +106,6 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun setLogMode(isSyncMode: Boolean): IBuilder {
             this.isSyncMode = isSyncMode
-            return this
-        }
-
-        override fun setCompressionMode(mode: CompressionMode): IBuilder {
-            this.compressionMode = mode
-            return this
-        }
-
-        override fun setEncryptionMode(mode: EncryptionMode, encryptionKey: String): IBuilder {
-            this.encryptionMode = mode
-            this.encryptionKey = encryptionKey
             return this
         }
 
@@ -168,9 +148,19 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return this
         }
 
-        override fun createNormalType(): LogConfig {
-            this.type = Constants.TYPE_NORMAL
-            return LogConfig(this)
+        override fun setEncryptionKey(hexKey: String): IBuilder {
+            if (hexKey.isEmpty()) {
+                this.encryptionKey = ""
+            } else {
+                val derived = CsSha256Utils.get(hexKey)
+                if (derived.isEmpty()) {
+                    CsLogger.tag(Constants.TAG).e("setEncryptionKey failed: SHA-256 derivation failed")
+                    this.encryptionKey = ""
+                } else {
+                    this.encryptionKey = derived
+                }
+            }
+            return this
         }
 
         override fun createRotatingType(singleFileMaxSize: Long, maxFileCount: Int): LogConfig {
@@ -211,18 +201,6 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
             return isSyncMode
         }
 
-        override fun getCompressionMode(): CompressionMode {
-            return compressionMode
-        }
-
-        override fun getEncryptionMode(): EncryptionMode {
-            return encryptionMode
-        }
-
-        override fun getEncryptionKey(): String {
-            return encryptionKey
-        }
-
         override fun getLogDir(): String {
             return dir
         }
@@ -261,6 +239,10 @@ class LogConfig private constructor(private val builder: IBuilderGet) : IBuilder
 
         override fun getDailyMinute(): Int {
             return minute
+        }
+
+        override fun getEncryptionKey(): String {
+            return encryptionKey
         }
     }
 

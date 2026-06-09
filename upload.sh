@@ -20,14 +20,14 @@ upArray=(
 #  ":WebViewSDK:WebViewInfo"
 #  ":WebViewSDK:WebViewBase"
 #  ":WebViewSDK:WebViewDSBridge"
-  ":WebViewSDK:WebViewMonitor"
+#  ":WebViewSDK:WebViewMonitor"
 
     # 权限库
 #  ":Permission:PermissionInfo"
 #  ":Permission:PermissionBase"
 
     # 日志文件库
-#  ":LogFileSDK:LogFileInfo"
+  ":LogFileSDK:LogFileSpdlogInfo"
 
     # 性能监控库
 #  ":ApmSDK:ApmInfo"

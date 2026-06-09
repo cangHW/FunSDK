@@ -13,6 +13,8 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
         jobject ojb,
         jobject config
 ) {
+    stop_clean_task();
+
     std::string dir = callStringFrom(env, config, "getDir");
     if (dir.empty()) {
         return false;
@@ -39,45 +41,19 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
 
     jboolean isSync = callBooleanFrom(env, config, "isSyncMode");
     jint type = callIntFrom(env, config, "getType");
-    jint compressionMode = callIntFrom(env, config, "getCompressionMode");
-    jint encryptionMode = callIntFrom(env, config, "getEncryptionMode");
     std::string encryptionKey = callStringFrom(env, config, "getEncryptionKey");
 
     std::shared_ptr<spdlog::logger> logger;
-    if (type == 0) {
-        logger = basic_logger(
-                isSync,
-                path,
-                compressionMode,
-                encryptionMode,
-                encryptionKey
-        );
-    } else if (type == 1) {
+    if (type == 1) {
         jlong maxFileSize = callLongFrom(env, config, "getSingleFileMaxSize");
         jint maxFiles = callIntFrom(env, config, "getMaxFileCount");
 
-        logger = rotating_logger(
-                isSync,
-                path,
-                maxFileSize,
-                maxFiles,
-                compressionMode,
-                encryptionMode,
-                encryptionKey
-        );
+        logger = rotating_logger(isSync, path, maxFileSize, maxFiles, encryptionKey);
     } else if (type == 2) {
         jint hour = callIntFrom(env, config, "getHour");
         jint minute = callIntFrom(env, config, "getMinute");
 
-        logger = daily_logger(
-                isSync,
-                path,
-                hour,
-                minute,
-                compressionMode,
-                encryptionMode,
-                encryptionKey
-        );
+        logger = daily_logger(isSync, path, hour, minute, encryptionKey);
     } else {
         return false;
     }
@@ -99,7 +75,7 @@ Java_com_proxy_service_logfile_info_manager_LogFileCore_initTask(
     logger->flush_on(spdlog::level::err);
 
     jlong flushEveryTime = callLongFrom(env, config, "getFlushEveryTime");
-    if (cleanTaskIntervalTime != 0) {
+    if (flushEveryTime > 0) {
         spdlog::flush_every(std::chrono::milliseconds(flushEveryTime));
     }
     return true;

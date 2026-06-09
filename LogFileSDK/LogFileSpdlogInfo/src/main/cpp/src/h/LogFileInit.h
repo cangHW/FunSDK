@@ -4,21 +4,11 @@
 #ifndef FUNSDK_LOGFILEINIT_H
 #define FUNSDK_LOGFILEINIT_H
 
-std::shared_ptr<spdlog::logger> basic_logger(
-        jboolean &isSync,
-        const std::string &path,
-        jint &compressionMode,
-        jint &encryptionMode,
-        const std::string &encryptionKey
-);
-
 std::shared_ptr<spdlog::logger> rotating_logger(
         jboolean &isSync,
         const std::string &path,
         jlong &maxFileSize,
         jint &maxFiles,
-        jint &compressionMode,
-        jint &encryptionMode,
         const std::string &encryptionKey
 );
 
@@ -27,8 +17,6 @@ std::shared_ptr<spdlog::logger> daily_logger(
         const std::string &path,
         jint &hour,
         jint &minute,
-        jint &compressionMode,
-        jint &encryptionMode,
         const std::string &encryptionKey
 );
 
