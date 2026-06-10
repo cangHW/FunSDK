@@ -42,14 +42,14 @@ ext {
             // 线程库
             ThreadPoolBase : [
                     artifact          : "Service-Threadpool",
-                    version           : "0.2.10",
+                    version           : "0.2.10.1",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ThreadPoolInfo : [
                     artifact          : "Service-Threadpool-Info",
-                    version           : "0.2.10",
+                    version           : "0.2.10.1",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"

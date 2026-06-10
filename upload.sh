@@ -5,8 +5,8 @@ upArray=(
 #  ":CoreFramework"
 
   # 线程库
-#  ":ThreadPoolSDK:ThreadPoolInfo"
-#  ":ThreadPoolSDK:ThreadPoolBase"
+  ":ThreadPoolSDK:ThreadPoolInfo"
+  ":ThreadPoolSDK:ThreadPoolBase"
 
   # 图片库
 #  ":ImageLoaderSDK:ImageLoaderInfo"
@@ -27,7 +27,7 @@ upArray=(
 #  ":Permission:PermissionBase"
 
     # 日志文件库
-  ":LogFileSDK:LogFileSpdlogInfo"
+#  ":LogFileSDK:LogFileSpdlogInfo"
 
     # 性能监控库
 #  ":ApmSDK:ApmInfo"

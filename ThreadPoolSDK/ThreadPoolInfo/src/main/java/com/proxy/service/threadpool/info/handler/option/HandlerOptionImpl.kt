@@ -40,12 +40,12 @@ class HandlerOptionImpl(
     }
 
     override fun clearAllTask() {
-        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to clear all tasks.")
+//        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to clear all tasks.")
         handlerController.cancelAllTask()
     }
 
     override fun clearAllTaskWithTag(tag: String) {
-        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to clear all tasks with tag. tag = $tag")
+//        CsLogger.tag(TAG).d("Thread ${handlerController.getThreadName()} starts to clear all tasks with tag. tag = $tag")
         handlerController.cancelTaskByTag(tag)
     }
 
