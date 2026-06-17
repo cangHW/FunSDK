@@ -109,6 +109,8 @@ dependencies {
 
     implementation(libs.service.media.camera)
 
+    implementation(project(":WebServerSDK:WebServerBase"))
+
 //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
 }
 

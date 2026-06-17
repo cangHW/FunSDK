@@ -19,6 +19,11 @@ object CoreConfig {
      * */
     const val SERVICE_TAG_APP_PREFIX = "cs_application"
 
+    /**
+     * 服务tag前缀——功能
+     * */
+    const val SERVICE_TAG_FUNCTION = "cs_service"
+
 
     /**
      * 初始化环境

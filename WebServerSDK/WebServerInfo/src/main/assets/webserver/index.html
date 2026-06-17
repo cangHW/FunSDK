@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>WebServer</title>
+    <link rel="stylesheet" href="/static/res/css/shell.css"/>
+</head>
+<body class="shell-body">
+<header class="shell-header">
+    <h1>WebServer</h1>
+    <p class="hint">嵌入式 Web 控制台 · 侧边栏切换插件 · URL：<code>/#/plugin/{id}</code></p>
+</header>
+
+<div class="shell-layout">
+    <aside class="shell-sidebar">
+        <div class="sidebar-title">插件</div>
+        <nav id="plugin-nav" class="plugin-nav">
+            <div class="empty">加载中…</div>
+        </nav>
+        <p class="status" id="status"></p>
+    </aside>
+
+    <main class="shell-main">
+        <div id="welcome" class="welcome card">
+            <div class="welcome-title">请从左侧选择一个插件</div>
+            <p class="empty">插件页面将内嵌显示在此区域</p>
+        </div>
+        <iframe
+            id="plugin-frame"
+            class="plugin-frame"
+            title="插件页面"
+            hidden
+        ></iframe>
+    </main>
+</div>
+
+<script src="/static/res/js/api-routes.js"></script>
+<script src="/static/res/js/shell.js"></script>
+</body>
+</html>

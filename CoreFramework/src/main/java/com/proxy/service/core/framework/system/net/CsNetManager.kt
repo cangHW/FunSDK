@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.telephony.TelephonyManager
 import com.proxy.service.core.framework.app.context.CsContextManager
@@ -11,6 +12,8 @@ import com.proxy.service.core.framework.system.net.callback.NetConnectChangedLis
 import com.proxy.service.core.framework.system.net.controller.BroadcastController
 import com.proxy.service.core.framework.system.net.controller.NetworkController
 import com.proxy.service.core.framework.system.net.controller.AbstractController
+import java.net.Inet4Address
+import java.net.NetworkInterface
 import java.util.WeakHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -58,6 +61,17 @@ object CsNetManager {
     }
 
     @SuppressLint("MissingPermission")
+    private fun getActiveNetwork(connectivityManager: ConnectivityManager? = null): Network? {
+        val check = CsContextManager.getApplication()
+            .checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
+        if (check != PackageManager.PERMISSION_GRANTED) {
+            return null
+        }
+        val manager = connectivityManager ?: getConnectivityManager()
+        return manager?.activeNetwork
+    }
+
+    @SuppressLint("MissingPermission")
     private fun getNetworkCapabilities(connectivityManager: ConnectivityManager? = null): NetworkCapabilities? {
         val check = CsContextManager.getApplication()
             .checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)
@@ -65,9 +79,8 @@ object CsNetManager {
             return null
         }
         val manager = connectivityManager ?: getConnectivityManager()
-        return manager?.activeNetwork?.let {
-            manager.getNetworkCapabilities(it)
-        }
+        val activeNetwork = getActiveNetwork(manager) ?: return null
+        return manager?.getNetworkCapabilities(activeNetwork)
     }
 
     /**
@@ -221,5 +234,25 @@ object CsNetManager {
                 isReceiverRun.set(false)
             }
         }
+    }
+
+    private const val DEFAULT_IP_ADDRESS = "127.0.0.1"
+
+    @SuppressLint("MissingPermission")
+    fun getActiveNetworkIpAddress(): String {
+        val connectivityManager = getConnectivityManager()
+        val network = getActiveNetwork(connectivityManager)
+        if (network != null) {
+            val hostAddress = connectivityManager?.getLinkProperties(network)
+                ?.linkAddresses
+                ?.firstOrNull()
+                ?.address
+                ?.hostAddress
+
+            if (hostAddress != null) {
+                return hostAddress
+            }
+        }
+        return DEFAULT_IP_ADDRESS
     }
 }

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ApiHttp 断点</title>
+    <script src="/debug/debug-bridge.js"></script>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --panel: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --muted: #8b949e;
+            --accent: #58a6ff;
+            --ok: #3fb950;
+            --warn: #d29922;
+            --danger: #f85149;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            background: #010409;
+            color: var(--text);
+        }
+        header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--panel);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        header a { color: var(--accent); text-decoration: none; }
+        .title { font-size: 16px; font-weight: 600; }
+        .meta { color: var(--muted); font-size: 12px; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            background: #1f2937;
+            border: 1px solid var(--border);
+        }
+        .badge.ok { color: var(--ok); }
+        .badge.warn { color: var(--warn); }
+        .badge.danger { color: var(--danger); }
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 12px;
+            min-height: calc(100vh - 140px);
+        }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .panel h3 {
+            margin: 0;
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            background: #0d1117;
+        }
+        pre {
+            margin: 0;
+            padding: 12px;
+            overflow: auto;
+            flex: 1;
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        footer {
+            border-top: 1px solid var(--border);
+            background: var(--panel);
+            padding: 12px 20px 20px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 12px;
+        }
+        .actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+        button {
+            border: 1px solid var(--border);
+            background: #21262d;
+            color: var(--text);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        button.primary { background: #238636; border-color: #2ea043; }
+        button.warn { background: #9e6a03; border-color: #bb8009; }
+        button.danger { background: #b62324; border-color: #da3633; }
+        @media (max-width: 960px) {
+            main { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div>
+        <div class="title" id="title">ApiHttp 断点</div>
+        <div class="meta" id="meta"></div>
+    </div>
+    <div>
+        <span class="badge" id="codeBadge">--</span>
+        <span class="badge" id="durationBadge">--</span>
+    </div>
+</header>
+
+<main>
+    <section class="panel">
+        <h3>Request</h3>
+        <pre id="requestView">loading...</pre>
+    </section>
+    <section class="panel">
+        <h3>Response</h3>
+        <pre id="responseView">loading...</pre>
+    </section>
+</main>
+
+<footer>
+    <div style="margin-bottom:8px;color:var(--muted);font-size:12px;">替换 Response Body</div>
+    <textarea id="replaceBody"></textarea>
+    <div class="actions">
+        <a href="/">← 返回列表</a>
+        <button class="primary" onclick="submit('pass')">放行</button>
+        <button class="warn" onclick="submit('replace')">替换返回值</button>
+        <button class="danger" onclick="submit('abort')">中止</button>
+    </div>
+</footer>
+
+<script>
+    let currentCode = 200;
+
+    function renderBadge(el, text, type) {
+        el.textContent = text;
+        el.className = 'badge ' + (type || '');
+    }
+
+    async function loadDetail() {
+        const data = await DebugBridge.fetchDetail();
+        const payload = JSON.parse(data.display || '{}');
+        const request = payload.request || {};
+        const response = payload.response || {};
+
+        document.getElementById('title').textContent = data.pluginName + ' · ' + data.tag;
+        document.getElementById('meta').textContent = (request.method || '') + ' ' + (request.url || '');
+        document.getElementById('requestView').textContent = DebugBridge.prettyJson(JSON.stringify(request));
+        document.getElementById('responseView').textContent = DebugBridge.prettyJson(JSON.stringify(response));
+
+        currentCode = response.code || 200;
+        const codeBadge = document.getElementById('codeBadge');
+        renderBadge(codeBadge, 'HTTP ' + currentCode, currentCode >= 400 ? 'danger' : 'ok');
+        renderBadge(document.getElementById('durationBadge'), (payload.durationMs || '--') + ' ms', '');
+
+        const body = typeof response.body === 'string' ? response.body : JSON.stringify(response.body || response);
+        document.getElementById('replaceBody').value = body;
+    }
+
+    async function submit(action) {
+        await DebugBridge.decide(null, {
+            action: action,
+            body: document.getElementById('replaceBody').value,
+            code: currentCode
+        });
+        alert('已提交: ' + action);
+        location.href = '/';
+    }
+
+    loadDetail().catch(err => alert(err.message));
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+-keep class com.proxy.service.debugbridge.nano.** { *; }
+-keep class fi.iki.elonen.** { *; }
+-dontwarn fi.iki.elonen.**

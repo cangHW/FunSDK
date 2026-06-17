@@ -64,6 +64,8 @@ include(":LogFileSDK:LogFileXlogInfo")
 include(":ApmSDK:ApmInfo")
 include(":WidgetSDK:WidgetInfo")
 
+include(":WebServerSDK:WebServerBase")
+include(":WebServerSDK:WebServerInfo")
 
-
-
+include(":DebugBridgeSDK:DebugBridgeBase")
+include(":DebugBridgeSDK:DebugBridgeNanoInfo")

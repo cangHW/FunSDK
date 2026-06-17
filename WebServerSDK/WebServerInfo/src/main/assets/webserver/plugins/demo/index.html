@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Demo Plugin</title>
+    <link rel="stylesheet" href="/static/res/css/shell.css"/>
+    <style>
+        pre {
+            margin: 0;
+            padding: 12px;
+            background: #f6f8fa;
+            border-radius: 6px;
+            overflow: auto;
+            font-size: 12px;
+        }
+        button {
+            padding: 6px 12px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            background: #f6f8fa;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #eaeef2;
+        }
+        .actions {
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body class="plugin-embed">
+<div class="plugin-root">
+    <h1>Demo Plugin</h1>
+    <p class="hint">示例插件 · 注册 pluginId = demo 后可在 Shell 侧边栏打开</p>
+
+    <section class="card" style="margin-top: 16px;">
+        <div class="card-title">插件数据 GET /plugin/demo/request</div>
+        <pre id="data">加载中…</pre>
+        <div class="actions">
+            <button type="button" id="reload">刷新数据</button>
+        </div>
+    </section>
+</div>
+
+<script src="/static/res/js/api-routes.js"></script>
+<script src="/static/res/js/webserver.js"></script>
+<script>
+    WebServer.init('demo');
+
+    async function loadData() {
+        var box = document.getElementById('data');
+        try {
+            var data = await WebServer.loadData('demo');
+            box.textContent = WebServer.prettyJson(data);
+        } catch (error) {
+            box.textContent = '加载失败：' + error.message;
+        }
+    }
+
+    document.getElementById('reload').addEventListener('click', loadData);
+    loadData();
+</script>
+</body>
+</html>
