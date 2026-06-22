@@ -22,7 +22,7 @@ object CoreConfig {
     /**
      * 服务tag前缀——功能
      * */
-    const val SERVICE_TAG_FUNCTION = "cs_service"
+    const val SERVICE_TAG_FUNCTION_PREFIX = "cs_service"
 
 
     /**

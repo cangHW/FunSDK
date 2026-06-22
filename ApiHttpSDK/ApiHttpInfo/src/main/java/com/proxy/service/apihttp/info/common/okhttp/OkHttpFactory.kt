@@ -40,15 +40,15 @@ object OkHttpFactory {
             }
         }
 
+        builder.addInterceptor(ExceptionInterceptor())
         if (config.getInterceptors().isNotEmpty()) {
-            builder.addInterceptor(ExceptionInterceptor())
             config.getInterceptors().forEach {
                 builder.addInterceptor(it)
             }
         }
 
+        builder.addNetworkInterceptor(ExceptionInterceptor())
         if (config.getNetworkInterceptors().isNotEmpty()) {
-            builder.addNetworkInterceptor(ExceptionInterceptor())
             config.getNetworkInterceptors().forEach {
                 builder.addNetworkInterceptor(it)
             }

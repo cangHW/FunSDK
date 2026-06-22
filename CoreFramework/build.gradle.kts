@@ -50,6 +50,7 @@ dependencies {
     compileOnly(project(":DocumentsSDK:Image:DocumentImageBase"))
     compileOnly(project(":DocumentsSDK:Pdf:DocumentPdfBase"))
     compileOnly(project(":MediaSDK:Camera:CameraBase"))
+    compileOnly(project(":WebServerSDK:WebServerBase"))
 
     // 压缩库
     implementation(libs.file.zip)

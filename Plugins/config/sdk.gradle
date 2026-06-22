@@ -17,7 +17,7 @@ ext {
             // 内核基础库
             CoreFramework  : [
                     artifact          : "Service-CoreFramework",
-                    version           : "1.3.6.2",
+                    version           : "1.3.6.3",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -26,14 +26,14 @@ ext {
             // 网络库
             ApiHttpBase    : [
                     artifact          : "Service-Apihttp",
-                    version           : "0.2.11",
+                    version           : "0.2.12",
                     source            : true,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
             ],
             ApiHttpInfo    : [
                     artifact          : "Service-Apihttp-Info",
-                    version           : "0.2.11",
+                    version           : "0.2.12",
                     source            : false,
                     libraryName       : "Android cloud sdk",
                     libraryDescription: "The perfect framework for Android"
@@ -199,7 +199,7 @@ ext {
                     libraryDescription: "The perfect framework for Android"
             ],
 
-            // web服务
+            // 嵌入式 Web 服务库
             WebServerBase    : [
                     artifact          : "Service-WebServer",
                     version           : "0.0.1",

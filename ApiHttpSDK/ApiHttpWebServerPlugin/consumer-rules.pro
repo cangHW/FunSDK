@@ -1,0 +1,1 @@
+-keep class com.proxy.service.apihttp.webserver.** { *; }

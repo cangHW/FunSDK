@@ -66,6 +66,4 @@ include(":WidgetSDK:WidgetInfo")
 
 include(":WebServerSDK:WebServerBase")
 include(":WebServerSDK:WebServerInfo")
-
-include(":DebugBridgeSDK:DebugBridgeBase")
-include(":DebugBridgeSDK:DebugBridgeNanoInfo")
+include(":ApiHttpSDK:ApiHttpWebServerPlugin")

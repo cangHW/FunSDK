@@ -25,8 +25,8 @@ cloud-api = { group = "io.github.canghw", name = "Cloud-Api", version = "1.1.22"
 cloud-compiler = { group = "io.github.canghw", name = "Cloud-Compiler", version = "1.1.14" }
 cloud-plugin = { group = "io.github.canghw", name = "Cloud-Plugin", version = "1.1.13" }
 
-core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.3.6.2"}
-service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.11"}
+core-framework = {group = "io.github.canghw", name="Service-CoreFramework", version="1.3.6.3"}
+service-apihttp = {group = "io.github.canghw", name="Service-Apihttp", version="0.2.12"}
 service-threadpool = {group = "io.github.canghw", name="Service-Threadpool", version="0.2.10.1"}
 service-imageloader = {group = "io.github.canghw", name="Service-Imageloader", version="0.2.18"}
 service-webview = {group = "io.github.canghw", name="Service-Webview", version="0.2.20"}
@@ -39,6 +39,7 @@ service-document-image = {group = "io.github.canghw", name="Service-Document-Ima
 service-document-pdf = {group = "io.github.canghw", name="Service-Document-Pdf", version="0.2.3"}
 service-widget = {group = "io.github.canghw", name="Service-Widget", version="0.0.21"}
 service-media-camera = {group = "io.github.canghw", name="Service-Media-Camera", version="0.0.5"}
+service-webserver = {group = "io.github.canghw", name="Service-WebServer", version="0.0.1"}
 
 ##########################################  三方库  ############################################################################
 # 网络库
@@ -75,7 +76,7 @@ sp-mmkv = { group = "com.tencent", name = "mmkv", version = "1.2.11" }
 # hprof数据解析库
 leak-shark = { group = "com.squareup.leakcanary", name = "shark-android", version = "2.14" }
 
-# 嵌入式 Web 服务（NanoHTTPD）
+# 嵌入式 Web 服务
 server-nanohttpd = { group = "org.nanohttpd", name = "nanohttpd", version = "2.3.1" }
 
 ##########################################  Other  ############################################################################

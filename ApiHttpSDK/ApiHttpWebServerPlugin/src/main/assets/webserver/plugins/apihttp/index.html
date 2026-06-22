@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ApiHttp 代理</title>
+    <link rel="stylesheet" href="/static/res/css/shell.css"/>
+    <style>
+        :root {
+            --panel: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --muted: #8b949e;
+            --accent: #58a6ff;
+            --ok: #3fb950;
+            --warn: #d29922;
+            --danger: #f85149;
+        }
+        body.plugin-embed {
+            background: #0d1117;
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .mode-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #21262d;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .mode-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 12px;
+            min-height: 420px;
+        }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .panel-title {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .session-list {
+            overflow: auto;
+            flex: 1;
+        }
+        .session-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border: 0;
+            border-bottom: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .session-item.active,
+        .session-item:hover {
+            background: #21262d;
+        }
+        .session-item .tag { font-size: 12px; }
+        .session-item .meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
+        .badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 999px;
+            font-size: 11px;
+            margin-left: 6px;
+        }
+        .badge.pending { color: var(--warn); border: 1px solid var(--warn); }
+        pre {
+            margin: 0;
+            padding: 12px;
+            overflow: auto;
+            flex: 1;
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            background: #0d1117;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 12px;
+        }
+        .actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .actions button {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #21262d;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .actions button.primary { background: #238636; border-color: #2ea043; }
+        .actions button.warn { background: #9e6a03; border-color: #bb8009; }
+        .actions button.danger { background: #b62324; border-color: #da3633; }
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="plugin-embed">
+<div class="plugin-root">
+    <h1>ApiHttp 代理</h1>
+    <p class="hint">网络响应返回时转发至控制台 · 默认放行 · 关闭页面自动恢复放行</p>
+
+    <div class="toolbar">
+        <span>模式：</span>
+        <button type="button" class="mode-btn active" id="mode-pass" data-mode="pass">放行</button>
+        <button type="button" class="mode-btn" id="mode-intercept" data-mode="intercept">拦截</button>
+        <span class="hint" id="status"></span>
+    </div>
+
+    <div class="layout">
+        <section class="panel">
+            <div class="panel-title">请求列表</div>
+            <div class="session-list" id="session-list">
+                <div class="empty" style="padding:12px;">暂无请求</div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-title" id="detail-title">详情</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;flex:1;min-height:240px;">
+                <div style="border-right:1px solid var(--border);display:flex;flex-direction:column;">
+                    <div class="panel-title">Request</div>
+                    <pre id="request-view">请选择左侧请求</pre>
+                </div>
+                <div style="display:flex;flex-direction:column;">
+                    <div class="panel-title">Response</div>
+                    <pre id="response-view">—</pre>
+                </div>
+            </div>
+            <div style="padding:12px;border-top:1px solid var(--border);">
+                <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">替换 Response Body（拦截模式）</div>
+                <textarea id="replace-body"></textarea>
+                <div class="actions">
+                    <button type="button" class="primary" id="btn-pass">放行</button>
+                    <button type="button" class="warn" id="btn-replace">替换返回值</button>
+                    <button type="button" class="danger" id="btn-abort">中止</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="/static/res/js/api-routes.js"></script>
+<script src="/static/res/js/webserver.js"></script>
+<script>
+    WebServer.init('apihttp');
+
+    var currentMode = 'pass';
+    var selectedSessionId = null;
+    var sessions = [];
+    var currentDetail = null;
+
+    function setModeButtons(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.mode-btn').forEach(function (btn) {
+            btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+        });
+    }
+
+    async function saveMode(mode) {
+        setModeButtons(mode);
+        await WebServer.updateConfig({ mode: mode });
+        document.getElementById('status').textContent = '已切换为 ' + (mode === 'intercept' ? '拦截' : '放行');
+    }
+
+    async function resetConfigToDefault() {
+        try {
+            await WebServer.requestCustom('reset', { method: 'POST' });
+            setModeButtons('pass');
+        } catch (e) { /* ignore */ }
+    }
+
+    function renderSessions(list) {
+        sessions = list || [];
+        var container = document.getElementById('session-list');
+        if (!sessions.length) {
+            container.innerHTML = '<div class="empty" style="padding:12px;">暂无请求</div>';
+            return;
+        }
+        container.innerHTML = sessions.map(function (item) {
+            var pending = item.pending ? '<span class="badge pending">待决策</span>' : '';
+            var active = item.id === selectedSessionId ? ' active' : '';
+            return '<button type="button" class="session-item' + active + '" data-id="' + item.id + '">' +
+                '<div class="tag">' + escapeHtml(item.tag || item.id) + pending + '</div>' +
+                '<div class="meta">' + (item.durationMs || '--') + ' ms</div>' +
+                '</button>';
+        }).join('');
+        container.querySelectorAll('.session-item').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                selectSession(btn.getAttribute('data-id'));
+            });
+        });
+    }
+
+    async function refreshOverview() {
+        var data = await WebServer.loadData();
+        setModeButtons(data.mode || 'pass');
+        var list = data.sessions || [];
+        renderSessions(list);
+        if (selectedSessionId) {
+            var stillExists = list.some(function (s) { return s.id === selectedSessionId; });
+            if (stillExists) {
+                await loadDetail(selectedSessionId);
+            } else {
+                selectedSessionId = null;
+            }
+        }
+    }
+
+    async function selectSession(sessionId) {
+        selectedSessionId = sessionId;
+        renderSessions(sessions);
+        await loadDetail(sessionId);
+    }
+
+    async function loadDetail(sessionId) {
+        var detail = await WebServer.requestCustom('sessions/' + encodeURIComponent(sessionId) + '/detail');
+        currentDetail = detail;
+        document.getElementById('detail-title').textContent = detail.tag || sessionId;
+        document.getElementById('request-view').textContent = WebServer.prettyJson(detail.request || {});
+        document.getElementById('response-view').textContent = WebServer.prettyJson(detail.response || {});
+        var response = detail.response || {};
+        var body = typeof response.body === 'string' ? response.body : JSON.stringify(response.body || response);
+        document.getElementById('replace-body').value = body;
+    }
+
+    async function decide(action) {
+        if (!selectedSessionId) {
+            alert('请先选择一条请求');
+            return;
+        }
+        var response = (currentDetail && currentDetail.response) || {};
+        var payload = {
+            action: action,
+            body: document.getElementById('replace-body').value,
+            code: response.code || 200
+        };
+        var form = new URLSearchParams();
+        form.set('payload', JSON.stringify(payload));
+        await WebServer.requestCustom('sessions/' + encodeURIComponent(selectedSessionId) + '/decide', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: form.toString()
+        });
+        await refreshOverview();
+    }
+
+    function escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    document.getElementById('mode-pass').addEventListener('click', function () { saveMode('pass'); });
+    document.getElementById('mode-intercept').addEventListener('click', function () { saveMode('intercept'); });
+    document.getElementById('btn-pass').addEventListener('click', function () { decide('pass'); });
+    document.getElementById('btn-replace').addEventListener('click', function () { decide('replace'); });
+    document.getElementById('btn-abort').addEventListener('click', function () { decide('abort'); });
+
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+            resetConfigToDefault();
+        }
+    });
+    window.addEventListener('pagehide', resetConfigToDefault);
+
+    refreshOverview().catch(function (err) {
+        document.getElementById('status').textContent = '加载失败：' + err.message;
+    });
+    setInterval(function () { refreshOverview().catch(function () {}); }, 2000);
+</script>
+</body>
+</html>

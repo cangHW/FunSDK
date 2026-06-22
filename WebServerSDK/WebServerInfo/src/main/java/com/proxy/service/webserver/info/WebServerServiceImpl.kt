@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @date: 2026/6/15 17:31
  * @desc:
  */
-@CloudApiService(serviceTag = "${CoreConfig.SERVICE_TAG_FUNCTION}/WebServer")
+@CloudApiService(serviceTag = "${CoreConfig.SERVICE_TAG_FUNCTION_PREFIX}/WebServer")
 class WebServerServiceImpl : WebServerService {
 
     private val isInit = AtomicBoolean(false)

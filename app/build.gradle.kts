@@ -106,12 +106,11 @@ dependencies {
     implementation(libs.service.document.image)
     implementation(libs.service.document.pdf)
     implementation(libs.service.widget)
-
     implementation(libs.service.media.camera)
+    implementation(libs.service.webserver)
+    debugImplementation(project(":ApiHttpSDK:ApiHttpWebServerPlugin"))
 
-    implementation(project(":WebServerSDK:WebServerBase"))
-
-//    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
+    //    implementation("com.github.yasith99:APNG-Drawable:1.0.1")
 }
 
 apply(from = File(project.rootDir.absolutePath, "Plugins/gradle/common.gradle").absolutePath)

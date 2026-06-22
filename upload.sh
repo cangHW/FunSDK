@@ -2,7 +2,7 @@
 #准备上传的类库 module
 upArray=(
   # 核心基础库
-  ":CoreFramework"
+#  ":CoreFramework"
 
   # 线程库
 #  ":ThreadPoolSDK:ThreadPoolInfo"
@@ -13,8 +13,8 @@ upArray=(
 #  ":ImageLoaderSDK:ImageLoaderBase"
 
   # 网络库
-#  ":ApiHttpSDK:ApiHttpInfo"
-#  ":ApiHttpSDK:ApiHttpBase"
+  ":ApiHttpSDK:ApiHttpInfo"
+  ":ApiHttpSDK:ApiHttpBase"
 
   # web 容器库
 #  ":WebViewSDK:WebViewInfo"
@@ -44,6 +44,10 @@ upArray=(
     # 媒体库
 #  ":MediaSDK:Camera:CameraBase"
 #  ":MediaSDK:Camera:CameraInfo"
+
+    # 嵌入式 Web 服务库
+#  ":WebServerSDK:WebServerBase"
+#  ":WebServerSDK:WebServerInfo"
 )
 
 type_params="r"
